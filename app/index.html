@@ -8,145 +8,119 @@
 <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js" ng-app="azureTicketsApp"
-      xmlns:ng="http://angularjs.org">
+	xmlns:ng="http://angularjs.org">
 <!--<![endif]-->
 <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<title></title>
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Stylesheets -->
-    <link href="components/bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet">
-    <!-- Font awesome icon -->
-    <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.css">
-    <link rel="stylesheet" href="assets/jquery-ui.css">
-    <link rel="stylesheet" href="components/select2/select2.css">
-    <link rel="stylesheet"
-          href="components/jquery-timepicker/jquery.ui.timepicker.css">
-    <!--<link rel="stylesheet" href="styles/main.css">-->
-    <link rel="stylesheet" href="components/fullcalendar/fullcalendar.css">
-    <link rel="stylesheet" href="components/prettyPhoto/css/prettyPhoto.css">
-    <link rel="stylesheet" href="components/rateit/lib/rateit.css">
-    <link rel="stylesheet" href="components/gritter/css/jquery.gritter.css">
-    <link rel="stylesheet" href="components/cleditor/jquery.cleditor.css">
-    <link rel="stylesheet" href="components/bootstrap-toggle-buttons/static/stylesheets/bootstrap-toggle-buttons.css">
-    <link href="assets/widgets.css" rel="stylesheet">
-    <link href="assets/social.css" rel="stylesheet">
-    <link href="components/bootstrap/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="components/angular-ui/build/angular-ui.css" rel="stylesheet">
-    <link href="assets/style.css" rel="stylesheet">
-    <!-- HTML5 Support for IE -->
-    <!--[if lt IE 9]>
+<!-- Stylesheets -->
+<!-- Font awesome icon -->
+<link rel="stylesheet"
+	href="components/font-awesome/css/font-awesome.css">
+<link rel="stylesheet" href="components/select2/select2.css">
+<link rel="stylesheet"
+	href="components/jquery-timepicker/jquery.ui.timepicker.css">
+<link rel="stylesheet" href="components/fullcalendar/fullcalendar.css">
+<link rel="stylesheet" href="components/prettyPhoto/css/prettyPhoto.css">
+<link rel="stylesheet" href="components/rateit/lib/rateit.css">
+<link rel="stylesheet" href="components/gritter/css/jquery.gritter.css">
+<link rel="stylesheet" href="components/cleditor/jquery.cleditor.css">
+<link rel="stylesheet"
+	href="components/bootstrap-switch/static/stylesheets/bootstrap-switch.css">
+<link href="components/angular-ui/build/angular-ui.css" rel="stylesheet">
+<link rel="stylesheet" href="styles/main.css">
+
+<!-- HTML5 Support for IE -->
+<!--[if lt IE 9]>
     <script src="components/html5shiv/dist/html5shiv.js"></script>
     <![endif]-->
-    <!--[if lt IE 9]>
+<!--[if lt IE 9]>
     <script src="components/es5-shim/es5-shim.js"></script>
     <script src="components/json3/lib/json3.min.js"></script>
     <![endif]-->
-    <!--[if lte IE 8]>
+<!--[if lte IE 8]>
     <script src="components/angular-ui/build/angular-ui-ieshiv.min.js"></script>
     <![endif]-->
-    <script src="components/easyXDM/easyXDM.min.js"></script>
-    <script src="components/jquery/jquery.js"></script>
-    <!--<script-->
-            <!--src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>-->
-    <script
-            src="components/responsiveiframe/dist/jquery.responsiveiframe.min.js"></script>
-    <script src="components/angular/angular.js"></script>
-    <script src="components/angular-ui/build/angular-ui.min.js"></script>
-    <script src="components/angular-resource/angular-resource.js"></script>
-    <script src="components/angular-cookies/angular-cookies.js"></script>
-    <script src="components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="components/select2/select2.min.js"></script>
-    <script src="components/bootstrap/js/bootstrap-modal.js"></script>
-    <script src="components/bootstrap/js/bootstrap-alert.js"></script>
-    <script src="components/bootstrap/js/bootstrap-dropdown.js"></script>
-    <script src="components/bootstrap/js/bootstrap-typeahead.js"></script>
-    <script src="components/datejs/build/date.js"></script>
-    <script
-            src="components/jquery-timepicker/jquery.ui.timepicker.js"></script>
-    <!-- JS -->
-    <!--<script src="assets/jquery.js"></script> &lt;!&ndash; jQuery &ndash;&gt;-->
-    <!--<script src="assets/bootstrap.js"></script> &lt;!&ndash; Bootstrap &ndash;&gt;-->
-    <script src="assets/jquery-ui-1.10.2.custom.min.js"></script> <!-- jQuery UI -->
-    <script src="components/jquery-migrate/jquery-migrate.min.js"></script>
-    <script src="components/fullcalendar/fullcalendar.min.js"></script>
-    <script src="components/rateit/lib/jquery.rateit.js"></script>
-    <script src="components/prettyPhoto/js/jquery.prettyPhoto.js"></script>
-    <script src="components/excanvas/silverlight/excanvas.js"></script>
-    <script src="components/flot/jquery.flot.js"></script>
-    <script src="components/flot/jquery.flot.resize.js"></script>
-    <script src="components/flot/jquery.flot.pie.js"></script>
-    <script src="components/flot/jquery.flot.stack.js"></script>
-    <script src="components/gritter/js/jquery.gritter.min.js"></script>
-    <script src="assets/sparklines.js"></script>
 
-    <script src="components/cleditor/jquery.cleditor.js"></script>
+<!-- build:js(app) /scripts/jq.min.js -->
+<script src="components/jquery/jquery.js"></script>
+<script src="components/jquery-migrate/jquery-migrate.min.js"></script>
+<script src="scripts/jquery-ui-1.10.2.custom.min.js"></script>
+<script src="components/jquery-timepicker/jquery.ui.timepicker.js"></script>
+<script
+	src="components/responsiveiframe/dist/jquery.responsiveiframe.min.js"></script>
+<script src="components/prettyPhoto/js/jquery.prettyPhoto.js"></script>
+<script src="components/rateit/lib/jquery.rateit.js"></script>
+<script src="components/flot/jquery.flot.js"></script>
+<script src="components/flot/jquery.flot.resize.js"></script>
+<script src="components/flot/jquery.flot.pie.js"></script>
+<script src="components/flot/jquery.flot.stack.js"></script>
+<script src="components/gritter/js/jquery.gritter.min.js"></script>
+<script src="components/cleditor/jquery.cleditor.js"></script>
+<!-- endbuild -->
 
-    <!--<script src="components/jquery-timepicker/.min.js"></script> &lt;!&ndash; Date picker &ndash;&gt;-->
-    <script src="components/bootstrap-toggle-buttons/static/js/jquery.toggle.buttons.js"></script>
-    <script src="assets/filter.js"></script>
-    <script src="assets/charts.js"></script>
-    <script src="assets/custom.js"></script>
-    <script src="scripts/main.js"></script>
+<!-- build:js(app) /scripts/angular.min.js -->
+<script src="components/angular/angular.js"></script>
+<script src="components/angular-ui/build/angular-ui.min.js"></script>
+<script src="components/angular-resource/angular-resource.js"></script>
+<script src="components/angular-cookies/angular-cookies.js"></script>
+<script src="components/angular-sanitize/angular-sanitize.js"></script>
+<!-- endbuild -->
 
-    <script type="text/javascript">
-        var ri = responsiveIframe();
-        ri.allowResponsiveEmbedding();
-    </script>
+<!-- build:js(app) /scripts/bootstrap.min.js -->
+<script src="components/bootstrap/js/bootstrap-modal.js"></script>
+<script src="components/bootstrap/js/bootstrap-alert.js"></script>
+<script src="components/bootstrap/js/bootstrap-dropdown.js"></script>
+<script src="components/bootstrap/js/bootstrap-typeahead.js"></script>
+<!-- endbuild -->
+
+<!-- build:js(app) /scripts/others.min.js -->
+<script src="components/easyXDM/easyXDM.min.js"></script>
+<script src="components/select2/select2.min.js"></script>
+<script src="components/datejs/build/date.js"></script>
+<script src="components/excanvas/silverlight/excanvas.js"></script>
+<script src="components/fullcalendar/fullcalendar.min.js"></script>
+<!-- endbuild -->
+
+<script src="scripts/main.js"></script>
+
+<script type="text/javascript">
+  var ri = responsiveIframe();
+  ri.allowResponsiveEmbedding();
+</script>
 </head>
 <body ng-controller="storeController" ng-init="init()">
-<!--[if lt IE 7]>
+	<!--[if lt IE 7]>
 <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser
     today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better
     experience this site.</p>
 <![endif]-->
-
-
-
-
-<!--topnav -->
-<div ng-include src="'views/elements/top_menu.html'"></div>
-
-<!-- Main content starts -->
-
-<div class="content">
-
-    <div ng-include src="'views/elements/side_menu.html'"></div>
-
-    <!-- Main bar -->
-    <div class="mainbar">
-
-        <div ng-include src="'views/elements/page_header.html'"></div>
-
-        <!-- Matter -->
-
-        <div class="matter">
-            <div class="container-fluid">
-
-                <div class="content" ng-cloak ng-view></div>
-
-            </div>
-        </div>
-
-        <!-- Matter ends -->
-
-    </div>
-
-    <!-- Mainbar ends -->
-    <div class="clearfix"></div>
-
-</div>
-<!-- Content ends -->
-
-<!--<div ng-include src="'views/elements/notification_box.html'"></div>-->
-
-<!-- Scroll to top -->
-<span class="totop"><a href="#"><i class="icon-chevron-up"></i></a></span>
-
- <script>$('.modal').appendTo($('body'));</script>
-
+	<!--topnav -->
+	<div ng-include src="'views/elements/top_menu.html'"></div>
+	<!-- Main content starts -->
+	<div class="content">
+		<div ng-include src="'views/elements/side_menu.html'"></div>
+		<!-- Main bar -->
+		<div class="mainbar">
+			<div ng-include src="'views/elements/page_header.html'"></div>
+			<!-- Matter -->
+			<div class="matter">
+				<div class="container-fluid">
+					<div class="content" ng-cloak ng-view></div>
+				</div>
+			</div>
+			<!-- Matter ends -->
+		</div>
+		<!-- Mainbar ends -->
+		<div class="clearfix"></div>
+	</div>
+	<!-- Content ends -->
+	<!--<div ng-include src="'views/elements/notification_box.html'"></div>-->
+	<!-- Scroll to top -->
+	<span class="totop"><a href="#"><i class="icon-chevron-up"></i></a></span>
 </body>
 </html>

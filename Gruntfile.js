@@ -26,256 +26,273 @@ module.exports = function(grunt) {
     throw new Error(e).stack;
   }
 
-  grunt.initConfig({
-    at : atConfig,
-    watch : {
-      less : {
-        files : [
-          '<%= at.app %>/styles/**/*.less'
-        ],
-        tasks : [
-          'less'
-        ]
-      },
-      'static' : {
-        files : [
-            '<%= at.app %>/**/*.html',
-            '{.tmp,<%= at.app %>}/' + atConfig.styles + '/{,*/}*.css',
-            '{.tmp,<%= at.app %>}/' + atConfig.scripts + '/**/*.js',
-            '<%= at.app %>/images/{,*/}*.{png,jpg,jpeg}'
-        ],
-        tasks : [
-          '_internal'
-        ]
-      },
-      livereload : {
-        files : [
-            '<%= at.app %>/**/*.html',
-            '{.tmp,<%= at.app %>}/' + atConfig.styles + '/{,*/}*.css',
-            '{.tmp,<%= at.app %>}/' + atConfig.scripts + '/**/*.js',
-            '<%= at.app %>/images/{,*/}*.{png,jpg,jpeg}'
-        ],
-        tasks : [
-            '_internal', 'livereload'
-        ]
-      }
-    },
-    connect : {
-      livereload : {
-        options : {
-          port : 9001,
-          // Change this to '0.0.0.0' to access the server
-          // from outside.
-          hostname : 'localhost',
-          middleware : function(connect) {
-            return [
-                lrSnippet, mountFolder(connect, '.tmp'),
-                mountFolder(connect, atConfig.dist)
-            ];
-          }
-        }
-      },
-      'static' : {
-        options : {
-          port : 9003,
-          hostname : 'localhost',
-          middleware : function(connect) {
-            return [
-                mountFolder(connect, '.tmp'),
-                mountFolder(connect, atConfig.dist)
-            ];
-          }
-        }
-      },
-      test : {
-        options : {
-          port : 9002,
-          middleware : function(connect) {
-            return [
-                mountFolder(connect, '.tmp'),
-                mountFolder(connect, atConfig.test)
-            ];
-          }
-        }
-      }
-    },
-    less : {
-      css : {
-        options : {
-          paths : [
-            '<%= at.app %>/<%= at.components %>/bootstrap/less/'
-          ]
-        },
-        files : {
-          '<%= at.dist %>/styles/main.css' : [
-            '<%= at.app %>/' + atConfig.styles + '/less/main.less'
-          ]
-        }
-      }
-    },
-    open : {
-      server : {
-        url : 'http://localhost:<%= connect.livereload.options.port %>/#/admin'
-      },
-      serverStatic : {
-        url : 'http://localhost:<%= connect.static.options.port %>/#/admin'
-      }
-    },
-    clean : {
-      dist : [
-          '.tmp', '<%= at.dist %>/*'
-      ],
-      server : '.tmp'
-    },
-    jshint : {
-      options : {
-        jshintrc : '.jshintrc'
-      },
-      all : [
-        // 'Gruntfile.js',
-        '<%= at.app %>/' + atConfig.scripts + '/{,*/}*.js'
-      ]
-    },
-    testacular : {
-      unit : {
-        configFile : atConfig.config + '/testacular.conf.js',
-        singleRun : true
-      },
-      continuous : {
-        configFile : atConfig.config + '/testacular.conf.js',
-        autoWatch : true
-      }
-    },
-    concat : {
-      dist : {
-        options : {
-          stripBanners : {
-            block : true,
-            line : true
-          },
-          process : true
-        },
-        files : {
-          '<%= at.dist %>/scripts/main.js' : [
-              '.tmp/' + atConfig.scripts + '/*.js',
-              '<%= at.app %>/' + atConfig.scripts + '/**/*.js'
-          ]
-        }
-      }
-    },
-    useminPrepare : {
-      html : '<%= at.app %>/index.html',
-      options : {
-        dest : '<%= at.dist %>'
-      }
-    },
-    usemin : {
-      html : [
-        '<%= at.dist %>/{,*/}*.html'
-      ],
-      css : [
-        '<%= at.dist %>/styles/{,*/}*.css'
-      ],
-      options : {
-        dirs : [
-          '<%= at.dist %>'
-        ]
-      }
-    },
-    cssmin : {
-      dist : {
-        files : {
-          '<%= at.dist %>/styles/main.css' : [
-              '.tmp/' + atConfig.styles + '/**/*.css',
-              '<%= at.dist %>/styles/**/*.css',
-              '<%= at.app %>/styles/social.css'
-          ]
-        }
-      }
-    },
-    htmlmin : {
-      dist : {
-        options : {
-          collapseWhitespace : false,
-          removeComments : false,
-          collapseBooleanAttributes : true,
-          removeRedundantAttributes : true,
-          useShortDoctype : true
-        },
-        files : [
-          {
-            expand : true,
-            cwd : '<%= at.app %>',
-            src : [
-                '*.html', 'views/**/*.html'
+  grunt
+      .initConfig({
+        at : atConfig,
+        watch : {
+          less : {
+            files : [
+              '<%= at.app %>/styles/**/*.less'
             ],
+            tasks : [
+              'less'
+            ]
+          },
+          'static' : {
+            files : [
+                '<%= at.app %>/**/*.html',
+                '{.tmp,<%= at.app %>}/' + atConfig.styles + '/{,*/}*.css',
+                '{.tmp,<%= at.app %>}/' + atConfig.scripts + '/**/*.js',
+                '<%= at.app %>/images/{,*/}*.{png,jpg,jpeg}'
+            ],
+            tasks : [
+              '_internal'
+            ]
+          },
+          livereload : {
+            files : [
+                '<%= at.app %>/**/*.html',
+                '{.tmp,<%= at.app %>}/' + atConfig.styles + '/{,*/}*.css',
+                '{.tmp,<%= at.app %>}/' + atConfig.scripts + '/**/*.js',
+                '<%= at.app %>/images/{,*/}*.{png,jpg,jpeg}'
+            ],
+            tasks : [
+                '_internal', 'livereload'
+            ]
+          }
+        },
+        connect : {
+          livereload : {
+            options : {
+              port : 9001,
+              // Change this to '0.0.0.0' to access the server
+              // from outside.
+              hostname : 'localhost',
+              middleware : function(connect) {
+                return [
+                    lrSnippet, mountFolder(connect, '.tmp'),
+                    mountFolder(connect, atConfig.dist)
+                ];
+              }
+            }
+          },
+          'static' : {
+            options : {
+              port : 9003,
+              hostname : 'localhost',
+              middleware : function(connect) {
+                return [
+                    mountFolder(connect, '.tmp'),
+                    mountFolder(connect, atConfig.dist)
+                ];
+              }
+            }
+          },
+          test : {
+            options : {
+              port : 9002,
+              middleware : function(connect) {
+                return [
+                    mountFolder(connect, '.tmp'),
+                    mountFolder(connect, atConfig.test)
+                ];
+              }
+            }
+          }
+        },
+        less : {
+          css : {
+            options : {
+              paths : [
+                '<%= at.app %>/<%= at.components %>/bootstrap/less/'
+              ]
+            },
+            files : {
+              '<%= at.dist %>/styles/main.css' : [
+                '<%= at.app %>/' + atConfig.styles + '/less/main.less'
+              ]
+            }
+          }
+        },
+        open : {
+          server : {
+            url : 'http://localhost:<%= connect.livereload.options.port %>/#/admin'
+          },
+          serverStatic : {
+            url : 'http://localhost:<%= connect.static.options.port %>/#/admin'
+          }
+        },
+        clean : {
+          dist : [
+              '.tmp', '<%= at.dist %>/*'
+          ],
+          server : '.tmp'
+        },
+        jshint : {
+          options : {
+            jshintrc : '.jshintrc'
+          },
+          all : [
+            // 'Gruntfile.js',
+            '<%= at.app %>/' + atConfig.scripts + '/{,*/}*.js'
+          ]
+        },
+        testacular : {
+          unit : {
+            configFile : atConfig.config + '/testacular.conf.js',
+            singleRun : true
+          },
+          continuous : {
+            configFile : atConfig.config + '/testacular.conf.js',
+            autoWatch : true
+          }
+        },
+        concat : {
+          dist : {
+            options : {
+              stripBanners : {
+                block : true,
+                line : true
+              },
+              process : true
+            },
+            files : {
+              '<%= at.dist %>/scripts/main.js' : [
+                  '.tmp/' + atConfig.scripts + '/*.js',
+                  '<%= at.app %>/' + atConfig.scripts + '/**/*.js'
+              ]
+            }
+          }
+        },
+        useminPrepare : {
+          html : '<%= at.app %>/index.html',
+          options : {
             dest : '<%= at.dist %>'
           }
-        ]
-      }
-    },
-    cdnify : {
-      dist : {
-        html : [
-          '<%= at.dist %>/*.html'
-        ]
-      }
-    },
-    ngmin : {
-      dist : {
-        files : [
-          {
-            expand : true,
-            cwd : '<%= at.dist %>/' + atConfig.scripts,
-            src : '*.js',
-            dest : '<%= at.dist %>/' + atConfig.scripts
-          }
-        ]
-      }
-    },
-    uglify : {
-      dist : {
-        files : {
-          '<%= at.dist %>/scripts/main.js' : [
-            '<%= at.dist %>/' + atConfig.scripts + '/main.js'
-          ],
-        }
-      }
-    },
-    copy : {
-      dist : {
-        files : [
-          {
-            expand : true,
-            dot : true,
-            cwd : '<%= at.app %>',
-            dest : '<%= at.dist %>',
-            src : [
-                '*.{ico,txt,php}',
-                'components/**/*.{ico,txt,php,js,png,jpg,gif,css,less,json}',
-                'assets/**/*.*'
-            ]
-          }
-        ]
-      }
-    },
-    compress : {
-      wordpress : {
-        options : {
-          archive : '<%= at.dist %>/wp-azuretickets.zip'
         },
-        files : [
-          {
-            expand : true,
-            cwd : '<%= at.dist %>/',
-            src : [
-              '**'
+        usemin : {
+          html : [
+            '<%= at.dist %>/{,*/}*.html'
+          ],
+          css : [
+            '<%= at.dist %>/styles/{,*/}*.css'
+          ],
+          options : {
+            dirs : [
+              '<%= at.dist %>'
             ]
           }
-        ]
-      }
-    }
-  });
+        },
+        cssmin : {
+          dist : {
+            files : {
+              '<%= at.dist %>/styles/main.css' : [
+                  '.tmp/<%= at.styles %>/**/*.css',
+                  // '<%= at.dist %>/styles/**/*.css',
+                  '<%= at.app %>/styles/*.css'
+              ]
+            }
+          }
+        },
+        htmlmin : {
+          dist : {
+            options : {
+              collapseWhitespace : true,
+              removeComments : true,
+              collapseBooleanAttributes : true,
+              removeRedundantAttributes : true,
+              useShortDoctype : true
+            },
+            files : [
+              {
+                expand : true,
+                cwd : '<%= at.app %>',
+                src : [
+                    '*.html', 'views/**/*.html'
+                ],
+                dest : '<%= at.dist %>'
+              }
+            ]
+          }
+        },
+        cdnify : {
+          dist : {
+            html : [
+              '<%= at.dist %>/*.html'
+            ]
+          }
+        },
+        ngmin : {
+          dist : {
+            files : [
+              {
+                expand : true,
+                cwd : '<%= at.dist %>/' + atConfig.scripts,
+                src : '*.js',
+                dest : '<%= at.dist %>/' + atConfig.scripts
+              }
+            ]
+          }
+        },
+        uglify : {
+          dist : {
+            files : {
+              '<%= at.dist %>/scripts/main.js' : [
+                '<%= at.dist %>/' + atConfig.scripts + '/main.js'
+              ],
+            }
+          }
+        },
+        copy : {
+          dist : {
+            files : [
+              {
+                expand : true,
+                dot : true,
+                cwd : '<%= at.app %>',
+                dest : '<%= at.dist %>',
+                src : [
+                    '*.{ico,txt,php}',
+                    '<%= at.components %>/**/*.{ico,txt,php,js,png,jpg,gif,css,less,json}',
+                    'assets/**/*.*'
+                ]
+              }
+            ]
+          }
+        },
+        bootstrapIcons : {
+          files : [
+            {
+              dot : true,
+              expand : true,
+              flatten : true,
+              dest : '<%= at.dist %>/assets/img/',
+              src : [
+                '<%= at.components %>/bootstrap/img/*.*'
+              ]
+            }
+          ],
+          options : {
+            cwd : '<%= at.components %>/bootstrap/'
+          }
+        },
+        compress : {
+          wordpress : {
+            options : {
+              archive : '<%= at.dist %>/wp-azuretickets.zip'
+            },
+            files : [
+              {
+                expand : true,
+                cwd : '<%= at.dist %>/',
+                src : [
+                  '**'
+                ]
+              }
+            ]
+          }
+        }
+      });
 
   grunt.renameTask('regarde', 'watch');
   // remove when mincss task is renamed
@@ -298,8 +315,8 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
       'clean:dist', /* 'jshint', */
-      'test', 'useminPrepare', 'cssmin', 'htmlmin', 'concat', 'copy', 'cdnify',
-      'usemin', 'ngmin', 'uglify'
+      'test', 'useminPrepare', 'cssmin', 'copy', 'cdnify', 'usemin', 'concat',
+      'ngmin', 'uglify', 'htmlmin'
   ]);
 
   grunt.registerTask('_internal', [
