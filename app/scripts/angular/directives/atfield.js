@@ -75,29 +75,7 @@ azureTicketsApp
                       _label.addClass('pull-right');
                     }
                   } else if (/^Date|Time/g.test(fieldType)) {
-                    _attr.type = 'text', _el = jQuery('<input ' + _req + '/>');
-                    dateTimeScript = jQuery('<script type="text/javascript" />');
-
-                    // we're outside angular, so we need to do some tricks here
-                    // to update model
-                    var js = "function(v, el, format){\
-                      var formScope = angular.element(jQuery('#'+el.id).parents('form').first()).scope();\
-                      var ctrlScope = formScope.$parent;\
-                      ctrlScope.$apply(function(){\
-                  		  ctrlScope."
-                        + m
-                        + "."
-                        + f
-                        + " = v;\
-                  		});\
-                      }\
-                      ";
-
-                    dateTimeScript
-                        .text("jQuery(function(){jQuery('#"
-                            + _attr.id
-                            + "').datetimepicker({timeFormat: 'hh:mm tt', onClose: "
-                            + js + " });});");
+                    _attr.type = 'text';
 
                     if ($attrs.uiDateFormat) {
                       _el.attr('ui-date-format', $attrs.uiDateFormat)

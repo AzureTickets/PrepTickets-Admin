@@ -17,7 +17,7 @@
         "angular-resource": "*",
         "angular-cookies": "*",
         "angular-sanitize": "*",
-        "jquery-timepicker": "*",
+        "angular-bootstrap-datetimepicker":"*",
         "datejs": "*",
         "Chart.js": "*",
         "font-awesome": "*",
