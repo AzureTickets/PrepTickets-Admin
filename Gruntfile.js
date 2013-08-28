@@ -159,7 +159,8 @@ module.exports = function(grunt) {
             files : {
               '<%= at.dist %>/scripts/main.js' : [
                   '.tmp/' + atConfig.scripts + '/*.js',
-                  '<%= at.app %>/' + atConfig.scripts + '/**/*.js'
+                  '<%= at.app %>/' + atConfig.scripts + '/api/**/*.js',
+                  '<%= at.app %>/' + atConfig.scripts + '/angular/**/*.js'
               ]
             }
           }
@@ -188,7 +189,7 @@ module.exports = function(grunt) {
             files : {
               '<%= at.dist %>/styles/main.css' : [
                   '.tmp/<%= at.styles %>/**/*.css',
-                  // '<%= at.dist %>/styles/**/*.css',
+                  '<%= at.dist %>/styles/main.css',
                   '<%= at.app %>/styles/*.css'
               ]
             }
@@ -197,8 +198,8 @@ module.exports = function(grunt) {
         htmlmin : {
           dist : {
             options : {
-              collapseWhitespace : true,
-              removeComments : true,
+              collapseWhitespace : false,
+              removeComments : false,
               collapseBooleanAttributes : true,
               removeRedundantAttributes : true,
               useShortDoctype : true
@@ -228,7 +229,7 @@ module.exports = function(grunt) {
               {
                 expand : true,
                 cwd : '<%= at.dist %>/' + atConfig.scripts,
-                src : '*.js',
+                src : 'main.js',
                 dest : '<%= at.dist %>/' + atConfig.scripts
               }
             ]
@@ -244,6 +245,20 @@ module.exports = function(grunt) {
           }
         },
         copy : {
+          bootstrapIcons : {
+            files : [
+              {
+                dot : true,
+                expand : true,
+                flatten : true,
+                cwd : '<%= at.app %>',
+                dest : '<%= at.dist %>/assets/img/',
+                src : [
+                  '<%= at.components %>/bootstrap/img/*.*'
+                ]
+              }
+            ]
+          },
           dist : {
             files : [
               {
@@ -253,27 +268,11 @@ module.exports = function(grunt) {
                 dest : '<%= at.dist %>',
                 src : [
                     '*.{ico,txt,php}',
-                    '<%= at.components %>/**/*.{ico,txt,php,js,png,jpg,gif,css,less,json}',
+                    '<%= at.components %>/**/*.{ico,txt,php,js,png,jpg,gif,css,less,json,eot,svg,ttf,woff,otf}',
                     'assets/**/*.*'
                 ]
               }
             ]
-          }
-        },
-        bootstrapIcons : {
-          files : [
-            {
-              dot : true,
-              expand : true,
-              flatten : true,
-              dest : '<%= at.dist %>/assets/img/',
-              src : [
-                '<%= at.components %>/bootstrap/img/*.*'
-              ]
-            }
-          ],
-          options : {
-            cwd : '<%= at.components %>/bootstrap/'
           }
         },
         compress : {
@@ -315,12 +314,12 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
       'clean:dist', /* 'jshint', */
-      'test', 'useminPrepare', 'cssmin', 'copy', 'cdnify', 'usemin', 'concat',
-      'ngmin', 'uglify', 'htmlmin'
+      'test', 'useminPrepare', 'cssmin', 'htmlmin', 'copy', 'usemin', 'concat',
+      'ngmin', /* 'uglify' */
   ]);
 
   grunt.registerTask('_internal', [
-      'useminPrepare', 'htmlmin', 'concat', 'cdnify', 'usemin', 'ngmin'
+      'useminPrepare', 'htmlmin', 'usemin', 'concat', 'ngmin'
   ]);
 
   grunt.registerTask('wp', [

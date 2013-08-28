@@ -19,7 +19,7 @@
         "angular-sanitize": "*",
         "jquery-timepicker": "*",
         "datejs": "*",
-        "sparkline" : "*",
+        "Chart.js": "*",
         "font-awesome": "*",
         "excanvas": "latest",
         "fullcalendar": "*",

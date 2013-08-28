@@ -17,8 +17,6 @@
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Stylesheets -->
-<!-- Font awesome icon -->
 <link rel="stylesheet"
 	href="components/font-awesome/css/font-awesome.css">
 <link rel="stylesheet" href="components/select2/select2.css">
@@ -32,7 +30,7 @@
 <link rel="stylesheet"
 	href="components/bootstrap-switch/static/stylesheets/bootstrap-switch.css">
 <link href="components/angular-ui/build/angular-ui.css" rel="stylesheet">
-<link rel="stylesheet" href="styles/main.css">
+<link rel="stylesheet" href="/styles/main.css">
 
 <!-- HTML5 Support for IE -->
 <!--[if lt IE 9]>
@@ -49,7 +47,7 @@
 <!-- build:js(app) /scripts/jq.min.js -->
 <script src="components/jquery/jquery.js"></script>
 <script src="components/jquery-migrate/jquery-migrate.js"></script>
-<script src="scripts/jquery-ui-1.10.2.custom.min.js"></script>
+<script src="/scripts/jquery-ui-1.10.2.custom.min.js"></script>
 <script src="components/jquery-timepicker/jquery.ui.timepicker.js"></script>
 <script
 	src="components/responsiveiframe/dist/jquery.responsiveiframe.js"></script>
@@ -62,7 +60,6 @@
 <script src="components/gritter/js/jquery.gritter.js"></script>
 <script src="components/cleditor/jquery.cleditor.js"></script>
 <!-- endbuild -->
-
 <!-- build:js(app) /scripts/angular.min.js -->
 <script src="components/angular/angular.js"></script>
 <script src="components/angular-ui/build/angular-ui.js"></script>
@@ -70,23 +67,24 @@
 <script src="components/angular-cookies/angular-cookies.js"></script>
 <script src="components/angular-sanitize/angular-sanitize.js"></script>
 <!-- endbuild -->
-
 <!-- build:js(app) /scripts/bootstrap.min.js -->
 <script src="components/bootstrap/js/bootstrap-modal.js"></script>
 <script src="components/bootstrap/js/bootstrap-alert.js"></script>
 <script src="components/bootstrap/js/bootstrap-dropdown.js"></script>
 <script src="components/bootstrap/js/bootstrap-typeahead.js"></script>
+<script src="components/bootstrap-switch/static/js/bootstrap-switch.js"></script>
 <!-- endbuild -->
-
 <!-- build:js(app) /scripts/others.min.js -->
 <script src="components/easyXDM/easyXDM.js"></script>
 <script src="components/select2/select2.js"></script>
 <script src="components/datejs/build/date.js"></script>
 <script src="components/excanvas/silverlight/excanvas.js"></script>
 <script src="components/fullcalendar/fullcalendar.js"></script>
+<script src="components/Chart.js/Chart.js"></script>
+<script src="/scripts/custom.js"></script>
+<script src="/scripts/filter.js"></script>
 <!-- endbuild -->
-
-<script src="scripts/main.js"></script>
+<script src="/scripts/main.js"></script>
 
 <script type="text/javascript">
   var ri = responsiveIframe();
@@ -99,9 +97,7 @@
     today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better
     experience this site.</p>
 <![endif]-->
-	<!--topnav -->
 	<div ng-include src="'views/elements/top_menu.html'"></div>
-	<!-- Main content starts -->
 	<div class="content">
 		<div ng-include src="'views/elements/side_menu.html'"></div>
 		<!-- Main bar -->
@@ -113,14 +109,10 @@
 					<div class="content" ng-cloak ng-view></div>
 				</div>
 			</div>
-			<!-- Matter ends -->
 		</div>
-		<!-- Mainbar ends -->
 		<div class="clearfix"></div>
 	</div>
-	<!-- Content ends -->
 	<!--<div ng-include src="'views/elements/notification_box.html'"></div>-->
-	<!-- Scroll to top -->
 	<span class="totop"><a href="#"><i class="icon-chevron-up"></i></a></span>
 </body>
 </html>
