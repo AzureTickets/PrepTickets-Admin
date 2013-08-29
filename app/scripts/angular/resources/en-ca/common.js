@@ -96,6 +96,7 @@ var CommonResources = {
   LabelPlaceName : 'Venue\'s Name',
   LabelPlaceDescription : 'Description of this Venue',
   LabelEventOnSaleDateTimeStart : 'Tickets Sales Starts On',
+  LabelEventDescription : 'Description of this Event',
   LabelEventOnSaleDateTimeEnd : 'Tickets Sales Ends On',
   LabelEventStartTime : 'This Event Starts On',
   LabelEventEndTime : 'This Event Ends On',
@@ -169,10 +170,8 @@ var CommonResources = {
   Text_PrivateItem : 'Are you sure you want to make this item private?',
   Text_PublicStore : 'Are you sure you want to make this store public?',
   Text_PrivateStore : 'Are you sure you want to make this store private?',
-  Text_State : [
-      'Currently Public, Make Private', 'Currently Private, Make Public',
-      '(Private)', '(Public)'
-  ],
+  Text_State : [ 'Currently Public, Make Private',
+      'Currently Private, Make Public', '(Private)', '(Public)' ],
   Text_Status : 'Status',
   Text_MsgPaymentCancel : 'Payment has been canceled',
   Text_MsgPaymentDecline : 'Payment is Declined',
@@ -259,9 +258,8 @@ var CommonResources = {
   Text_InventoryNumberTotal : 'Total',
   Text_InventoryMaxStockAllowed : 'You are trying to add too many items, the maximum number of items you are can add is : {0}',
   Text_InventoryMaxRemovekAllowed : 'Currently you can only remove up to {0} items',
-  Text_AddRemoveInventoryItemTitlePopup : [
-      'Add Inventory Items', 'Remove Inventory Items'
-  ],
+  Text_AddRemoveInventoryItemTitlePopup : [ 'Add Inventory Items',
+      'Remove Inventory Items' ],
   Text_Disclaimer : "DISCLAIMER",
   Msg_Disclaimer : "By use of this ticket, the ticket purchaser/holder (\"Holder\") agrees that: (a) he or she shall not transmit or aid in transmitting any information about the game to which it grants admission, including, but not limited to, any account, description, picture, video, audio, reproduction or other information concerning the game (collectively \"Game Information\");",
   Error_ParseProvider : 'We could not recognize the social address, please review and try again',

@@ -9,14 +9,14 @@
 
 
 		<!--<p class="lead pull-left">{{ 'Common.Text_EventMenu_Events' | t}}</p>-->
-        <h3 class="pull-left">{{ 'Common.Text_EventMenu_Events' | t}}</h3>
+		<h3 class="pull-left">{{ 'Common.Text_EventMenu_Events' | t}}</h3>
 
 
 		<div class="btn-group pull-right">
 			<button class="btn btn-info" ng-click="create()">{{
 				'Common.Text_EventMenu_CreateEvent' | t }}</button>
 		</div>
-        <div class="clearfix"></div>
+		<div class="clearfix"></div>
 
 
 
@@ -135,7 +135,8 @@
 					<dl>
 						<dd class="clear row-fluid">
 							<!-- event details -->
-							<atmodel ui-if="Event && Event._tmpVenues" ng-model="Event"></atmodel>
+							<atmodel ui-if="Event && Event._tmpVenues" ng-model="Event"
+								at-hide-props="DateCreated,DateModified,StoreKey"></atmodel>
 						</dd>
 						<dd class="pull-left">
 							<a ng-show="wizard.currentStep>1"
