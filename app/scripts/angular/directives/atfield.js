@@ -75,7 +75,31 @@ azureTicketsApp
                       _label.addClass('pull-right');
                     }
                   } else if (/^Date|Time/g.test(fieldType)) {
-                    _attr.type = 'text';
+                    _attr.type = 'text', _el = jQuery('<input ' + _req + '/>');
+                    dateTimeScript = jQuery('<script type="text/javascript" />');
+
+                    // we're outside angular, so we need to do some tricks here
+                    // in order to update the model
+                    var js = "function(v, tp){\
+                      var formScope = angular.element(jQuery('#"
+                        + _attr.id
+                        + "').parents('form').first()).scope();\
+                      var ctrlScope = formScope.$parent;\
+                      ctrlScope.$apply(function(){\
+                  		  ctrlScope."
+                        + m
+                        + "."
+                        + f
+                        + " = v;\
+                  		});\
+                      }\
+                      ";
+
+                    dateTimeScript
+                        .text("jQuery(function(){jQuery('#"
+                            + _attr.id
+                            + "').datetimepicker({timeFormat: 'hh:mm tt', onClose: "
+                            + js + " });});");
 
                     if ($attrs.uiDateFormat) {
                       _el.attr('ui-date-format', $attrs.uiDateFormat)
@@ -84,7 +108,7 @@ azureTicketsApp
                     _el = jQuery('<select />');
                     var _enum = BWL.ModelEnum[fieldType.replace(
                         /^(.*Enum)(?=\b).*$/g, '$1')];
-                    for ( var e in _enum) {
+                    for( var e in _enum) {
                       _el.append(jQuery('<option value="' + _enum[e] + '" />')
                           .text(e));
                     }
@@ -93,10 +117,10 @@ azureTicketsApp
                   }
 
                   // define new element attributes
-                  for (p in _attr) {
+                  for(p in _attr) {
                     _el.attr(p, _attr[p]);
                   }
-                  for (p in $attrs) {
+                  for(p in $attrs) {
                     if (angular.isString($attrs[p])
                         && [
                             'ngModel', 'ngRequired', 'ngChange', 'uiValidate',
