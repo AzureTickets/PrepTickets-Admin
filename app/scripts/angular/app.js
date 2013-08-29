@@ -1,7 +1,7 @@
 'use strict';
 
 var azureTicketsApp = angular.module('azureTicketsApp', [
-    'ui', 'ngCookies', 'ngRoute'
+    'ui', 'ngCookies'
 ]);
 
 /**
