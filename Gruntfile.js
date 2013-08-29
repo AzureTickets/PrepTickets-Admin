@@ -216,13 +216,6 @@ module.exports = function(grunt) {
             ]
           }
         },
-        cdnify : {
-          dist : {
-            html : [
-              '<%= at.dist %>/*.html'
-            ]
-          }
-        },
         ngmin : {
           dist : {
             files : [
@@ -294,8 +287,6 @@ module.exports = function(grunt) {
       });
 
   grunt.renameTask('regarde', 'watch');
-  // remove when mincss task is renamed
-  grunt.renameTask('mincss', 'cssmin');
 
   grunt.registerTask('server', [
       'clean:server', 'livereload-start', 'connect:livereload', 'open:server',
