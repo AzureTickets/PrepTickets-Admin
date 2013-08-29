@@ -4,6 +4,7 @@
     "dependencies": {
         "angular": "*",
         "angular-ui": "*",
+        "angular-route":"*",
         "jquery": "*",
         "jquery-migrate": "*",
         "responsiveiframe": "*",
