@@ -48,6 +48,7 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
     $scope.GeneralAdmissionTicketItemInfo.Price = $scope.model
         .getInstanceOf('Price');
     $scope.GeneralAdmissionTicketItemInfo.Price.Currency = $scope.Store.Currency;
+    delete $scope.GeneralAdmissionTicketItemInfo.Price.Display;
 
     /**
      * We don't use 'tmp' prefix here so the property will be visible on atmodel
@@ -93,7 +94,7 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
                   Public : true,
                   Name : $scope.GeneralAdmissionTicketItemInfo.Name,
                   Policy : $scope.GeneralAdmissionTicketItemInfo.Policy,
-                  Price : $scope.GeneralAdmissionTicketItemInfo.Price.ItemPrice,
+                  Price : $scope.GeneralAdmissionTicketItemInfo.Price,
                   MaxPurchaseQuantity : $scope.GeneralAdmissionTicketItemInfo.MaxPurchaseQuantity,
                   OnSaleDateTimeStart : $scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeStart,
                   OnSaleDateTimeEnd : $scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeEnd

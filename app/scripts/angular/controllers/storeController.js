@@ -80,7 +80,8 @@ function storeController($scope, $cookieStore, $location, $timeout,
                 function() {
                   $scope.stores = $scope.store.getStores();
 
-                  if (!angular.isArray($scope.stores)) {
+                  if (!angular.isArray($scope.stores)
+                      || $scope.stores.length === 0) {
                     // if user has been upgraded but have not yet created a
                     // store
                     $scope.createStore();
@@ -258,9 +259,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
 
   $scope.loadCurrencies = function() {
     $scope.store.getCurrencies().then(function(currencies) {
-      var c = [
-          'CAD', 'USD', 'EUR', 'GBP'
-      ];
+      var c = [ 'CAD', 'USD', 'EUR', 'GBP' ];
       $scope.currencies = $scope.object.prioritizeSort(currencies, c, 'ISO');
     }, function(err) {
       $scope.error.log(err)
@@ -342,11 +341,9 @@ function storeController($scope, $cookieStore, $location, $timeout,
           HasMemberships : true,
           HasWishlist : true,
           Currency : $scope.Store.Currency,
-          StoreURIs : [
-            {
-              URI : $scope.Store.URI
-            }
-          ],
+          StoreURIs : [ {
+            URI : $scope.Store.URI
+          } ],
           Address : $scope.Store.Address
         }).then(
             function(storeKey) {
@@ -466,10 +463,8 @@ function storeController($scope, $cookieStore, $location, $timeout,
   }
 }
 
-storeController.$inject = [
-    '$scope', '$cookieStore', '$location', '$timeout', '$routeParams',
-    'configService', 'authService', 'permService', 'storeService',
-    'modelService', 'errorService', 'geoService', 'formService',
-    'objectService', 'placeService', 'orderService', 'eventService',
-    'ticketService', 'cartService'
-];
+storeController.$inject = [ '$scope', '$cookieStore', '$location', '$timeout',
+    '$routeParams', 'configService', 'authService', 'permService',
+    'storeService', 'modelService', 'errorService', 'geoService',
+    'formService', 'objectService', 'placeService', 'orderService',
+    'eventService', 'ticketService', 'cartService' ];

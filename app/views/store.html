@@ -168,7 +168,8 @@
 						<!-- store details -->
 						<atmodel
 							ui-if="geo.getLoadedCountries() != null && geo.getLoadedRegions() != null && currencies.length > 0"
-							ng-model="Store" extra1="geo" extra2="currencies"></atmodel>
+							ng-model="Store" extra1="geo" extra2="currencies"
+							at-hide-props="DateCreated,DateModified"></atmodel>
 					</div>
 				</dd>
 				<dd class="pull-left">

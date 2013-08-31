@@ -184,13 +184,15 @@ BWL.ModelMeta.Category = {
     Delete : 100,
     Remove : 30
   },
+  Brief : 'String',
   ChildCategories : 'List(ICategory)',
   CustomURI : 'ICustomURI',
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
   Description : 'Text',
   DisplayOrder : 'Int32',
-  Image : 'IImage',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   Key : 'String',
   Name : 'String',
   ParentCategoryKey : 'String',
@@ -254,6 +256,7 @@ BWL.ModelMeta.Contact = {
   LastName : 'String',
   Phone : 'String',
   PreferredName : 'String',
+  PrimaryAddress : 'IAddress',
   StoreKey : 'String',
   Type : 'String',
   WebAddress : 'String'
@@ -397,15 +400,19 @@ BWL.ModelMeta.DigitalSource = {
     Remove : 30
   },
   BaseURL : 'String*(0)',
+  Brief : 'String',
   Copyright : 'ICopyright',
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
   Description : 'Text',
   Filename : 'String*(40)',
   FileSize : 'Int64',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   Key : 'String',
   MimeInfo : 'MimeInfo*(40:40)',
   Name : 'String',
+  SmallImage : 'IImage:150:150',
   SourceFile : 'String*(40)',
   StoreKey : 'String',
   Type : 'String'
@@ -441,6 +448,7 @@ BWL.ModelMeta.Event = {
     Delete : 100,
     Remove : 30
   },
+  Brief : 'String',
   Categories : 'List(ICategory)',
   ChildEvents : 'List(IEvent)*(0)',
   Contacts : 'List(IContact)',
@@ -450,6 +458,8 @@ BWL.ModelMeta.Event = {
   Description : 'Text',
   DisplayOrder : 'Int32',
   EndTime : 'DateTime',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   Items : 'List(IItemInfo)',
   Key : 'String',
   LargeImages : 'List(IImage:500:500)',
@@ -477,12 +487,16 @@ BWL.ModelMeta.ExternalInfo = {
     Delete : 100,
     Remove : 30
   },
+  Brief : 'String',
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
   Description : 'Text',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   Key : 'String',
   Name : 'String',
   ProviderId : 'String',
+  SmallImage : 'IImage:150:150',
   StoreKey : 'String',
   Type : 'String'
 };
@@ -495,30 +509,17 @@ BWL.ModelMeta.Facebook = {
     Delete : 100,
     Remove : 30
   },
+  Brief : 'String',
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
   Description : 'Text',
   FacebookType : 'FacebookTypeEnum',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   Key : 'String',
   Name : 'String',
   ProviderId : 'String',
-  StoreKey : 'String',
-  Type : 'String'
-};
-BWL.ModelMeta.Fee = {
-  __cache : 300,
-  __perms : {
-    Create : 20,
-    Read : 0,
-    Update : 30,
-    Delete : 100,
-    Remove : 30
-  },
-  Amount : 'Double',
-  DateCreated : 'DateTime',
-  DateModified : 'DateTime',
-  Key : 'String',
-  Name : 'String',
+  SmallImage : 'IImage:150:150',
   StoreKey : 'String',
   Type : 'String'
 };
@@ -532,15 +533,19 @@ BWL.ModelMeta.File = {
     Remove : 30
   },
   BaseURL : 'String*(0)',
+  Brief : 'String',
   Copyright : 'ICopyright',
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
   Description : 'Text',
   Filename : 'String*(40)',
   FileSize : 'Int64',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   Key : 'String',
   MimeInfo : 'MimeInfo*(40:40)',
   Name : 'String',
+  SmallImage : 'IImage:150:150',
   SourceFile : 'String*(40)',
   StoreKey : 'String',
   Type : 'String'
@@ -554,12 +559,16 @@ BWL.ModelMeta.Flickr = {
     Delete : 100,
     Remove : 30
   },
+  Brief : 'String',
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
   Description : 'Text',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   Key : 'String',
   Name : 'String',
   ProviderId : 'String',
+  SmallImage : 'IImage:150:150',
   StoreKey : 'String',
   Type : 'String'
 };
@@ -575,10 +584,12 @@ BWL.ModelMeta.GeneralAdmissionTicketInventoryItem = {
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
   DownloadLink : 'String',
+  EventKey : 'String',
   EventName : 'String',
   Info : 'String',
   IsLocked : 'Boolean*(0)',
   IsSold : 'Boolean*(0)',
+  ItemInfoFee : 'Price',
   ItemInfoKey : 'String',
   ItemInfoName : 'String',
   ItemInfoPrice : 'Price',
@@ -586,6 +597,7 @@ BWL.ModelMeta.GeneralAdmissionTicketInventoryItem = {
   Key : 'String',
   LockExpiryDateTime : 'DateTime',
   LockingDomainProfileKey : 'String*(40:40)',
+  Options : 'List(ItemOptionResponse)',
   ScanDateTime : 'DateTime',
   ScanDeviceKey : 'String',
   SoldDateTime : 'DateTime',
@@ -603,13 +615,18 @@ BWL.ModelMeta.GeneralAdmissionTicketItemInfo = {
     Delete : 100,
     Remove : 30
   },
+  Brief : 'String',
   Categories : 'List(ICategory)',
   CustomURI : 'ICustomURI',
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
   Description : 'Text',
   DisplayOrder : 'Int32',
+  EventKey : 'String*(0)',
   EventName : 'String*(0)',
+  Fee : 'Price',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   InventoryKey : 'String*(0)',
   IsTaxable : 'Boolean',
   Items : 'List(IItemInfo)',
@@ -621,6 +638,7 @@ BWL.ModelMeta.GeneralAdmissionTicketItemInfo = {
   NumberTotal : 'Int64',
   OnSaleDateTimeEnd : 'DateTime',
   OnSaleDateTimeStart : 'DateTime',
+  Options : 'List(IItemOptionRequest)',
   ParentItem : 'IItemInfo',
   Policy : 'Text',
   PreviewImages : 'List(IImage:0:0)',
@@ -639,6 +657,23 @@ BWL.ModelMeta.GeneralAdmissionTicketItemInfo = {
   Type : 'String',
   Unlimited : 'Boolean'
 };
+BWL.ModelMeta.GraphMetaObject = {
+  __cache : 0,
+  _perms : 'List(KeyValueInt)',
+  _rels : 'List(DomainObjectRelationship)',
+  Brief : 'String',
+  DateCreated : 'DateTime',
+  DateModified : 'DateTime',
+  Description : 'String',
+  Icon : 'IImage',
+  Image : 'IImage',
+  IsMarkedRemove : 'Boolean',
+  Key : 'String',
+  Name : 'String',
+  SmallImage : 'IImage',
+  StoreKey : 'String',
+  Type : 'String'
+};
 BWL.ModelMeta.Image = {
   __cache : 300,
   __perms : {
@@ -649,6 +684,7 @@ BWL.ModelMeta.Image = {
     Remove : 30
   },
   BaseURL : 'String*(0)',
+  Brief : 'String',
   Copyright : 'ICopyright',
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
@@ -657,10 +693,13 @@ BWL.ModelMeta.Image = {
   Filename : 'String*(40)',
   FileSize : 'Int64',
   HeightPX : 'Int32',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   ImageFile : 'String*(0)',
   Key : 'String',
   MimeInfo : 'MimeInfo*(40:40)',
   Name : 'String',
+  SmallImage : 'IImage:150:150',
   SourceFile : 'String*(40)',
   StoreKey : 'String',
   ThumbFile : 'String*(0)',
@@ -678,9 +717,11 @@ BWL.ModelMeta.InventoryItem = {
   },
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
+  EventKey : 'String',
   EventName : 'String',
   IsLocked : 'Boolean*(0)',
   IsSold : 'Boolean*(0)',
+  ItemInfoFee : 'Price',
   ItemInfoKey : 'String',
   ItemInfoName : 'String',
   ItemInfoPrice : 'Price',
@@ -688,6 +729,7 @@ BWL.ModelMeta.InventoryItem = {
   Key : 'String',
   LockExpiryDateTime : 'DateTime',
   LockingDomainProfileKey : 'String*(40:40)',
+  Options : 'List(ItemOptionResponse)',
   SoldDateTime : 'DateTime',
   SoldToDomainProfileKey : 'String*(40:40)',
   StoreKey : 'String',
@@ -703,13 +745,18 @@ BWL.ModelMeta.ItemInfo = {
     Delete : 100,
     Remove : 30
   },
+  Brief : 'String',
   Categories : 'List(ICategory)',
   CustomURI : 'ICustomURI',
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
   Description : 'Text',
   DisplayOrder : 'Int32',
+  EventKey : 'String*(0)',
   EventName : 'String*(0)',
+  Fee : 'Price',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   InventoryKey : 'String*(0)',
   IsTaxable : 'Boolean',
   Items : 'List(IItemInfo)',
@@ -721,6 +768,7 @@ BWL.ModelMeta.ItemInfo = {
   NumberTotal : 'Int64',
   OnSaleDateTimeEnd : 'DateTime',
   OnSaleDateTimeStart : 'DateTime',
+  Options : 'List(IItemOptionRequest)',
   ParentItem : 'IItemInfo',
   PreviewImages : 'List(IImage:0:0)',
   Price : 'Price',
@@ -737,7 +785,7 @@ BWL.ModelMeta.ItemInfo = {
   Type : 'String',
   Unlimited : 'Boolean'
 };
-BWL.ModelMeta.LastFM = {
+BWL.ModelMeta.ItemOptionRequest = {
   __cache : 300,
   __perms : {
     Create : 20,
@@ -748,11 +796,45 @@ BWL.ModelMeta.LastFM = {
   },
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
+  DisplayOrder : 'Int32',
+  Key : 'String',
+  OptionType : 'String',
+  Price : 'Price',
+  Required : 'Boolean',
+  StoreKey : 'String',
+  Text : 'String',
+  Type : 'String',
+  Value : 'String'
+};
+BWL.ModelMeta.ItemOptionResponse = {
+  __cache : 0,
+  Key : 'String',
+  OptionType : 'String',
+  Price : 'Price',
+  Text : 'String',
+  Type : 'String',
+  Value : 'String'
+};
+BWL.ModelMeta.LastFM = {
+  __cache : 300,
+  __perms : {
+    Create : 20,
+    Read : 0,
+    Update : 30,
+    Delete : 100,
+    Remove : 30
+  },
+  Brief : 'String',
+  DateCreated : 'DateTime',
+  DateModified : 'DateTime',
   Description : 'Text',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   Key : 'String',
   LastFMType : 'LastFMTypeEnum',
   Name : 'String',
   ProviderId : 'String',
+  SmallImage : 'IImage:150:150',
   StoreKey : 'String',
   Type : 'String'
 };
@@ -765,13 +847,17 @@ BWL.ModelMeta.LinkedIn = {
     Delete : 100,
     Remove : 30
   },
+  Brief : 'String',
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
   Description : 'Text',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   Key : 'String',
   LinkedInType : 'LinkedInTypeEnum',
   Name : 'String',
   ProviderId : 'String',
+  SmallImage : 'IImage:150:150',
   StoreKey : 'String',
   Type : 'String'
 };
@@ -784,12 +870,16 @@ BWL.ModelMeta.MySpace = {
     Delete : 100,
     Remove : 30
   },
+  Brief : 'String',
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
   Description : 'Text',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   Key : 'String',
   Name : 'String',
   ProviderId : 'String',
+  SmallImage : 'IImage:150:150',
   StoreKey : 'String',
   Type : 'String'
 };
@@ -825,6 +915,26 @@ BWL.ModelMeta.Order = {
   Transactions : 'List(ITransaction)',
   Type : 'String'
 };
+BWL.ModelMeta.OrderStat = {
+  __cache : 86400,
+  __perms : {
+    Create : 0,
+    Read : 40,
+    Update : 30,
+    Delete : 100,
+    Remove : 30
+  },
+  Currency : 'String',
+  DomainProfileKey : 'String',
+  Fees : 'Price',
+  OrderId : 'Int64',
+  OrderKey : 'String',
+  Shipping : 'Price',
+  StatDateTime : 'DateTime',
+  SubTotal : 'Price',
+  Taxes : 'Price',
+  Total : 'Price'
+};
 BWL.ModelMeta.PaymentProvider = {
   __cache : 300,
   __perms : {
@@ -838,6 +948,9 @@ BWL.ModelMeta.PaymentProvider = {
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
   Key : 'String',
+  MaximumCharge : 'Price',
+  MinimumCharge : 'Price',
+  OnApprovedOrderState : 'OrderStateEnum',
   Policy : 'Text',
   ProviderId : 'String*(40:40)',
   ProviderToken : 'String*(40:40)',
@@ -882,12 +995,15 @@ BWL.ModelMeta.Place = {
     Remove : 30
   },
   Address : 'IAddress',
+  Brief : 'String',
   Contacts : 'List(IContact)',
   CustomURI : 'ICustomURI',
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
   Description : 'Text',
   DisplayOrder : 'Int32',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   Key : 'String',
   LargeImages : 'List(IImage:500:500)',
   Name : 'String',
@@ -925,6 +1041,7 @@ BWL.ModelMeta.PostalCode = {
 BWL.ModelMeta.Price = {
   __cache : 0,
   Currency : 'String',
+  Display : 'String',
   ItemPrice : 'Double',
   Type : 'String'
 };
@@ -966,6 +1083,85 @@ BWL.ModelMeta.RegionSet = {
   StoreKey : 'String',
   Type : 'String'
 };
+BWL.ModelMeta.RegistrationInventoryItem = {
+  __cache : 0,
+  __perms : {
+    Create : 20,
+    Read : 10,
+    Update : 10,
+    Delete : 100,
+    Remove : 30
+  },
+  DateCreated : 'DateTime',
+  DateModified : 'DateTime',
+  EventKey : 'String',
+  EventName : 'String',
+  IsLocked : 'Boolean*(0)',
+  IsSold : 'Boolean*(0)',
+  ItemInfoFee : 'Price',
+  ItemInfoKey : 'String',
+  ItemInfoName : 'String',
+  ItemInfoPrice : 'Price',
+  ItemInfoType : 'String',
+  Key : 'String',
+  LockExpiryDateTime : 'DateTime',
+  LockingDomainProfileKey : 'String*(40:40)',
+  Options : 'List(ItemOptionResponse)',
+  SoldDateTime : 'DateTime',
+  SoldToDomainProfileKey : 'String*(40:40)',
+  StoreKey : 'String',
+  Type : 'String',
+  UIID : 'Int64*(40)'
+};
+BWL.ModelMeta.RegistrationItemInfo = {
+  __cache : 300,
+  __perms : {
+    Create : 20,
+    Read : 0,
+    Update : 30,
+    Delete : 100,
+    Remove : 30
+  },
+  Brief : 'String',
+  Categories : 'List(ICategory)',
+  CustomURI : 'ICustomURI',
+  DateCreated : 'DateTime',
+  DateModified : 'DateTime',
+  Description : 'Text',
+  DisplayOrder : 'Int32',
+  EventKey : 'String*(0)',
+  EventName : 'String*(0)',
+  Fee : 'Price',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
+  InventoryKey : 'String*(0)',
+  IsTaxable : 'Boolean',
+  Items : 'List(IItemInfo)',
+  Key : 'String',
+  LargeImages : 'List(IImage:500:500)',
+  MaxPurchaseQuantity : 'Int32',
+  Name : 'String',
+  NumberAvailable : 'Int64*(0)',
+  NumberTotal : 'Int64',
+  OnSaleDateTimeEnd : 'DateTime',
+  OnSaleDateTimeStart : 'DateTime',
+  Options : 'List(IItemOptionRequest)',
+  ParentItem : 'IItemInfo',
+  PreviewImages : 'List(IImage:0:0)',
+  Price : 'Price',
+  PricingParent : 'IItemInfo',
+  PricingTiers : 'List(IItemInfo)',
+  Public : 'Boolean',
+  RankingScore : 'Int32',
+  SalePrice : 'Price',
+  SalePriority : 'Int32',
+  SearchPriority : 'Int32',
+  SmallImage : 'IImage:150:150',
+  StoreKey : 'String',
+  TaxRules : 'List(ITaxRule)',
+  Type : 'String',
+  Unlimited : 'Boolean'
+};
 BWL.ModelMeta.ScanDevice = {
   __cache : 300,
   __perms : {
@@ -976,11 +1172,15 @@ BWL.ModelMeta.ScanDevice = {
     Remove : 30
   },
   Active : 'Boolean',
+  Brief : 'String',
   Description : 'Text',
   DeviceInfo : 'ScanDeviceInfo*(40:40)',
   Events : 'List(IEvent)*(40:40)',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   LastSyncDateTime : 'DateTime',
-  Name : 'String'
+  Name : 'String',
+  SmallImage : 'IImage:150:150'
 };
 BWL.ModelMeta.ScanEventInfo = {
   __cache : 0,
@@ -1016,10 +1216,13 @@ BWL.ModelMeta.SearchIndex = {
     Delete : 90,
     Remove : 90
   },
+  Brief : 'String',
   Categories : 'String',
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
-  Description : 'String',
+  Description : 'Text',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   IsSalePrice : 'Boolean',
   ItemDateModified : 'DateTime',
   ItemKey : 'String',
@@ -1031,9 +1234,101 @@ BWL.ModelMeta.SearchIndex = {
   SearchPriority : 'Int32',
   SearchTags : 'String',
   SearchText : 'String',
+  SmallImage : 'IImage:150:150',
   StoreKey : 'String',
   Type : 'String',
   URI : 'String'
+};
+BWL.ModelMeta.SponsorshipInventoryItem = {
+  __cache : 0,
+  __perms : {
+    Create : 20,
+    Read : 10,
+    Update : 10,
+    Delete : 100,
+    Remove : 30
+  },
+  DateCreated : 'DateTime',
+  DateModified : 'DateTime',
+  EventKey : 'String',
+  EventName : 'String',
+  IsLocked : 'Boolean*(0)',
+  IsSold : 'Boolean*(0)',
+  ItemInfoFee : 'Price',
+  ItemInfoKey : 'String',
+  ItemInfoName : 'String',
+  ItemInfoPrice : 'Price',
+  ItemInfoType : 'String',
+  Key : 'String',
+  LockExpiryDateTime : 'DateTime',
+  LockingDomainProfileKey : 'String*(40:40)',
+  Options : 'List(ItemOptionResponse)',
+  SoldDateTime : 'DateTime',
+  SoldToDomainProfileKey : 'String*(40:40)',
+  StoreKey : 'String',
+  Type : 'String',
+  UIID : 'Int64*(40)'
+};
+BWL.ModelMeta.SponsorshipItemInfo = {
+  __cache : 300,
+  __perms : {
+    Create : 20,
+    Read : 0,
+    Update : 30,
+    Delete : 100,
+    Remove : 30
+  },
+  Brief : 'String',
+  Categories : 'List(ICategory)',
+  CustomURI : 'ICustomURI',
+  DateCreated : 'DateTime',
+  DateModified : 'DateTime',
+  Description : 'Text',
+  DisplayOrder : 'Int32',
+  EventKey : 'String*(0)',
+  EventName : 'String*(0)',
+  Fee : 'Price',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
+  InventoryKey : 'String*(0)',
+  IsTaxable : 'Boolean',
+  Items : 'List(IItemInfo)',
+  Key : 'String',
+  LargeImages : 'List(IImage:500:500)',
+  MaxPurchaseQuantity : 'Int32',
+  Name : 'String',
+  NumberAvailable : 'Int64*(0)',
+  NumberTotal : 'Int64',
+  OnSaleDateTimeEnd : 'DateTime',
+  OnSaleDateTimeStart : 'DateTime',
+  Options : 'List(IItemOptionRequest)',
+  ParentItem : 'IItemInfo',
+  PreviewImages : 'List(IImage:0:0)',
+  Price : 'Price',
+  PricingParent : 'IItemInfo',
+  PricingTiers : 'List(IItemInfo)',
+  Public : 'Boolean',
+  RankingScore : 'Int32',
+  SalePrice : 'Price',
+  SalePriority : 'Int32',
+  SearchPriority : 'Int32',
+  SmallImage : 'IImage:150:150',
+  StoreKey : 'String',
+  TaxRules : 'List(ITaxRule)',
+  Type : 'String',
+  Unlimited : 'Boolean'
+};
+BWL.ModelMeta.Stat = {
+  __cache : 86400,
+  __perms : {
+    Create : 0,
+    Read : 40,
+    Update : 30,
+    Delete : 100,
+    Remove : 30
+  },
+  DomainProfileKey : 'String',
+  StatDateTime : 'DateTime'
 };
 BWL.ModelMeta.Store = {
   __cache : 300,
@@ -1045,6 +1340,7 @@ BWL.ModelMeta.Store = {
     Remove : 30
   },
   Address : 'IAddress',
+  Brief : 'String',
   Categories : 'List(ICategory)',
   Contacts : 'List(IContact)',
   Currency : 'String',
@@ -1055,6 +1351,8 @@ BWL.ModelMeta.Store = {
   ExternalInfos : 'List(IExternalInfo)',
   HasAccounts : 'Boolean',
   HasWishlist : 'Boolean',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   IsOwner : 'Boolean*(0)',
   Items : 'List(IItemInfo)',
   Key : 'String',
@@ -1062,6 +1360,8 @@ BWL.ModelMeta.Store = {
   LargeImages : 'List(IImage:500:500)',
   Name : 'String',
   PaymentProviders : 'List(IPaymentProvider)',
+  PerItemFee : 'Fee',
+  PerOrderFee : 'Fee',
   Public : 'Boolean',
   SearchPriority : 'Int32',
   SmallBannerImage : 'IImage:520:150',
@@ -1184,10 +1484,12 @@ BWL.ModelMeta.TicketInventoryItem = {
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
   DownloadLink : 'String',
+  EventKey : 'String',
   EventName : 'String',
   Info : 'String',
   IsLocked : 'Boolean*(0)',
   IsSold : 'Boolean*(0)',
+  ItemInfoFee : 'Price',
   ItemInfoKey : 'String',
   ItemInfoName : 'String',
   ItemInfoPrice : 'Price',
@@ -1195,6 +1497,7 @@ BWL.ModelMeta.TicketInventoryItem = {
   Key : 'String',
   LockExpiryDateTime : 'DateTime',
   LockingDomainProfileKey : 'String*(40:40)',
+  Options : 'List(ItemOptionResponse)',
   ScanDateTime : 'DateTime',
   ScanDeviceKey : 'String',
   SoldDateTime : 'DateTime',
@@ -1212,13 +1515,18 @@ BWL.ModelMeta.TicketItemInfo = {
     Delete : 100,
     Remove : 30
   },
+  Brief : 'String',
   Categories : 'List(ICategory)',
   CustomURI : 'ICustomURI',
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
   Description : 'Text',
   DisplayOrder : 'Int32',
+  EventKey : 'String*(0)',
   EventName : 'String*(0)',
+  Fee : 'Price',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   InventoryKey : 'String*(0)',
   IsTaxable : 'Boolean',
   Items : 'List(IItemInfo)',
@@ -1230,6 +1538,7 @@ BWL.ModelMeta.TicketItemInfo = {
   NumberTotal : 'Int64',
   OnSaleDateTimeEnd : 'DateTime',
   OnSaleDateTimeStart : 'DateTime',
+  Options : 'List(IItemOptionRequest)',
   ParentItem : 'IItemInfo',
   Policy : 'Text',
   PreviewImages : 'List(IImage:0:0)',
@@ -1325,14 +1634,33 @@ BWL.ModelMeta.Twitter = {
     Delete : 100,
     Remove : 30
   },
+  Brief : 'String',
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
   Description : 'Text',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   Key : 'String',
   Name : 'String',
   ProviderId : 'String',
+  SmallImage : 'IImage:150:150',
   StoreKey : 'String',
   Type : 'String'
+};
+BWL.ModelMeta.VisitorStat = {
+  __cache : 86400,
+  __perms : {
+    Create : 0,
+    Read : 40,
+    Update : 30,
+    Delete : 100,
+    Remove : 30
+  },
+  DomainProfileKey : 'String',
+  Host : 'String',
+  IP : 'String',
+  StatDateTime : 'DateTime',
+  UserAgent : 'String'
 };
 BWL.ModelMeta.WebLink = {
   __cache : 300,
@@ -1343,11 +1671,15 @@ BWL.ModelMeta.WebLink = {
     Delete : 100,
     Remove : 30
   },
+  Brief : 'String',
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
   Description : 'Text',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   Key : 'String',
   Name : 'String',
+  SmallImage : 'IImage:150:150',
   StoreKey : 'String',
   Type : 'String',
   URL : 'String'
@@ -1378,12 +1710,16 @@ BWL.ModelMeta.YouTube = {
     Delete : 100,
     Remove : 30
   },
+  Brief : 'String',
   DateCreated : 'DateTime',
   DateModified : 'DateTime',
   Description : 'Text',
+  Icon : 'IImage:128:128',
+  Image : 'IImage:320:320',
   Key : 'String',
   Name : 'String',
   ProviderId : 'String',
+  SmallImage : 'IImage:150:150',
   StoreKey : 'String',
   Type : 'String'
 };

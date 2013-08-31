@@ -66,7 +66,9 @@ azureTicketsApp
                               var hideProps = [
                               // hide these properties
                               'URI', 'Key', 'Type', 'Currency', '$$hashKey' ]
-                                  .concat($attrs.atHideProps.split(','));
+                                  .concat(angular.isDefined($attrs.atHideProps) ? $attrs.atHideProps
+                                      .split(',')
+                                      : []);
 
                               if ((angular.isNumber(prop) || angular
                                   .isString(prop))

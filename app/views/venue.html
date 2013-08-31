@@ -13,7 +13,7 @@
 			<button class="btn btn-info" ng-click="create()">{{
 				'Common.Text_CreateVenue' | t }}</button>
 		</div>
-        <div class="clearfix"></div>
+		<div class="clearfix"></div>
 
 		<div id="formVenue" class="modal form hide fade">
 			<div class="modal-header">
@@ -84,7 +84,8 @@
 							<!-- venue details -->
 							<atmodel
 								ui-if="Place && geo.getLoadedCountries() != null && geo.getLoadedRegions() != null"
-								ng-model="Place" extra1="geo"></atmodel>
+								ng-model="Place" extra1="geo"
+								at-hide-props="DateCreated,DateModified,StoreKey"></atmodel>
 						</dd>
 						<dd class="pull-left">
 							<a ng-show="wizard.currentStep>1"
@@ -114,6 +115,6 @@
 			</div>
 			<div class="modal-footer"></div>
 		</div>
-        <div ng-include src="'views/venueList.html'"></div>
+		<div ng-include src="'views/venueList.html'"></div>
 	</div>
 </div>
