@@ -1,18 +1,16 @@
 <!-- Sidebar -->
 <div class="sidebar">
 	<div class="sidebar-dropdown">
-		<a href="#">Navigation</a>
+		<a href="#">{{ 'Common.Text_Navigation' | t }}</a>
 	</div>
-
 	<div class="sidebar-inner">
-
-
 		<!-- Search form -->
 		<div class="sidebar-widget">
 			<form class="form-inline">
 				<div class="input-append row-fluid">
 					<input type="text" class="span8" placeholder="Search">
-					<button type="submit" class="btn btn-info">Search</button>
+					<button type="submit" class="btn btn-info">{{
+						'Common.Text_Search' | t }}</button>
 				</div>
 			</form>
 		</div>
@@ -24,8 +22,7 @@
 			<!-- Use the class nred, ngreen, nblue, nlightblue, nviolet or norange to add background color. You need to use this in <li> tag. -->
 
 			<li class="nred"><a href="#/"><i class="icon-desktop"></i>
-					Dashboard</a></li>
-
+					{{ 'Common.Text_DashboardMenu_Dashboard' | t }}</a></li>
 			<!-- Menu with sub menu -->
 			<li class="has_submenu nlightblue" ui-route="#/store(?:\/[\w\d\-]+)?"
 				ng-class="{active: $uiRoute}"><a href="#"> <!-- Menu name with icon -->
@@ -34,8 +31,14 @@
 			</a>
 
 				<ul>
-					<li ui-if="Store && !Store.IsOwner"><a href="#/store"
-						ng-click="createStore()">{{ 'Common.Text_CreateStore' | t }}</a></li>
+					<li
+						ui-if="Store && DomainProfile && DomainProfile.Key && auth.isAdministrator()"><a
+						href="#/store" ng-click="createStore()">{{
+							'Common.Text_CreateStore' | t }}</a></li>
+					<li
+						ui-if="Store && DomainProfile && DomainProfile.Key && (auth.isAuthenticated() || auth.isMember())"><a
+						href="#/storeRequest" ng-click="requestAccess()">{{
+							'Common.Text_RequestAccess' | t }}</a></li>
 					<li ui-if="Store && !Store.IsOwner && stores && stores.length > 0"
 						class="divider"></li>
 					<li ng-repeat="s in stores"><a ui-if="!s.IsOwner"
@@ -58,60 +61,14 @@
 			<li ui-if="Store && Store.Key != null && Store.IsOwner || false"
 				ui-route="#/scanners" ng-class="{active: $uiRoute}"><a
 				href="#/scanners">{{ 'Common.Text_ScannerMenu_Scanner' | t }}</a></li>
-
-			<!--<li class="has_submenu nviolet">-->
-			<!--<a href="#">-->
-			<!--<i class="icon-file-alt"></i> Pages #1-->
-			<!--<span class="pull-right"><i class="icon-angle-right"></i></span>-->
-			<!--</a>-->
-
-			<!--<ul>-->
-			<!--<li><a href="calendar.html">Calendar</a></li>-->
-			<!--<li><a href="post.html">Make Post</a></li>-->
-			<!--<li><a href="login.html">Login</a></li>-->
-			<!--<li><a href="register.html">Register</a></li>-->
-			<!--<li><a href="statement.html">Statement</a></li>-->
-			<!--<li><a href="error-log.html">Error Log</a></li>-->
-			<!--<li><a href="support.html">Support</a></li>-->
-			<!--</ul>-->
-			<!--</li>-->
-
-			<!--<li class="has_submenu nblue">-->
-			<!--<a href="#">-->
-			<!--<i class="icon-file-alt"></i> Pages #2-->
-			<!--<span class="pull-right"><i class="icon-angle-right"></i></span>-->
-			<!--</a>-->
-
-			<!--<ul>-->
-			<!--<li><a href="error.html">Error</a></li>-->
-			<!--<li><a href="gallery.html">Gallery</a></li>-->
-			<!--<li><a href="grid.html">Grid</a></li>-->
-			<!--<li><a href="invoice.html">Invoice</a></li>-->
-			<!--<li><a href="media.html">Media</a></li>-->
-			<!--<li><a href="profile.html">Profile</a></li>-->
-			<!--</ul>-->
-			<!--</li>-->
-
-			<!--<li class="nred"><a href="forms.html"><i class="icon-list"></i> Forms</a></li>-->
-
-			<!--<li class="nlightblue"><a href="tables.html"><i class="icon-table"></i> Tables</a></li>-->
-
-		</ul>
-
-
-		<!-- Date -->
-
-		<div class="sidebar-widget">
-			<div id="todaydate"></div>
-		</div>
-
-
+			<!-- Date -->
+			<div class="sidebar-widget">
+				<div id="todaydate"></div>
+			</div>
 	</div>
-
 </div>
-<script>
-  $(document).ready(function() {
-
+<script type="text/javascript">
+  $(function() {
     $(".has_submenu > a").click(function(e) {
       e.preventDefault();
       var menu_li = $(this).parent("li");
@@ -128,9 +85,6 @@
       }
     });
 
-  });
-
-  $(document).ready(function() {
     $(".sidebar-dropdown a").on('click', function(e) {
       e.preventDefault();
 
@@ -149,7 +103,6 @@
         $(".sidebar .sidebar-inner").slideUp(350);
       }
     });
-
-  });
+  })
 </script>
 <!-- Sidebar ends -->

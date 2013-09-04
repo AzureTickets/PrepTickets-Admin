@@ -14,10 +14,12 @@ function storeController($scope, $cookieStore, $location, $timeout,
       $scope.auth = authService, $scope.model = modelService,
       $scope.event = eventService, $scope.place = placeService,
       $scope.store = storeService, $scope.order = orderService,
-      $scope.ticket = ticketService, $scope.cart = cartService;
+      $scope.ticket = ticketService, $scope.cart = cartService,
+      $scope.enums = BWL.ModelEnum;
 
   // initialize wizard for Store
   $scope.wizard = $scope.form.getWizard($scope);
+  $scope.wizardPreRegister = $scope.form.getWizard($scope);
 
   $scope.$on('initStore', function(ev, key) {
     if (key === null) {
@@ -121,7 +123,33 @@ function storeController($scope, $cookieStore, $location, $timeout,
         jQuery('#serviceAgreement').modal('show');
       })
     }, 500);
+  }
 
+  $scope.requestAccess = function() {
+    $scope.wizardPreRegister.reset(0);
+
+    // initialize props
+    $scope.StorePreRegister = $scope.model.getInstanceOf('StorePreRegister',
+        null, null, true);
+
+    // show agreement
+    $timeout(function() {
+      $scope.$apply(function() {
+        jQuery('#serviceAgreement').modal('show');
+      })
+    }, 500);
+  }
+
+  $scope.searchStorePreRegister = function() {
+    $scope.model.find({
+      Name : $scope.StorePreRegister.Name,
+      City : $scope.StorePreRegister.City,
+      Type : $scope.StorePreRegister.Type,
+    }, '').then(function(ret) {
+      debugger
+    }, function(err) {
+      $scope.error.log(err)
+    });
   }
 
   $scope.initStoreURI = function() {

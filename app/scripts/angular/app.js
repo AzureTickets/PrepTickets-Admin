@@ -1,8 +1,6 @@
 'use strict';
 
-var azureTicketsApp = angular.module('azureTicketsApp', [
-    'ui', 'ngCookies'
-]);
+var azureTicketsApp = angular.module('azureTicketsApp', [ 'ui', 'ngCookies' ]);
 
 /**
  * Apply additional logic on any route request. Order is important.
@@ -10,14 +8,12 @@ var azureTicketsApp = angular.module('azureTicketsApp', [
  * @property {array} routeFilters
  */
 var routeFilters = {
-  rememberUrl : [
-      '$location', '$cookieStore', 'configService',
+  rememberUrl : [ '$location', '$cookieStore', 'configService',
       function($location, $cookieStore, configService) {
         if ($location.$$path !== '/auth/login') {
           $cookieStore.put(configService.cookies.lastPath, $location.$$path);
         }
-      }
-  ],
+      } ],
   redirectLogin : [
       '$rootScope',
       '$location',
@@ -34,8 +30,7 @@ var routeFilters = {
             && !isStoreVisitor) {
           $location.path('/auth/login');
         }
-      }
-  ]
+      } ]
 }
 
 // initialize routes
@@ -85,8 +80,7 @@ azureTicketsApp.config([
                             })
                           }, 250)
                         });
-                  }
-              ]
+                  } ]
             }
           }).when('/front', {
         templateUrl : 'views/front.html',
@@ -96,6 +90,9 @@ azureTicketsApp.config([
         redirectTo : '/'
       }).when('/store', {
         templateUrl : 'views/store.html',
+        resolve : routeFilters
+      }).when('/storeRequest', {
+        templateUrl : 'views/storePreRegister.html',
         resolve : routeFilters
       }).when('/store/:storeURI', {
         templateUrl : 'views/storeVisitor.html',
@@ -121,7 +118,7 @@ azureTicketsApp.config([
         templateUrl : 'views/ticket.html',
         controller : ticketController,
         resolve : routeFilters
-      }).when('/scanners', {      ///:eventKey
+      }).when('/scanners', { // /:eventKey
         templateUrl : 'views/scanners.html',
         controller : scannerController,
         resolve : routeFilters
@@ -136,5 +133,4 @@ azureTicketsApp.config([
       }).when('/dashboard', {
         redirectTo : '/'
       });
-    }
-]);
+    } ]);

@@ -8,9 +8,7 @@ azureTicketsApp.factory('formService',
         function($q, $rootScope, modelService, configService) {
           var _scope = null;
           var _wizard = null;
-          var _fieldTypes = [
-              'input', 'textarea', 'select'
-          ];
+          var _fieldTypes = [ 'input', 'textarea', 'select' ];
 
           var _validates = function(e) {
             var _renderError = function(n, err) {
@@ -91,9 +89,11 @@ azureTicketsApp.factory('formService',
              *          formName
              * @param {boolean}
              *          finish Finishes the wizard (no more steps).
+             * @param {function}
+             *          Execute this callback on step follow.
              * @returns
              */
-            next : function(formName, finish) {
+            next : function(formName, finish, cbk) {
               this.finished = false;
               this.saved = false;
               var errors = [];
@@ -110,6 +110,10 @@ azureTicketsApp.factory('formService',
                 if (angular.isDefined(finish) && finish) {
                   this.finished = true;
                 }
+
+                if (angular.isFunction(cbk)) {
+                  cbk();
+                }
               }
             },
             /**
@@ -122,5 +126,4 @@ azureTicketsApp.factory('formService',
               this.finished = false, this.saved = false, checkStep = {};
             }
           }
-        }
-    ]);
+        } ]);

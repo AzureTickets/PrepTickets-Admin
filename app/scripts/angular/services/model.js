@@ -1,6 +1,8 @@
 // model service
 azureTicketsApp.factory('modelService', [
-    '$q', function($q) {
+    '$q',
+    '$rootScope',
+    function($q, $rootScope) {
       return {
         /**
          * Returns a new instance of the specified model.
@@ -30,8 +32,23 @@ azureTicketsApp.factory('modelService', [
 
           return o;
         },
-        find : function() {
+        find : function(model, page) {
           var def = $q.defer();
+          var type = model.Type || null;
+          delete model.Type;
+          
+          this.nonNull(model);
+
+          BWL.Services.ModelService.FindAsync('BWL', type, page, model,
+              function(ret) {
+                $rootScope.$apply(function() {
+                  def.resolve(ret)
+                })
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.resolve(err)
+                })
+              });
 
           return def.promise;
         },
@@ -43,5 +60,4 @@ azureTicketsApp.factory('modelService', [
           }
         }
       }
-    }
-]);
+    } ]);

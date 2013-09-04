@@ -24,6 +24,7 @@ var CommonResources = {
   Text_To : "To",
   Text_From : "From",
   Text_Print : "Print",
+  Text_Navigation : "Navigation",
   Text_Showmap : "show map",
   Text_Confirmation : 'Confirmation',
   Text_GetRoute : "Get Route",
