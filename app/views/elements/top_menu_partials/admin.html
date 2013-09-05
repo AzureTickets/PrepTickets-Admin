@@ -1,9 +1,4 @@
-<!--<li><a href="#"><i class="icon-user"></i> Profile</a></li>-->
-<!--<li><a href="#"><i class="icon-cogs"></i> Settings</a></li>-->
-<li><a href="#/auth/logoff"
-       ng-show="DomainProfile && DomainProfile.Key || false">{{
-    'Login.labelLogOff' | t }}</a> <a href="#/auth/login"
-                                      ng-hide="DomainProfile && DomainProfile.Key || false" class="btn">{{
-    'Login.labelLogin' | t }}</a></li>
-
-
+<li><a href="#/auth/logoff" ng-show="auth.isDomainProfileReady()">{{
+		'Login.labelLogOff' | t }}</a> <a href="#/auth/login"
+	ng-hide="auth.isDomainProfileReady()" class="btn">{{
+		'Login.labelLogin' | t }}</a></li>

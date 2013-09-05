@@ -67,7 +67,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
 
           // redirect to login if no profile, but allow store visitors
           if (!angular.isDefined($routeParams.storeURI)
-              && $scope.DomainProfile.Key === null) {
+              && !$scope.auth.isDomainProfileReady()) {
             $location.path('/auth/login');
             return;
           }
@@ -81,7 +81,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
                 }, function(err) {
                   $scope.error.log(err)
                 });
-          } else if ($scope.auth.hasStoreAccess()) {
+          } else {
             // check if user has access to a store and populate list if so
             $scope.store.listStoresAsync(1).then(
                 function() {
@@ -101,8 +101,6 @@ function storeController($scope, $cookieStore, $location, $timeout,
                 }, function(err) {
                   $scope.error.log(err)
                 });
-          } else if ($scope.auth.isLogged()) {
-            $scope.createStore();
           }
         }, function(err) {
           $scope.error.log(err)
@@ -123,11 +121,13 @@ function storeController($scope, $cookieStore, $location, $timeout,
     $scope.initStoreURI();
 
     // show agreement
-    $timeout(function() {
-      $scope.$apply(function() {
-        jQuery('#serviceAgreement').modal('show');
-      })
-    }, 500);
+    if (!$scope.auth.isAdministrator()) {
+      $timeout(function() {
+        $scope.$apply(function() {
+          jQuery('#serviceAgreement').modal('show');
+        })
+      }, 500);
+    }
   }
 
   $scope.requestAccess = function() {
@@ -302,16 +302,6 @@ function storeController($scope, $cookieStore, $location, $timeout,
                 $scope.error.log(err)
               });
     }
-  }
-
-  $scope.upgradeProfile = function() {
-    $scope.auth.upgradeProfile().then(function() {
-      return $scope.auth.authenticate($scope);
-    }).then(function() {
-      $scope.wizard.reset();
-    }, function(err) {
-      $scope.error.log(err)
-    });
   }
 
   $scope.loadCurrencies = function() {

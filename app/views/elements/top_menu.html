@@ -1,57 +1,54 @@
 <div class="navbar navbar-fixed-top navbar-inverse">
-    <div class="navbar-inner">
-        <div class="container">
-            <!-- Menu button for smallar screens -->
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a>
-            <!-- Site name for smallar screens -->
-            <a href="index.html" class="brand">revvly <span class="bold">Admin</span></a>
+	<div class="navbar-inner">
+		<div class="container">
+			<!-- Menu button for smallar screens -->
+			<a class="btn btn-navbar" data-toggle="collapse"
+				data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+				class="icon-bar"></span> <span class="icon-bar"></span>
+			</a>
+			<!-- Site name for smallar screens -->
+			<a href="index.html" class="brand">revvly <span class="bold">Admin</span></a>
 
-            <!-- Navigation starts -->
-            <div class="nav-collapse collapse">
-                <!-- Links -->
-                <ul class="nav pull-right">
-                    <li class="dropdown pull-right">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <img src="assets/img/user.jpg" alt="" class="nav-user-pic"/> Admin <b class="caret"></b>
-                        </a>
-                        <!-- Dropdown menu -->
-                        <ul class="dropdown-menu" ng-include src="'views/elements/top_menu_partials/admin.html'"></ul>
-                    </li>
-                </ul>
+			<!-- Navigation starts -->
+			<div ui-if="auth.isDomainProfileReady() && !auth.isPublic()"
+				class="nav-collapse collapse">
+				<!-- Links -->
+				<ul class="nav pull-right">
+					<li class="dropdown pull-right"><a data-toggle="dropdown"
+						class="dropdown-toggle" href="#"> <img
+							src="assets/img/user.jpg" alt="" class="nav-user-pic" /> Admin <b
+							class="caret"></b>
+					</a> <!-- Dropdown menu -->
+						<ul class="dropdown-menu" ng-include
+							src="'views/elements/top_menu_partials/admin.html'"></ul></li>
+				</ul>
+				<!-- Notifications -->
+				<ul class="nav pull-right">
+					<!-- Comment button with number of latest comments count -->
+					<li class="dropdown dropdown-big"><a class="dropdown-toggle"
+						href="#" data-toggle="dropdown"> <i class="icon-comments"></i>
+							Orders <span class="badge badge-info">6</span>
+					</a>
+						<ul class="dropdown-menu" ng-include
+							src="'views/elements/top_menu_partials/orders.html'"></ul></li>
 
-                <!-- Notifications -->
-                <ul class="nav pull-right">
+					<!-- Message button with number of latest messages count-->
+					<li class="dropdown dropdown-big"><a class="dropdown-toggle"
+						href="#" data-toggle="dropdown"> <i class="icon-envelope-alt"></i>
+							Inbox <span class="badge badge-important">6</span>
+					</a>
+						<ul class="dropdown-menu" ng-include
+							src="'views/elements/top_menu_partials/inbox.html'"></ul></li>
 
-                    <!-- Comment button with number of latest comments count -->
-                    <li class="dropdown dropdown-big">
-                        <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-                            <i class="icon-comments"></i> Orders <span class="badge badge-info">6</span>
-                        </a>
-                        <ul class="dropdown-menu" ng-include src="'views/elements/top_menu_partials/orders.html'"></ul>
-                    </li>
-
-                    <!-- Message button with number of latest messages count-->
-                    <li class="dropdown dropdown-big">
-                        <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-                            <i class="icon-envelope-alt"></i> Inbox <span class="badge badge-important">6</span>
-                        </a>
-                        <ul class="dropdown-menu" ng-include src="'views/elements/top_menu_partials/inbox.html'"></ul>
-                    </li>
-
-                    <!-- Members button with number of latest members count -->
-                    <li class="dropdown dropdown-big">
-                        <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-                            <i class="icon-user"></i> Users <span class="badge badge-success">6</span>
-                        </a>
-                        <ul class="dropdown-menu" ng-include src="'views/elements/top_menu_partials/users.html'"></ul>
-                    </li>
-                </ul>
-            </div>
-
-        </div>
-    </div>
+					<!-- Members button with number of latest members count -->
+					<li class="dropdown dropdown-big"><a class="dropdown-toggle"
+						href="#" data-toggle="dropdown"> <i class="icon-user"></i>
+							Users <span class="badge badge-success">6</span>
+					</a>
+						<ul class="dropdown-menu" ng-include
+							src="'views/elements/top_menu_partials/users.html'"></ul></li>
+				</ul>
+			</div>
+		</div>
+	</div>
 </div>

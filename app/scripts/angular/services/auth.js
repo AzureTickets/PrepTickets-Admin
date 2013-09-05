@@ -223,5 +223,4 @@ azureTicketsApp
                   return l !== null && l;
                 }
               }
-            }
-        ]);
+            } ]);

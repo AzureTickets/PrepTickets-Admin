@@ -1,6 +1,5 @@
 <div class="atPanel" ng-cloak>
 	<!-- top menu -->
-	<!--<div ng-include src="'views/elements/topMenu.html'"></div>-->
 	<div ng-include src="'views/elements/error.html'"></div>
 	<div ui-if="DomainProfile.Key && wizard.currentStep > 0 || false"
 		ng-include src="'views/elements/store/bcSettings.html'"></div>
@@ -32,7 +31,8 @@
 				'Common.Text_WizardComplete' | t }}
 			</div>
 		</span>
-		<div id="serviceAgreement" class="modal hide fade">
+		<div ui-if="!auth.isAdministrator()" id="serviceAgreement"
+			class="modal hide fade">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
@@ -46,8 +46,8 @@
 			<div class="modal-footer">
 				<a href="#" data-dismiss="modal" class="btn">{{
 					'Common.Text_Cancel' | t }}</a> <a href="#" class="btn btn-info"
-					data-dismiss="modal" ng-click="upgradeProfile()">{{
-					'Common.Text_IAccept' | t }}</a>
+					data-dismiss="modal" ng-controller="adminController"
+					ng-click="upgradeProfile()">{{ 'Common.Text_IAccept' | t }}</a>
 			</div>
 		</div>
 		<ng-form ui-if="Store && Store.isNew || Store && Store.IsOwner"
