@@ -36,7 +36,7 @@ azureTicketsApp.factory('modelService', [
           var def = $q.defer();
           var type = model.Type || null;
           delete model.Type;
-          
+
           this.nonNull(model);
 
           BWL.Services.ModelService.FindAsync('BWL', type, page, model,
@@ -46,7 +46,7 @@ azureTicketsApp.factory('modelService', [
                 })
               }, function(err) {
                 $rootScope.$apply(function() {
-                  def.resolve(err)
+                  def.reject(err)
                 })
               });
 

@@ -5,6 +5,7 @@
   LabelZipCodeHelp : 'The zip code for the administrator',
   LabelAddressType : 'Address Type',
   LabelContinent : 'Continent',
+  LabelCounty : 'County',
   LabelCountry : 'Country',
   LabelCity : 'City',
   LabelProvince : 'Province',

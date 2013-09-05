@@ -1,7 +1,8 @@
 function storeController($scope, $cookieStore, $location, $timeout,
     $routeParams, configService, authService, permService, storeService,
     modelService, errorService, geoService, formService, objectService,
-    placeService, orderService, eventService, ticketService, cartService) {
+    placeService, orderService, eventService, ticketService, cartService,
+    accountService) {
   /**
    * The following vars are shared across controllers and accessible via $scope
    */
@@ -15,7 +16,11 @@ function storeController($scope, $cookieStore, $location, $timeout,
       $scope.event = eventService, $scope.place = placeService,
       $scope.store = storeService, $scope.order = orderService,
       $scope.ticket = ticketService, $scope.cart = cartService,
-      $scope.enums = BWL.ModelEnum;
+      $scope.account = accountService, $scope.enums = BWL.ModelEnum;
+
+  // this is used to contain object selection made from child scopes created by
+  // ng-include
+  $scope.selection = {};
 
   // initialize wizard for Store
   $scope.wizard = $scope.form.getWizard($scope);
@@ -131,6 +136,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
     // initialize props
     $scope.StorePreRegister = $scope.model.getInstanceOf('StorePreRegister',
         null, null, true);
+    $scope.selection.StorePreRegisterKey = null;
 
     // show agreement
     $timeout(function() {
@@ -146,10 +152,33 @@ function storeController($scope, $cookieStore, $location, $timeout,
       City : $scope.StorePreRegister.City,
       Type : $scope.StorePreRegister.Type,
     }, '').then(function(ret) {
-      debugger
+      if (angular.isArray(ret)) {
+        $scope.storePreRegisters = ret;
+      }
     }, function(err) {
       $scope.error.log(err)
     });
+  }
+
+  $scope.submitRequest = function() {
+    if ($scope.wizardPreRegister.finished) {
+      $scope.wizardPreRegister.saved = false;
+
+      // send request
+      $scope.account.accessRequest($scope.StorePreRegister.Type,
+          $scope.selection.StorePreRegisterKey,
+          $scope.enums.ModelAccessTypeEnum.FullAccess).then(function(ret) {
+        if (ret) {
+          $scope.wizardPreRegister.checkStep.requested = true;
+          $scope.wizardPreRegister.saved = true;
+        }
+      }, function(err) {
+        $scope.wizardPreRegister.checkStep.requested = false;
+        $scope.wizardPreRegister.saved = false;
+
+        $scope.error.log(err)
+      })
+    }
   }
 
   $scope.initStoreURI = function() {
@@ -495,4 +524,4 @@ storeController.$inject = [ '$scope', '$cookieStore', '$location', '$timeout',
     '$routeParams', 'configService', 'authService', 'permService',
     'storeService', 'modelService', 'errorService', 'geoService',
     'formService', 'objectService', 'placeService', 'orderService',
-    'eventService', 'ticketService', 'cartService' ];
+    'eventService', 'ticketService', 'cartService', 'accountService' ];
