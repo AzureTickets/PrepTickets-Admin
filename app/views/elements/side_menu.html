@@ -19,28 +19,20 @@
 		<!--- Sidebar navigation -->
 		<!-- If the main navigation has sub navigation, then add the class "has_submenu" to "li" of main navigation. -->
 		<ul class="navi">
-
 			<!-- Use the class nred, ngreen, nblue, nlightblue, nviolet or norange to add background color. You need to use this in <li> tag. -->
-
-			<li ui-if="auth.isDomainProfileReady() && !auth.isPublic()"
-				class="nred"><a href="#/"><i class="icon-desktop"></i> {{
-					'Common.Text_DashboardMenu_Dashboard' | t }}</a></li>
+			<li class="nred"><a href="#/"><i class="icon-desktop"></i>
+					{{ 'Common.Text_DashboardMenu_Dashboard' | t }}</a></li>
 			<!-- Menu with sub menu -->
-			<li ui-if="auth.isDomainProfileReady() && !auth.isPublic()"
-				class="has_submenu nlightblue" ui-route="#/store(?:\/[\w\d\-]+)?"
+			<li class="has_submenu nlightblue" ui-route="#/store(?:\/[\w\d\-]+)?"
 				ng-class="{active: $uiRoute}"><a href="#"> <!-- Menu name with icon -->
 					<i class="icon-th"></i> {{ 'Common.Text_Store' | t }} <!-- Icon for dropdown -->
 					<span class="pull-right"><i class="icon-angle-right"></i></span>
 			</a>
-
 				<ul>
-					<li
-						ui-if="Store && DomainProfile && DomainProfile.Key && auth.isAdministrator()"><a
+					<li ui-if="auth.isDomainProfileReady() && auth.isAdministrator()"><a
 						href="#/store" ng-click="createStore()">{{
 							'Common.Text_CreateStore' | t }}</a></li>
-					<li
-						ui-if="DomainProfile && DomainProfile.Key && !auth.isAdministrator() && auth.isAuthenticated()"><a
-						href="#/storeRequest" ng-click="requestAccess()">{{
+					<li><a href="#/storeRequest" ng-click="requestAccess()">{{
 							'Common.Text_RequestAccess' | t }}</a></li>
 					<li ui-if="stores && stores.length > 0" class="divider"></li>
 					<li ng-repeat="s in stores"><a ui-if="s.IsOwner"
@@ -62,10 +54,11 @@
 			<li ui-if="Store && Store.Key != null && Store.IsOwner || false"
 				ui-route="#/scanners" ng-class="{active: $uiRoute}"><a
 				href="#/scanners">{{ 'Common.Text_ScannerMenu_Scanner' | t }}</a></li>
-			<!-- Date -->
-			<div class="sidebar-widget">
-				<div id="todaydate"></div>
-			</div>
+		</ul>
+		<!-- Date -->
+		<div class="sidebar-widget">
+			<div id="todaydate"></div>
+		</div>
 	</div>
 </div>
 <script type="text/javascript">

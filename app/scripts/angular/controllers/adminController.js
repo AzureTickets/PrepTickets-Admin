@@ -65,18 +65,6 @@ function adminController($scope, $location, $cookieStore) {
     }
   }
 
-  $scope.upgradeProfile = function() {
-    if ($scope.auth.isAuthenticated()) {
-      $scope.auth.upgradeProfile().then(function() {
-        return $scope.auth.authenticate($scope);
-      }).then(function() {
-        $scope.wizard.reset();
-      }, function(err) {
-        $scope.error.log(err)
-      });
-    }
-  }
-
   $scope.validatePasswords = function() {
     $scope.passwdOk = $scope.RegisterAccountProfile.Password === $scope.RegisterAccountProfile.ConfirmPassword;
   }

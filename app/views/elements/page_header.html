@@ -1,5 +1,6 @@
 <!-- Page heading -->
-<div class="page-head">
+<div ui-if="auth.isDomainProfileReady() && !auth.isPublic()"
+	class="page-head">
 	<!-- Page heading -->
 	<h2 class="pull-left">
 		<span ui-if="Store && Store.Name || false"> {{Store.Name}}</span>
@@ -8,7 +9,8 @@
 	</h2>
 	<!-- Breadcrumb -->
 	<div class="bread-crumb pull-right">
-		<a href="#/"><i class="icon-home"></i> Admin</a>
+		<a href="#/"><i class="icon-home"></i>{{ 'Common.Text_Admin' | t
+			}}</a>
 	</div>
 	<div class="clearfix"></div>
 </div>

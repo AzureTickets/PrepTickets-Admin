@@ -2,10 +2,10 @@
 	<!-- top menu -->
 	<div ng-include src="'views/elements/error.html'"></div>
 	<div
-		ui-if="DomainProfile.Key && wizardPreRegister.currentStep > 0 || false"
+		ui-if="auth.isDomainProfileReady() && wizardPreRegister.currentStep > 0 || false"
 		ng-include src="'views/elements/store/bcPreRegister.html'"></div>
 	<!-- store pre register -->
-	<div ui-if="DomainProfile && DomainProfile.Key" class="row-fluid">
+	<div ui-if="auth.isDomainProfileReady()" class="row-fluid">
 		<span>
 			<p ng-show="wizardPreRegister.currentStep>
 			0" class="lead">{{
@@ -36,14 +36,14 @@
 			<div class="modal-footer">
 				<a href="#" data-dismiss="modal" class="btn">{{
 					'Common.Text_Cancel' | t }}</a> <a href="#" class="btn btn-info"
-					data-dismiss="modal" ng-controller="adminController">{{
+					data-dismiss="modal" ng-click="upgradeProfile()">{{
 					'Common.Text_IAccept' | t }}</a>
 			</div>
 		</div>
 		<ng-form name="atStorePreRegister" ng-submit="submitRequest()">
 		<form ng-show="wizardPreRegister.currentStep == 1"
 			name="atStorePreRegister1"
-			ng-submit="URIAvailable && wizardPreRegister.next('atStorePreRegister1', false, searchStorePreRegister) || false">
+			ng-submit="wizardPreRegister.next('atStorePreRegister1', false, searchStorePreRegister) || false">
 			<dl class="clearfix">
 				<dd>
 					<atfield at-required class="input-xlarge"

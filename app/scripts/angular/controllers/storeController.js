@@ -60,6 +60,16 @@ function storeController($scope, $cookieStore, $location, $timeout,
     $('#storeInfo').modal('hide')
   }
 
+  $scope.upgradeProfile = function() {
+    $scope.auth.upgradeProfile().then(function() {
+      return $scope.auth.authenticate($scope);
+    }).then(function() {
+      $scope.wizard.reset();
+    }, function(err) {
+      $scope.error.log(err)
+    });
+  }
+
   $scope.init = function() {
     $scope.auth.authenticate($scope).then(
         function() {
@@ -81,7 +91,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
                 }, function(err) {
                   $scope.error.log(err)
                 });
-          } else {
+          } else if ($scope.auth.hasStoreAccess()) {
             // check if user has access to a store and populate list if so
             $scope.store.listStoresAsync(1).then(
                 function() {
@@ -91,7 +101,8 @@ function storeController($scope, $cookieStore, $location, $timeout,
                       || $scope.stores.length === 0) {
                     // if user has been upgraded but have not yet created a
                     // store
-                    $scope.createStore();
+                    $location.path('/storeRequest');
+                    $scope.requestAccess();
                   } else {
                     var storeKey = $cookieStore
                         .get($scope.config.cookies.storeKey)
@@ -101,6 +112,10 @@ function storeController($scope, $cookieStore, $location, $timeout,
                 }, function(err) {
                   $scope.error.log(err)
                 });
+          } else if ($scope.auth.isLogged()) {
+            // let's upgrade user by redirecting to storeRequest page
+            $location.path('/storeRequest');
+            $scope.requestAccess();
           }
         }, function(err) {
           $scope.error.log(err)
