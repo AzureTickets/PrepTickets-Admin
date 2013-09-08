@@ -290,14 +290,11 @@ function storeController($scope, $cookieStore, $location, $timeout,
                 $scope.initStoreURI();
 
                 // init venues, events
-                if ($scope.venues.length === 0
-                    && $scope.auth.isDomainProfileReady()
-                    && $scope.Store.IsOwner) {
+                if ($scope.auth.isDomainProfileReady() && $scope.Store.IsOwner) {
                   $scope.place.loadPlaces($scope);
                 }
 
-                if ($scope.events.length === 0
-                    && $scope.auth.isDomainProfileReady()) {
+                if ($scope.auth.isDomainProfileReady()) {
                   // always load whole set of events for owners
                   if ($scope.Store.IsOwner) {
                     $scope.event.loadEvents($scope);
