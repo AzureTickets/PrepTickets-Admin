@@ -4,12 +4,12 @@
 		ng-click="wizard.currentStep = 1;wizard.finished = false">{{
 			'Common.Text_CreateStore_Step1' | t }}</a> <span
 		ui-if="Store && Store.Key || wizard.checkStep.1" class="divider">/</span></li>
-	<li ui-if="Store && Store.Key || wizard.checkStep.1"
+	<li ui-if="Store && Store.Key && !Store.isNew || wizard.checkStep.1"
 		ng-class="{active: wizard.currentStep == 2}"><a href="#/store"
 		ng-click="wizard.currentStep = 2;wizard.finished = false">{{
 			'Common.Text_CreateStore_Step2' | t }}</a> <span
 		ui-if="Store && Store.Key || wizard.checkStep.2" class="divider">/</span></li>
-	<li ui-if="Store && Store.Key || wizard.checkStep.2"
+	<li ui-if="Store && Store.Key && !Store.isNew || wizard.checkStep.2"
 		ng-class="{active: wizard.currentStep == 3}"><a href="#/store"
 		ng-click="wizard.currentStep = 3;wizard.finished = false">{{
 			'Common.Text_CreateStore_Step3' | t }}</a> <span
