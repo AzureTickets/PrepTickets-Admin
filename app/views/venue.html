@@ -81,9 +81,7 @@
 					<dl>
 						<dd class="clear row-fluid">
 							<!-- venue details -->
-							<atmodel
-								ui-if="Place && geo.getLoadedCountries() != null && geo.getLoadedRegions() != null"
-								ng-model="Place" extra1="geo"
+							<atmodel ui-if="Place" ng-model="Place" extra1="geo"
 								at-hide-props="DateCreated,DateModified,StoreKey"></atmodel>
 						</dd>
 						<dd class="pull-left">
