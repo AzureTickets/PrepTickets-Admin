@@ -6,8 +6,6 @@ azureTicketsApp.factory('formService',
         'modelService',
         'configService',
         function($q, $rootScope, modelService, configService) {
-          var _scope = null;
-          var _wizard = null;
           var _fieldTypes = [ 'input', 'textarea', 'select' ];
 
           var _validates = function(e) {
@@ -76,10 +74,7 @@ azureTicketsApp.factory('formService',
              * @returns
              */
             getWizard : function($scope) {
-              _scope = $scope;
-              _wizard = this;
-
-              return _wizard;
+              return this;
             },
             /**
              * Validates form given by 1st param and continue to next step if

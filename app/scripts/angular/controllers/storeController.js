@@ -61,13 +61,19 @@ function storeController($scope, $cookieStore, $location, $timeout,
   }
 
   $scope.upgradeProfile = function() {
-    $scope.auth.upgradeProfile().then(function() {
-      return $scope.auth.authenticate($scope);
-    }).then(function() {
+    if ($scope.auth.isPublic() || $scope.auth.isAuthenticated()) {
+      $scope.auth.upgradeProfile().then(function() {
+        return $scope.auth.authenticate($scope);
+      }).then(function() {
+        $scope.wizard.reset();
+        $scope.wizardPreRegister.reset();
+      }, function(err) {
+        $scope.error.log(err)
+      });
+    } else {
       $scope.wizard.reset();
-    }, function(err) {
-      $scope.error.log(err)
-    });
+      $scope.wizardPreRegister.reset();
+    }
   }
 
   $scope.init = function() {
@@ -123,7 +129,6 @@ function storeController($scope, $cookieStore, $location, $timeout,
   }
 
   $scope.createStore = function() {
-    $scope.wizard.reset(0);
     // initialize props
     $scope.Store = $scope.model.getInstanceOf('Store', null, null, true);
     $scope.Store.tmpPaymentProvider = $scope.model
@@ -135,14 +140,16 @@ function storeController($scope, $cookieStore, $location, $timeout,
     // monitor URI
     $scope.initStoreURI();
 
-    // show agreement
-    if (!$scope.auth.isAdministrator()) {
-      $timeout(function() {
-        $scope.$apply(function() {
-          jQuery('#serviceAgreement').modal('show');
-        })
-      }, 500);
-    }
+    $scope.wizard.reset();
+
+    // // show agreement
+    // if (!$scope.auth.isAdministrator()) {
+    // $timeout(function() {
+    // $scope.$apply(function() {
+    // jQuery('#serviceAgreement').modal('show');
+    // })
+    // }, 500);
+    // }
   }
 
   $scope.requestAccess = function() {
@@ -153,12 +160,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
         null, null, true);
     $scope.selection.StorePreRegisterKey = null;
 
-    // show agreement
-    $timeout(function() {
-      $scope.$apply(function() {
-        jQuery('#serviceAgreement').modal('show');
-      })
-    }, 500);
+    $scope.wizardPreRegister.reset();
   }
 
   $scope.searchStorePreRegister = function() {
