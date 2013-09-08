@@ -2,10 +2,10 @@ function venueController($scope, $timeout, $cookieStore, $filter) {
   $scope.name = 'venue';
 
   // initialize wizard for Venue
-  $scope.wizard = $scope.form.getWizard($scope);
+  $scope.wizardVenue = $scope.form.getWizard($scope);
 
   // watch for update/create requests
-  $scope.$watch('wizard.open', function(v) {
+  $scope.$watch('wizardVenue.open', function(v) {
     if (v) {
       $('#formVenue').modal({
         show : true,
@@ -14,9 +14,9 @@ function venueController($scope, $timeout, $cookieStore, $filter) {
     }
   });
 
-  $scope.$watch('wizard.saved', function(v) {
+  $scope.$watch('wizardVenue.saved', function(v) {
     if (v) {
-      $scope.wizard.checkStep = {}
+      $scope.wizardVenue.checkStep = {}
     }
   })
 
@@ -26,8 +26,8 @@ function venueController($scope, $timeout, $cookieStore, $filter) {
 
   $scope.update = function(venue) {
     $scope.Place = venue;
-    $scope.wizard.open = true;
-    $scope.wizard.reset();
+    $scope.wizardVenue.open = true;
+    $scope.wizardVenue.reset();
 
     // manually load location
     $timeout(function() {
@@ -43,8 +43,8 @@ function venueController($scope, $timeout, $cookieStore, $filter) {
     // initialize props
     $scope.Place = $scope.model.getInstanceOf('Place');
     $scope.Place.Address = $scope.model.getInstanceOf('Address');
-    $scope.wizard.open = true;
-    $scope.wizard.reset();
+    $scope.wizardVenue.open = true;
+    $scope.wizardVenue.reset();
   }
 
   $scope.deleteVenue = function(venue) {
@@ -71,8 +71,8 @@ function venueController($scope, $timeout, $cookieStore, $filter) {
   }
 
   $scope.save = function() {
-    if ($scope.wizard.finished) {
-      $scope.wizard.saved = false;
+    if ($scope.wizardVenue.finished) {
+      $scope.wizardVenue.saved = false;
 
       if ($scope.Place.Key === null) {
         // create place
@@ -90,7 +90,7 @@ function venueController($scope, $timeout, $cookieStore, $filter) {
         $scope.place.createPlace($scope.storeKey, newPlace).then(
             function(placeKey) {
               if (angular.isString(placeKey)) {
-                $scope.wizard.saved = true;
+                $scope.wizardVenue.saved = true;
 
                 // reload list
                 $scope.init(true);
@@ -103,7 +103,7 @@ function venueController($scope, $timeout, $cookieStore, $filter) {
         $scope.place.updatePlace($scope.storeKey, $scope.Place).then(
             function(place) {
               $scope.geo.updateAddress(place.Address).then(function(ret) {
-                $scope.wizard.saved = true;
+                $scope.wizardVenue.saved = true;
 
                 // reload list
                 $scope.init(true);

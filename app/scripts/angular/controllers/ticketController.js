@@ -2,9 +2,9 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
   $scope.name = 'ticket';
 
   // initialize wizard for GeneralAdmissionTicketItemInfo
-  $scope.wizard = $scope.form.getWizard($scope);
+  $scope.wizardTicket = $scope.form.getWizard($scope);
 
-  $scope.$watch('wizard.open', function(v) {
+  $scope.$watch('wizardTicket.open', function(v) {
     if (v) {
       $('#formTicket').modal({
         show : true,
@@ -36,8 +36,8 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
   $scope.update = function(_ticket) {
     $scope.GeneralAdmissionTicketItemInfo = angular.copy(_ticket);
 
-    $scope.wizard.open = true;
-    $scope.wizard.reset();
+    $scope.wizardTicket.open = true;
+    $scope.wizardTicket.reset();
   }
 
   $scope.create = function() {
@@ -56,8 +56,8 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
      */
     $scope.GeneralAdmissionTicketItemInfo.Stock = 0;
 
-    $scope.wizard.open = true;
-    $scope.wizard.reset();
+    $scope.wizardTicket.open = true;
+    $scope.wizardTicket.reset();
   }
 
   $scope.deleteTicket = function(ticket) {
@@ -77,8 +77,8 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
   }
 
   $scope.save = function() {
-    if ($scope.wizard.finished) {
-      $scope.wizard.saved = false;
+    if ($scope.wizardTicket.finished) {
+      $scope.wizardTicket.saved = false;
 
       // format price
       if (angular.isDefined($scope.GeneralAdmissionTicketItemInfo.Price)) {
@@ -110,7 +110,7 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
                         $scope.ticket.updateStock($scope.storeKey,
                             $scope.GeneralAdmissionTicketItemInfo).then(
                             function() {
-                              $scope.wizard.saved = true;
+                              $scope.wizardTicket.saved = true;
 
                               // refresh Event.Items
                               $scope.event.initEvent($scope.storeKey,
@@ -138,7 +138,7 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
               // update stock (inventory)
               $scope.ticket.updateStock($scope.storeKey,
                   $scope.GeneralAdmissionTicketItemInfo).then(function() {
-                $scope.wizard.saved = true;
+                $scope.wizardTicket.saved = true;
 
                 // reload list
                 $scope.init(false);

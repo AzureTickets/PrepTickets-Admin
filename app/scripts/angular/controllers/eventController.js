@@ -2,9 +2,9 @@ function eventController($scope, $cookieStore, $filter) {
   $scope.name = 'event';
 
   // initialize wizard for Event
-  $scope.wizard = $scope.form.getWizard($scope);
+  $scope.wizardEvent = $scope.form.getWizard($scope);
 
-  $scope.$watch('wizard.open', function(v) {
+  $scope.$watch('wizardEvent.open', function(v) {
     if (v) {
       $('#formEvent').modal({
         show : true,
@@ -19,8 +19,8 @@ function eventController($scope, $cookieStore, $filter) {
 
   $scope.update = function(_event) {
     $scope.Event = angular.copy(_event);
-    $scope.wizard.open = true;
-    $scope.wizard.reset();
+    $scope.wizardEvent.open = true;
+    $scope.wizardEvent.reset();
   }
 
   $scope.create = function() {
@@ -28,8 +28,8 @@ function eventController($scope, $cookieStore, $filter) {
     $scope.Event.tmpVenues = $scope.venues.length > 1 ? $scope.venues.splice(0,
         1) : $scope.venues;
     $scope.Event._tmpVenues = angular.copy($scope.Event.tmpVenues);
-    $scope.wizard.open = true;
-    $scope.wizard.reset();
+    $scope.wizardEvent.open = true;
+    $scope.wizardEvent.reset();
   }
 
   $scope.deleteEvent = function(event) {
@@ -86,8 +86,8 @@ function eventController($scope, $cookieStore, $filter) {
   }
 
   $scope.save = function() {
-    if ($scope.wizard.finished) {
-      $scope.wizard.saved = false;
+    if ($scope.wizardEvent.finished) {
+      $scope.wizardEvent.saved = false;
 
       if ($scope.Event.Key === null) {
         // go on and create
@@ -107,7 +107,7 @@ function eventController($scope, $cookieStore, $filter) {
         }).then(function(eventKey) {
           // attach event to store
           $scope.store.addEvent($scope.storeKey, eventKey).then(function() {
-            $scope.wizard.saved = true;
+            $scope.wizardEvent.saved = true;
 
             // reload list
             $scope.init();
@@ -126,7 +126,7 @@ function eventController($scope, $cookieStore, $filter) {
               function() {
                 $scope.event.addVenues($scope.storeKey, $scope.Event).then(
                     function() {
-                      $scope.wizard.saved = true;
+                      $scope.wizardEvent.saved = true;
                       $scope.init(true);
                     }, function(err) {
                       $scope.error.log(err)

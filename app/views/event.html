@@ -21,15 +21,15 @@
 
 		<div id="formEvent" class="modal form hide fade">
 			<div class="modal-header">
-				<button type="button" ng-click="wizard.open = false" class="close"
-					data-dismiss="modal" aria-hidden="true">&times;</button>
+				<button type="button" ng-click="wizardEvent.open = false"
+					class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<h3>
 					<p class="text-info">{{ 'Common.Text_Event' | t}}</p>
 				</h3>
 			</div>
 			<div class="modal-body">
 				<!-- messages -->
-				<div ng-switch="wizard.currentStep">
+				<div ng-switch="wizardEvent.currentStep">
 					<div class="alert alert-info" ng-switch-when="2">
 						<strong>{{ 'Event.Text_DateInformation' | t }}</strong>
 					</div>
@@ -41,15 +41,15 @@
 					</div>
 				</div>
 				<div class="alert alert-success"
-					ui-if="wizard.saved && wizard.finished">
+					ui-if="wizardEvent.saved && wizardEvent.finished">
 					<strong>{{ 'Common.Text_Congrats' | t }}</strong> {{
 					'Common.Text_WizardComplete' | t }}
 				</div>
 
 				<!-- form -->
 				<ng-form ui-if="Event" name="atEvent" ng-submit="save()">
-				<form ui-if="wizard.currentStep == 1" name="atEvent1"
-					ng-submit="wizard.next('atEvent1')">
+				<form ui-if="wizardEvent.currentStep == 1" name="atEvent1"
+					ng-submit="wizardEvent.next('atEvent1')">
 					<dl class="clearfix">
 						<dd>
 							<atfield at-required class="input-xxlarge" ng-model="Event.Name"
@@ -66,8 +66,8 @@
 						</dd>
 					</dl>
 				</form>
-				<form ui-if="wizard.currentStep == 2" name="atEvent2"
-					ng-submit="wizard.next('atEvent2')">
+				<form ui-if="wizardEvent.currentStep == 2" name="atEvent2"
+					ng-submit="wizardEvent.next('atEvent2')">
 					<dl>
 						<dd class="pull-left">
 							<atfield at-required class="input-large"
@@ -90,8 +90,8 @@
 						</dd>
 						<dd class="clear"></dd>
 						<dd class="pull-left">
-							<a ng-show="wizard.currentStep>1"
-								ng-click="wizard.currentStep = wizard.currentStep-1"
+							<a ng-show="wizardEvent.currentStep>1"
+								ng-click="wizardEvent.currentStep = wizardEvent.currentStep-1"
 								class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
 						</dd>
 						<dd class="pull-left">
@@ -101,8 +101,8 @@
 						</dd>
 					</dl>
 				</form>
-				<form ng-show="wizard.currentStep == 3" name="atEvent3"
-					ng-submit="wizard.next('atEvent3')">
+				<form ng-show="wizardEvent.currentStep == 3" name="atEvent3"
+					ng-submit="wizardEvent.next('atEvent3')">
 					<dl class="clearfix">
 						<dd>
 							<label>{{ 'Common.Text_Venue' | t}}</label>
@@ -118,8 +118,8 @@
 						</dd>
 						<dd class="clear"></dd>
 						<dd class="pull-left">
-							<a ng-show="wizard.currentStep>1"
-								ng-click="wizard.currentStep = wizard.currentStep-1"
+							<a ng-show="wizardEvent.currentStep>1"
+								ng-click="wizardEvent.currentStep = wizardEvent.currentStep-1"
 								class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
 						</dd>
 						<dd class="pull-left">
@@ -129,8 +129,8 @@
 						</dd>
 					</dl>
 				</form>
-				<form ui-if="wizard.currentStep == 4 && !wizard.saved"
-					name="atEvent3" ng-submit="wizard.next('atEvent4', true)">
+				<form ui-if="wizardEvent.currentStep == 4 && !wizardEvent.saved"
+					name="atEvent3" ng-submit="wizardEvent.next('atEvent4', true)">
 					<dl>
 						<dd class="clear row-fluid">
 							<!-- event details -->
@@ -138,8 +138,8 @@
 								at-hide-props="DateCreated,DateModified,StoreKey"></atmodel>
 						</dd>
 						<dd class="pull-left">
-							<a ng-show="wizard.currentStep>1"
-								ng-click="wizard.currentStep = wizard.currentStep-1"
+							<a ng-show="wizardEvent.currentStep>1"
+								ng-click="wizardEvent.currentStep = wizardEvent.currentStep-1"
 								class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
 						</dd>
 						<dd class="pull-left">
@@ -149,15 +149,15 @@
 						</dd>
 					</dl>
 				</form>
-				<dl ui-if="wizard.finished" class="clearfix">
+				<dl ui-if="wizardEvent.finished" class="clearfix">
 					<dd class="pull-left">
-						<a ng-show="wizard.currentStep>1 && wizard.saved"
-							ng-click="wizard.currentStep = wizard.currentStep-2; wizard.finished = false; wizard.saved = false"
+						<a ng-show="wizardEvent.currentStep>1 && wizardEvent.saved"
+							ng-click="wizardEvent.currentStep = wizardEvent.currentStep-2; wizardEvent.finished = false; wizardEvent.saved = false"
 							class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
 					</dd>
 					<dd class="pull-left">
-						<a ng-show="wizard.currentStep>1 && wizard.saved"
-							data-dismiss="modal" ng-click="wizard.open = false"
+						<a ng-show="wizardEvent.currentStep>1 && wizardEvent.saved"
+							data-dismiss="modal" ng-click="wizardEvent.open = false"
 							class="btn btn-primary clear">{{ 'Common.Text_Close' | t }}</a>
 					</dd>
 				</dl>
