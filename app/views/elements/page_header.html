@@ -10,7 +10,9 @@
 	<!-- Breadcrumb -->
 	<div class="bread-crumb pull-right">
 		<a href="#/"><i class="icon-home"></i>{{ 'Common.Text_Admin' | t
-			}}</a>
+			}}</a> <span ui-if="Store && Store.Key && Store.IsOwner">/</span> <a
+			href="#/store" ng-click="setStoreKey(Store.Key)">{{
+			'Common.Text_Store' | t }}</a></span>
 	</div>
 	<div class="clearfix"></div>
 </div>
