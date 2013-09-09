@@ -68,6 +68,14 @@ function adminController($scope, $location, $cookieStore) {
   $scope.validatePasswords = function() {
     $scope.passwdOk = $scope.RegisterAccountProfile.Password === $scope.RegisterAccountProfile.ConfirmPassword;
   }
+
+  $scope.getPendingAccessRequests = function() {
+    $scope.account.getAccessRequests().then(function(pending) {
+      $scope.approvals = angular.isArray(pending) ? pending : [];
+    }, function(err) {
+      $scope.error.log(err)
+    })
+  }
 }
 
 adminController.$inject = [ '$scope', '$location', '$cookieStore' ];

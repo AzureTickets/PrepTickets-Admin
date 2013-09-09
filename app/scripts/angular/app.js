@@ -94,6 +94,10 @@ azureTicketsApp.config([
       }).when('/storeRequest', {
         templateUrl : 'views/storePreRegister.html',
         resolve : routeFilters
+      }).when('/approvals', {
+        templateUrl : 'views/approvalsList.html',
+        controller : adminController,
+        resolve : routeFilters
       }).when('/store/:storeURI', {
         templateUrl : 'views/storeVisitor.html',
         // controller : storeController,

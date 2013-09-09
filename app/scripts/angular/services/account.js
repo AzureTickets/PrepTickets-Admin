@@ -26,6 +26,21 @@ azureTicketsApp.factory('accountService', [
               });
 
           return def.promise;
+        },
+        getAccessRequests : function() {
+          var def = $q.defer();
+
+          BWL.Services.AccountService.AccessPendingAsync(function(ret) {
+            $rootScope.$apply(function() {
+              def.resolve(ret);
+            });
+          }, function(err) {
+            $rootScope.$apply(function() {
+              def.reject(err)
+            })
+          });
+
+          return def.promise;
         }
       }
     } ]);
