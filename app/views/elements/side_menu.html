@@ -34,7 +34,7 @@
 						href="#/store" ng-click="createStore()">{{
 							'Common.Text_CreateStore' | t }}</a></li>
 					<li ui-if="auth.isDomainProfileReady()"><a href="#/approvals">{{
-							'Common.Text_Approvals' | t }}</a></li>
+							'Common.Text_Pending_Approvals' | t }}</a></li>
 					<li ui-if="auth.isDomainProfileReady() && !auth.isAdministrator()"><a
 						href="#/storeRequest" ng-click="requestAccess()">{{
 							'Common.Text_RequestAccess' | t }}</a></li>
