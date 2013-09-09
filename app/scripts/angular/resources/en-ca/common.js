@@ -19,6 +19,7 @@ var CommonResources = {
   Text_EmailAddress : 'Email Address',
   Text_Message : "Message",
   Text_Control : 'Controls',
+  Text_Details : 'Details',
   Text_Pending_Approvals : 'Pending Approvals',
   Text_Approval : 'Approval',
   Text_Type : 'Type',

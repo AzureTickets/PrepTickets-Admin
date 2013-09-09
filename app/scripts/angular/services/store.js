@@ -158,7 +158,7 @@ azureTicketsApp
                               BWL.Services.ModelService
                                   .ReadAsync(
                                       store.Key,
-                                      'PaymentProvider',
+                                      BWL.Model.PaymentProvider.Type,
                                       store.PaymentProviders[0].Key,
                                       1,
                                       function(paymentProvider) {
@@ -182,24 +182,25 @@ azureTicketsApp
                 addStoreURI : function(storeKey, uri) {
                   var def = $q.defer(), _this = this;
 
-                  BWL.Services.ModelService.CreateAsync(storeKey, "StoreURI", {
-                    URI : uri
-                  }, function(uriKey) {
-                    BWL.Services.ModelService.AddAsync(
-                        configService.container.store, "Store", storeKey,
-                        "StoreURIs", BWL.Model.StoreURI.Type, uriKey, function(
-                            ret) {
-                          $rootScope.$apply(def.resolve)
-                        }, function(err) {
-                          $rootScope.$apply(function() {
-                            def.reject(err)
-                          })
-                        });
-                  }, function(err) {
-                    $rootScope.$apply(function() {
-                      def.reject(err)
-                    })
-                  });
+                  BWL.Services.ModelService.CreateAsync(storeKey,
+                      BWL.Model.StoreURI.Type, {
+                        URI : uri
+                      }, function(uriKey) {
+                        BWL.Services.ModelService.AddAsync(
+                            configService.container.store,
+                            BWL.Model.Store.Type, storeKey, "StoreURIs",
+                            BWL.Model.StoreURI.Type, uriKey, function(ret) {
+                              $rootScope.$apply(def.resolve)
+                            }, function(err) {
+                              $rootScope.$apply(function() {
+                                def.reject(err)
+                              })
+                            });
+                      }, function(err) {
+                        $rootScope.$apply(function() {
+                          def.reject(err)
+                        })
+                      });
 
                   return def.promise;
                 },
@@ -276,8 +277,8 @@ azureTicketsApp
 
                   if (angular.isDefined(store.PaymentProviders)
                       && store.PaymentProviders !== null) {
-                    BWL.Services.ModelService.RemoveAsync(store.Key, 'Store',
-                        store.Key, 'PaymentProviders',
+                    BWL.Services.ModelService.RemoveAsync(store.Key,
+                        BWL.Model.Store.Type, store.Key, 'PaymentProviders',
                         BWL.Model.PaymentProvider.Type,
                         store.PaymentProviders[ix].Key, function(ret) {
                           $rootScope.$apply(function() {
@@ -324,8 +325,8 @@ azureTicketsApp
                   delete tmpStore.tmpPaymentProvider;
 
                   BWL.Services.ModelService.UpdateAsync(
-                      configService.container.store, 'Store', _store.Key,
-                      tmpStore, function(ret) {
+                      configService.container.store, BWL.Model.Store.Type,
+                      _store.Key, tmpStore, function(ret) {
                         $rootScope.$apply(function() {
                           def.resolve(_store)
                         });
@@ -338,5 +339,4 @@ azureTicketsApp
                   return def.promise;
                 }
               }
-            }
-        ]);
+            } ]);

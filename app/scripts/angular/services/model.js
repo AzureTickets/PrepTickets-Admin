@@ -52,6 +52,22 @@ azureTicketsApp.factory('modelService', [
 
           return def.promise;
         },
+        read : function(type, key, level) {
+          var def = $q.defer();
+
+          BWL.Services.ModelService.ReadAsync('BWL', type, key, level,
+              function(ret) {
+                $rootScope.$apply(function() {
+                  def.resolve(ret)
+                })
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err)
+                })
+              });
+
+          return def.promise;
+        },
         nonNull : function(model) {
           for ( var p in model) {
             if (model[p] === null) {
