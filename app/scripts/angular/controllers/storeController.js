@@ -182,19 +182,24 @@ function storeController($scope, $cookieStore, $location, $timeout,
       $scope.wizardPreRegister.saved = false;
 
       // send request
-      $scope.account.accessRequest($scope.StorePreRegister.Type,
-          $scope.selection.StorePreRegisterKey,
-          $scope.enums.ModelAccessTypeEnum.FullAccess).then(function(ret) {
-        if (ret) {
-          $scope.wizardPreRegister.checkStep.requested = true;
-          $scope.wizardPreRegister.saved = true;
-        }
-      }, function(err) {
-        $scope.wizardPreRegister.checkStep.requested = false;
-        $scope.wizardPreRegister.saved = false;
+      if (!angular.isDefined($scope.StorePreRegister.StoreKey)
+          || $scope.StorePreRegister.StoreKey === null) {
+        $scope.account.accessRequest($scope.StorePreRegister.Type,
+            $scope.selection.StorePreRegisterKey,
+            $scope.enums.ModelAccessTypeEnum.FullAccess).then(function(ret) {
+          if (ret) {
+            $scope.wizardPreRegister.checkStep.requested = true;
+            $scope.wizardPreRegister.saved = true;
+          }
+        }, function(err) {
+          $scope.wizardPreRegister.checkStep.requested = false;
+          $scope.wizardPreRegister.saved = false;
 
-        $scope.error.log(err)
-      })
+          $scope.error.log(err)
+        })
+      } else {
+        $scope.error.log($filter('t')('Common.Text_ExistingStoreRequest'))
+      }
     }
   }
 

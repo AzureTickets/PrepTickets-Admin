@@ -33,6 +33,8 @@ var CommonResources = {
   Text_From : "From",
   Text_Print : "Print",
   Text_Navigation : "Navigation",
+  Text_ExistingStoreRequest : 'There is already a Store being managed for this approval request.',
+  Text_ApprovalEmpty : 'There are no pending requests',
   Text_Showmap : "show map",
   Text_Confirmation : 'Confirmation',
   Text_GetRoute : "Get Route",

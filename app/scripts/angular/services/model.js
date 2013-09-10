@@ -68,6 +68,22 @@ azureTicketsApp.factory('modelService', [
 
           return def.promise;
         },
+        update : function(type, key, values) {
+          var def = $q.defer();
+
+          BWL.Services.ModelService.UpdateAsync('BWL', type, key, values,
+              function(ret) {
+                $rootScope.$apply(function() {
+                  def.resolve(ret)
+                })
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err)
+                })
+              });
+
+          return def.promise;
+        },
         nonNull : function(model) {
           for ( var p in model) {
             if (model[p] === null) {
