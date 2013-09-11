@@ -101,6 +101,8 @@ var CommonResources = {
   Text_StorePreRegister_Step1 : 'School Search',
   Text_StorePreRegister_Step2 : 'School Selection',
   Text_WizardRequestComplete : 'Your store pre-registration request has been sent. Please wait while we process your information.',
+  Text_ID : 'ID',
+  Text_Profile : 'Profile',
   Text_Store : 'Store',
   Text_StoreName : 'Store\'s Name',
   Text_StoreType : 'Your Store',

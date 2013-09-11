@@ -17,6 +17,7 @@
 						<th>{{ 'Common.Text_Date' | t }}</th>
 						<th>{{ 'Common.Text_Type' | t }}</th>
 						<th>{{ 'Common.Text_Details' | t }}</th>
+						<th>{{ 'Common.Text_Profile' | t }} {{'Common.Text_ID' | t}}</th>
 						<th ui-if="auth.isAdministrator()">{{ 'Common.Text_Control' |
 							t }}</th>
 					</tr>
@@ -27,7 +28,9 @@
 						<td><span class="label label-inverse"> {{
 								approval.DateCreated | date:'MM/dd/yyyy @ h:mma' }}</span></td>
 						<td>{{approval.RequestedItem.Type | t:true}}</td>
-						<td>{{approval.RequestedItem.Name}}</td>
+						<td>{{approval.RequestedItem.Name || approval.RequestedItem |
+							address }}</td>
+						<td>{{approval.RequestedByKey}}</td>
 						<td ui-if="auth.isAdministrator()">
 							<div class="btn-group pull-right">
 								<button class="btn btn-mini btn-success"

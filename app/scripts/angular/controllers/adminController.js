@@ -187,6 +187,16 @@ function adminController($scope, $location, $cookieStore, $filter) {
                         }, function(err) {
                           $scope.error.log(err)
                         })
+                  } else if (approveItem.RequestedItem.Type === BWL.Model.Address.Type) {
+                    /**
+                     * Address Approval process
+                     */
+                    $scope.account.approveRequest(approveItem.Key).then(
+                        function() {
+                          $scope.getPendingAccessRequests();
+                        }, function(err) {
+                          $scope.error.log(err)
+                        })
                   }
                 }
               }, function(err) {
