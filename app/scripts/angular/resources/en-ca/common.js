@@ -131,6 +131,8 @@ var CommonResources = {
   LabelGeneralAdmissionTicketItemInfoOnSaleDateTimeEnd : 'Sales Ends On',
   LabelGeneralAdmissionTicketItemInfoPolicy : 'Policy',
   LabelGeneralAdmissionTicketItemInfoMaxPurchaseQuantity : 'Maximum Allowed Quantity',
+  LabelGeneralAdmissionTicketItemInfoNumberAvailable : 'Available',
+  LabelGeneralAdmissionTicketItemInfoEventName : 'Event',
   LabelEventMaximumCapacity : 'Maximum Capacity',
   LabelGeneralAdmissionTicketItemInfoStock : 'Stock',
   Text_StoreMenu_StoreDetailBt : 'Store Details',
