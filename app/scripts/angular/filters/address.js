@@ -13,7 +13,8 @@ azureTicketsApp
                     || (angular.isDefined(t.Type) && t.Type !== BWL.Model.Address.Type)) {
                   return t;
                 }
-                var a = [ t.AddressLine1, t.AddressLine2, t.City, t.PostalCode ]
+                var a = [ t.AddressLine1, t.AddressLine2, t.City, t.PostalCode,
+                    t.Region, t.Country ]
                 return a.filter(Boolean).join(', ');
               };
             } ]);

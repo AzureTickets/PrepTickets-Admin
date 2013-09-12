@@ -60,13 +60,13 @@
 						label="'Common.Text_StoreName' | t"></atfield>
 				</dd>
 				<dd>
-					<atfield data-provider="typeahead" data-source="suggestedURLs"
-						at-required ng-readonly="Store.Key || false" class="input-xlarge"
+					<atfield autocomplete="off" at-required
+						ng-readonly="tmpURI || false" class="input-xlarge"
 						ng-model="Store.URI" at-copy="CustomURI"
 						label="'Common.Text_CustomURI' | t"
 						tip="'Common.Text_TipCustomURI' | t"></atfield>
 					<i
-						ng-class="{'icon-ok': (!Store.Key && Store.URI.length > config.typeahead.minLength && URIAvailable), 'icon-ban-circle': !URIAvailable || Store.URI.length <= config.typeahead.minLength}">
+						ng-class="{'icon-ok': (Store.URI.length > config.typeahead.minLength && URIAvailable), 'icon-ban-circle': !URIAvailable || Store.URI.length <= config.typeahead.minLength}">
 					</i><span ui-if="!URIAvailable" class="label label-important">
 						{{'Common.Text_CustomURIUnavailable' | t}}</span>
 				</dd>

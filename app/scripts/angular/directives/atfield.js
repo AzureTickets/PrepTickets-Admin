@@ -19,9 +19,7 @@ azureTicketsApp
                   atUiValidate : '&uiValidate',
                   atUiValidateWatch : '&uiValidateWatch',
                   // atPattern : '@ngPattern',
-                  atBlur : '=ngBlur',
-                  atDataProvider : '=dataProvider',
-                  atDataSource : '=dataSource',
+                  atBlur : '=ngBlur'
                 },
                 link : function($scope, $element, $attrs) {
                   var ss = $attrs.ngModel.split('.');
@@ -108,7 +106,7 @@ azureTicketsApp
                     _el = jQuery('<select />');
                     var _enum = BWL.ModelEnum[fieldType.replace(
                         /^(.*Enum)(?=\b).*$/g, '$1')];
-                    for( var e in _enum) {
+                    for ( var e in _enum) {
                       _el.append(jQuery('<option value="' + _enum[e] + '" />')
                           .text(e));
                     }
@@ -117,17 +115,14 @@ azureTicketsApp
                   }
 
                   // define new element attributes
-                  for(p in _attr) {
+                  for (p in _attr) {
                     _el.attr(p, _attr[p]);
                   }
-                  for(p in $attrs) {
+                  for (p in $attrs) {
                     if (angular.isString($attrs[p])
-                        && [
-                            'ngModel', 'ngRequired', 'ngChange', 'uiValidate',
+                        && [ 'ngModel', 'ngRequired', 'ngChange', 'uiValidate',
                             'uiValidateWatch', 'ngBlur', 'uiEvent',
-                            'uiDateFormat', 'ngPattern', 'dataProvider',
-                            'dataSource', 'uiJq'
-                        ].indexOf(p) === -1) {
+                            'uiDateFormat', 'ngPattern', 'uiJq' ].indexOf(p) === -1) {
                       var pp = p.replace(/([A-Z]+)/g, '-$1').toLowerCase();
                       var v = $scope.$eval($attrs[p]) !== 0 ? $scope
                           .$eval($attrs[p]) : $attrs[p]
@@ -160,6 +155,9 @@ azureTicketsApp
                   if ($attrs.ngReadonly) {
                     _el.attr('ng-readonly', 'atReadonly');
                   }
+                  if ($attrs.autocomplete) {
+                    _el.attr('autocomplete', $attrs.autocomplete);
+                  }
                   if ($attrs.uiEvent) {
                     _el.attr('ui-event', 'atUiEvent');
                   }
@@ -182,5 +180,4 @@ azureTicketsApp
                   $compile(_el)($scope);
                 }
               }
-            }
-        ]);
+            } ]);

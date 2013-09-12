@@ -208,8 +208,9 @@ function storeController($scope, $cookieStore, $location, $timeout,
       return;
     }
 
-    $scope.Store.URI = angular.isDefined($scope.Store.URI) ? $scope.Store.URI
-        : null, $scope.URIAvailable = true;
+    $scope.Store.URI = angular.isDefined($scope.Store.URI)
+        || $scope.Store.URI.length === 0 ? $scope.Store.URI : null,
+        $scope.URIAvailable = true;
 
     // suggest URIs
     $scope.$watch('Store.URI', function(uri, oldUri) {
@@ -221,9 +222,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
         return;
       }
 
-      var isNew = $scope.Store.Key === null;
-
-      if (isNew && angular.isDefined(uri) && uri !== null
+      if (angular.isDefined(uri) && uri !== null
           && uri.length > $scope.config.typeahead.minLength) {
         var re = /[^\a-z\d\-\_]{1,}/gi;
         var sug = $scope.Store.Name !== null ? $scope.Store.Name.replace(re,
@@ -293,6 +292,11 @@ function storeController($scope, $cookieStore, $location, $timeout,
 
                 // monitor URI
                 $scope.initStoreURI();
+                $scope.tmpURI = angular.copy($scope.Store.URI); // make copy to
+                // let
+                // us know there
+                // was an URI set
+                // initially (or not)
 
                 // init venues, events
                 if ($scope.auth.isDomainProfileReady() && $scope.Store.IsOwner) {
@@ -393,7 +397,8 @@ function storeController($scope, $cookieStore, $location, $timeout,
     if ($scope.wizard.finished) {
       $scope.wizard.saved = false;
 
-      if ($scope.Store.Key === null) {
+      // only super admin can create a Store directly
+      if ($scope.Store.Key === null && auth.isAdministrator()) {
         // create store
 
         // API claims not null properties
@@ -475,54 +480,77 @@ function storeController($scope, $cookieStore, $location, $timeout,
               });
         }
 
-        // update store & address
-        if ($scope.Store.Address.Key !== null) {
-          $scope.store.updateStore($scope.Store).then(
-              function(store) {
-                if (angular.isDefined(store.Key)) {
-                  $scope.wizard.checkStep.store = true,
-                      $scope.wizard.checkStep.uri = true;
+        var _updateStoreAddress = function() {
+          // update store & address
+          if ($scope.Store.Address.Key !== null) {
+            $scope.store.updateStore($scope.Store).then(
+                function(store) {
+                  if (angular.isDefined(store.Key)) {
+                    $scope.wizard.checkStep.store = true;
 
-                  $scope.geo.updateAddress($scope.Store.Address).then(
-                      _finishes, function(err) {
-                        $scope.wizard.address = false;
+                    $scope.geo.updateAddress($scope.Store.Address).then(
+                        _finishes, function(err) {
+                          $scope.wizard.address = false;
 
-                        $scope.error.log(err)
-                      });
-                }
-              },
-              function(err) {
-                $scope.wizard.checkStep.store = false,
-                    $scope.wizard.checkStep.uri = false,
-                    $scope.wizard.checkStep.address = false,
-                    $scope.wizard.checkStep.payment = false;
+                          $scope.error.log(err)
+                        });
+                  }
+                },
+                function(err) {
+                  $scope.wizard.checkStep.store = false,
+                      $scope.wizard.checkStep.uri = false,
+                      $scope.wizard.checkStep.address = false,
+                      $scope.wizard.checkStep.payment = false;
 
-                $scope.error.log(err)
-              });
+                  $scope.error.log(err)
+                });
+          } else {
+            // update store & create address
+            $scope.store.updateStore($scope.Store).then(
+                function(store) {
+                  if (angular.isDefined(store.Key)) {
+                    $scope.wizard.checkStep.store = true;
+
+                    $scope.geo.createAddressForStore(store.Key,
+                        $scope.Store.Address).then(_finishes, function(err) {
+                      $scope.wizard.checkStep.address = false;
+
+                      $scope.error.log(err)
+                    });
+                  }
+                },
+                function(err) {
+                  $scope.wizard.checkStep.store = false,
+                      $scope.wizard.checkStep.uri = false,
+                      $scope.wizard.checkStep.address = false,
+                      $scope.wizard.checkStep.payment = false;
+
+                  $scope.error.log(err)
+                });
+          }
+        }
+
+        // if the URI has not yet been set
+        if ($scope.tmpURI === null || $scope.tmpURI.length === 0) {
+          if (angular.isDefined($scope.Store.URI)
+              && $scope.Store.URI.length > 0) {
+            $scope.store.addStoreURI($scope.Store.Key, $scope.Store.URI).then(
+                function() {
+                  $scope.wizard.checkStep.uri = true;
+                  _updateStoreAddress(false);
+                },
+                function(err) {
+                  $scope.wizard.checkStep.store = false,
+                      $scope.wizard.checkStep.uri = false;
+                  $scope.error.log(err)
+                })
+          } else {
+            $scope.error.log($scope.error.log($filter('t')(
+                'Common.Text_MissingURI')))
+          }
         } else {
-          // update store & create address
-          $scope.store.updateStore($scope.Store).then(
-              function(store) {
-                if (angular.isDefined(store.Key)) {
-                  $scope.wizard.checkStep.store = true,
-                      $scope.wizard.checkStep.uri = true;
-
-                  $scope.geo.createAddressForStore(store.Key,
-                      $scope.Store.Address).then(_finishes, function(err) {
-                    $scope.wizard.checkStep.address = false;
-
-                    $scope.error.log(err)
-                  });
-                }
-              },
-              function(err) {
-                $scope.wizard.checkStep.store = false,
-                    $scope.wizard.checkStep.uri = false,
-                    $scope.wizard.checkStep.address = false,
-                    $scope.wizard.checkStep.payment = false;
-
-                $scope.error.log(err)
-              });
+          $scope.wizard.checkStep.uri = true;
+          _updateStoreAddress();
         }
       }
     }

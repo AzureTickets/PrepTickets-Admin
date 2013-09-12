@@ -24,6 +24,7 @@ var CommonResources = {
   Text_Approval : 'Approval',
   Text_Type : 'Type',
   Text_Approve : 'Approve',
+  Text_MissingURI : 'The URI for this Store is missing',
   Text_Reject : 'Reject',
   Text_NoResults : "No records match your criteria",
   Text_Close : 'Close',
