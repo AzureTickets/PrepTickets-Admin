@@ -95,6 +95,7 @@ function eventController($scope, $cookieStore, $filter) {
           Public : true,
           Name : $scope.Event.Name,
           Description : $scope.Event.Description,
+          MaximumCapacity : parseInt($scope.Event.MaximumCapacity),
           Places : $scope.Event._tmpVenues.map(function(v) {
             return {
               Key : v.Key
