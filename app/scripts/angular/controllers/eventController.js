@@ -127,7 +127,7 @@ function eventController($scope, $cookieStore, $filter) {
                 $scope.event.addVenues($scope.storeKey, $scope.Event).then(
                     function() {
                       $scope.wizardEvent.saved = true;
-                      $scope.init(true);
+                      $scope.init();
                     }, function(err) {
                       $scope.error.log(err)
                     });
@@ -156,6 +156,4 @@ function eventController($scope, $cookieStore, $filter) {
   }
 }
 
-eventController.$inject = [
-    '$scope', '$cookieStore', '$filter'
-];
+eventController.$inject = [ '$scope', '$cookieStore', '$filter' ];

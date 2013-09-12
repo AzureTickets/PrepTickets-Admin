@@ -145,6 +145,8 @@ azureTicketsApp.factory('placeService', [
          * @returns
          */
         loadPlaces : function($scope) {
+          var def = $q.defer();
+
           if (!_isPlacesLoading) {
             _isPlacesLoading = true;
 
@@ -161,6 +163,10 @@ azureTicketsApp.factory('placeService', [
                       _this.initPlace($scope.storeKey, venue.Key).then(
                           function(place) {
                             $scope.venues[i] = place;
+
+                            if (!$scope.$$phase) {
+                              $scope.$apply();
+                            }
                           })
                     });
                   }
@@ -170,11 +176,17 @@ azureTicketsApp.factory('placeService', [
                   }
 
                   _isPlacesLoading = false;
+
+                  def.resolve()
                 }, function(err) {
                   _isPlacesLoading = false;
                   $scope.error.log(err)
+
+                  def.reject()
                 });
           }
+
+          return def.promise;
         }
       }
     } ]);

@@ -349,8 +349,16 @@ azureTicketsApp
                               __this.initEvent($scope.storeKey, event.Key)
                                   .then(function(event) {
                                     $scope.events[i] = event;
+
+                                    if (!$scope.$$phase) {
+                                      $scope.$apply();
+                                    }
                                   })
                             });
+                          }
+
+                          if (!$scope.$$phase) {
+                            $scope.$apply();
                           }
 
                           _isEventsLoading = false;
@@ -361,5 +369,4 @@ azureTicketsApp
                   }
                 }
               }
-            }
-        ]);
+            } ]);

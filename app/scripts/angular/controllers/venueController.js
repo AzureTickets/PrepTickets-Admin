@@ -1,4 +1,5 @@
-function venueController($scope, $timeout, $cookieStore, $filter) {
+function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
+    $q) {
   $scope.name = 'venue';
 
   // initialize wizard for Venue
@@ -21,7 +22,7 @@ function venueController($scope, $timeout, $cookieStore, $filter) {
   })
 
   $scope.init = function() {
-    $scope.place.loadPlaces($scope);
+    $rootScope.$broadcast('initStore', $scope.Store.Key)
   }
 
   $scope.update = function(venue) {
@@ -93,7 +94,7 @@ function venueController($scope, $timeout, $cookieStore, $filter) {
                 $scope.wizardVenue.saved = true;
 
                 // reload list
-                $scope.init(true);
+                $scope.init();
               }
             }, function(err) {
               $scope.error.log(err)
@@ -106,7 +107,7 @@ function venueController($scope, $timeout, $cookieStore, $filter) {
                 $scope.wizardVenue.saved = true;
 
                 // reload list
-                $scope.init(true);
+                $scope.init();
               }, function(err) {
                 $scope.error.log(err)
               });
@@ -116,6 +117,5 @@ function venueController($scope, $timeout, $cookieStore, $filter) {
   }
 }
 
-venueController.$inject = [
-    '$scope', '$timeout', '$cookieStore', '$filter'
-];
+venueController.$inject = [ '$rootScope', '$scope', '$timeout', '$cookieStore',
+    '$filter', '$q' ];
