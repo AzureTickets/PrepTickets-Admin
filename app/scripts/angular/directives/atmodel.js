@@ -82,7 +82,8 @@ azureTicketsApp
                                 var c = objectService.grep($scope.atExtra2,
                                     'ISO', prop);
                                 out[$filter('t')(resPrefix + p)] = c.Name;
-                              } else if (angular.isObject(prop) && prop.Type) {
+                              } else if (angular.isObject(prop) && prop.Type
+                                  && hideProps.indexOf(p) === -1) {
                                 switch (prop.Type) {
                                 // handle Address type
                                 case BWL.Model.Address.Type:

@@ -208,6 +208,9 @@ azureTicketsApp
                     var _addStock = function(stock) {
                       var _def = $q.defer();
 
+                      if (stock === 0)
+                        _def.resolve();
+
                       BWL.Services.InventoryService.AddInventoryItemsAsync(
                           storeKey,
                           BWL.Model.GeneralAdmissionTicketItemInfo.Type,
