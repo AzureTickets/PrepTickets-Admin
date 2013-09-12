@@ -106,17 +106,19 @@ azureTicketsApp
                   delete tmpTicket.Stock;
 
                   _formatDates(tmpTicket);
+                  modelService.nonNull(tmpTicket);
 
-                  BWL.Services.ModelService.CreateAsync(storeKey, this
-                      .getTicket().Type, tmpTicket, function(ticketKey) {
-                    $rootScope.$apply(function() {
-                      def.resolve(ticketKey)
-                    });
-                  }, function(err) {
-                    $rootScope.$apply(function() {
-                      def.reject(err)
-                    })
-                  });
+                  BWL.Services.ModelService.CreateAsync(storeKey,
+                      BWL.Model.GeneralAdmissionTicketItemInfo.Type, tmpTicket,
+                      function(ticketKey) {
+                        $rootScope.$apply(function() {
+                          def.resolve(ticketKey)
+                        });
+                      }, function(err) {
+                        $rootScope.$apply(function() {
+                          def.reject(err)
+                        })
+                      });
 
                   return def.promise;
                 },
@@ -295,5 +297,4 @@ azureTicketsApp
                   return def.promise;
                 }
               }
-            }
-        ]);
+            } ]);

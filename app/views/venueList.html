@@ -1,103 +1,42 @@
 <div class="clear row-fluid list">
-    <!--<div ng-show="venues.length == 0" class="alert alert-info">{{-->
-        <!--'Common.Text_VenueEmpty' | t }}</div>-->
-
-    <!--&lt;!&ndash; venue list &ndash;&gt;-->
-    <!--<ul class="thumbnails" ng-show="venues.length > 0">-->
-        <!--<li ng-repeat="venue in venues" class="span3">-->
-            <!--<div class="thumbnail">-->
-                <!--<h4 class="pull-left">{{venue.Name}}</h4>-->
-                <!--<div class="btn-group pull-right">-->
-                    <!--<button class="btn btn-mini btn-success" ng-click="update(venue)">{{-->
-                        <!--'Common.Text_Update' | t }}</button>-->
-                    <!--<button ng-click="deleteVenue(venue)"-->
-                            <!--class="btn btn-mini btn-danger">{{ 'Common.Text_Remove'-->
-                        <!--| t }}</button>-->
-                <!--</div>-->
-                <!--<p class="text clear">{{venue.Description}}</p>-->
-						<!--<span ng-show="venue.Address" class="label">{{-->
-							<!--venue.Address | address }}</span>-->
-            <!--</div>-->
-        <!--</li>-->
-    <!--</ul>-->
-
-
-<!--</div>-->
-
-
-
-
-<div class="widget wviolet">
-
-    <div class="widget-head">
-        <div class="pull-left">{{ 'Common.Text_VenueMenu_Venue' | t }}</div>
-        <div class="clearfix"></div>
-    </div>
-
-    <div ng-show="venues.length == 0" class="alert alert-info">{{
-        'Common.Text_VenueEmpty' | t }}</div>
-
-    <div class="widget-content" ng-show="venues.length > 0">
-
-        <table class="table  table-bordered ">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Venue Name</th>
-                <th>Description</th>
-                <th>Location</th>
-                <th>Control</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            <tr ng-repeat="venue in venues">
-                <td>{{ $index+1 }}</td>
-                <td>{{venue.Name}}</td>
-                <td>{{venue.Description}}</td>
-                <td><span ng-show="venue.Address" class="label">{{
-							venue.Address | address }}</span></td>
-
-                <td>
-
-                    <!--<button class="btn btn-mini btn-success"><i class="icon-ok"></i> </button>-->
-                    <div class="btn-group pull-right">
-                        <button class="btn btn-mini btn-success" ng-click="update(venue)">{{
-                            'Common.Text_Update' | t }}</button>
-                        <button ng-click="deleteVenue(venue)"
-                                class="btn btn-mini btn-danger">{{ 'Common.Text_Remove'
-                            | t }}</button>
-                    </div>
-
-                </td>
-            </tr>
-
-
-
-
-
-
-            </tbody>
-        </table>
-
-
-    </div>
-
-    <!--<div class="widget-foot">-->
-
-        <!--<div class="pagination pull-right">-->
-            <!--<ul>-->
-                <!--<li><a href="#">Prev</a></li>-->
-                <!--<li><a href="#">1</a></li>-->
-                <!--<li><a href="#">2</a></li>-->
-                <!--<li><a href="#">3</a></li>-->
-                <!--<li><a href="#">4</a></li>-->
-                <!--<li><a href="#">Next</a></li>-->
-            <!--</ul>-->
-        <!--</div>-->
-        <!--<div class="clearfix"></div>-->
-
-    <!--</div>-->
-
-</div>
+	<div class="widget wviolet">
+		<div class="widget-head">
+			<div class="pull-left">{{ 'Common.Text_VenueMenu_Venue' | t }}</div>
+			<div class="clearfix"></div>
+		</div>
+		<div ng-show="venues.length == 0" class="alert alert-info">{{
+			'Common.Text_VenueEmpty' | t }}</div>
+		<div class="widget-content" ng-show="venues.length > 0">
+			<table class="table  table-bordered ">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Venue Name</th>
+						<th>Description</th>
+						<th>Location</th>
+						<th>Control</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="venue in venues">
+						<td>{{ $index+1 }}</td>
+						<td>{{venue.Name}}</td>
+						<td>{{venue.Description}}</td>
+						<td><span ng-show="venue.Address" class="label">{{
+								venue.Address | address }}</span></td>
+						<td>
+							<div class="btn-group pull-left">
+								<button class="btn btn-mini btn-success"
+									ng-click="update(venue)">{{ 'Common.Text_Update' | t
+									}}</button>
+								<button ng-click="deleteVenue(venue)"
+									class="btn btn-mini btn-danger">{{
+									'Common.Text_Remove' | t }}</button>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>

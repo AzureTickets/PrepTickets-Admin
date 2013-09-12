@@ -1,95 +1,56 @@
 <div class="clear row-fluid list">
-
-
-    <!-- event list -->
-    <div class="widget wviolet">
-
-        <div class="widget-head">
-            <div class="pull-left">{{ 'Common.Text_EventMenu_Events' | t }}</div>
-            <div class="clearfix"></div>
-        </div>
-
-        <div class="widget-content">
-            <div ng-show="events.length == 0" class="alert alert-info">{{
-                'Event.Text_NoEvent_Msg' | t }}
-            </div>
-            <table class="table  table-bordered " ng-show="events.length > 0">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Event Time</th>
-                    <th>Sale Time</th>
-
-                    <th>Control</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                <tr ng-repeat="event in events">
-                    <td>{{ $index+1 }}</td>
-                    <td>{{event.Name}}</td>
-                    <td><p class="text clear">{{event.Description}}</p></td>
-                    <td><span class="label">Starts on {{ event.StartTime |
-					date:'MM/dd/yyyy @ h:mma' }}</span> <span class="label">Ends on {{
-					event.EndTime | date:'MM/dd/yyyy @ h:mma' }}</span></td>
-                    <td><span
-                            class="label label-inverse">Sales Start on {{
-					event.OnSaleDateTimeStart | date:'MM/dd/yyyy @ h:mma' }}</span> <span
-                            class="label label-inverse">Sales End on {{
-					event.OnSaleDateTimeEnd | date:'MM/dd/yyyy @ h:mma' }}</span></td>
-
-                    <td>
-
-                        <button ui-if="Store.IsOwner" class="btn btn-mini btn-success"
-                                ng-click="update(event)">{{ 'Common.Text_Update' | t }}
-                        </button>
-                        <a ng-href="/#/scanners/{{event.Key}}" ui-if="events && events.length > 0 || false"
-                                class="btn btn-mini btn-primary">{{ 'Common.Text_ScannerMenu_Scanner' | t }}
-                        </a>
-                        <a ng-href="/#/ticket/{{event.Key}}"
-                           class="btn btn-mini btn-primary"
-                           ng-bind="!Store.IsOwner && ('ShoppingCart.labelBuyTickets' | t) || 'Common.Text_TicketMenu_Tickets' | t"></a>
-                        <button ui-if="Store.IsOwner" ng-click="deleteEvent(event)"
-                                class="btn btn-mini btn-danger">{{ 'Common.Text_Remove' |
-                            t }}
-                        </button>
-
-                    </td>
-                </tr>
-
-
-                </tbody>
-            </table>
-
-
-        </div>
-
-        <!--<div class="widget-foot">-->
-
-        <!--<div class="pagination pull-right">-->
-        <!--<ul>-->
-        <!--<li><a href="#">Prev</a></li>-->
-        <!--<li><a href="#">1</a></li>-->
-        <!--<li><a href="#">2</a></li>-->
-        <!--<li><a href="#">3</a></li>-->
-        <!--<li><a href="#">4</a></li>-->
-        <!--<li><a href="#">Next</a></li>-->
-        <!--</ul>-->
-        <!--</div>-->
-        <!--<div class="clearfix"></div>-->
-
-        <!--</div>-->
-
-    </div>
-
+	<!-- event list -->
+	<div class="widget wviolet">
+		<div class="widget-head">
+			<div class="pull-left">{{ 'Common.Text_EventMenu_Events' | t }}</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="widget-content">
+			<div ng-show="events.length == 0" class="alert alert-info">{{
+				'Event.Text_NoEvent_Msg' | t }}</div>
+			<table class="table  table-bordered " ng-show="events.length > 0">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Name</th>
+						<th>Description</th>
+						<th>Event Time</th>
+						<th>Sale Time</th>
+						<th>Control</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="event in events">
+						<td>{{ $index+1 }}</td>
+						<td>{{event.Name}}</td>
+						<td><p class="text clear">{{event.Description}}</p></td>
+						<td><span class="label">Starts on {{ event.StartTime |
+								date:'MM/dd/yyyy @ h:mma' }}</span> <span class="label">Ends on
+								{{ event.EndTime | date:'MM/dd/yyyy @ h:mma' }}</span></td>
+						<td><span class="label label-inverse">Sales Start on
+								{{ event.OnSaleDateTimeStart | date:'MM/dd/yyyy @ h:mma' }}</span> <span
+							class="label label-inverse">Sales End on {{
+								event.OnSaleDateTimeEnd | date:'MM/dd/yyyy @ h:mma' }}</span></td>
+						<td>
+							<div class="btn-group pull-left">
+								<button ui-if="Store.IsOwner" class="btn btn-mini btn-success"
+									ng-click="update(event)">{{ 'Common.Text_Update' | t
+									}}</button>
+								<a ng-href="#/scanners/{{event.Key}}"
+									ui-if="events && events.length > 0 || false"
+									class="btn btn-mini btn-primary">{{
+									'Common.Text_ScannerMenu_Scanner' | t }} </a> <a
+									ng-href="#/ticket/{{event.Key}}"
+									class="btn btn-mini btn-info"
+									ng-bind="!Store.IsOwner && ('ShoppingCart.labelBuyTickets' | t) || 'Common.Text_TicketMenu_Tickets' | t"></a>
+								<button ui-if="Store.IsOwner" ng-click="deleteEvent(event)"
+									class="btn btn-mini btn-danger">{{
+									'Common.Text_Remove' | t }}</button>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>
-
-
-
-
-
-
-
-

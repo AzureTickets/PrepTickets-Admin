@@ -49,6 +49,7 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
         .getInstanceOf('Price');
     $scope.GeneralAdmissionTicketItemInfo.Price.Currency = $scope.Store.Currency;
     delete $scope.GeneralAdmissionTicketItemInfo.Price.Display;
+    delete $scope.GeneralAdmissionTicketItemInfo.Price.Type;
 
     /**
      * We don't use 'tmp' prefix here so the property will be visible on atmodel
