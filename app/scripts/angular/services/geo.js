@@ -166,6 +166,7 @@ azureTicketsApp
                 createAddress : function(storeKey, address) {
                   var def = $q.defer();
 
+                  delete address.tmpHasChanged;
                   delete address.tmpContinentIso;
                   modelService.nonNull(address);
 
@@ -232,6 +233,7 @@ azureTicketsApp
                 updateAddress : function(address) {
                   var def = $q.defer();
 
+                  delete address.tmpHasChanged;
                   delete address.tmpContinentIso;
                   modelService.nonNull(address);
 
@@ -250,5 +252,4 @@ azureTicketsApp
                   return def.promise;
                 }
               }
-            }
-        ]);
+            } ]);

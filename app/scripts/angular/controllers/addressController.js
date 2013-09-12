@@ -1,6 +1,6 @@
 function addressController($scope) {
   $scope.countries = [], $scope.continents = [], $scope.regions = [],
-      $scope.timezones = [];
+      $scope.timezones = [], $scope.addressEditable = false;
 
   $scope.$on('loadCountry', function(ev, address) {
     $scope.loadCountry(address);
@@ -12,6 +12,10 @@ function addressController($scope) {
     }, function(err) {
       $scope.error.log(err)
     });
+  }
+
+  $scope.editAddress = function() {
+    $scope.addressEditable = !$scope.addressEditable;
   }
 
   $scope.loadCountriesByContinent = function(address, reset) {
@@ -34,9 +38,7 @@ function addressController($scope) {
       $scope.geo.getCountriesByContinent(continentIso).then(
           function(countries) {
             // prepend most used
-            var c = [
-                'CA', 'US', 'GB'
-            ];
+            var c = [ 'CA', 'US', 'GB' ];
             $scope.countries = $scope.object
                 .prioritizeSort(countries, c, 'ISO');
           }, function(err) {
@@ -115,6 +117,4 @@ function addressController($scope) {
   }
 }
 
-addressController.$inject = [
-  '$scope'
-];
+addressController.$inject = [ '$scope' ];

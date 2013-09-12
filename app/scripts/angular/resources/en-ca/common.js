@@ -49,6 +49,7 @@ var CommonResources = {
   Text_Save : 'Save',
   Text_SaveSettings : 'Save Settings',
   Text_Edit : 'Edit',
+  Text_DisableUpdate : 'Finish Editing',
   Text_Update : "Update",
   Text_Cancel : "Cancel",
   Text_Remove : "Remove",

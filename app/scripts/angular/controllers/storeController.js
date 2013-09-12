@@ -488,12 +488,32 @@ function storeController($scope, $cookieStore, $location, $timeout,
                   if (angular.isDefined(store.Key)) {
                     $scope.wizard.checkStep.store = true;
 
-                    $scope.geo.updateAddress($scope.Store.Address).then(
-                        _finishes, function(err) {
-                          $scope.wizard.address = false;
+                    // super admin can update existing address
+                    if ($scope.auth.isAdministrator()) {
+                      $scope.geo.updateAddress($scope.Store.Address).then(
+                          _finishes, function(err) {
+                            $scope.wizard.address = false;
 
-                          $scope.error.log(err)
-                        });
+                            $scope.error.log(err)
+                          });
+                    } else {
+                      // if regular admin, replace address
+                      // if it has no access, let's create a new one anyway
+                      var _replaceAddress = function() {
+                        delete $scope.Store.Address.Key;
+
+                        $scope.geo.createAddressForStore(store.Key,
+                            $scope.Store.Address).then(_finishes,
+                            function(err) {
+                              $scope.wizard.checkStep.address = false;
+
+                              $scope.error.log(err)
+                            });
+                      }
+                      $scope.geo.deleteAddress($scope.Store.Key,
+                          $scope.Store.Address.Key).then(_replaceAddress,
+                          _replaceAddress);
+                    }
                   }
                 },
                 function(err) {
@@ -530,14 +550,18 @@ function storeController($scope, $cookieStore, $location, $timeout,
           }
         }
 
-        // if the URI has not yet been set
+        // if the URI has not yet been set - which means this is the first time
+        // we
+        // edit
+        // the Store -
         if ($scope.tmpURI === null || $scope.tmpURI.length === 0) {
           if (angular.isDefined($scope.Store.URI)
               && $scope.Store.URI.length > 0) {
             $scope.store.addStoreURI($scope.Store.Key, $scope.Store.URI).then(
                 function() {
                   $scope.wizard.checkStep.uri = true;
-                  _updateStoreAddress(false);
+
+                  _updateStoreAddress();
                 },
                 function(err) {
                   $scope.wizard.checkStep.store = false,
@@ -550,6 +574,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
           }
         } else {
           $scope.wizard.checkStep.uri = true;
+
           _updateStoreAddress();
         }
       }
