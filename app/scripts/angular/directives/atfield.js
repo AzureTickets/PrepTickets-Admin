@@ -99,7 +99,7 @@ azureTicketsApp
                             + "').datetimepicker({timeFormat: 'hh:mm tt', onClose: "
                             + js + " });});");
 
-                    if ($attrs.uiDateFormat) {
+                    if (angular.isDefined($attrs.uiDateFormat)) {
                       _el.attr('ui-date-format', $attrs.uiDateFormat)
                     }
                   } else if (/^.*Enum(?=\b).*$/g.test(fieldType)) {

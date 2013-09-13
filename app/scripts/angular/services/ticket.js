@@ -24,6 +24,13 @@ azureTicketsApp
               }
 
               return {
+                getTickets : function() {
+                  return _tickets;
+                },
+                getTicket : function() {
+                  return modelService
+                      .getInstanceOf('GeneralAdmissionTicketItemInfo');
+                },
                 listTicketsAsync : function(storeKey, pages) {
                   var def = $q.defer();
 
@@ -47,15 +54,45 @@ azureTicketsApp
 
                   return def.promise;
                 },
-                getTickets : function() {
-                  return _tickets;
-                },
-                getTicket : function() {
-                  return modelService
-                      .getInstanceOf('GeneralAdmissionTicketItemInfo');
+                /**
+                 * To be used from any controller, so it updates the
+                 * $scope.tickets array without requiring us to do complex DI.
+                 * 
+                 * @param $scope
+                 *          Scope to refresh
+                 * @returns
+                 */
+                loadTickets : function($scope) {
+                  if (!_isTicketsLoading) {
+                    _isTicketsLoading = true;
+
+                    $scope.storeKey = $scope.storeKey
+                        || $cookieStore.get($scope.config.cookies.storeKey);
+                    var _this = this;
+
+                    _this.listTicketsAsync($scope.storeKey, 0).then(
+                        function() {
+                          $scope.tickets = _this.getTickets();
+
+                          if ($scope.tickets.length > 0) {
+                            angular.forEach($scope.tickets,
+                                function(ticket, i) {
+                                  _this.initTicket($scope.storeKey, ticket.Key)
+                                      .then(function(ticket) {
+                                        $scope.tickets[i] = ticket;
+                                      })
+                                });
+                          }
+
+                          _isTicketsLoading = false;
+                        }, function(err) {
+                          _isTicketsLoading = false;
+                          $scope.error.log(err)
+                        });
+                  }
                 },
                 initTicket : function(storeKey, ticketKey) {
-                  var def = $q.defer();
+                  var def = $q.defer(), _this = this;
 
                   BWL.Services.ModelService.ReadAsync(storeKey,
                       BWL.Model.GeneralAdmissionTicketItemInfo.Type, ticketKey,
@@ -79,9 +116,25 @@ azureTicketsApp
                             _ticket.Key, function(stats) {
                               _ticket.Stock = 0;
 
-                              $rootScope.$apply(function() {
-                                def.resolve(_ticket)
-                              });
+                              // initialize PricingTiers (if any)
+                              if (false
+                                  && angular.isDefined(_ticket.PricingTiers)
+                                  && _ticket.PricingTiers.length > 0) {
+                                _this.initPricingTiers(storeKey, _ticket).then(
+                                    function(updatedTicket) {
+                                      $rootScope.$apply(function() {
+                                        def.resolve(updatedTicket)
+                                      });
+                                    }, function(err) {
+                                      $rootScope.$apply(function() {
+                                        def.reject(err)
+                                      })
+                                    })
+                              } else {
+                                $rootScope.$apply(function() {
+                                  def.resolve(_ticket)
+                                });
+                              }
                             }, function(err) {
                               $rootScope.$apply(function() {
                                 def.reject(err)
@@ -96,6 +149,50 @@ azureTicketsApp
                           def.reject(err)
                         })
                       });
+
+                  return def.promise;
+                },
+                initPricingTiers : function(storeKey, ticket) {
+                  var def = $q.defer(), _this = this, ticketCopy = angular
+                      .copy(ticket);
+
+                  // get PricingTiers keys
+                  var pricingTiersKeys = ticket.PricingTiers.map(function(v) {
+                    return v.Key
+                  });
+
+                  // reset tiers
+                  ticketCopy.PricingTiers = [];
+
+                  // execute initTicket for each PricingTier's key
+                  $q.all(
+                      pricingTiersKeys.map(function(k) {
+                        var _def = $q.defer();
+
+                        _this.initTicket(storeKey, k).then(
+                            function(updatedPricingTier) {
+                              // replace PricingTier on parent's ticket
+                              ticketCopy.PricingTiers.push(updatedPricingTier);
+
+                              // $timeout(function() {
+                              _def.resolve();
+                              // }, 50);
+                            }, function(err) {
+                              $timeout(function() {
+                                _def.reject(err)
+                              }, 50);
+                            });
+
+                        return _def.promise;
+                      })).then(function() {
+                    // $timeout(function() {
+                    def.resolve(ticketCopy);
+                    // }, 150);
+                  }, function(err) {
+                    $timeout(function() {
+                      def.reject(err);
+                    }, 150);
+                  })
 
                   return def.promise;
                 },
@@ -161,43 +258,6 @@ azureTicketsApp
                       });
 
                   return def.promise;
-                },
-                /**
-                 * To be used from any controller, so it updates the
-                 * $scope.tickets array without requiring us to do complex DI.
-                 * 
-                 * @param $scope
-                 *          Scope to refresh
-                 * @returns
-                 */
-                loadTickets : function($scope) {
-                  if (!_isTicketsLoading) {
-                    _isTicketsLoading = true;
-
-                    $scope.storeKey = $scope.storeKey
-                        || $cookieStore.get($scope.config.cookies.storeKey);
-                    var _this = this;
-
-                    _this.listTicketsAsync($scope.storeKey, 0).then(
-                        function() {
-                          $scope.tickets = _this.getTickets();
-
-                          if ($scope.tickets.length > 0) {
-                            angular.forEach($scope.tickets,
-                                function(ticket, i) {
-                                  _this.initTicket($scope.storeKey, ticket.Key)
-                                      .then(function(ticket) {
-                                        $scope.tickets[i] = ticket;
-                                      })
-                                });
-                          }
-
-                          _isTicketsLoading = false;
-                        }, function(err) {
-                          _isTicketsLoading = false;
-                          $scope.error.log(err)
-                        });
-                  }
                 },
                 // @todo move to a new inventoryService and make it work with
                 // other item types.

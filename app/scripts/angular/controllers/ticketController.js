@@ -219,14 +219,17 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
             function() {
               // update stock (inventory)
               $scope.ticket.updateStock($scope.storeKey, $scope[ticketType])
-                  .then(function() {
-                    $scope.wizardTicket.saved = true;
+                  .then(
+                      function() {
+                        var wizardType = isPricingTier ? 'wizardPricingTier'
+                            : 'wizardTicket';
+                        $scope[wizardType].saved = true;
 
-                    // reload list
-                    $scope.init(false);
-                  }, function(err) {
-                    $scope.error.log(err)
-                  });
+                        // reload list
+                        $scope.init(false);
+                      }, function(err) {
+                        $scope.error.log(err)
+                      });
             }, function(err) {
               $scope.error.log(err)
             });
