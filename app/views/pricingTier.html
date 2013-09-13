@@ -1,0 +1,161 @@
+<div id="formPricingTier" class="modal form hide fade">
+	<div class="modal-header">
+		<button type="button" ng-click="wizardPricingTier.open = false"
+			class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>{{ 'Common.Text_PricingTier' | t}}</h3>
+	</div>
+	<div class="modal-body">
+		<!-- messages -->
+		<div ng-switch="wizardPricingTier.currentStep">
+			<div class="alert alert-info" ng-switch-when="2">
+				<strong>{{ 'Event.Text_DateInformation' | t }}</strong>
+			</div>
+			<div class="alert alert-info" ng-switch-when="3">
+				<strong>{{ 'Common.Text_QtyInformation' | t }}</strong>
+			</div>
+			<div class="alert alert-info" ng-switch-when="4">
+				<strong>{{ 'Common.Text_Confirm' | t }}</strong>
+			</div>
+		</div>
+		<div class="alert alert-success"
+			ui-if="wizardPricingTier.saved && wizardPricingTier.finished">
+			<strong>{{ 'Common.Text_Congrats' | t }}</strong> {{
+			'Common.Text_WizardComplete' | t }}
+		</div>
+
+		<!-- form -->
+		<ng-form ui-if="PricingTier" name="atPricingTier"
+			ng-submit="save(true)">
+		<form ui-if="wizardPricingTier.currentStep == 1" name="atPricingTier1"
+			ng-submit="wizardPricingTier.next('atPricingTier1')">
+			<dl class="clearfix">
+				<dd>
+					<atfield at-required class="input-xxlarge"
+						at-copy="GeneralAdmissionTicketItemInfo"
+						ng-model="PricingTier.Name" ng-change="setURI(true)"
+						label="'Common.Text_TicketName' | t" />
+				</dd>
+				<dd>
+					<atfield autocomplete="off" at-required ng-readonly="true"
+						class="input-xlarge" ng-model="PricingTier.URI"
+						at-copy="CustomURI" label="'Common.Text_CustomURI' | t"></atfield>
+				</dd>
+				<dd>
+					<atfield class="input-xxlarge"
+						at-copy="GeneralAdmissionTicketItemInfo"
+						ng-model="PricingTier.Policy" label="'Common.Text_Policy' | t"
+						rows="5" />
+				</dd>
+				<dd>
+					<input type="submit" class="btn btn-primary clear"
+						value="{{
+							'Common.Text_Next' | t }}" />
+				</dd>
+			</dl>
+		</form>
+		<form ui-if="wizardPricingTier.currentStep == 2" name="atPricingTier2"
+			ng-submit="wizardPricingTier.next('atPricingTier2')">
+			<dl>
+				<dd class="pull-left">
+					<atfield at-required class="input-large"
+						at-copy="GeneralAdmissionTicketItemInfo"
+						ng-model="PricingTier.OnSaleDateTimeStart"
+						label="'Common.LabelPricingTierOnSaleDateTimeStart' | t" />
+				</dd>
+				<dd class="pull-left">
+					<atfield at-required class="input-large"
+						at-copy="GeneralAdmissionTicketItemInfo"
+						ng-model="PricingTier.OnSaleDateTimeEnd"
+						label="'Common.LabelPricingTierOnSaleDateTimeEnd' | t" />
+				</dd>
+				<dd class="clear"></dd>
+				<dd class="pull-left">
+					<a ng-show="wizardPricingTier.currentStep>1"
+						ng-click="wizardPricingTier.currentStep = wizardPricingTier.currentStep-1"
+						class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
+				</dd>
+				<dd class="pull-left">
+					<input type="submit" class="btn btn-primary clear"
+						value="{{
+		 							'Common.Text_Next' | t }}" />
+				</dd>
+			</dl>
+		</form>
+		<form ng-show="wizardPricingTier.currentStep == 3"
+			name="atPricingTier3"
+			ng-submit="wizardPricingTier.next('atPricingTier3')">
+			<dl class="clearfix">
+				<dd class="clear">
+					<atfield class="input-small"
+						at-copy="GeneralAdmissionTicketItemInfo"
+						ng-model="PricingTier.MaxPurchaseQuantity" at-required
+						ng-pattern="/^\d+$/" tip="'Common.Text_TipMaxAllowed' | t" />
+				</dd>
+				<dd class="clear">
+					<label>{{'Common.LabelPricingTierStock' | t}} </label> <small
+						class="muted">{{ 'Common.Text_Inventory' | t }}:
+						{{PricingTier.NumberTotal}}</small>&nbsp;<small class="muted">{{
+						'Common.Text_Add' | t }}: {{PricingTier.Stock}}</small>&nbsp;<small
+						class="muted">{{ 'Common.Text_Total' | t }}: <b>{{PricingTier.Stock
+							+ PricingTier.NumberTotal}}</b></small>
+					<div class="clear" ui-jq="slider"
+						ui-options="{slide: updatePricingTierStock, step: 25, value:0, max: 500}"></div>
+				</dd>
+				<dd class="clear">
+					<atfield class="input-small" ng-model="PricingTier.Price.ItemPrice"
+						at-required ng-pattern="/^[\d\.\,]+$/" />
+				</dd>
+				<dd class="clear"></dd>
+				<dd class="pull-left">
+					<a ng-show="wizardPricingTier.currentStep>1"
+						ng-click="wizardPricingTier.currentStep = wizardPricingTier.currentStep-1"
+						class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
+				</dd>
+				<dd class="pull-left">
+					<input type="submit" class="btn btn-primary clear"
+						value="{{
+		 							'Common.Text_Next' | t }}" />
+				</dd>
+			</dl>
+		</form>
+		<form
+			ui-if="wizardPricingTier.currentStep == 4 && !wizardPricingTier.saved"
+			name="atPricingTier3"
+			ng-submit="wizardPricingTier.next('atPricingTier4', true)">
+			<dl>
+				<dd class="clear row-fluid">
+					<!-- ticket details -->
+					<atmodel ui-if="PricingTier" ng-model="PricingTier"
+						at-hide-props="NumberTotal,Fee,DateCreated,DateModified,StoreKey,InventoryKey,EventKey"></atmodel>
+				</dd>
+				<dd class="pull-left">
+					<a ng-show="wizardPricingTier.currentStep>1"
+						ng-click="wizardPricingTier.currentStep = wizardPricingTier.currentStep-1"
+						class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
+				</dd>
+				<dd class="pull-left">
+					<input type="submit" class="btn btn-success clear"
+						value="{{
+		 							'Common.Text_Save' | t }}" />
+				</dd>
+			</dl>
+		</form>
+		<dl ui-if="wizardPricingTier.finished" class="clearfix">
+			<dd class="pull-left">
+				<a
+					ng-show="wizardPricingTier.currentStep>1 && wizardPricingTier.saved"
+					ng-click="wizardPricingTier.currentStep = wizardPricingTier.currentStep-2; wizardPricingTier.finished = false; wizardPricingTier.saved = false"
+					class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
+			</dd>
+			<dd class="pull-left">
+				<a
+					ng-show="wizardPricingTier.currentStep>1 && wizardPricingTier.saved"
+					data-dismiss="modal" ng-click="wizardPricingTier.open = false"
+					class="btn btn-primary clear">{{ 'Common.Text_Close' | t }}</a>
+			</dd>
+		</dl>
+		</ng-form>
+	</div>
+	<div class="modal-footer"></div>
+</div>
+

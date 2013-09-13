@@ -1,0 +1,32 @@
+<div ng-include src="'views/pricingTier.html'"></div>
+<div ui-if="_parentTicket.PricingTiers" class="clear row-fluid list">
+	<div ng-show="_parentTicket.PricingTiers.length == 0"
+		class="alert alert-info">{{ 'Common.Text_parentTicketEmpty' | t
+		}}</div>
+	<!-- ticket list -->
+	<ul class="thumbnails" ui-if="_parentTicket.PricingTiers.length>0">
+		<li ng-repeat="_ticket in _parentTicket.PricingTiers" class="span4">
+			<div class="thumbnail">
+				<h4 class="pull-left">{{_ticket.Name}}</h4>
+				<div class="btn-group pull-right">
+					<button ui-if="Store.IsOwner" class="btn btn-mini btn-success"
+						ng-click="update(true, _ticket)">{{ 'Common.Text_Update'
+						| t }}</button>
+					<button ng-controller="cartController" ui-if="!Store.IsOwner"
+						class="btn btn-mini btn-success" ng-click="addToCart(_ticket)">
+						<i style="margin-top: 3px" class="icon-ok pull-left"
+							ui-if="_ticket.added && _ticket.added == true" ui-jq="fadeOut"
+							ui-options="{duration: 1000, complete:evAddItem(_ticket)}"></i>{{
+						'ShoppingCart.labelAddToCart' | t }}
+					</button>
+					<button ui-if="Store.IsOwner" ng-click="deleteTicket(_ticket)"
+						class="btn btn-mini btn-danger">{{ 'Common.Text_Remove' |
+						t }}</button>
+				</div>
+				<p class="clear">&nbsp;</p>
+				<span class="pull-right label label-info">{{
+					_ticket.Price.ItemPrice | currency }}</span>
+			</div>
+		</li>
+	</ul>
+</div>

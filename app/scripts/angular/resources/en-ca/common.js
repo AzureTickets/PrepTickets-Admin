@@ -87,6 +87,7 @@ var CommonResources = {
   Text_Previous : 'Previous',
   Text_Next : 'Next',
   Text_TrackList : 'Track List',
+  Text_AddPricingTier : 'Add Pricing Tier',
   Text_QtyInformation : 'Sale Information',
   Text_OutOfStock : 'Out of Stock',
   Text_Store_Catalog : 'Store Catalog',

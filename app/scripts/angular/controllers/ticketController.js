@@ -3,10 +3,20 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
 
   // initialize wizard for GeneralAdmissionTicketItemInfo
   $scope.wizardTicket = $scope.form.getWizard($scope);
+  $scope.wizardPricingTier = $scope.form.getWizard($scope);
 
   $scope.$watch('wizardTicket.open', function(v) {
     if (v) {
       $('#formTicket').modal({
+        show : true,
+        backdrop : 'static'
+      });
+    }
+  })
+
+  $scope.$watch('wizardPricingTier.open', function(v) {
+    if (v) {
+      $('#formPricingTier').modal({
         show : true,
         backdrop : 'static'
       });
@@ -33,32 +43,78 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
     return angular.isObject(t) && angular.equals(t.Key, ticket.Key);
   }
 
-  $scope.update = function(_ticket) {
-    $scope.GeneralAdmissionTicketItemInfo = angular.copy(_ticket);
-
-    $scope.wizardTicket.open = true;
-    $scope.wizardTicket.reset();
+  $scope.setURI = function(isPricingTier) {
+    var ticketType = isPricingTier ? 'PricingTier'
+        : BWL.Model.GeneralAdmissionTicketItemInfo.Type;
+    $scope[ticketType].URI = angular.lowercase($scope.Event.Name.replace(
+        /[^a-z0-9\-]{1,}/gi, '-')
+        + '/'
+        + (angular.isDefined($scope[ticketType].Name)
+            && $scope[ticketType].Name !== null ? $scope[ticketType].Name
+            .replace(/[^a-z0-9\-]{1,}/gi, '-') : ''));
   }
 
-  $scope.create = function() {
-    $scope.GeneralAdmissionTicketItemInfo = $scope.model
-        .getInstanceOf('GeneralAdmissionTicketItemInfo');
+  /**
+   * @param isPricingTier
+   *          This new ticket becomes a Pricing Tier
+   * @param ticket
+   *          Parent ticket which hols newly created Pricing Tier
+   */
+  $scope.update = function(isPricingTier, ticket) {
+    if (!isPricingTier) {
+      $scope.GeneralAdmissionTicketItemInfo = angular.copy(ticket);
+      $scope.wizardTicket.open = true;
+      $scope.wizardTicket.reset();
+    } else {
+      $scope.PricingTier = angular.copy(ticket);
+      $scope.wizardPricingTier.open = true;
+      $scope.wizardPricingTier.reset();
+    }
+  }
+
+  /**
+   * @param isPricingTier
+   *          This new ticket becomes a Pricing Tier
+   * @param ticket
+   *          Parent ticket which hols newly created Pricing Tier
+   */
+  $scope.create = function(isPricingTier, ticket) {
+    $scope.GeneralAdmissionTicketItemInfo = isPricingTier ? ticket
+        : $scope.model.getInstanceOf('GeneralAdmissionTicketItemInfo');
 
     // set defaults
-    $scope.GeneralAdmissionTicketItemInfo.Price = $scope.model
-        .getInstanceOf('Price');
-    $scope.GeneralAdmissionTicketItemInfo.Price.Currency = $scope.Store.Currency;
-    delete $scope.GeneralAdmissionTicketItemInfo.Price.Display;
-    delete $scope.GeneralAdmissionTicketItemInfo.Price.Type;
+    if (!isPricingTier) {
+      $scope.GeneralAdmissionTicketItemInfo.Price = $scope.model
+          .getInstanceOf('Price');
+      $scope.GeneralAdmissionTicketItemInfo.Price.Currency = $scope.Store.Currency;
+      delete $scope.GeneralAdmissionTicketItemInfo.Price.Display;
+      delete $scope.GeneralAdmissionTicketItemInfo.Price.Type;
 
-    /**
-     * We don't use 'tmp' prefix here so the property will be visible on atmodel
-     * display.
-     */
-    $scope.GeneralAdmissionTicketItemInfo.Stock = 0;
+      /**
+       * We don't use 'tmp' prefix here so the property will be visible on
+       * atmodel display.
+       */
+      $scope.GeneralAdmissionTicketItemInfo.Stock = 0;
 
-    $scope.wizardTicket.open = true;
-    $scope.wizardTicket.reset();
+      $scope.wizardTicket.open = true;
+      $scope.wizardTicket.reset();
+    } else {
+      $scope.PricingTier = angular.copy(ticket);
+      $scope.PricingTier.Key = null;
+      $scope.PricingTier.Name = $scope.PricingTier.Name
+          + ' #'
+          + (angular.isDefined($scope.PricingTier.PricingTiers) ? $scope.PricingTier.PricingTiers.length + 1
+              : 1);
+
+      delete $scope.PricingTier.Price.Display;
+      delete $scope.PricingTier.Price.Type;
+      delete $scope.PricingTier.PricingTiers;
+
+      $scope.GeneralAdmissionTicketItemInfo.Stock = 0;
+
+      $scope.wizardPricingTier.open = true;
+      $scope.wizardPricingTier.reset();
+    }
   }
 
   $scope.deleteTicket = function(ticket) {
@@ -71,81 +127,106 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
     }
   }
 
-  $scope.updateItemStock = function(ev, ui) {
+  $scope.updateTicketStock = function(ev, ui) {
     $scope.$apply(function() {
       $scope.GeneralAdmissionTicketItemInfo.Stock = ui.value
     });
   }
 
-  $scope.save = function() {
-    if ($scope.wizardTicket.finished) {
+  $scope.updatePricingTierStock = function(ev, ui) {
+    $scope.$apply(function() {
+      $scope.PricingTier.Stock = ui.value
+    });
+  }
+
+  $scope.save = function(isPricingTier) {
+    if ((!isPricingTier && $scope.wizardTicket.finished)
+        || (isPricingTier && $scope.wizardPricingTier.finished)) {
       $scope.wizardTicket.saved = false;
+      $scope.wizardPricingTier.saved = false;
+
+      var ticketType = isPricingTier ? 'PricingTier'
+          : BWL.Model.GeneralAdmissionTicketItemInfo.Type;
 
       // format price
-      if (angular.isDefined($scope.GeneralAdmissionTicketItemInfo.Price)) {
-        $scope.GeneralAdmissionTicketItemInfo.Price.ItemPrice = parseFloat($scope.GeneralAdmissionTicketItemInfo.Price.ItemPrice);
-      }
+      $scope[ticketType].Price.ItemPrice = parseFloat($scope[ticketType].Price.ItemPrice);
 
-      if ($scope.GeneralAdmissionTicketItemInfo.Key === null) {
+      if ($scope[ticketType].Key === null) {
         // go on and create
-        $scope.ticket
-            .createTicket(
-                $scope.storeKey,
-                {
-                  Public : true,
-                  Name : $scope.GeneralAdmissionTicketItemInfo.Name,
-                  Policy : $scope.GeneralAdmissionTicketItemInfo.Policy,
-                  Price : $scope.GeneralAdmissionTicketItemInfo.Price,
-                  MaxPurchaseQuantity : $scope.GeneralAdmissionTicketItemInfo.MaxPurchaseQuantity,
-                  OnSaleDateTimeStart : $scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeStart,
-                  OnSaleDateTimeEnd : $scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeEnd
-                }).then(
-                function(ticketKey) {
-                  // attach ticket to current event
-                  $scope.event.addTicket($scope.storeKey, $scope.Event,
-                      ticketKey).then(
-                      function() {
-                        $scope.GeneralAdmissionTicketItemInfo.Key = ticketKey;
+        $scope.ticket.createTicket($scope.storeKey, {
+          Public : true,
+          Name : $scope[ticketType].Name,
+          Policy : $scope[ticketType].Policy,
+          Price : $scope[ticketType].Price,
+          MaxPurchaseQuantity : $scope[ticketType].MaxPurchaseQuantity,
+          OnSaleDateTimeStart : $scope[ticketType].OnSaleDateTimeStart,
+          OnSaleDateTimeEnd : $scope[ticketType].OnSaleDateTimeEnd,
+          CustomURI : {
+            URI : $scope[ticketType].URI
+          },
+        }).then(
+            function(ticketKey) {
+              if (!isPricingTier) {
+                // attach ticket to current event
+                $scope.event
+                    .addTicket($scope.storeKey, $scope.Event, ticketKey).then(
+                        function() {
+                          $scope[ticketType].Key = ticketKey;
 
-                        // update stock (inventory)
-                        $scope.ticket.updateStock($scope.storeKey,
-                            $scope.GeneralAdmissionTicketItemInfo).then(
-                            function() {
-                              $scope.wizardTicket.saved = true;
+                          // update stock (inventory)
+                          $scope.ticket.updateStock($scope.storeKey,
+                              $scope[ticketType]).then(
+                              function() {
+                                $scope.wizardTicket.saved = true;
 
-                              // refresh Event.Items
-                              $scope.event.initEvent($scope.storeKey,
-                                  $scope.Event.Key).then(function(event) {
-                                $scope.Event = event;
-                                // reload list
-                                $scope.init(false);
+                                // refresh Event.Items
+                                $scope.event.initEvent($scope.storeKey,
+                                    $scope.Event.Key).then(function(event) {
+                                  $scope.Event = event;
+                                  // reload list
+                                  $scope.init(false);
+                                }, function(err) {
+                                  $scope.error.log(err)
+                                })
                               }, function(err) {
                                 $scope.error.log(err)
-                              })
-                            }, function(err) {
-                              $scope.error.log(err)
-                            });
-                      }, function(err) {
-                        $scope.error.log(err)
-                      });
-                }, function(err) {
-                  $scope.error.log(err)
-                });
+                              });
+                        }, function(err) {
+                          $scope.error.log(err)
+                        });
+              } else {
+                // add PricingTier to parent ticket
+                BWL.Services.ModelService.AddAsync($scope.Store.Key,
+                    BWL.Model.GeneralAdmissionTicketItemInfo.Type,
+                    $scope.GeneralAdmissionTicketItemInfo.Key, 'PricingTiers',
+                    BWL.Model.GeneralAdmissionTicketItemInfo.Type, {
+                      Key : ticketKey
+                    }, function(ret) {
+                      $scope.wizardPricingTier.saved = true;
+
+                      // reload list
+                      $scope.init(false);
+                    }, function(err) {
+                      $scope.error.log(err)
+                    });
+              }
+            }, function(err) {
+              $scope.error.log(err)
+            });
       } else {
         // update ticket
-        $scope.ticket.updateTicket($scope.storeKey,
-            $scope.GeneralAdmissionTicketItemInfo).then(
+        $scope.ticket.updateTicket($scope.storeKey, $scope[ticketType]).then(
             function() {
               // update stock (inventory)
-              $scope.ticket.updateStock($scope.storeKey,
-                  $scope.GeneralAdmissionTicketItemInfo).then(function() {
-                $scope.wizardTicket.saved = true;
+              $scope.ticket.updateStock($scope.storeKey, $scope[ticketType])
+                  .then(function() {
+                    $scope.wizardTicket.saved = true;
 
-                // reload list
-                $scope.init(false);
-              }, function(err) {
-                $scope.error.log(err)
-              });
+                    // reload list
+                    $scope.init(false);
+                  }, function(err) {
+                    $scope.error.log(err)
+                  });
             }, function(err) {
               $scope.error.log(err)
             });
@@ -154,6 +235,5 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
   }
 }
 
-ticketController.$inject = [
-    '$scope', '$cookieStore', '$filter', '$routeParams', '$timeout'
-];
+ticketController.$inject = [ '$scope', '$cookieStore', '$filter',
+    '$routeParams', '$timeout' ];

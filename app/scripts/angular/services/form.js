@@ -58,24 +58,14 @@ azureTicketsApp.factory('formService',
             return _validationErrors;
           }
 
-          return {
+          var _wizard = {
+            open : false,
             currentStep : 0,
             checkStep : {
 
             },
             finished : false,
             saved : false,
-            /**
-             * Initializes a new instance of a wizard on the scope defined by
-             * first param. Must be called prior to using any of this service's
-             * methods.
-             * 
-             * @param $scope
-             * @returns
-             */
-            getWizard : function($scope) {
-              return this;
-            },
             /**
              * Validates form given by 1st param and continue to next step if
              * success.
@@ -119,6 +109,20 @@ azureTicketsApp.factory('formService',
             reset : function(step) {
               this.currentStep = angular.isDefined(step) ? step : 1;
               this.finished = false, this.saved = false, checkStep = {};
+            }
+          }
+
+          return {
+            /**
+             * Initializes a new instance of a wizard on the scope defined by
+             * first param. Must be called prior to using any of this service's
+             * methods.
+             * 
+             * @param $scope
+             * @returns
+             */
+            getWizard : function($scope) {
+              return angular.copy(_wizard);
             }
           }
         } ]);

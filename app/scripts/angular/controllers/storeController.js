@@ -209,8 +209,8 @@ function storeController($scope, $cookieStore, $location, $timeout,
     }
 
     $scope.Store.URI = angular.isDefined($scope.Store.URI)
-        || $scope.Store.URI.length === 0 ? $scope.Store.URI : null,
-        $scope.URIAvailable = true;
+        || $scope.Store.URI.length === 0 ? $scope.Store.URI : null;
+    $scope.URIAvailable = true;
 
     // suggest URIs
     $scope.$watch('Store.URI', function(uri, oldUri) {
