@@ -1,0 +1,13 @@
+<div id="formMediaPreview" class="modal form hide fade">
+	<div class="modal-header">
+		<button type="button" ng-click="mediaPreview.open = false"
+			class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<p>&nbsp;</p>
+	</div>
+	<div class="modal-body">
+		<img ui-if="Image || false"
+			ng-src="{{Image.BaseURL}}{{Image.ImageFile}}"
+			ng-style="{'max-width': (config.media.imagePreview.maxW+'px')}" />
+	</div>
+	<div class="modal-footer"></div>
+</div>

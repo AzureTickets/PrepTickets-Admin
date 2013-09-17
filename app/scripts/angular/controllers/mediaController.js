@@ -1,7 +1,18 @@
 function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout) {
   $scope.name = 'media';
 
-  $scope.wizardMedia = $scope.form.getWizard($scope);
+  $scope.wizardMedia = $scope.form.getWizard($scope), $scope.mediaPreview = {
+    open : false
+  };
+
+  $scope.$watch('mediaPreview.open', function(v) {
+    if (v) {
+      $('#formMediaPreview').modal({
+        show : true,
+        backdrop : 'static'
+      });
+    }
+  })
 
   $scope.$watch('wizardMedia.open', function(v) {
     if (v) {
@@ -12,6 +23,13 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout) 
     }
   })
 
+  $scope.previewMedia = function(media) {
+    if (media.Type === BWL.Model.Image.Type) {
+      $scope.Image = media;
+      $scope.mediaPreview.open = true;
+    }
+  }
+
   $scope.create = function() {
     $scope.wizardMedia.open = true;
     $scope.wizardMedia.reset();
@@ -20,6 +38,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout) 
   $scope.onImageUpload = function(files) {
     $scope.$apply(function() {
       $scope.init();
+      $scope.wizardMedia.open = false;
     })
   }
   $scope.onError = function(err) {

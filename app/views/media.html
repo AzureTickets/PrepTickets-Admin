@@ -40,9 +40,11 @@
 								ng-init="media.createUploader(Store.Key,onImageUpload,onError)"></div>
 						</dd>
 						<dd>
-							<input type="submit" class="btn btn-primary clear"
+							<input ui-if="false" type="submit" class="btn btn-primary clear"
 								value="{{
-							'Common.Text_Next' | t }}" />
+							'Common.Text_Next' | t }}" /> <a
+								data-dismiss="modal" ng-click="wizardMedia.open = false"
+								class="btn btn-primary clear">{{ 'Common.Text_Close' | t }}</a>
 						</dd>
 					</dl>
 				</form>

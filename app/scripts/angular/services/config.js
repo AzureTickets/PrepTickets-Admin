@@ -21,6 +21,12 @@ azureTicketsApp.factory('configService', function() {
     },
     api : {
       stockLimit : 500
+    },
+    media : {
+      imagePreview : {
+        maxW : 1024,
+        maxH : 768
+      }
     }
   }
 });
