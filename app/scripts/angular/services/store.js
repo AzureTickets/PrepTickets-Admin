@@ -9,7 +9,7 @@ azureTicketsApp
             'configService',
             'geoService',
             function($q, $rootScope, modelService, configService, geoService) {
-              var _stores = [], _lastAvailableURI = null;
+              var _stores = [], _lastAvailableURI = null, _lastCheckedURI = null;
 
               return {
                 listStoresAsync : function(levels) {
@@ -50,21 +50,30 @@ azureTicketsApp
                 getStoreKeyByURI : function(uri) {
                   var def = $q.defer();
 
-                  BWL.Services.StoreService.FindStoreKeyFromCustomURIAsync(uri,
-                      function(storeKey) {
-                        if (!angular.isDefined(storeKey)
-                            || storeKey.trim() === '') {
-                          _lastAvailableURI = uri;
-                        }
+                  // avoid repeated lookups
+                  if (uri === _lastCheckedURI) {
+                    $rootScope.$apply(function() {
+                      def.resolve(null);
+                    })
+                  } else {
+                    _lastCheckedURI = uri;
 
-                        $rootScope.$apply(function() {
-                          def.resolve(storeKey);
-                        })
-                      }, function(err) {
-                        $rootScope.$apply(function() {
-                          def.reject(err)
-                        })
-                      });
+                    BWL.Services.StoreService.FindStoreKeyFromCustomURIAsync(
+                        uri, function(storeKey) {
+                          if (!angular.isDefined(storeKey)
+                              || storeKey.trim() === '') {
+                            _lastAvailableURI = uri;
+                          }
+
+                          $rootScope.$apply(function() {
+                            def.resolve(storeKey);
+                          })
+                        }, function(err) {
+                          $rootScope.$apply(function() {
+                            def.reject(err)
+                          })
+                        });
+                  }
 
                   return def.promise;
                 },

@@ -16,7 +16,8 @@ function storeController($scope, $cookieStore, $location, $timeout,
       $scope.event = eventService, $scope.place = placeService,
       $scope.store = storeService, $scope.order = orderService,
       $scope.ticket = ticketService, $scope.cart = cartService,
-      $scope.account = accountService, $scope.enums = BWL.ModelEnum;
+      $scope.account = accountService, $scope.enums = BWL.ModelEnum,
+      $scope.storeHasChanged = false;
 
   // this is used to contain object selection made from child scopes created by
   // ng-include
@@ -218,7 +219,8 @@ function storeController($scope, $cookieStore, $location, $timeout,
         return;
       }
 
-      if (angular.equals(uri, oldUri)) {
+      // checks for no change or if URI is already set
+      if (angular.equals(uri, oldUri) || tmpURI) {
         return;
       }
 
@@ -246,6 +248,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
     // here $watch is not being triggered, so we later call initStore manually
     if ($scope.storeKey !== key) {
       $scope.storeKey = key;
+      $scope.storeHasChanged = true;
     }
 
     $scope.wizard.reset();
@@ -321,6 +324,8 @@ function storeController($scope, $cookieStore, $location, $timeout,
                     $scope.stores.push($scope.Store);
                   }
                 }
+
+                $scope.storeHasChanged = false;
               }, function(err) {
                 $scope.error.log(err)
               });
