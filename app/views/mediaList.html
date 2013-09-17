@@ -1,0 +1,35 @@
+<div class="clear row-fluid list">
+	<!-- images list -->
+	<div class="widget wviolet">
+		<div class="widget-head">
+			<div class="pull-left">{{ 'Common.Text_Images' | t }}</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="widget-content">
+			<div ng-show="images.length == 0" class="alert alert-info">{{
+				'Common.Text_NoImages_Msg' | t }}</div>
+			<table class="table  table-bordered " ng-show="images.length > 0">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>{{ 'Common.Text_Preview' | t}}</th>
+						<th>{{ 'Common.Text_Control' | t}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="image in images">
+						<td>{{ $index+1 }}</td>
+						<td><img ng-src="{{image.BaseURL}}{{image.ThumbFile}}" /></td>
+						<td>
+							<div class="btn-group pull-left">
+								<button ui-if="Store.IsOwner" ng-click="deleteImage(image)"
+									class="btn btn-mini btn-danger">{{
+									'Common.Text_Remove' | t }}</button>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

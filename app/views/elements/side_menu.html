@@ -42,7 +42,11 @@
 					<li ng-repeat="s in stores"><a ui-if="s.IsOwner"
 						ng-click="setStoreKey(s.Key)" href="#/store">{{s.Name}}</a></li>
 				</ul></li>
-
+			<li class="nblue"
+				ui-if="Store && Store.Key != null && Store.IsOwner || false"
+				ui-route="#/media" ng-class="{active: $uiRoute}"><a
+				href="#/media"><i class="icon-picture"></i>{{
+					'Common.Text_MediaLibraryMenu_MediaLibrary' | t }}</a></li>
 			<li class="norange"
 				ui-if="Store && Store.Key != null && Store.IsOwner || false"
 				ui-route="#/venue" ng-class="{active: $uiRoute}"><a

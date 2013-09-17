@@ -134,6 +134,10 @@ azureTicketsApp.config([
         templateUrl : 'views/order.html',
         controller : orderController,
         resolve : routeFilters
+      }).when('/media', {
+        templateUrl : 'views/media.html',
+        controller : mediaController,
+        resolve : routeFilters
       }).when('/dashboard', {
         redirectTo : '/'
       });

@@ -14,6 +14,7 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
     }
   })
 
+  // @todo implement angular-ui-bootstrap
   $scope.$watch('wizardPricingTier.open', function(v) {
     if (v) {
       $('#formPricingTier').modal({

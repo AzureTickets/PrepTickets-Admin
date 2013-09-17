@@ -336,9 +336,9 @@ azureTicketsApp
                   if (!_isEventsLoading) {
                     _isEventsLoading = true;
 
-                    $scope.storeKey = $scope.storeKey
-                        || $cookieStore.get($scope.config.cookies.storeKey),
-                        __this = this;
+                    $scope.storeKey = ($scope.storeKey || $cookieStore
+                        .get($scope.config.cookies.storeKey));
+                    __this = this;
 
                     __this.listEventsAsync($scope.storeKey, 0).then(
                         function() {

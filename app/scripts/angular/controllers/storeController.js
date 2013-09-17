@@ -2,21 +2,22 @@ function storeController($scope, $cookieStore, $location, $timeout,
     $routeParams, configService, authService, permService, storeService,
     modelService, errorService, geoService, formService, objectService,
     placeService, orderService, eventService, ticketService, cartService,
-    accountService) {
+    accountService, mediaService) {
   /**
    * The following vars are shared across controllers and accessible via $scope
    */
   $scope.storeKey = null, $scope.config = configService, $scope.name = 'store',
       $scope.stores = [], $scope.venues = [], $scope.events = [],
       $scope.tickets = [], $scope.orders = [], $scope.currencies = [],
-      $scope.paymentProviders = [], $scope.suggestedURLs = [],
-      $scope.form = formService, $scope.geo = geoService,
-      $scope.error = errorService, $scope.object = objectService,
-      $scope.auth = authService, $scope.model = modelService,
-      $scope.event = eventService, $scope.place = placeService,
-      $scope.store = storeService, $scope.order = orderService,
-      $scope.ticket = ticketService, $scope.cart = cartService,
-      $scope.account = accountService, $scope.enums = BWL.ModelEnum,
+      $scope.images = [], $scope.paymentProviders = [],
+      $scope.suggestedURLs = [], $scope.form = formService,
+      $scope.geo = geoService, $scope.error = errorService,
+      $scope.object = objectService, $scope.auth = authService,
+      $scope.model = modelService, $scope.event = eventService,
+      $scope.place = placeService, $scope.store = storeService,
+      $scope.order = orderService, $scope.ticket = ticketService,
+      $scope.cart = cartService, $scope.account = accountService,
+      $scope.media = mediaService, $scope.enums = BWL.ModelEnum,
       $scope.storeHasChanged = false;
 
   // this is used to contain object selection made from child scopes created by
@@ -220,7 +221,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
       }
 
       // checks for no change or if URI is already set
-      if (angular.equals(uri, oldUri) || tmpURI) {
+      if (angular.equals(uri, oldUri) || $scope.tmpURI) {
         return;
       }
 
@@ -591,4 +592,5 @@ storeController.$inject = [ '$scope', '$cookieStore', '$location', '$timeout',
     '$routeParams', 'configService', 'authService', 'permService',
     'storeService', 'modelService', 'errorService', 'geoService',
     'formService', 'objectService', 'placeService', 'orderService',
-    'eventService', 'ticketService', 'cartService', 'accountService' ];
+    'eventService', 'ticketService', 'cartService', 'accountService',
+    'mediaService' ];

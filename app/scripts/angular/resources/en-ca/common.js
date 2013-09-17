@@ -145,6 +145,7 @@ var CommonResources = {
   Text_StoreMenu_PaymentProvider : 'Payment Providers',
   Text_StoreMenu_AddPaymentProvider : 'Add Payment Providers',
   Text_MediaLibraryMenu_MediaLibrary : 'Media',
+  Text_EventMenu_CreateMedia : 'Create Media',
   Text_ProfileMenu_Profiles : 'Profiles',
   Text_ProfileMenu_CreateProfile : 'Create Profile',
   Text_EventMenu_Events : 'Events',
