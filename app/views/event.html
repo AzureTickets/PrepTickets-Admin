@@ -53,7 +53,12 @@
 					<dl class="clearfix">
 						<dd>
 							<atfield at-required class="input-xxlarge" ng-model="Event.Name"
-								label="'Common.Text_EventName' | t" />
+								label="'Common.Text_EventName' | t" ng-change="setURI()" />
+						</dd>
+						<dd>
+							<atfield autocomplete="off" at-required ng-readonly="true"
+								class="input-xlarge" ng-model="Event.URI" at-copy="CustomURI"
+								label="'Common.Text_CustomURI' | t"></atfield>
 						</dd>
 						<dd>
 							<atfield class="input-xxlarge" ng-model="Event.Description"

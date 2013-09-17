@@ -18,7 +18,7 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
     if (v) {
       $('#formPricingTier').modal({
         show : true,
-        backdrop : 'static'
+        backdrop : false
       });
     }
   })

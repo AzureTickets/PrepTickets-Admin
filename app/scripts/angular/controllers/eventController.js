@@ -17,6 +17,11 @@ function eventController($scope, $cookieStore, $filter) {
     $scope.event.loadEvents($scope);
   }
 
+  $scope.setURI = function() {
+    $scope.Event.URI = $scope.Event.Name !== null ? angular
+        .lowercase($scope.Event.Name.replace(/[^a-z0-9\-]{1,}/gi, '-')) : '';
+  }
+
   $scope.update = function(_event) {
     $scope.Event = angular.copy(_event);
     $scope.wizardEvent.open = true;
@@ -104,7 +109,10 @@ function eventController($scope, $cookieStore, $filter) {
           StartTime : $scope.Event.StartTime,
           EndTime : $scope.Event.EndTime,
           OnSaleDateTimeStart : $scope.Event.OnSaleDateTimeStart,
-          OnSaleDateTimeEnd : $scope.Event.OnSaleDateTimeEnd
+          OnSaleDateTimeEnd : $scope.Event.OnSaleDateTimeEnd,
+          CustomURI : {
+            URI : $scope.Event.URI
+          },
         }).then(function(eventKey) {
           // attach event to store
           $scope.store.addEvent($scope.storeKey, eventKey).then(function() {
