@@ -80,6 +80,10 @@ azureTicketsApp
                                   _this.initTicket($scope.storeKey, ticket.Key)
                                       .then(function(ticket) {
                                         $scope.tickets[i] = ticket;
+
+                                        if (!$scope.$$phase) {
+                                          $scope.$apply();
+                                        }
                                       })
                                 });
                           }
