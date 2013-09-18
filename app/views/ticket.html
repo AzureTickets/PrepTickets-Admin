@@ -1,28 +1,9 @@
 <div class="atPanel" ui-if="DomainProfile && DomainProfile.Key || false"
 	ng-controller="ticketController" ng-cloak>
-	<!-- top menu -->
-	<div ng-include src="'views/elements/error.html'"></div>
-	<!-- ticket info -->
-	<div ui-if="Store && Store.Key && events && events.length > 0 || false"
-		class="row-fluid" ng-init="init()">
-		<ul class="breadcrumb">
-			<li><a
-				ng-href="/#/{{Store.IsOwner && 'event' || 'store/' + storeURI}}">{{
-					'Common.Text_EventMenu_Events' | t}}</a> <span class="divider">/</span></li>
-			<li class="active">{{ Event.Name }}</li>
-		</ul>
-
-		<p class="lead pull-left">{{ 'Common.Text_TicketMenu_Tickets' |
-			t}}</p>
-		<div class="btn-group pull-right">
-			<button ui-if="Store.IsOwner" class="btn btn-info"
-				ng-click="create(false)">{{
-				'Common.Text_TicketMenu_CreateTicket' | t }}</button>
-		</div>
-		<div id="formTicket" class="modal form hide fade">
+	<script type="text/ng-template" id="formTicket.html">
 			<div class="modal-header">
 				<button type="button" ng-click="wizardTicket.open = false"
-					class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					class="close">&times;</button>
 				<h3>{{ 'Common.Text_Ticket' | t}}</h3>
 			</div>
 			<div class="modal-body">
@@ -166,13 +147,35 @@
 					</dd>
 					<dd class="pull-left">
 						<a ng-show="wizardTicket.currentStep>1 && wizardTicket.saved"
-							data-dismiss="modal" ng-click="wizardTicket.open = false"
+							ng-click="wizardTicket.open = false"
 							class="btn btn-primary clear">{{ 'Common.Text_Close' | t }}</a>
 					</dd>
 				</dl>
 				</ng-form>
 			</div>
 			<div class="modal-footer"></div>
+	</script>
+	<!-- top menu -->
+	<div ng-include src="'views/elements/error.html'"></div>
+	<!-- ticket info -->
+	<div ui-if="Store && Store.Key && events && events.length > 0 || false"
+		class="row-fluid" ng-init="init()">
+		<ul class="breadcrumb">
+			<li><a
+				ng-href="/#/{{Store.IsOwner && 'event' || 'store/' + storeURI}}">{{
+					'Common.Text_EventMenu_Events' | t}}</a> <span class="divider">/</span></li>
+			<li class="active">{{ Event.Name }}</li>
+		</ul>
+
+		<p class="lead pull-left">{{ 'Common.Text_TicketMenu_Tickets' |
+			t}}</p>
+		<div class="btn-group pull-right">
+			<button ui-if="Store.IsOwner" class="btn btn-info"
+				ng-click="create(false)">{{
+				'Common.Text_TicketMenu_CreateTicket' | t }}</button>
+		</div>
+		<div id="formTicket" class="modal form hide fade">
+
 		</div>
 		<div ng-include src="'views/ticketList.html'"></div>
 	</div>

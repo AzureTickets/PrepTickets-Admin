@@ -1,19 +1,9 @@
 <div class="atPanel" ui-if="DomainProfile && DomainProfile.Key || false"
 	ng-controller="mediaController" ng-cloak>
-	<!-- top menu -->
-	<div ng-include src="'views/elements/error.html'"></div>
-	<!-- event info -->
-	<div ui-if="Store && Store.Key || false" class="row-fluid">
-		<h3 class="pull-left">{{ 'Common.Text_Media' | t}}</h3>
-		<div class="btn-group pull-right">
-			<button class="btn btn-info" ng-click="create()">{{
-				'Common.Text_EventMenu_CreateMedia' | t }}</button>
-		</div>
-		<div class="clearfix"></div>
-		<div id="formMedia" class="modal form hide fade">
+	<script type="text/ng-template" id="formMedia.html">
 			<div class="modal-header">
 				<button type="button" ng-click="wizardMedia.open = false"
-					class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					class="close">&times;</button>
 				<h3>
 					<p class="text-info">{{ 'Common.Text_Images' | t}}</p>
 				</h3>
@@ -39,31 +29,22 @@
 							<div id="uploader" class="clearfix"
 								ng-init="media.createUploader(Store.Key,onImageUpload,onError)"></div>
 						</dd>
-						<dd>
-							<input ui-if="false" type="submit" class="btn btn-primary clear"
-								value="{{
-							'Common.Text_Next' | t }}" /> <a
-								data-dismiss="modal" ng-click="wizardMedia.open = false"
-								class="btn btn-primary clear">{{ 'Common.Text_Close' | t }}</a>
-						</dd>
 					</dl>
 				</form>
-				<dl ui-if="wizardMedia.finished" class="clearfix">
-					<dd class="pull-left">
-						<a ng-show="wizardMedia.currentStep>1 && wizardMedia.saved"
-							ng-click="wizardMedia.currentStep = wizardMedia.currentStep-2; wizardMedia.finished = false; wizardMedia.saved = false"
-							class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
-					</dd>
-					<dd class="pull-left">
-						<a ng-show="wizardMedia.currentStep>1 && wizardMedia.saved"
-							data-dismiss="modal" ng-click="wizardMedia.open = false"
-							class="btn btn-primary clear">{{ 'Common.Text_Close' | t }}</a>
-					</dd>
-				</dl>
 				</ng-form>
 			</div>
 			<div class="modal-footer"></div>
+	</script>
+	<!-- top menu -->
+	<div ng-include src="'views/elements/error.html'"></div>
+	<!-- event info -->
+	<div ui-if="Store && Store.Key || false" class="row-fluid">
+		<h3 class="pull-left">{{ 'Common.Text_Media' | t}}</h3>
+		<div class="btn-group pull-right">
+			<button class="btn btn-info" ng-click="create()">{{
+				'Common.Text_EventMenu_CreateMedia' | t }}</button>
 		</div>
+		<div class="clearfix"></div>
 		<div onload="init()" ng-include src="'views/mediaList.html'"></div>
 	</div>
 </div>

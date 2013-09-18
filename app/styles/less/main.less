@@ -38,12 +38,27 @@ body {
 				top: -4px
 			}
 		}
+	}
 
-		#formMedia {
+	.modal {
+		top: 2% ! important;
+		position: absolute;
+		width:auto;
+		.modal-header {
+			padding-top: 7px;
+			padding-bottom: 7px;
+		}
+
+		.modal-agreement {
+			max-height: 350px
+		}
+
+		.modal-body {
+			max-height: none;
 			#uploader {
 				iframe {
-					width: 630px;
-					height: 335px;
+					width: 510px;
+					height: 328px;
 					overflow: hidden;
 				}
 			}
@@ -325,11 +340,6 @@ body {
 
 	.violet {
 		color: #932ab6 ! important;
-	}
-
-	.modal-header {
-		padding-top: 7px;
-		padding-bottom: 7px;
 	}
 
 	form {
@@ -1281,18 +1291,6 @@ body {
 
 		[class ^= "icon-"] , [class *= " icon-"] {
 			background-image: url("../components/bootstrap/img/glyphicons-halflings.png");
-		}
-
-		.modal {
-			top: 2% ! important;
-			position: absolute;
-			.modal-body {
-				max-height: none
-			}
-
-			.modal-agreement {
-				max-height: 350px
-			}
 		}
 
 		atmodel {

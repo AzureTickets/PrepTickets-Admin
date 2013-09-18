@@ -1,28 +1,9 @@
 <div class="atPanel" ui-if="DomainProfile && DomainProfile.Key || false"
 	ng-controller="eventController" ng-cloak>
-	<!-- top menu -->
-	<div ng-include src="'views/elements/error.html'"></div>
-	<!-- event info -->
-	<div ui-if="Store && Store.Key && venues && venues.length > 0 || false"
-		class="row-fluid">
-
-
-		<!--<p class="lead pull-left">{{ 'Common.Text_EventMenu_Events' | t}}</p>-->
-		<h3 class="pull-left">{{ 'Common.Text_EventMenu_Events' | t}}</h3>
-
-
-		<div class="btn-group pull-right">
-			<button class="btn btn-info" ng-click="create()">{{
-				'Common.Text_EventMenu_CreateEvent' | t }}</button>
-		</div>
-		<div class="clearfix"></div>
-
-
-
-		<div id="formEvent" class="modal form hide fade">
+	<script type="text/ng-template" id="formEvent.html">
 			<div class="modal-header">
 				<button type="button" ng-click="wizardEvent.open = false"
-					class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					class="close">&times;</button>
 				<h3>
 					<p class="text-info">{{ 'Common.Text_Event' | t}}</p>
 				</h3>
@@ -45,7 +26,6 @@
 					<strong>{{ 'Common.Text_Congrats' | t }}</strong> {{
 					'Common.Text_WizardComplete' | t }}
 				</div>
-
 				<!-- form -->
 				<ng-form ui-if="Event" name="atEvent" ng-submit="save()">
 				<form ui-if="wizardEvent.currentStep == 1" name="atEvent1"
@@ -162,14 +142,26 @@
 					</dd>
 					<dd class="pull-left">
 						<a ng-show="wizardEvent.currentStep>1 && wizardEvent.saved"
-							data-dismiss="modal" ng-click="wizardEvent.open = false"
+							ng-click="wizardEvent.open = false"
 							class="btn btn-primary clear">{{ 'Common.Text_Close' | t }}</a>
 					</dd>
 				</dl>
 				</ng-form>
 			</div>
 			<div class="modal-footer"></div>
+	</script>
+	<!-- top menu -->
+	<div ng-include src="'views/elements/error.html'"></div>
+	<!-- event info -->
+	<div ui-if="Store && Store.Key && venues && venues.length > 0 || false"
+		class="row-fluid">
+		<!--<p class="lead pull-left">{{ 'Common.Text_EventMenu_Events' | t}}</p>-->
+		<h3 class="pull-left">{{ 'Common.Text_EventMenu_Events' | t}}</h3>
+		<div class="btn-group pull-right">
+			<button class="btn btn-info" ng-click="create()">{{
+				'Common.Text_EventMenu_CreateEvent' | t }}</button>
 		</div>
+		<div class="clearfix"></div>
 		<div ng-include src="'views/eventList.html'"></div>
 	</div>
 </div>

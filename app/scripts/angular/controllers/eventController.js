@@ -1,4 +1,4 @@
-function eventController($scope, $cookieStore, $filter) {
+function eventController($scope, $cookieStore, $filter, $modal) {
   $scope.name = 'event';
 
   // initialize wizard for Event
@@ -6,10 +6,13 @@ function eventController($scope, $cookieStore, $filter) {
 
   $scope.$watch('wizardEvent.open', function(v) {
     if (v) {
-      $('#formEvent').modal({
-        show : true,
+      $scope.wizardEvent.modal = $modal.open({
+        templateUrl : 'formEvent.html',
+        scope : $scope,
         backdrop : 'static'
       });
+    } else if (angular.isDefined($scope.wizardEvent.modal)) {
+      $scope.wizardEvent.modal.close();
     }
   })
 
@@ -165,4 +168,4 @@ function eventController($scope, $cookieStore, $filter) {
   }
 }
 
-eventController.$inject = [ '$scope', '$cookieStore', '$filter' ];
+eventController.$inject = [ '$scope', '$cookieStore', '$filter', '$modal' ];

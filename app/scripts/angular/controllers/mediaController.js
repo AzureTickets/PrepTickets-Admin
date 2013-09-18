@@ -1,4 +1,5 @@
-function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout) {
+function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
+    $modal) {
   $scope.name = 'media';
 
   $scope.wizardMedia = $scope.form.getWizard($scope), $scope.mediaPreview = {
@@ -7,19 +8,25 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout) 
 
   $scope.$watch('mediaPreview.open', function(v) {
     if (v) {
-      $('#formMediaPreview').modal({
-        show : true,
+      $scope.mediaPreview.modal = $modal.open({
+        templateUrl : 'formMediaPreview.html',
+        scope : $scope,
         backdrop : 'static'
       });
+    } else if (angular.isDefined($scope.mediaPreview.modal)) {
+      $scope.mediaPreview.modal.close();
     }
   })
 
   $scope.$watch('wizardMedia.open', function(v) {
     if (v) {
-      $('#formMedia').modal({
-        show : true,
+      $scope.wizardMedia.modal = $modal.open({
+        templateUrl : 'formMedia.html',
+        scope : $scope,
         backdrop : 'static'
       });
+    } else if (angular.isDefined($scope.wizardMedia.modal)) {
+      $scope.wizardMedia.modal.close();
     }
   })
 
@@ -63,4 +70,4 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout) 
 }
 
 mediaController.$inject = [ '$scope', '$cookieStore', '$filter',
-    '$routeParams', '$timeout' ];
+    '$routeParams', '$timeout', '$modal' ];

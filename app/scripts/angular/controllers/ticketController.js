@@ -1,4 +1,5 @@
-function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout) {
+function ticketController($scope, $cookieStore, $filter, $routeParams,
+    $timeout, $modal) {
   $scope.name = 'ticket';
 
   // initialize wizard for GeneralAdmissionTicketItemInfo
@@ -7,20 +8,25 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
 
   $scope.$watch('wizardTicket.open', function(v) {
     if (v) {
-      $('#formTicket').modal({
-        show : true,
+      $scope.wizardTicket.modal = $modal.open({
+        templateUrl : 'formTicket.html',
+        scope : $scope,
         backdrop : 'static'
       });
+    } else if (angular.isDefined($scope.wizardTicket.modal)) {
+      $scope.wizardTicket.modal.close();
     }
   })
 
-  // @todo implement angular-ui-bootstrap
   $scope.$watch('wizardPricingTier.open', function(v) {
     if (v) {
-      $('#formPricingTier').modal({
-        show : true,
-        backdrop : false
+      $scope.wizardPricingTier.modal = $modal.open({
+        templateUrl : 'formPricingTier.html',
+        scope : $scope,
+        backdrop : 'static'
       });
+    } else if (angular.isDefined($scope.wizardPricingTier.modal)) {
+      $scope.wizardPricingTier.modal.close();
     }
   })
 
@@ -240,4 +246,4 @@ function ticketController($scope, $cookieStore, $filter, $routeParams, $timeout)
 }
 
 ticketController.$inject = [ '$scope', '$cookieStore', '$filter',
-    '$routeParams', '$timeout' ];
+    '$routeParams', '$timeout', '$modal' ];

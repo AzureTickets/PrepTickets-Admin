@@ -1,19 +1,21 @@
 function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
-    $q) {
+    $q, $modal) {
   $scope.name = 'venue';
 
   // initialize wizard for Venue
   $scope.wizardVenue = $scope.form.getWizard($scope);
 
-  // watch for update/create requests
   $scope.$watch('wizardVenue.open', function(v) {
     if (v) {
-      $('#formVenue').modal({
-        show : true,
+      $scope.wizardVenue.modal = $modal.open({
+        templateUrl : 'formVenue.html',
+        scope : $scope,
         backdrop : 'static'
       });
+    } else if (angular.isDefined($scope.wizardVenue.modal)) {
+      $scope.wizardVenue.modal.close();
     }
-  });
+  })
 
   $scope.$watch('wizardVenue.saved', function(v) {
     if (v) {
@@ -118,4 +120,4 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
 }
 
 venueController.$inject = [ '$rootScope', '$scope', '$timeout', '$cookieStore',
-    '$filter', '$q' ];
+    '$filter', '$q', '$modal' ];
