@@ -35,7 +35,7 @@
 						ng-model="PricingTier.Name" ng-change="setURI(true)"
 						label="'Common.Text_TicketName' | t" />
 				</dd>
-				<dd>
+				<dd ui-if="false">
 					<atfield autocomplete="off" at-required ng-readonly="true"
 						class="input-xlarge" ng-model="PricingTier.URI"
 						at-copy="CustomURI" label="'Common.Text_CustomURI' | t"></atfield>
