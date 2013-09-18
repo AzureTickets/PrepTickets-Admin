@@ -6,9 +6,8 @@ var mountFolder = function(connect, dir) {
 
 module.exports = function(grunt) {
   // load all grunt tasks
-  require('matchdep').filterDev('grunt-*').concat([
-    'gruntacular'
-  ]).forEach(grunt.loadNpmTasks);
+  require('matchdep').filterDev('grunt-*').concat([ 'gruntacular' ]).forEach(
+      grunt.loadNpmTasks);
 
   // configurable paths & app variables
   var atConfig = {};
@@ -31,34 +30,22 @@ module.exports = function(grunt) {
         at : atConfig,
         watch : {
           less : {
-            files : [
-              '<%= at.app %>/styles/**/*.less'
-            ],
-            tasks : [
-              'less'
-            ]
+            files : [ '<%= at.app %>/styles/**/*.less' ],
+            tasks : [ 'less' ]
           },
           'static' : {
-            files : [
-                '<%= at.app %>/**/*.html',
+            files : [ '<%= at.app %>/**/*.html',
                 '{.tmp,<%= at.app %>}/' + atConfig.styles + '/{,*/}*.css',
                 '{.tmp,<%= at.app %>}/' + atConfig.scripts + '/**/*.js',
-                '<%= at.app %>/images/{,*/}*.{png,jpg,jpeg}'
-            ],
-            tasks : [
-              '_internal'
-            ]
+                '<%= at.app %>/images/{,*/}*.{png,jpg,jpeg}' ],
+            tasks : [ '_internal' ]
           },
           livereload : {
-            files : [
-                '<%= at.app %>/**/*.html',
+            files : [ '<%= at.app %>/**/*.html',
                 '{.tmp,<%= at.app %>}/' + atConfig.styles + '/{,*/}*.css',
                 '{.tmp,<%= at.app %>}/' + atConfig.scripts + '/**/*.js',
-                '<%= at.app %>/images/{,*/}*.{png,jpg,jpeg}'
-            ],
-            tasks : [
-                '_internal', 'livereload'
-            ]
+                '<%= at.app %>/images/{,*/}*.{png,jpg,jpeg}' ],
+            tasks : [ '_internal', 'livereload' ]
           }
         },
         connect : {
@@ -69,10 +56,8 @@ module.exports = function(grunt) {
               // from outside.
               hostname : 'localhost',
               middleware : function(connect) {
-                return [
-                    lrSnippet, mountFolder(connect, '.tmp'),
-                    mountFolder(connect, atConfig.dist)
-                ];
+                return [ lrSnippet, mountFolder(connect, '.tmp'),
+                    mountFolder(connect, atConfig.dist) ];
               }
             }
           },
@@ -81,10 +66,8 @@ module.exports = function(grunt) {
               port : 9003,
               hostname : 'localhost',
               middleware : function(connect) {
-                return [
-                    mountFolder(connect, '.tmp'),
-                    mountFolder(connect, atConfig.dist)
-                ];
+                return [ mountFolder(connect, '.tmp'),
+                    mountFolder(connect, atConfig.dist) ];
               }
             }
           },
@@ -92,10 +75,8 @@ module.exports = function(grunt) {
             options : {
               port : 9002,
               middleware : function(connect) {
-                return [
-                    mountFolder(connect, '.tmp'),
-                    mountFolder(connect, atConfig.test)
-                ];
+                return [ mountFolder(connect, '.tmp'),
+                    mountFolder(connect, atConfig.test) ];
               }
             }
           }
@@ -103,14 +84,11 @@ module.exports = function(grunt) {
         less : {
           css : {
             options : {
-              paths : [
-                '<%= at.app %>/<%= at.components %>/bootstrap/less/'
-              ]
+              paths : [ '<%= at.app %>/<%= at.components %>/bootstrap/less/' ]
             },
             files : {
-              '<%= at.dist %>/styles/main.css' : [
-                '<%= at.app %>/' + atConfig.styles + '/less/main.less'
-              ]
+              '<%= at.dist %>/styles/main.css' : [ '<%= at.app %>/'
+                  + atConfig.styles + '/less/main.less' ]
             }
           }
         },
@@ -123,9 +101,7 @@ module.exports = function(grunt) {
           }
         },
         clean : {
-          dist : [
-              '.tmp', '<%= at.dist %>/*'
-          ],
+          dist : [ '.tmp', '<%= at.dist %>/*' ],
           server : '.tmp'
         },
         jshint : {
@@ -133,9 +109,8 @@ module.exports = function(grunt) {
             jshintrc : '.jshintrc'
           },
           all : [
-            // 'Gruntfile.js',
-            '<%= at.app %>/' + atConfig.scripts + '/{,*/}*.js'
-          ]
+          // 'Gruntfile.js',
+          '<%= at.app %>/' + atConfig.scripts + '/{,*/}*.js' ]
         },
         testacular : {
           unit : {
@@ -160,8 +135,7 @@ module.exports = function(grunt) {
               '<%= at.dist %>/scripts/main.js' : [
                   '.tmp/' + atConfig.scripts + '/*.js',
                   '<%= at.app %>/' + atConfig.scripts + '/api/**/*.js',
-                  '<%= at.app %>/' + atConfig.scripts + '/angular/**/*.js'
-              ]
+                  '<%= at.app %>/' + atConfig.scripts + '/angular/**/*.js' ]
             }
           }
         },
@@ -172,16 +146,10 @@ module.exports = function(grunt) {
           }
         },
         usemin : {
-          html : [
-            '<%= at.dist %>/{,*/}*.html'
-          ],
-          css : [
-            '<%= at.dist %>/styles/{,*/}*.css'
-          ],
+          html : [ '<%= at.dist %>/{,*/}*.html' ],
+          css : [ '<%= at.dist %>/styles/{,*/}*.css' ],
           options : {
-            dirs : [
-              '<%= at.dist %>'
-            ]
+            dirs : [ '<%= at.dist %>' ]
           }
         },
         cssmin : {
@@ -190,8 +158,7 @@ module.exports = function(grunt) {
               '<%= at.dist %>/styles/main.css' : [
                   '.tmp/<%= at.styles %>/**/*.css',
                   '<%= at.dist %>/styles/main.css',
-                  '<%= at.app %>/styles/*.css'
-              ]
+                  '<%= at.app %>/styles/*.css' ]
             }
           }
         },
@@ -204,68 +171,65 @@ module.exports = function(grunt) {
               removeRedundantAttributes : true,
               useShortDoctype : true
             },
-            files : [
-              {
-                expand : true,
-                cwd : '<%= at.app %>',
-                src : [
-                    '*.html', 'views/**/*.html'
-                ],
-                dest : '<%= at.dist %>'
-              }
-            ]
+            files : [ {
+              expand : true,
+              cwd : '<%= at.app %>',
+              src : [ '*.html', 'views/**/*.html' ],
+              dest : '<%= at.dist %>'
+            } ]
           }
         },
         ngmin : {
           dist : {
-            files : [
-              {
-                expand : true,
-                cwd : '<%= at.dist %>/' + atConfig.scripts,
-                src : 'main.js',
-                dest : '<%= at.dist %>/' + atConfig.scripts
-              }
-            ]
+            files : [ {
+              expand : true,
+              cwd : '<%= at.dist %>/' + atConfig.scripts,
+              src : 'main.js',
+              dest : '<%= at.dist %>/' + atConfig.scripts
+            } ]
           }
         },
         uglify : {
           dist : {
             files : {
-              '<%= at.dist %>/scripts/main.js' : [
-                '<%= at.dist %>/' + atConfig.scripts + '/main.js'
-              ],
+              '<%= at.dist %>/scripts/main.js' : [ '<%= at.dist %>/'
+                  + atConfig.scripts + '/main.js' ],
             }
           }
         },
         copy : {
-          bootstrapIcons : {
-            files : [
-              {
-                dot : true,
-                expand : true,
-                flatten : true,
-                cwd : '<%= at.app %>',
-                dest : '<%= at.dist %>/assets/img/',
-                src : [
-                  '<%= at.components %>/bootstrap/img/*.*'
-                ]
-              }
-            ]
+          // patch for Bootstrap to use Font-Awesome sprites
+          replaceBootstrapLess : {
+            files : [ {
+              dot : true,
+              expand : true,
+              flatten : true,
+              cwd : '<%= at.app %>/patches',
+              dest : '<%= at.app %>/<%= at.components %>/boostrap/less',
+              src : [ 'bootstrap/*.less' ]
+            } ]
+          },
+          replaceFontAwesomePath : {
+            files : [ {
+              dot : true,
+              expand : true,
+              flatten : true,
+              cwd : '<%= at.app %>/patches',
+              dest : '<%= at.app %>/<%= at.components %>/font-awesome/less',
+              src : [ 'font-awesome/*.less' ]
+            } ]
           },
           dist : {
-            files : [
-              {
-                expand : true,
-                dot : true,
-                cwd : '<%= at.app %>',
-                dest : '<%= at.dist %>',
-                src : [
-                    '*.{ico,txt,php}',
-                    '<%= at.components %>/**/*.{ico,txt,php,js,png,jpg,gif,css,less,json,eot,svg,ttf,woff,otf}',
-                    'assets/**/*.*'
-                ]
-              }
-            ]
+            files : [ {
+              expand : true,
+              dot : true,
+              cwd : '<%= at.app %>',
+              dest : '<%= at.dist %>',
+              src : [
+                  '*.{ico,txt,php}',
+                  '<%= at.components %>/**/*.{ico,txt,php,js,png,jpg,gif,css,less,json,eot,svg,ttf,woff,otf}',
+                  'assets/**/*.*' ]
+            } ]
           }
         },
         compress : {
@@ -273,51 +237,39 @@ module.exports = function(grunt) {
             options : {
               archive : '<%= at.dist %>/wp-azuretickets.zip'
             },
-            files : [
-              {
-                expand : true,
-                cwd : '<%= at.dist %>/',
-                src : [
-                  '**'
-                ]
-              }
-            ]
+            files : [ {
+              expand : true,
+              cwd : '<%= at.dist %>/',
+              src : [ '**' ]
+            } ]
           }
         }
       });
 
   grunt.renameTask('regarde', 'watch');
 
-  grunt.registerTask('server', [
-      'clean:server', 'livereload-start', 'connect:livereload', 'open:server',
-      'watch'
-  ]);
-  grunt.registerTask('serverStatic', [
-      'clean:server', 'connect:static', 'watch:less', 'watch:static'
-  ]);
+  grunt.registerTask('server', [ 'clean:server', 'livereload-start',
+      'connect:livereload', 'open:server', 'watch' ]);
+  grunt.registerTask('serverStatic', [ 'clean:server', 'connect:static',
+      'watch:less', 'watch:static' ]);
 
-  grunt.registerTask('test', [
-      'clean:server', 'less', 'concat', /* 'connect:test' , 'testacular:unit' */
+  grunt.registerTask('test', [ 'clean:server', 'less', 'concat', /*
+                                                                   * 'connect:test' ,
+                                                                   * 'testacular:unit'
+                                                                   */
   ]);
-  grunt.registerTask('test:continuous', [
-      'clean:server', 'less', 'concat', 'connect:test', 'testacular:continuous'
-  ]);
+  grunt.registerTask('test:continuous', [ 'clean:server', 'less', 'concat',
+      'connect:test', 'testacular:continuous' ]);
 
-  grunt.registerTask('build', [
-      'clean:dist', /* 'jshint', */
-      'test', 'useminPrepare', 'cssmin', 'htmlmin', 'copy', 'usemin', 'concat',
+  grunt.registerTask('build', [ 'clean:dist', /* 'jshint', */
+  'test', 'useminPrepare', 'cssmin', 'htmlmin', 'copy', 'usemin', 'concat',
       'ngmin', /* 'uglify' */
   ]);
 
-  grunt.registerTask('_internal', [
-      'useminPrepare', 'htmlmin', 'usemin', 'concat', 'ngmin'
-  ]);
+  grunt.registerTask('_internal', [ 'useminPrepare', 'htmlmin', 'usemin',
+      'concat', 'ngmin' ]);
 
-  grunt.registerTask('wp', [
-      'build', 'compress:wordpress'
-  ]);
+  grunt.registerTask('wp', [ 'build', 'compress:wordpress' ]);
 
-  grunt.registerTask('default', [
-    'build'
-  ]);
+  grunt.registerTask('default', [ 'build' ]);
 };

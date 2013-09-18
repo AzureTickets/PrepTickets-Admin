@@ -19,9 +19,10 @@
 				<tbody>
 					<tr ng-repeat="image in images">
 						<td>{{ $index+1 }}</td>
-						<td><a ng-href="#/media" ng-click="previewMedia(image)"><i
-								class="icon-search" style="position: absolute"></i></a><img
-							ng-src="{{image.BaseURL}}{{image.ThumbFile}}" /></td>
+						<td><a ng-href="#/media" ng-click="previewMedia(image)"
+							style="position: relative"><i class="icon-search icon-2x"
+								style="position: absolute; top: 1%; right: 40%"></i><img
+								ng-src="{{image.BaseURL}}{{image.ThumbFile}}" /></a></td>
 						<td>
 							<div class="btn-group pull-left">
 								<button ui-if="Store.IsOwner" ng-click="deleteImage(image)"

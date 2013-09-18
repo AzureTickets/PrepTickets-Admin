@@ -7,7 +7,7 @@
         "angular-resource": "~1.0.8",
         "angular-cookies": "~1.0.8",
         "angular-sanitize": "~1.0.8",
-        "angular-bootstrap" : "",
+        "angular-bootstrap" : "0.6.0",
         "jquery": "*",
         "jquery-ui":"*",
         "jquery-migrate": "*",
