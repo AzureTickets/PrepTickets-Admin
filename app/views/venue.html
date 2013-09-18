@@ -96,14 +96,15 @@
 				</ng-form>
 			</div>
 			<div class="modal-footer"></div>
-	</script><!-- top menu -->
+	</script>
+	<!-- top menu -->
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- venue info -->
 	<div ui-if="Store && Store.Key || false" class="row-fluid">
 		<h3 class="lead pull-left">{{ 'Common.Text_VenueMenu_Venue' | t}}</h3>
 		<div class="btn-group pull-right">
-			<button class="btn btn-info" ng-click="create()">{{
-				'Common.Text_CreateVenue' | t }}</button>
+			<a class="btn btn-info" ng-click="create()"><i class="icon-plus"></i>&nbsp;{{
+				'Common.Text_CreateVenue' | t }}</a>
 		</div>
 		<div class="clearfix"></div>
 		<div ng-include src="'views/venueList.html'"></div>

@@ -41,8 +41,8 @@
 	<div ui-if="Store && Store.Key || false" class="row-fluid">
 		<h3 class="pull-left">{{ 'Common.Text_Media' | t}}</h3>
 		<div class="btn-group pull-right">
-			<button class="btn btn-info" ng-click="create()">{{
-				'Common.Text_EventMenu_CreateMedia' | t }}</button>
+			<a class="btn btn-info" ng-click="create()"><i class="icon-plus"></i>&nbsp;{{
+				'Common.Text_EventMenu_CreateMedia' | t }}</a>
 		</div>
 		<div class="clearfix"></div>
 		<div onload="init()" ng-include src="'views/mediaList.html'"></div>

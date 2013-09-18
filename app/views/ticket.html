@@ -170,13 +170,12 @@
 		<p class="lead pull-left">{{ 'Common.Text_TicketMenu_Tickets' |
 			t}}</p>
 		<div class="btn-group pull-right">
-			<button ui-if="Store.IsOwner" class="btn btn-info"
-				ng-click="create(false)">{{
-				'Common.Text_TicketMenu_CreateTicket' | t }}</button>
+			<a ui-if="Store.IsOwner" class="btn btn-info"
+				ng-click="create(false)"> <i class="icon-plus"></i>&nbsp;{{
+				'Common.Text_TicketMenu_CreateTicket' | t }}
+			</a>
 		</div>
-		<div id="formTicket" class="modal form hide fade">
-
-		</div>
+		<div id="formTicket" class="modal form hide fade"></div>
 		<div ng-include src="'views/ticketList.html'"></div>
 	</div>
 </div>
