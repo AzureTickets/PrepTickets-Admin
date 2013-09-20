@@ -5,7 +5,7 @@
 		ng-include src="'views/elements/store/bcSettings.html'"></div>
 	<!-- store info update -->
 	<div ui-if="DomainProfile && DomainProfile.Key" class="row-fluid"
-		ng-init="loadCurrencies(); media.loadImages(this)">
+		ng-init="loadCurrencies()">
 		<span ui-if="Store && Store.isNew || Store && Store.IsOwner">
 			<p ng-show="wizard.currentStep>
 			0" class="lead">{{

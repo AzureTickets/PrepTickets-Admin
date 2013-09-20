@@ -125,8 +125,8 @@ azureTicketsApp.factory('mediaService', [
             _isImagesLoading = true;
 
             $scope.storeKey = $scope.storeKey
-                || $cookieStore.get($scope.config.cookies.storeKey),
-                __this = this;
+                || $cookieStore.get($scope.config.cookies.storeKey);
+            var __this = this;
 
             __this.listImagesAsync($scope.storeKey, 0).then(
                 function() {

@@ -311,6 +311,10 @@ function storeController($scope, $cookieStore, $location, $timeout,
                 }
 
                 if ($scope.auth.isDomainProfileReady()) {
+                  $scope.media.loadImages($scope)
+                }
+
+                if ($scope.auth.isDomainProfileReady()) {
                   // always load whole set of events for owners
                   if ($scope.Store.IsOwner) {
                     $scope.event.loadEvents($scope);
