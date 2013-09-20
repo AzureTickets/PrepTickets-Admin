@@ -19,7 +19,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
       $scope.imageSelector.currentImage = $scope.imageSelector.currentIndex === 0 ? null
           : $scope.images[$scope.imageSelector.currentIndex - 1]
 
-      $scope._model.Image = $scope.imageSelector.currentImage;
+      $scope[$scope.modelName].Image = $scope.imageSelector.currentImage;
     },
     prevImage : function() {
       if (!$scope.images || $scope.images.length === 0)
@@ -31,7 +31,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
       $scope.imageSelector.currentImage = $scope.imageSelector.currentIndex === 0 ? null
           : $scope.images[$scope.imageSelector.currentIndex - 1]
 
-      $scope._model.Image = $scope.imageSelector.currentImage;
+      $scope[$scope.modelName].Image = $scope.imageSelector.currentImage;
     }
   }
 

@@ -1,8 +1,9 @@
-<div class="imageSelector clear">
+<div ui-if="this[modelName] || false" class="imageSelector clear">
 	<img class="img-polaroid"
-		ui-if="_model.Image && _model.Image != null || false"
-		ng-src="{{_model.Image.BaseURL}}{{_model.Image.ThumbFile}}" />
-	<alert ui-if="!_model.Image || _model.Image == null || false"
+		ui-if="this[modelName].Image && this[modelName].Image != null || false"
+		ng-src="{{this[modelName].Image.BaseURL}}{{this[modelName].Image.ThumbFile}}" />
+	<alert
+		ui-if="!this[modelName].Image || this[modelName].Image == null || false"
 		type="'warning'">{{'Common.Text_NoImageSelected' | t}}</alert>
 	<div class="clear row-fluid">
 		<div class="pull-left">

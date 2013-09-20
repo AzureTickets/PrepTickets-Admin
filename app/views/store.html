@@ -108,8 +108,8 @@
 					<div ng-show="images.length == 0" class="alert alert-info">{{
 						'Common.Text_NoImages_Msg' | t }}</div>
 					<div ui-if="images && images.length > 0 || false"
-						ng-controller="mediaController" onload="_model = Store" ng-include
-						src="'views/elements/store/imagesSelector.html'"></div>
+						ng-controller="mediaController" onload="modelName='Store'"
+						ng-include src="'views/elements/store/imagesSelector.html'"></div>
 				</dd>
 				<dd class="clear"></dd>
 				<dd class="pull-left">
