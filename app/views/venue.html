@@ -15,6 +15,9 @@
 						<strong>{{ 'Common.Text_LocationInfo' | t }}</strong>
 					</div>
 					<div class="alert alert-info" ng-switch-when="3">
+						<strong>{{ 'Common.Text_ImageSelect' | t }}</strong>
+					</div>
+					<div class="alert alert-info" ng-switch-when="4">
 						<strong>{{ 'Common.Text_Confirm' | t }}</strong>
 					</div>
 				</div>
@@ -61,8 +64,27 @@
 						</dd>
 					</dl>
 				</form>
-				<form ui-if="wizardVenue.currentStep == 3 && !wizardVenue.saved"
-					name="atVenue3" ng-submit="wizardVenue.next('atVenue3', true)">
+				<form ui-if="images && images.length > 0 || false" ng-show="wizardVenue.currentStep == 3" name="atVenue3"
+					ng-submit="wizardVenue.next('atVenue3')">
+					<dl class="clearfix">
+						<dd>
+							<div ng-controller="mediaController" onload="modelName = 'Place'" ng-include src="'views/elements/store/imagesSelector.html'"></div>			
+						</dd>
+						<dd class="clear"></dd>
+						<dd class="pull-left">
+							<a ng-show="wizardVenue.currentStep>1"
+								ng-click="wizardVenue.currentStep = wizardVenue.currentStep-1"
+								class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
+						</dd>
+						<dd class="pull-left">
+							<input type="submit" class="btn btn-primary clear"
+								value="{{
+		 							'Common.Text_Next' | t }}" />
+						</dd>
+					</dl>
+				</form>
+				<form ui-if="wizardVenue.currentStep == 4 && !wizardVenue.saved"
+					name="atVenue4" ng-submit="wizardVenue.next('atVenue4', true)">
 					<dl>
 						<dd class="clear row-fluid">
 							<!-- venue details -->

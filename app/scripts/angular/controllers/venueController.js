@@ -93,26 +93,54 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
         $scope.place.createPlace($scope.storeKey, newPlace).then(
             function(placeKey) {
               if (angular.isString(placeKey)) {
-                $scope.wizardVenue.saved = true;
+                $scope.Place.Key = placeKey;
 
-                // reload list
-                $scope.init();
+                if ($scope.Place.Image && $scope.Place.Image.Key) {
+                  $scope.model.associate($scope.Place, 'Image',
+                      $scope.Place.Image).then(function() {
+                    $scope.wizardVenue.saved = true;
+
+                    // reload list
+                    $scope.init();
+                  }, function(err) {
+                    $scope.error.log(err)
+                  })
+                } else {
+                  $scope.wizardVenue.saved = true;
+
+                  // reload list
+                  $scope.init();
+                }
               }
             }, function(err) {
               $scope.error.log(err)
             });
       } else {
+        var _updateAddress = function(place) {
+          $scope.geo.updateAddress(place.Address).then(function(ret) {
+            $scope.wizardVenue.saved = true;
+
+            // reload list
+            $scope.init();
+          }, function(err) {
+            $scope.error.log(err)
+          });
+        }
+
         // update place
         $scope.place.updatePlace($scope.storeKey, $scope.Place).then(
             function(place) {
-              $scope.geo.updateAddress(place.Address).then(function(ret) {
-                $scope.wizardVenue.saved = true;
+              if ($scope.Place.Image && $scope.Place.Image.Key) {
+                $scope.model.associate($scope.Place, 'Image',
+                    $scope.Place.Image).then(function() {
+                  _updateAddress(place);
+                }, function(err) {
+                  $scope.error.log(err)
+                })
+              } else {
+                _updateAddress(place);
+              }
 
-                // reload list
-                $scope.init();
-              }, function(err) {
-                $scope.error.log(err)
-              });
             });
       }
     }
