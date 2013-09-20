@@ -18,6 +18,7 @@ var CommonResources = {
   Text_EmailToFriend : 'Email to Friend',
   Text_EmailAddress : 'Email Address',
   Text_Message : "Message",
+  Text_Upload : 'Upload',
   Text_Control : 'Controls',
   Text_Details : 'Details',
   Text_Pending_Approvals : 'Pending Approvals',
