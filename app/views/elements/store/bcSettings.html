@@ -13,13 +13,18 @@
 		ng-class="{active: wizard.currentStep == 3}"><a href="#/store"
 		ng-click="wizard.currentStep = 3;wizard.finished = false">{{
 			'Common.Text_CreateStore_Step3' | t }}</a> <span
-		ui-if="wizard.checkStep.3" class="divider">/</span></li>
-	<li ui-if="wizard.checkStep.3"
+		ui-if="Store && Store.Key || wizard.checkStep.3" class="divider">/</span></li>
+	<li ui-if="Store && Store.Key && !Store.isNew || wizard.checkStep.2"
 		ng-class="{active: wizard.currentStep == 4}"><a href="#/store"
-		ng-click="wizard.currentStep = 4;wizard.finished = false;wizard.saved = false">{{
+		ng-click="wizard.currentStep = 4;wizard.finished = false">{{
+			'Common.Text_CreateStore_Step4' | t }}</a> <span
+		ui-if="wizard.checkStep.4" class="divider">/</span></li>
+	<li ui-if="wizard.checkStep.4"
+		ng-class="{active: wizard.currentStep == 5}"><a href="#/store"
+		ng-click="wizard.currentStep = 5;wizard.finished = false;wizard.saved = false">{{
 			'Common.Text_Confirmation' | t }}</a> <span ng-show="wizard.saved"
 		class="divider">/</span></li>
-	<li ui-if="Store && Store.Key || wizard.checkStep.4"
+	<li ui-if="Store && Store.Key || wizard.checkStep.5"
 		ng-show="wizard.saved" ng-class="{active: wizard.saved}"><a
 		href="#/store" ng-click="wizard.finished = true">{{
 			'Common.Text_Finished' | t }}</a></li>

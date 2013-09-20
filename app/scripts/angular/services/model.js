@@ -90,6 +90,20 @@ azureTicketsApp.factory('modelService', [
               delete model[p];
             }
           }
+        },
+        associate : function(model, modelProp, relModel) {
+          var def = $q.defer(), _this = this;
+
+          BWL.Services.ModelService.AddAsync('BWL', model.Type, model.Key,
+              modelProp, relModel.Type, relModel.Key, function(ret) {
+                $rootScope.$apply(def.resolve)
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err)
+                })
+              });
+
+          return def.promise;
         }
       }
     } ]);

@@ -268,6 +268,9 @@ function storeController($scope, $cookieStore, $location, $timeout,
           .initStore(storeKey)
           .then(
               function(store, currency) {
+                // reset images library
+                $scope.images = [];
+
                 $scope.Store = store;
                 $scope.Store.tmpPaymentProvider = angular
                     .isArray($scope.Store.PaymentProviders) ? $scope.Store.PaymentProviders[0]
@@ -458,9 +461,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
 
       } else {
         // update store
-        var _finishes = function(ret) {
-          $scope.wizard.checkStep.address = true;
-
+        var _attachPaymentProviders = function() {
           // attach payment providers
           $scope.store.removePaymentProvider($scope.Store, 0).then(
               function() {
@@ -484,6 +485,26 @@ function storeController($scope, $cookieStore, $location, $timeout,
 
                 $scope.error.log(err)
               });
+        }
+        var _finishes = function(ret) {
+          $scope.wizard.checkStep.address = true;
+
+          // add pic
+          if ($scope.Store.Image && $scope.Store.Image.Key) {
+            $scope.model.associate($scope.Store, 'Image', $scope.Store.Image)
+                .then(function() {
+                  $scope.wizard.checkStep.image = true;
+
+                  _attachPaymentProviders();
+                }, function(err) {
+                  $scope.wizard.checkStep.image = false;
+
+                  $scope.error.log(err)
+                })
+          } else {
+            _attachPaymentProviders();
+          }
+
         }
 
         var _updateStoreAddress = function() {

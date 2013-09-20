@@ -1,5 +1,6 @@
 <div class="atPanel" ui-if="DomainProfile && DomainProfile.Key || false"
-	ng-controller="eventController" ng-cloak>
+	ng-controller="eventController" ng-cloak
+	ng-init="media.loadImages(this)">
 	<script type="text/ng-template" id="formEvent.html">
 			<div class="modal-header">
 				<button type="button" ng-click="wizardEvent.open = false"
@@ -18,6 +19,9 @@
 						<strong>{{ 'Event.Text_PlaceInformation' | t }}</strong>
 					</div>
 					<div class="alert alert-info" ng-switch-when="4">
+						<strong>{{ 'Common.Text_ImageSelect' | t }}</strong>
+					</div>
+					<div class="alert alert-info" ng-switch-when="5">
 						<strong>{{ 'Common.Text_Confirm' | t }}</strong>
 					</div>
 				</div>
@@ -114,8 +118,27 @@
 						</dd>
 					</dl>
 				</form>
-				<form ui-if="wizardEvent.currentStep == 4 && !wizardEvent.saved"
-					name="atEvent3" ng-submit="wizardEvent.next('atEvent4', true)">
+				<form ui-if="images && images.length > 0 || false" ng-show="wizardEvent.currentStep == 4" name="atEvent4"
+					ng-submit="wizardEvent.next('atEvent4')">
+					<dl class="clearfix">
+						<dd>
+							<div ng-controller="mediaController" onload="_model = Event" ng-include src="'views/elements/store/imagesSelector.html'"></div>			
+						</dd>
+						<dd class="clear"></dd>
+						<dd class="pull-left">
+							<a ng-show="wizardEvent.currentStep>1"
+								ng-click="wizardEvent.currentStep = wizardEvent.currentStep-1"
+								class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
+						</dd>
+						<dd class="pull-left">
+							<input type="submit" class="btn btn-primary clear"
+								value="{{
+		 							'Common.Text_Next' | t }}" />
+						</dd>
+					</dl>
+				</form>
+				<form ui-if="wizardEvent.currentStep == 5 && !wizardEvent.saved"
+					name="atEvent5" ng-submit="wizardEvent.next('atEvent5', true)">
 					<dl>
 						<dd class="clear row-fluid">
 							<!-- event details -->

@@ -163,6 +163,7 @@ azureTicketsApp
                   delete tmpEvent.tmpVenues;
                   delete tmpEvent._tmpVenues;
                   delete tmpEvent.Places;
+                  delete tmpEvent.Image;
                   delete tmpEvent.$$hashKey;
                   delete tmpEvent.Type;
 

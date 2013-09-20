@@ -330,6 +330,7 @@ azureTicketsApp
                   delete tmpStore.Address;
                   delete tmpStore.StoreURIs;
                   delete tmpStore.isNew;
+                  delete tmpStore.Image;
                   delete tmpStore.PaymentProviders;
                   delete tmpStore.tmpPaymentProvider;
 

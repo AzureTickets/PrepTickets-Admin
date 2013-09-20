@@ -18,6 +18,7 @@ function eventController($scope, $cookieStore, $filter, $modal) {
 
   $scope.init = function() {
     $scope.event.loadEvents($scope);
+    $scope.media.loadImages($scope);
   }
 
   $scope.setURI = function() {
@@ -116,19 +117,35 @@ function eventController($scope, $cookieStore, $filter, $modal) {
           CustomURI : {
             URI : $scope.Event.URI
           },
-        }).then(function(eventKey) {
-          // attach event to store
-          $scope.store.addEvent($scope.storeKey, eventKey).then(function() {
-            $scope.wizardEvent.saved = true;
+        }).then(
+            function(eventKey) {
+              $scope.Event.Key = eventKey;
 
-            // reload list
-            $scope.init();
-          }, function(err) {
-            $scope.error.log(err)
-          });
-        }, function(err) {
-          $scope.error.log(err)
-        });
+              // attach event to store
+              $scope.store.addEvent($scope.storeKey, eventKey).then(
+                  function() {
+                    if ($scope.Event.Image && $scope.Event.Image.Key) {
+                      $scope.model.associate($scope.Event, 'Image',
+                          $scope.Event.Image).then(function() {
+                        $scope.wizardEvent.saved = true;
+
+                        // reload list
+                        $scope.init();
+                      }, function(err) {
+                        $scope.error.log(err)
+                      })
+                    } else {
+                      $scope.wizardEvent.saved = true;
+
+                      // reload list
+                      $scope.init();
+                    }
+                  }, function(err) {
+                    $scope.error.log(err)
+                  });
+            }, function(err) {
+              $scope.error.log(err)
+            });
       } else {
         // update event
 
@@ -151,15 +168,29 @@ function eventController($scope, $cookieStore, $filter, $modal) {
         if (angular.isArray($scope.Event.Items)) {
           $scope.event.updateEvent($scope.storeKey, $scope.Event).then(
               function() {
-                // process items
-
-                _finishes();
+                if ($scope.Event.Image && $scope.Event.Image.Key) {
+                  $scope.model.associate($scope.Event, 'Image',
+                      $scope.Event.Image).then(_finishes, function(err) {
+                    $scope.error.log(err)
+                  })
+                } else {
+                  _finishes();
+                }
               }, function(err) {
                 $scope.error.log(err)
               });
         } else {
           $scope.event.updateEvent($scope.storeKey, $scope.Event).then(
-              _finishes, function(err) {
+              function() {
+                if ($scope.Event.Image && $scope.Event.Image.Key) {
+                  $scope.model.associate($scope.Event, 'Image',
+                      $scope.Event.Image).then(_finishes, function(err) {
+                    $scope.error.log(err)
+                  })
+                } else {
+                  _finishes();
+                }
+              }, function(err) {
                 $scope.error.log(err)
               });
         }

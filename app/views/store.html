@@ -5,7 +5,7 @@
 		ng-include src="'views/elements/store/bcSettings.html'"></div>
 	<!-- store info update -->
 	<div ui-if="DomainProfile && DomainProfile.Key" class="row-fluid"
-		ng-init="loadCurrencies()">
+		ng-init="loadCurrencies(); media.loadImages(this)">
 		<span ui-if="Store && Store.isNew || Store && Store.IsOwner">
 			<p ng-show="wizard.currentStep>
 			0" class="lead">{{
@@ -19,9 +19,12 @@
 					<strong>{{ 'Common.Text_LocationInfo' | t }}</strong>
 				</div>
 				<div class="alert alert-info" ng-switch-when="3">
-					<strong>{{ 'Common.Text_StoreMenu_PaymentSettings' | t }}</strong>
+					<strong>{{ 'Common.Text_ImageSelect' | t }}</strong>
 				</div>
 				<div class="alert alert-info" ng-switch-when="4">
+					<strong>{{ 'Common.Text_StoreMenu_PaymentSettings' | t }}</strong>
+				</div>
+				<div class="alert alert-info" ng-switch-when="5">
 					<strong>{{ 'Common.Text_Confirm' | t }}</strong>
 				</div>
 			</div>
@@ -101,6 +104,29 @@
 		<form ng-show="wizard.currentStep == 3" name="atStore3"
 			ng-submit="wizard.next('atStore3')">
 			<dl class="clearfix">
+				<dd ng-class="{'atStoreImgSel': images.length>0}">
+					<div ng-show="images.length == 0" class="alert alert-info">{{
+						'Common.Text_NoImages_Msg' | t }}</div>
+					<div ui-if="images && images.length > 0 || false"
+						ng-controller="mediaController" onload="_model = Store" ng-include
+						src="'views/elements/store/imagesSelector.html'"></div>
+				</dd>
+				<dd class="clear"></dd>
+				<dd class="pull-left">
+					<a ng-show="wizard.currentStep>1"
+						ng-click="wizard.currentStep = wizard.currentStep-1"
+						class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
+				</dd>
+				<dd class="pull-left">
+					<input type="submit" class="btn btn-primary clear"
+						value="{{
+		 							'Common.Text_Next' | t }}" />
+				</dd>
+			</dl>
+		</form>
+		<form ng-show="wizard.currentStep == 4" name="atStore4"
+			ng-submit="wizard.next('atStore4')">
+			<dl class="clearfix">
 				<dd>
 					<label>{{'Common.Text_StoreCurrency' | t}}</label> <select
 						ui-select2="{containerCssClass:'input-xlarge'}" at-required
@@ -160,8 +186,8 @@
 				</dd>
 			</dl>
 		</form>
-		<form ui-if="Store && wizard.currentStep == 4 && !wizard.saved"
-			name="atStore4" ng-submit="wizard.next('atStore4', true)">
+		<form ui-if="Store && wizard.currentStep == 5 && !wizard.saved"
+			name="atStore5" ng-submit="wizard.next('atStore5', true)">
 			<dl>
 				<dd class="clear row-fluid">
 					<div class="span6">
@@ -197,6 +223,10 @@
 						ng-class="{'label-success': wizard.checkStep.payment, 'label-important':!wizard.checkStep.payment}"
 						class="label">{{ 'Common.Text_Save' | t }} {{
 							'Common.LabelStorePaymentProvider' | t }}</span></li>
+					<li ui-if="images && images.length > 0 || false"><span
+						ng-class="{'label-success': wizard.checkStep.image, 'label-important': wizard.checkStep.image}"
+						class="label">{{ 'Common.Text_Save' | t }} {{
+							'Common.Text_Image' | t }}</span></li>
 					<li><span
 						ng-class="{'label-success': wizard.checkStep.address, 'label-important':!wizard.checkStep.address}"
 						class="label">{{ 'Common.Text_Save' | t }} {{
