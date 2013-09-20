@@ -438,21 +438,38 @@ function storeController($scope, $cookieStore, $location, $timeout,
 
                 $scope.Store.Key = storeKey;
 
-                $scope.model.nonNull($scope.Store.tmpPaymentProvider);
+                var _attachPaymentProviders = function() {
+                  // attach payment providers
+                  $scope.model.nonNull($scope.Store.tmpPaymentProvider);
+                  $scope.store.addPaymentProvider($scope.Store,
+                      $scope.Store.tmpPaymentProvider).then(function() {
+                    $scope.wizard.checkStep.payment = true;
+                    $scope.wizard.saved = true;
 
-                // attach payment providers
-                $scope.store.addPaymentProvider($scope.Store,
-                    $scope.Store.tmpPaymentProvider).then(function() {
-                  $scope.wizard.checkStep.payment = true;
-                  $scope.wizard.saved = true;
+                    // reload full model
+                    $scope.initStore(storeKey);
+                  }, function(err) {
+                    $scope.wizard.payment = false;
 
-                  // reload full model
-                  $scope.initStore(storeKey);
-                }, function(err) {
-                  $scope.wizard.payment = false;
+                    $scope.error.log(err)
+                  });
+                }
 
-                  $scope.error.log(err)
-                });
+                // add pic
+                if ($scope.Store.Image && $scope.Store.Image.Key) {
+                  $scope.model.associate($scope.Store, 'Image',
+                      $scope.Store.Image).then(function() {
+                    $scope.wizard.checkStep.image = true;
+
+                    _attachPaymentProviders();
+                  }, function(err) {
+                    $scope.wizard.checkStep.image = false;
+
+                    $scope.error.log(err)
+                  })
+                } else {
+                  _attachPaymentProviders();
+                }
               }
             },
             function(err) {
