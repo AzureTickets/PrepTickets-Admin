@@ -154,6 +154,21 @@ azureTicketsApp.factory('objectService', function() {
         Name : o.text,
         Type : type
       }
+    },
+    dateToISO8601 : function(d) {
+      return new Date(d).toString('s');
+    },
+    dateToUIPicker : function(d) {
+      var _uiDateFormat = 'MM/dd/yyyy hh:mm tt', ret = d;
+
+      try {
+        // parse date and make it compatible with select2
+        // widget
+        var ret = new Date(d).toString(_uiDateFormat);
+      } catch (e) {
+      }
+
+      return ret
     }
   }
 });

@@ -17,10 +17,10 @@ azureTicketsApp
 
               // format dates to be ISO 8601 as expected by API
               var _formatDates = function(tmpTicket) {
-                tmpTicket.OnSaleDateTimeStart = new Date(
-                    tmpTicket.OnSaleDateTimeStart).toString('s');
-                tmpTicket.OnSaleDateTimeEnd = new Date(
-                    tmpTicket.OnSaleDateTimeEnd).toString('s');
+                tmpTicket.OnSaleDateTimeStart = objectService
+                    .dateToISO8601(tmpTicket.OnSaleDateTimeStart);
+                tmpTicket.OnSaleDateTimeEnd = objectService
+                    .dateToISO8601(tmpTicket.OnSaleDateTimeEnd);
               }
 
               return {
@@ -101,17 +101,10 @@ azureTicketsApp
                   BWL.Services.ModelService.ReadAsync(storeKey,
                       BWL.Model.GeneralAdmissionTicketItemInfo.Type, ticketKey,
                       10, function(_ticket) {
-                        try {
-                          // parse date and make it compatible with select2
-                          // widget
-                          var sst = new Date(_ticket.OnSaleDateTimeStart);
-                          var set = new Date(_ticket.OnSaleDateTimeEnd);
-                          _ticket.OnSaleDateTimeStart = sst
-                              .toString(_uiDateFormat);
-                          _ticket.OnSaleDateTimeEnd = set
-                              .toString(_uiDateFormat);
-                        } catch (e) {
-                        }
+                        _ticket.OnSaleDateTimeStart = objectService
+                            .dateToUIPicker(_ticket.OnSaleDateTimeStart);
+                        _ticket.OnSaleDateTimeEnd = objectService
+                            .dateToUIPicker(_ticket.OnSaleDateTimeEnd);
 
                         // retrieve stock (inventory) totals
                         BWL.Services.InventoryService.GetInventoryStatsAsync(
