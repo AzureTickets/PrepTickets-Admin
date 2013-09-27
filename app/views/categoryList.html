@@ -8,14 +8,14 @@
 		</div>
 		<div class="widget-content">
 			<div ng-show="categories.length == 0" class="alert alert-info">{{
-				'Category.Text_NoCategory_Msg' | t }}</div>
+				'Common.Text_NoCategory_Msg' | t }}</div>
 			<table class="table  table-bordered " ng-show="categories.length > 0">
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>Name</th>
-						<th>Brief</th>
-						<th>Control</th>
+						<th>{{ 'Common.Text_Name' | t}}</th>
+						<th>{{ 'Common.Text_BriefDescription' | t}}</th>
+						<th>{{ 'Common.Text_Control' | t}}</th>
 					</tr>
 				</thead>
 				<tbody>
