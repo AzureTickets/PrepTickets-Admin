@@ -107,6 +107,10 @@ azureTicketsApp.config([
         templateUrl : 'views/cart.html',
         controller : cartController,
         resolve : routeFilters
+      }).when('/category', {
+        templateUrl : 'views/category.html',
+        controller : categoryController,
+        resolve : routeFilters
       }).when('/checkout', {
         templateUrl : 'views/checkout.html',
         controller : cartController,

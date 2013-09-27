@@ -2,14 +2,14 @@ function storeController($scope, $cookieStore, $location, $timeout,
     $routeParams, configService, authService, permService, storeService,
     modelService, errorService, geoService, formService, objectService,
     placeService, orderService, eventService, ticketService, cartService,
-    accountService, mediaService) {
+    accountService, mediaService, categoryService) {
   /**
    * The following vars are shared across controllers and accessible via $scope
    */
   $scope.storeKey = null, $scope.config = configService, $scope.name = 'store',
       $scope.stores = [], $scope.venues = [], $scope.events = [],
       $scope.tickets = [], $scope.orders = [], $scope.currencies = [],
-      $scope.images = [], $scope.paymentProviders = [],
+      $scope.images = [], $scope.paymentProviders = [], $scope.categories = [],
       $scope.suggestedURLs = [], $scope.form = formService,
       $scope.geo = geoService, $scope.error = errorService,
       $scope.object = objectService, $scope.auth = authService,
@@ -17,8 +17,8 @@ function storeController($scope, $cookieStore, $location, $timeout,
       $scope.place = placeService, $scope.store = storeService,
       $scope.order = orderService, $scope.ticket = ticketService,
       $scope.cart = cartService, $scope.account = accountService,
-      $scope.media = mediaService, $scope.enums = BWL.ModelEnum,
-      $scope.storeHasChanged = false;
+      $scope.category = categoryService, $scope.media = mediaService,
+      $scope.enums = BWL.ModelEnum, $scope.storeHasChanged = false;
 
   // this is used to contain object selection made from child scopes created by
   // ng-include
@@ -635,4 +635,4 @@ storeController.$inject = [ '$scope', '$cookieStore', '$location', '$timeout',
     'storeService', 'modelService', 'errorService', 'geoService',
     'formService', 'objectService', 'placeService', 'orderService',
     'eventService', 'ticketService', 'cartService', 'accountService',
-    'mediaService' ];
+    'mediaService', 'categoryService' ];

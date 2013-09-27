@@ -42,6 +42,11 @@
 					<li ng-repeat="s in stores"><a ui-if="s.IsOwner"
 						ng-click="setStoreKey(s.Key)" href="#/store">{{s.Name}}</a></li>
 				</ul></li>
+			<li class="nyellow"
+				ui-if="Store && Store.Key != null && Store.IsOwner || false"
+				ui-route="#/category" ng-class="{active: $uiRoute}"><a
+				href="#/category"><i class="icon-code-fork"></i>{{
+					'Common.Text_Categories' | t }}</a></li>
 			<li class="nblue"
 				ui-if="Store && Store.Key != null && Store.IsOwner || false"
 				ui-route="#/media" ng-class="{active: $uiRoute}"><a
