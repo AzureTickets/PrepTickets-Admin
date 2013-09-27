@@ -76,6 +76,8 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
             if (r !== null) {
               $scope.object.remove($scope.Category._tmpChildCategories, 'Key',
                   r.id);
+              $scope.object.remove($scope.Category.tmpChildCategories, 'Key',
+                  r.id);
             }
 
             if ($scope.Category._tmpChildCategories.length === 0) {

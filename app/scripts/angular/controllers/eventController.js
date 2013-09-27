@@ -143,6 +143,7 @@ function eventController($scope, $cookieStore, $filter, $modal) {
             // removing child cat
             if (r !== null) {
               $scope.object.remove($scope.Event._tmpCategories, 'Key', r.id);
+              $scope.object.remove($scope.Event.tmpCategories, 'Key', r.id);
             }
 
             if ($scope.Event._tmpCategories.length === 0) {
