@@ -281,7 +281,7 @@ azureTicketsApp
 
                     $scope.storeKey = ($scope.storeKey || $cookieStore
                         .get($scope.config.cookies.storeKey));
-                    __this = this;
+                    var __this = this;
 
                     __this.listCategoriesAsync($scope.storeKey, 0).then(
                         function() {
@@ -312,6 +312,29 @@ azureTicketsApp
                           $scope.error.log(err)
                         });
                   }
+                },
+                getParentKey : function($scope, categoryKey) {
+                  var ret = null;
+
+                  if (angular.isDefined($scope.categories)
+                      && $scope.categories.length > 0) {
+                    angular.forEach($scope.categories, function(v, k) {
+                      if (angular.isDefined(v.ChildCategories)
+                          && v.ChildCategories.length > 0) {
+                        angular.forEach(v.ChildCategories, function(vv, kk) {
+                          if (vv.Key === categoryKey) {
+                            ret = v.Key;
+                            return;
+                          }
+                        })
+
+                        if (ret !== null)
+                          return;
+                      }
+                    })
+                  }
+
+                  return ret;
                 }
               }
             } ]);

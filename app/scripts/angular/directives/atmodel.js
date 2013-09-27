@@ -134,6 +134,11 @@ azureTicketsApp
                                   out[$filter('t')('Common.Text_Venue')
                                       + countSuffix] = prop.Name;
                                   break;
+                                case BWL.Model.Category.Type:
+                                  out[$filter('t')(
+                                      'Common.Text_ChildCategories')
+                                      + countSuffix] = prop.Name;
+                                  break;
                                 case BWL.Model.Price.Type:
                                   out[$filter('t')('Common.Text_Price') + ' ('
                                       + prop.Currency + ')' + countSuffix] = prop.ItemPrice;

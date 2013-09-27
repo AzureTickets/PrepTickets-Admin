@@ -57,15 +57,25 @@ azureTicketsApp.factory('eventService', [
           BWL.Services.ModelService.ReadAsync(storeKey, BWL.Model.Event.Type,
               eventKey, 10, function(_event) {
                 // prepare tmp var to be used by UI
-                _event.tmpVenues = [];
+                _event.tmpVenues = [], _event.tmpCategories = [];
+
                 if (angular.isDefined(_event.Places)
                     && angular.isArray(_event.Places)) {
                   angular.forEach(_event.Places, function(ev) {
                     _event.tmpVenues.push(ev)
                   })
                 }
+
+                if (angular.isDefined(_event.Categories)
+                    && angular.isArray(_event.Categories)) {
+                  angular.forEach(_event.Categories, function(ev) {
+                    _event.tmpCategories.push(ev)
+                  })
+                }
+
                 // used by select2 internally
                 _event._tmpVenues = angular.copy(_event.tmpVenues);
+                _event._tmpCategories = angular.copy(_event.tmpCategories);
 
                 _event.StartTime = objectService
                     .dateToUIPicker(_event.StartTime);
@@ -151,7 +161,10 @@ azureTicketsApp.factory('eventService', [
 
           delete tmpEvent.tmpVenues;
           delete tmpEvent._tmpVenues;
+          delete tmpEvent.tmpCategories;
+          delete tmpEvent._tmpCategories;
           delete tmpEvent.Places;
+          delete tmpEvent.Categories;
           delete tmpEvent.Image;
           delete tmpEvent.$$hashKey;
           delete tmpEvent.Type;
@@ -168,6 +181,130 @@ azureTicketsApp.factory('eventService', [
                   def.reject(err)
                 })
               });
+
+          return def.promise;
+        },
+        deleteCategories : function(storeKey, _event) {
+          var def = $q.defer();
+          var _allRemove = null;
+
+          // remove those Categories which are not present in _tmpCategories
+          if (angular.isArray(_event.Categories)
+              && _event.Categories.length > 0) {
+            var tmpCategories = _event.Categories.map(function(v, k) {
+              return v.Key
+            });
+            // declare remove func
+            var _removeCategory = function(categoryKey) {
+              var _def = $q.defer();
+
+              if (!angular.isDefined(categoryKey)) {
+                _def.resolve();
+                return;
+              }
+
+              // checks whether the category has been removed or not
+              var _existent = _event._tmpCategories ? objectService.grep(
+                  _event._tmpCategories, 'Key', categoryKey) : null;
+
+              if (_existent !== null) {
+                // category still present, do nothing
+                $timeout(function() {
+                  _def.resolve();
+                }, 50);
+              } else {
+                // category is not selected anymore, remove
+                BWL.Services.ModelService.RemoveAsync(storeKey,
+                    BWL.Model.Event.Type, _event.Key, 'Categories',
+                    BWL.Model.Category.Type, categoryKey, function() {
+                      $timeout(function() {
+                        objectService.remove(_event.Categories, 'Key',
+                            categoryKey);
+                        _def.resolve();
+                      }, 50);
+                    }, function(err) {
+                      $timeout(function() {
+                        _def.reject(err);
+                      }, 50);
+                    });
+              }
+
+              return _def.promise;
+            }
+
+            _allRemove = $q.all(tmpCategories.map(_removeCategory));
+          }
+
+          if (_allRemove === null) {
+            $timeout(function() {
+              def.resolve();
+            }, 150);
+          } else {
+            _allRemove.then(function() {
+              $timeout(function() {
+                def.resolve();
+              }, 150);
+            }, function(err) {
+              $timeout(function() {
+                def.reject(err);
+              }, 150);
+            });
+          }
+
+          return def.promise;
+        },
+        addCategories : function(storeKey, _event) {
+          var def = $q.defer();
+          var _addCategory = function(categoryKey) {
+            var _def = $q.defer();
+
+            if (!angular.isDefined(categoryKey)) {
+              _def.resolve();
+              return;
+            }
+
+            var _existent = _event.Categories ? objectService.grep(
+                _event.Categories, 'Key', categoryKey) : false;
+
+            if (_existent !== false && _existent !== null) {
+              $timeout(function() {
+                _def.resolve();
+              }, 50);
+            } else {
+              BWL.Services.ModelService.AddAsync(storeKey,
+                  BWL.Model.Event.Type, _event.Key, 'Categories',
+                  BWL.Model.Category.Type, {
+                    Key : categoryKey
+                  }, function() {
+                    $timeout(function() {
+                      _def.resolve();
+                    }, 50);
+                  }, function(err) {
+                    $timeout(function() {
+                      _def.reject(err);
+                    }, 50);
+                  });
+            }
+
+            return _def.promise;
+          }
+
+          // select2 has set undefined for _event.tmpCategories, so we
+          // restore the backup
+          var categories = angular.copy(_event._tmpCategories).filter(Boolean);
+          var _allAdd = $q.all(categories.map(function(v) {
+            return v.Key;
+          }).map(_addCategory));
+
+          _allAdd.then(function() {
+            $timeout(function() {
+              def.resolve();
+            }, 150);
+          }, function(err) {
+            $timeout(function() {
+              def.reject(err);
+            }, 150);
+          });
 
           return def.promise;
         },
@@ -326,7 +463,7 @@ azureTicketsApp.factory('eventService', [
 
             $scope.storeKey = ($scope.storeKey || $cookieStore
                 .get($scope.config.cookies.storeKey));
-            __this = this;
+            var __this = this;
 
             __this.listEventsAsync($scope.storeKey, 0).then(
                 function() {

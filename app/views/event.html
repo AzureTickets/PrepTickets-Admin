@@ -1,6 +1,6 @@
 <div class="atPanel" ui-if="DomainProfile && DomainProfile.Key || false"
 	ng-controller="eventController" ng-cloak
-	ng-init="media.loadImages(this)">
+	ng-init="media.loadImages(this); category.loadCategories(this)">
 	<script type="text/ng-template" id="formEvent.html">
 			<div class="modal-header">
 				<button type="button" ng-click="wizardEvent.open = false"
@@ -100,6 +100,14 @@
 								data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
 								ui-select2="optsSelVenue" at-required ng-model="Event.tmpVenues"
 								name="Event_tmpVenues" />
+						</dd>
+						<dd>
+							<label>{{ 'Common.Text_Categories' | t}}</label>
+							<!-- @todo make this part of the atfield directive -->
+							<input type="text" ui-if="Event._tmpCategories"
+								data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
+								ui-select2="optsSelCategories" ng-model="Event.tmpCategories"
+								name="Event_tmpCategories" ng-init="evCategories()" />
 						</dd>
 						<dd class="clear">
 							<atfield class="input-small" ng-model="Event.MaximumCapacity"

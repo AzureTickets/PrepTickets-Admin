@@ -33,9 +33,7 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
 
   $scope.create = function() {
     $scope.Category = $scope.model.getInstanceOf('Category');
-    $scope.Category.tmpChildCategories = $scope.categories.length > 1 ? $scope.categories
-        .splice(0, 1)
-        : $scope.categories;
+    $scope.Category.tmpChildCategories = [];
     $scope.Category._tmpChildCategories = angular
         .copy($scope.Category.tmpChildCategories);
     $scope.wizardCategory.open = true;
