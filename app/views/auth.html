@@ -15,6 +15,29 @@
 							provider }}</a></li>
 				</ul>
 			</div>
+			<div class="span6">
+				<p>{{ 'Login.labelOr' | t }} {{ 'Login.labelLoginStore1' | t }}
+					{{ 'Login.labelMembership' | t }}</p>
+				<form name="login1" ui-if="!doRegister" ng-submit="login()">
+					<dl>
+						<dt>{{ 'Common.Text_EmailAddress' | t }}</dt>
+						<dd>
+							<input type="email" required class="input-large"
+								ng-model="AccountProfile.Email" />
+						</dd>
+						<dt>{{ 'Login.labelPassword' | t }}</dt>
+						<dd>
+							<input type="password" required class="input-large"
+								ng-model="AccountProfile.Password" />
+						</dd>
+						<dd>
+							<input type="submit" class="btn btn-success clear"
+								value="{{
+		 							'Login.labelLogin' | t }}" />
+						</dd>
+					</dl>
+				</form>
+			</div>
 		</div>
 	</div>
 </div>

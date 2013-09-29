@@ -1,4 +1,4 @@
-function adminController($scope, $location, $cookieStore, $filter) {
+function adminController($scope, $location, $window, $cookieStore, $filter) {
   $scope.authProviders = [], $scope.name = 'admin', $scope.loginErr = null,
       $scope.registerErr = null, $scope.registerOk = false,
       $scope.passwdOk = true;
@@ -24,14 +24,18 @@ function adminController($scope, $location, $cookieStore, $filter) {
   }
 
   $scope.login = function(provider) {
+    var _init = function() {
+      $scope.DomainProfile = $scope.auth.getDomainProfile();
+      $location.path($cookieStore.get($scope.config.cookies.lastPath));
+      $cookieStore.put($scope.config.cookies.loggedStatus, true);
+
+      $scope.init();
+    }
+
     if (angular.isDefined(provider) && angular.isString(provider)) {
       // login by provider
       $scope.auth.logonByProviderAsync(provider).then(function() {
-        $scope.DomainProfile = $scope.auth.getDomainProfile();
-        $location.path($cookieStore.get($scope.config.cookies.lastPath));
-        $cookieStore.put($scope.config.cookies.loggedStatus, true);
-
-        $scope.init();
+        _init();
       }, function(err) {
         $scope.loginErr = err;
       });
@@ -39,9 +43,9 @@ function adminController($scope, $location, $cookieStore, $filter) {
       // login by account
       $scope.auth.logonAsync({
         Email : $scope.AccountProfile.Email,
-        PasswordHash : BWL.oAuth.HashPassword($scope.AccountProfile.Password)
+        PasswordHash : BWL.Auth.HashPassword($scope.AccountProfile.Password)
       }).then(function() {
-        $scope.auth.authenticate($scope);
+        _init();
       }, function(err) {
         $scope.loginErr = err;
       });
@@ -55,7 +59,7 @@ function adminController($scope, $location, $cookieStore, $filter) {
           {
             FullName : $scope.RegisterAccountProfile.FullName,
             Email : $scope.RegisterAccountProfile.Email,
-            PasswordHash : BWL.oAuth
+            PasswordHash : BWL.Auth
                 .HashPassword($scope.RegisterAccountProfile.Password)
           }).then(function() {
         $scope.registerOk = true;
@@ -258,4 +262,5 @@ function adminController($scope, $location, $cookieStore, $filter) {
   }
 }
 
-adminController.$inject = [ '$scope', '$location', '$cookieStore', '$filter' ];
+adminController.$inject = [ '$scope', '$location', '$window', '$cookieStore',
+    '$filter' ];
