@@ -36,12 +36,11 @@
 								<button ui-if="Store.IsOwner" class="btn btn-mini btn-success"
 									ng-click="update(event)">{{ 'Common.Text_Update' | t
 									}}</button>
-								<a ng-href="#/scanners/{{event.Key}}"
+								<a ng-href="#/scanner/{{event.Key}}"
 									ui-if="events && events.length > 0 || false"
 									class="btn btn-mini btn-primary">{{
 									'Common.Text_ScannerMenu_Scanner' | t }} </a> <a
-									ng-href="#/ticket/{{event.Key}}"
-									class="btn btn-mini btn-info"
+									ng-href="#/ticket/{{event.Key}}" class="btn btn-mini btn-info"
 									ng-bind="!Store.IsOwner && ('ShoppingCart.labelBuyTickets' | t) || 'Common.Text_TicketMenu_Tickets' | t"></a>
 								<button ui-if="Store.IsOwner" ng-click="deleteEvent(event)"
 									class="btn btn-mini btn-danger">{{

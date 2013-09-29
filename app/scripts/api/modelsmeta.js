@@ -1182,6 +1182,21 @@ BWL.ModelMeta.ScanDevice = {
   Name : 'String',
   SmallImage : 'IImage:150:150'
 };
+BWL.ModelMeta.DeviceInfo = {
+    __cache : 300,
+    __perms : {
+      Create : 20,
+      Read : 0,
+      Update : 30,
+      Delete : 100,
+      Remove : 30
+    },
+    UniqueID : 'String',
+    OS : 'String',
+    Hardware : 'String',
+    Version : 'String',
+    Name : 'String',
+  };
 BWL.ModelMeta.ScanEventInfo = {
   __cache : 0,
   DateCreated : 'DateTime',

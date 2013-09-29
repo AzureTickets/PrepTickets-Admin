@@ -127,12 +127,12 @@ azureTicketsApp.config([
         templateUrl : 'views/ticket.html',
         controller : ticketController,
         resolve : routeFilters
-      }).when('/scanners', { // /:eventKey
-        templateUrl : 'views/scanners.html',
+      }).when('/scanner', {
+        templateUrl : 'views/scanner.html',
         controller : scannerController,
         resolve : routeFilters
-      }).when('/scanners/:eventKey', {
-        templateUrl : 'views/scanners.html',
+      }).when('/scanner/:eventKey', {
+        templateUrl : 'views/scanner.html',
         controller : scannerController,
         resolve : routeFilters
       }).when('/order', {

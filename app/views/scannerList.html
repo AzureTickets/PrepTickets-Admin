@@ -1,0 +1,43 @@
+<div class="clear row-fluid list">
+	<!-- scanDevice list -->
+	<div class="widget wviolet">
+		<div class="widget-head">
+			<div class="pull-left">{{
+				'Common.Text_ScanDeviceMenu_ScanDevices' | t }}</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="widget-content">
+			<div ng-show="scanDevices.length == 0" class="alert alert-info">{{
+				'ScanDevice.Text_NoScanDevice_Msg' | t }}</div>
+			<table class="table  table-bordered "
+				ng-show="scanDevices.length > 0">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Name</th>
+						<th>Description</th>
+						<th>Control</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="scanDevice in scanDevices | filter:filterByEvent">
+						<td>{{ $index+1 }}</td>
+						<td>{{scanDevice.Name}}</td>
+						<td><p class="text clear">{{scanDevice.Description}}</p></td>
+						<td>
+							<div class="btn-group pull-left">
+								<button ui-if="Store.IsOwner" class="btn btn-mini btn-success"
+									ng-click="update(scanDevice)">{{ 'Common.Text_Update'
+									| t }}</button>
+								<button ui-if="Store.IsOwner"
+									ng-click="deleteScanDevice(scanDevice)"
+									class="btn btn-mini btn-danger">{{
+									'Common.Text_Remove' | t }}</button>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

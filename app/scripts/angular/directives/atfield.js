@@ -7,7 +7,8 @@ azureTicketsApp
         'atfield',
         [
             '$compile',
-            function($compile) {
+            'objectService',
+            function($compile, objectService) {
               return {
                 restrict : 'EA',
                 scope : {
@@ -22,7 +23,7 @@ azureTicketsApp
                   atBlur : '=ngBlur'
                 },
                 link : function($scope, $element, $attrs) {
-                  var ss = $attrs.ngModel.split('.');
+                  var ss = $attrs.ngModel.split('.'), isBoolean = false;
                   var m = ss.length === 3 ? ss[1] : ss[0];// model name
                   var f = ss.length === 3 ? ss[ss.length - 1] : ss[1]; // property
                   // name
@@ -68,13 +69,23 @@ azureTicketsApp
                     _attr.type = 'number',
                         _el = jQuery('<input ' + _req + '/>');
                   } else if (/^Boolean/g.test(fieldType)) {
-                    _attr.type = 'checkbox', _el = jQuery('<input />');
-                    if (_label !== null) {
-                      _label.addClass('pull-right');
-                    }
+                    isBoolean = true;
+                    _attr.type = 'button', _el = jQuery('<button />');
+                    _el.attr('btn-checkbox', '');
+                    _el.attr('btn-checkbox-true', '1');
+                    _el.attr('btn-checkbox-false', '0');
+                    _el.text(_label.text());
+                    jQuery(_el)
+                        .prepend(
+                            '<i ui-if="atModel" class="icon-ok" /><i ui-if="!atModel" class="icon-remove" />')
+                    _label = null;
                   } else if (/^Date|Time/g.test(fieldType)) {
                     _attr.type = 'text', _el = jQuery('<input ' + _req + '/>');
                     dateTimeScript = jQuery('<script type="text/javascript" />');
+
+                    // ensure format is ok
+                    $scope.atModel = objectService
+                        .dateToUIPicker($scope.atModel);
 
                     // we're outside angular, so we need to do some tricks here
                     // in order to update the model
@@ -169,6 +180,9 @@ azureTicketsApp
                   }
                   if (_tip !== null) {
                     $compile(_tip)($scope);
+                  }
+                  if (isBoolean) {
+                    jQuery(_el).addClass('btn').addClass('btn-inverse')
                   }
 
                   $element.append(_label).append(_tip).append(_el);
