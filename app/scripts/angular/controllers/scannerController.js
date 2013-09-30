@@ -33,8 +33,9 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams) 
   }
 
   $scope.filterByEvent = function(scanDevice) {
-    var t = angular.isDefined($scope.Event) ? $scope.object.grep(
-        $scope.Event.Items, 'Key', scanDevice.Key) : null;
+    var t = angular.isDefined($scope.Event) && $scope.Event !== null ? $scope.object
+        .grep($scope.Event.Items, 'Key', scanDevice.Key)
+        : null;
 
     if (t === null)
       return true;

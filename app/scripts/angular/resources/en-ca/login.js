@@ -41,7 +41,7 @@ var LoginResources = {
     'labelReEnterPassword': 'Re-enter Password',
     'labelRegisterNow': 'Register Now',
     'Text_AccountUpdatedSuccessfully': 'Your Account information <br/>has been updated successfully',
-    'labelStoreRegistrationStep1': 'Step 1: Create an account:',
+    'labelCreateAccount': 'Create an account:',
     'labelSchoolRegistration': 'School Registration',
     'labelMySchool': 'My School',
     'Caption_LoginConfirm': 'Are you a ticket buyer or school administrator?'

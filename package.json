@@ -10,7 +10,7 @@
 	"styles" : "styles"
   },
   "url" : {
-  	"api" : "http://stage.azuretickets.com"
+  	"api" : "https://stage.revvly.com"
   },
   "version": "1.0.0",
   "dependencies": {},

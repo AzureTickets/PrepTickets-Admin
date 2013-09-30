@@ -1,7 +1,7 @@
 function adminController($scope, $location, $window, $cookieStore, $filter) {
-  $scope.authProviders = [], $scope.name = 'admin', $scope.loginErr = null,
-      $scope.registerErr = null, $scope.registerOk = false,
-      $scope.passwdOk = true;
+  $scope.authProviders = [], $scope.name = 'admin', $scope.registerOk = false,
+      $scope.passwdOk = true, $scope.doRegister = false,
+      $scope.doForgotPassword = false;
 
   /**
    * models in play here.
@@ -14,7 +14,7 @@ function adminController($scope, $location, $window, $cookieStore, $filter) {
   $scope.$on('resetDomainProfile', function() {
     delete $scope.DomainProfile;
   });
-
+  
   $scope.loadAuthProviders = function() {
     $scope.auth.loadAuthProviders().then(function(providers) {
       $scope.authProviders = providers;
@@ -37,7 +37,7 @@ function adminController($scope, $location, $window, $cookieStore, $filter) {
       $scope.auth.logonByProviderAsync(provider).then(function() {
         _init();
       }, function(err) {
-        $scope.loginErr = err;
+        $scope.error.log(err)
       });
     } else {
       // login by account
@@ -47,7 +47,7 @@ function adminController($scope, $location, $window, $cookieStore, $filter) {
       }).then(function() {
         _init();
       }, function(err) {
-        $scope.loginErr = err;
+        $scope.error.log(err)
       });
     }
   }
@@ -64,7 +64,7 @@ function adminController($scope, $location, $window, $cookieStore, $filter) {
           }).then(function() {
         $scope.registerOk = true;
       }, function(err) {
-        $scope.registerErr = err;
+        $scope.error.log(err)
       });
     }
   }

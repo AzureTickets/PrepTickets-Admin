@@ -16,9 +16,11 @@
 				</ul>
 			</div>
 			<div class="span6">
-				<p>{{ 'Login.labelOr' | t }} {{ 'Login.labelLoginStore1' | t }}
-					{{ 'Login.labelMembership' | t }}</p>
-				<form name="login1" ui-if="!doRegister" ng-submit="login()">
+				{{doRegister}} {{doForgotPassword}}
+				<form name="login1" ui-if="!doRegister && !doForgotPassword"
+					ng-submit="login()">
+					<p>{{ 'Login.labelOr' | t }} {{ 'Login.labelLoginStore1' | t }}
+						{{ 'Login.labelMembership' | t }}</p>
 					<dl>
 						<dt>{{ 'Common.Text_EmailAddress' | t }}</dt>
 						<dd>
@@ -37,6 +39,45 @@
 						</dd>
 					</dl>
 				</form>
+				<form name="register1" ui-if="doRegister && !doForgotPassword"
+					ng-submit="register()">
+					<p>{{ 'Login.labelCreateAccount' | t }}</p>
+					<dl>
+						<dt>{{ 'Common.Text_EmailAddress' | t }}</dt>
+						<dd>
+							<input type="email" required class="input-large"
+								ng-model="RegisterAccountProfile.Email" />
+						</dd>
+						<dt>{{ 'Login.labelPassword' | t }}</dt>
+						<dd>
+							<input type="password" required class="input-large"
+								ng-model="RegisterAccountProfile.Password" />
+						</dd>
+						<dt>{{ 'Login.labelConfirmPassword' | t }}</dt>
+						<dd>
+							<input type="password" required class="input-large"
+								ng-model="RegisterAccountProfile.ConfirmPassword"
+								ng-change="validatePasswords()" />
+						</dd>
+						<dd>
+							<input type="submit" class="btn btn-success clear"
+								value="{{
+		 							'Login.labelLogin' | t }}" />
+						</dd>
+					</dl>
+				</form>
+				<dl ui-if="!doForgotPassword && !doRegister">
+					<dd>
+						<a href="#/auth/login"
+							ng-click="doRegister = true; doForgotPassword = false">{{'Login.labelRegisterNow'
+							| t}}</a>
+					</dd>
+					<dd>
+						<a href="#/auth/login"
+							ng-click="doForgotPassword = true; doRegister = false">{{'Login.labelForgotPassword'
+							| t}}</a>
+					</dd>
+				</dl>
 			</div>
 		</div>
 	</div>

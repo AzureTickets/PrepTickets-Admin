@@ -198,6 +198,18 @@ module.exports = function(grunt) {
           }
         },
         copy : {
+          dist : {
+            files : [ {
+              expand : true,
+              dot : true,
+              cwd : '<%= at.app %>',
+              dest : '<%= at.dist %>',
+              src : [
+                  '*.{ico,txt,php}',
+                  '<%= at.components %>/**/*.{ico,txt,php,js,png,jpg,gif,css,less,json,eot,svg,ttf,woff,otf}',
+                  'assets/**/*.*' ]
+            } ]
+          },
           // patch for Bootstrap to use Font-Awesome sprites
           replaceBootstrapLess : {
             files : [ {
@@ -205,7 +217,7 @@ module.exports = function(grunt) {
               expand : true,
               flatten : true,
               cwd : '<%= at.app %>/patches',
-              dest : '<%= at.app %>/<%= at.components %>/boostrap/less',
+              dest : '<%= at.app %>/<%= at.components %>/bootstrap/less',
               src : [ 'bootstrap/*.less' ]
             } ]
           },
@@ -217,18 +229,6 @@ module.exports = function(grunt) {
               cwd : '<%= at.app %>/patches',
               dest : '<%= at.app %>/<%= at.components %>/font-awesome/less',
               src : [ 'font-awesome/*.less' ]
-            } ]
-          },
-          dist : {
-            files : [ {
-              expand : true,
-              dot : true,
-              cwd : '<%= at.app %>',
-              dest : '<%= at.dist %>',
-              src : [
-                  '*.{ico,txt,php}',
-                  '<%= at.components %>/**/*.{ico,txt,php,js,png,jpg,gif,css,less,json,eot,svg,ttf,woff,otf}',
-                  'assets/**/*.*' ]
             } ]
           }
         },
@@ -262,7 +262,7 @@ module.exports = function(grunt) {
       'connect:test', 'testacular:continuous' ]);
 
   grunt.registerTask('build', [ 'clean:dist', /* 'jshint', */
-  'test', 'useminPrepare', 'cssmin', 'htmlmin', 'copy', 'usemin', 'concat',
+  'test', 'useminPrepare', 'copy', 'cssmin', 'htmlmin', 'usemin', 'concat',
       'ngmin', /* 'uglify' */
   ]);
 
