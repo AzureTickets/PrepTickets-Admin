@@ -148,6 +148,20 @@ azureTicketsApp
 
                   return def.promise;
                 },
+                resetPasswordAsync : function(account) {
+                  var def = $q.defer();
+
+                  BWL.Services.AccountService.ResetPasswordAsync(account,
+                      function() {
+                        $rootScope.$apply(def.resolve);
+                      }, function(err) {
+                        $rootScope.$apply(function() {
+                          def.reject(err)
+                        })
+                      });
+
+                  return def.promise;
+                },
                 logonAsync : function(account) {
                   var def = $q.defer();
 

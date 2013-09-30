@@ -4,23 +4,18 @@
 	<!-- auth panel -->
 	<div ng-hide="DomainProfile.Key || false" class="clearfix">
 		<div class="alert alert-error" ng-show="loginErr || false">{{loginErr}}</div>
-		<h4>{{ 'Login.Page_Title' | t }}</h4>
+		<div class="alert alert-success" ng-show="registerOk || false">{{
+			'Login.registerOk' | t }}</div>
+		<div class="alert alert-success" ng-show="resetPasswordOk || false">{{
+			'Login.resetPasswordOk' | t }}</div>
+		<h3>{{ 'Login.Page_Title' | t }}</h3>
 		<!-- provider login -->
-		<div class="row-fluid" ng-init="loadAuthProviders()">
-			<div class="span6">
-				<p>{{ 'Login.Page_Desc' | t }}</p>
-				<ul class="socialicons color">
-					<li ng-repeat="provider in authProviders"><a
-						ng-class="provider | lowercase" ng-click="login(provider)">{{
-							provider }}</a></li>
-				</ul>
-			</div>
-			<div class="span6">
-				{{doRegister}} {{doForgotPassword}}
+		<div class="row-fluid">
+			<div class="span12">
 				<form name="login1" ui-if="!doRegister && !doForgotPassword"
 					ng-submit="login()">
-					<p>{{ 'Login.labelOr' | t }} {{ 'Login.labelLoginStore1' | t }}
-						{{ 'Login.labelMembership' | t }}</p>
+					<p>{{ 'Login.labelLoginStore1' | t }} {{ 'Login.labelAccount' |
+						t }}</p>
 					<dl>
 						<dt>{{ 'Common.Text_EmailAddress' | t }}</dt>
 						<dd>
@@ -43,6 +38,16 @@
 					ng-submit="register()">
 					<p>{{ 'Login.labelCreateAccount' | t }}</p>
 					<dl>
+						<dt>{{ 'Login.labelLastName' | t }}</dt>
+						<dd>
+							<input type="text" required class="input-large"
+								ng-model="RegisterAccountProfile.FirstName" />
+						</dd>
+						<dt>{{ 'Login.labelFirstName' | t }}</dt>
+						<dd>
+							<input type="text" required class="input-large"
+								ng-model="RegisterAccountProfile.LastName" />
+						</dd>
 						<dt>{{ 'Common.Text_EmailAddress' | t }}</dt>
 						<dd>
 							<input type="email" required class="input-large"
@@ -62,20 +67,39 @@
 						<dd>
 							<input type="submit" class="btn btn-success clear"
 								value="{{
-		 							'Login.labelLogin' | t }}" />
+		 							'Login.labelRegister' | t }}" />
+						</dd>
+					</dl>
+				</form>
+				<form name="login3" ui-if="!doRegister && doForgotPassword"
+					ng-submit="resetPassword()">
+					<p>{{ 'Login.labelResetPassword' | t }}</p>
+					<dl>
+						<dt>{{ 'Common.Text_EmailAddress' | t }}</dt>
+						<dd>
+							<input type="email" required class="input-large"
+								ng-model="AccountProfile.Email" />
+						</dd>
+						<dd>
+							<input type="submit" class="btn btn-success clear"
+								value="{{
+		 							'Common.Text_Submit' | t }}" />
 						</dd>
 					</dl>
 				</form>
 				<dl ui-if="!doForgotPassword && !doRegister">
 					<dd>
-						<a href="#/auth/login"
-							ng-click="doRegister = true; doForgotPassword = false">{{'Login.labelRegisterNow'
+						<a href="#/auth/login" ng-click="evDoRegister()">{{'Login.labelRegisterNow'
 							| t}}</a>
 					</dd>
 					<dd>
-						<a href="#/auth/login"
-							ng-click="doForgotPassword = true; doRegister = false">{{'Login.labelForgotPassword'
+						<a href="#/auth/login" ng-click="evDoForgotPassword()">{{'Login.labelForgotPassword'
 							| t}}</a>
+					</dd>
+				</dl>
+				<dl ui-if="doForgotPassword || doRegister">
+					<dd>
+						<a href="/">{{'Login.labelLogin' | t}}</a>
 					</dd>
 				</dl>
 			</div>

@@ -43,8 +43,8 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams) 
     return angular.isObject(t) && angular.equals(t.Key, scanDevice.Key);
   }
 
-  $scope.update = function(_scanner) {
-    $scope.ScanDevice = angular.copy(_scanner);
+  $scope.update = function(scanDevice) {
+    $scope.ScanDevice = angular.copy(scanDevice);
     $scope.wizardScanDevice.open = true;
     $scope.wizardScanDevice.reset();
   }
@@ -134,7 +134,7 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams) 
           DeviceInfo : {
             Name : $scope.ScanDevice.DeviceInfo.Name,
             UniqueID : $scope.ScanDevice.DeviceInfo.UniqueID,
-            Hardware : $scope.ScanDevice.DeviceInfo.UniqueID,
+            Hardware : $scope.ScanDevice.DeviceInfo.Hardware,
             OS : $scope.ScanDevice.DeviceInfo.OS
           }
         }).then(
@@ -179,41 +179,20 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams) 
               });
         }
 
-        if (angular.isArray($scope.ScanDevice.Items)) {
-          $scope.scanDevice
-              .updateScanDevice($scope.storeKey, $scope.ScanDevice)
-              .then(
-                  function() {
-                    if ($scope.ScanDevice.Image && $scope.ScanDevice.Image.Key) {
-                      $scope.model.associate($scope.ScanDevice, 'Image',
-                          $scope.ScanDevice.Image).then(_finishes,
-                          function(err) {
-                            $scope.error.log(err)
-                          })
-                    } else {
-                      _finishes();
-                    }
-                  }, function(err) {
-                    $scope.error.log(err)
-                  });
-        } else {
-          $scope.scanDevice
-              .updateScanDevice($scope.storeKey, $scope.ScanDevice)
-              .then(
-                  function() {
-                    if ($scope.ScanDevice.Image && $scope.ScanDevice.Image.Key) {
-                      $scope.model.associate($scope.ScanDevice, 'Image',
-                          $scope.ScanDevice.Image).then(_finishes,
-                          function(err) {
-                            $scope.error.log(err)
-                          })
-                    } else {
-                      _finishes();
-                    }
-                  }, function(err) {
-                    $scope.error.log(err)
-                  });
-        }
+        $scope.scanner.updateScanDevice($scope.storeKey, $scope.ScanDevice)
+            .then(
+                function() {
+                  if ($scope.ScanDevice.Image && $scope.ScanDevice.Image.Key) {
+                    $scope.model.associate($scope.ScanDevice, 'Image',
+                        $scope.ScanDevice.Image).then(_finishes, function(err) {
+                      $scope.error.log(err)
+                    })
+                  } else {
+                    _finishes();
+                  }
+                }, function(err) {
+                  $scope.error.log(err)
+                });
       }
     }
   }

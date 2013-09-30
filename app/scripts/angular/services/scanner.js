@@ -117,8 +117,6 @@ azureTicketsApp.factory('scannerService', [
           delete tmpScanDevice.$$hashKey;
           delete tmpScanDevice.Type;
 
-          _formatDates(tmpScanDevice);
-
           BWL.Services.ModelService.UpdateAsync(storeKey,
               BWL.Model.ScanDevice.Type, scanDevice.Key, tmpScanDevice,
               function(ret) {

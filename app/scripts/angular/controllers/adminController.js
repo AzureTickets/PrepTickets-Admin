@@ -1,7 +1,7 @@
 function adminController($scope, $location, $window, $cookieStore, $filter) {
   $scope.authProviders = [], $scope.name = 'admin', $scope.registerOk = false,
-      $scope.passwdOk = true, $scope.doRegister = false,
-      $scope.doForgotPassword = false;
+      $scope.resetPasswordOk = false, $scope.passwdOk = true,
+      $scope.doRegister = false, $scope.doForgotPassword = false;
 
   /**
    * models in play here.
@@ -14,7 +14,17 @@ function adminController($scope, $location, $window, $cookieStore, $filter) {
   $scope.$on('resetDomainProfile', function() {
     delete $scope.DomainProfile;
   });
-  
+
+  $scope.evDoRegister = function() {
+    $scope.doRegister = true;
+    $scope.doForgotPassword = false;
+  }
+
+  $scope.evDoForgotPassword = function() {
+    $scope.doRegister = false;
+    $scope.doForgotPassword = true;
+  }
+
   $scope.loadAuthProviders = function() {
     $scope.auth.loadAuthProviders().then(function(providers) {
       $scope.authProviders = providers;
@@ -59,6 +69,8 @@ function adminController($scope, $location, $window, $cookieStore, $filter) {
           {
             FullName : $scope.RegisterAccountProfile.FullName,
             Email : $scope.RegisterAccountProfile.Email,
+            FirstName : $scope.RegisterAccountProfile.FirstName,
+            LastName : $scope.RegisterAccountProfile.LastName,
             PasswordHash : BWL.Auth
                 .HashPassword($scope.RegisterAccountProfile.Password)
           }).then(function() {
@@ -67,6 +79,17 @@ function adminController($scope, $location, $window, $cookieStore, $filter) {
         $scope.error.log(err)
       });
     }
+  }
+
+  $scope.resetPassword = function() {
+    $scope.auth.resetPasswordAsync({
+      Email : $scope.AccountProfile.Email,
+    }).then(function() {
+      $scope.resetPasswordOk = true;
+      $scope.error.log(null);
+    }, function(err) {
+      $scope.error.log(err)
+    });
   }
 
   $scope.validatePasswords = function() {

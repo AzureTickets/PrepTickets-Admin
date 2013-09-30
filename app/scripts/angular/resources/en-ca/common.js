@@ -13,6 +13,7 @@ var CommonResources = {
   Text_RequiredField : 'The field {0} is required',
   Text_AddRecipient : 'Add Recipient',
   Text_Sendemail : 'Send email',
+  Text_Submit : 'Submit',
   Text_Sender : 'SENDER',
   Text_Recipient : 'RECIPIENT',
   Text_EmailToFriend : 'Email to Friend',

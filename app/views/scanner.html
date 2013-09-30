@@ -6,20 +6,20 @@
 				<button type="button" ng-click="wizardScanDevice.open = false"
 					class="close">&times;</button>
 				<h3>
-					<p class="text-info">{{ 'Common.Text_ScanDevice' | t}}</p>
+					<p class="text-info">{{ 'Scanner.Text_CodeDevicePopup' | t}}</p>
 				</h3>
 			</div>
 			<div class="modal-body">
 				<!-- messages -->
 				<div ng-switch="wizardScanDevice.currentStep">
 					<div class="alert alert-info" ng-switch-when="1">
-						<strong>{{ 'ScanDevice.Text_ScanDeviceInformation' | t }}</strong>
+						<strong>{{ 'Scanner.Text_ScannerInformation' | t }}</strong>
 					</div>
 					<div class="alert alert-info" ng-switch-when="2">
-						<strong>{{ 'ScanDevice.Text_DeviceInformation' | t }}</strong>
+						<strong>{{ 'Scanner.Text_DeviceInformation' | t }}</strong>
 					</div>
 					<div class="alert alert-info" ng-switch-when="3">
-						<strong>{{ 'ScanDevice.Text_EventInformation' | t }}</strong>
+						<strong>{{ 'Scanner.Text_EventInformation' | t }}</strong>
 					</div>
 					<div class="alert alert-info" ng-switch-when="4">
 						<strong>{{ 'Common.Text_ImageSelect' | t }}</strong>
@@ -40,7 +40,7 @@
 					<dl class="clearfix">
 						<dd>
 							<atfield at-required class="input-xxlarge" ng-model="ScanDevice.Name"
-								label="'Common.Text_ScanDeviceName' | t" />
+								label="'Common.Text_Name' | t" />
 						</dd>
 						<dd>
 							<atfield class="input-xxlarge" ng-model="ScanDevice.Brief"
@@ -62,19 +62,19 @@
 					<dl class="clearfix">
 						<dd>
 							<atfield at-copy-of="DeviceInfo" at-required class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.Name"
-								label="'Common.Text_DeviceInfoName' | t" />
+								label="'Scanner.Text_DeviceName' | t" />
 						</dd>
 						<dd>
 							<atfield at-copy-of="DeviceInfo" at-required class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.UniqueID"
-								label="'Common.Text_DeviceInfoUniqueID' | t" />
+								label="'Scanner.Text_UniqueID' | t" />
 						</dd>
 						<dd>
 							<atfield at-copy-of="DeviceInfo" at-required class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.Hardware"
-								label="'Common.Text_DeviceInfoHardware' | t" />
+								label="'Scanner.Text_Hardware' | t" />
 						</dd>
 						<dd>
 							<atfield at-copy-of="DeviceInfo" at-required class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.OS"
-								label="'Common.Text_DeviceInfOS' | t" />
+								label="'Scanner.Text_OSVersion' | t" />
 						</dd>
 						<dd>
 							<input type="submit" class="btn btn-primary clear"
@@ -171,11 +171,10 @@
 	<!-- scanDevice info -->
 	<div ui-if="Store && Store.Key || false" class="row-fluid">
 		<!--<p class="lead pull-left">{{ 'Common.Text_ScanDeviceMenu_ScanDevices' | t}}</p>-->
-		<h3 class="pull-left">{{ 'Common.Text_ScanDeviceMenu_ScanDevices'
-			| t}}</h3>
+		<h3 class="pull-left">{{ 'Scanner.Text_Scanners' | t}}</h3>
 		<div class="btn-group pull-right">
 			<a class="btn btn-info" ng-click="create()"> <i class="icon-plus"></i>&nbsp;{{
-				'Common.Text_ScanDeviceMenu_CreateScanDevice' | t }}
+				'Scanner.Text_Create' | t }}
 			</a>
 		</div>
 		<div class="clearfix"></div>
