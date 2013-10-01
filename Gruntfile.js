@@ -21,6 +21,7 @@ module.exports = function(grunt) {
     atConfig.components = require('./package.json').path.lib || null;
     atConfig.name = require('./package.json').name || null;
     atConfig.urlApi = require('./package.json').url.api || null;
+    atConfig.urlGeo = require('./package.json').url.geo || null;
   } catch (e) {
     throw new Error(e).stack;
   }
