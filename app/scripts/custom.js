@@ -230,8 +230,6 @@ $(function() {
     return false;
   });
 
-  $("#todaydate").datepicker();
-
   /* Modal fix */
   $('.modal').appendTo($('body'));
 });

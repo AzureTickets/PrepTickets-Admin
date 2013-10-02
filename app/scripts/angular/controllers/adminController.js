@@ -2,10 +2,12 @@ function adminController($scope, $location, $window, $cookieStore, $filter,
     $modal) {
   $scope.authProviders = [], $scope.name = 'admin', $scope.registerOk = false,
       $scope.resetPasswordOk = false, $scope.passwdOk = true,
-      $scope.doRegister = false, $scope.doForgotPassword = false,
-      $scope.modalAuth = {
+      $scope.modalLogin = {
         open : false
-      };
+      }, $scope.modalRegister = angular.copy($scope.modalLogin),
+      $scope.modalForgot = angular.copy($scope.modalLogin);
+
+  $scope.path = $location.$$path
 
   /**
    * models in play here.
@@ -19,28 +21,56 @@ function adminController($scope, $location, $window, $cookieStore, $filter,
     delete $scope.DomainProfile;
   });
 
-  $scope.$watch('modalAuth.open', function(v) {
+  $scope.$watch('modalLogin.open', function(v) {
     if (v) {
-      $scope.modalAuth.modal = $modal.open({
-        templateUrl : 'formAuth.html',
+      $scope.modalLogin.modal = $modal.open({
+        templateUrl : 'formLogin.html',
         scope : $scope,
         backdrop : 'static'
       });
-    } else if (angular.isDefined($scope.modalAuth.modal)) {
-      $scope.modalAuth.modal.close();
+    } else if (angular.isDefined($scope.modalLogin.modal)) {
+      $scope.modalLogin.modal.close();
+    }
+  })
+  $scope.$watch('modalRegister.open', function(v) {
+    if (v) {
+      $scope.modalRegister.modal = $modal.open({
+        templateUrl : 'formRegister.html',
+        scope : $scope,
+        backdrop : 'static'
+      });
+    } else if (angular.isDefined($scope.modalRegister.modal)) {
+      $scope.modalRegister.modal.close();
+    }
+  })
+  $scope.$watch('modalForgot.open', function(v) {
+    if (v) {
+      $scope.modalForgot.modal = $modal.open({
+        templateUrl : 'formForgot.html',
+        scope : $scope,
+        backdrop : 'static'
+      });
+    } else if (angular.isDefined($scope.modalForgot.modal)) {
+      $scope.modalForgot.modal.close();
     }
   })
 
-  $scope.evDoRegister = function() {
-    $scope.error.log(null)
-    $scope.doRegister = true;
-    $scope.doForgotPassword = false;
-  }
-
-  $scope.evDoForgotPassword = function() {
-    $scope.error.log(null)
-    $scope.doRegister = false;
-    $scope.doForgotPassword = true;
+  $scope.init = function() {
+    // modal switch
+    switch ($scope.path) {
+    case '/login':
+      $scope.modalLogin.open = true, $scope.modalRegister.open = false,
+          $scope.modalForgot.open = false
+      break;
+    case '/register':
+      $scope.modalLogin.open = false, $scope.modalRegister.open = true,
+          $scope.modalForgot.open = false
+      break;
+    case '/forgot':
+      $scope.modalLogin.open = false, $scope.modalRegister.open = false,
+          $scope.modalForgot.open = true
+      break;
+    }
   }
 
   $scope.loadAuthProviders = function() {
@@ -57,7 +87,8 @@ function adminController($scope, $location, $window, $cookieStore, $filter,
       $location.path($cookieStore.get($scope.config.cookies.lastPath));
       $cookieStore.put($scope.config.cookies.loggedStatus, true);
 
-      $scope.init();
+      $scope.modalLogin.open = false;
+      $scope.$parent.init();
     }
 
     if (angular.isDefined(provider) && angular.isString(provider)) {

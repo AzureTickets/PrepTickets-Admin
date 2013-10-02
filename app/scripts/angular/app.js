@@ -27,7 +27,8 @@ var routeFilters = {
         // direct access to store, don't redirect
         var isStoreVisitor = /^\/store\/[\w\-\d]+$/g.test($location.$$path);
 
-        if ((lc === null || !lc) && $location.$$path !== '/login'
+        if ((lc === null || !lc)
+            && !/\/(login|register|forgot)/.test($location.$$path)
             && !isStoreVisitor) {
           $location.path('/login');
         }
@@ -44,7 +45,15 @@ azureTicketsApp.config([
         resolve : routeFilters
       }).when('/login', {
         controller : adminController,
-        templateUrl : 'views/auth.html',
+        templateUrl : 'views/login.html',
+        resolve : routeFilters
+      }).when('/register', {
+        controller : adminController,
+        templateUrl : 'views/register.html',
+        resolve : routeFilters
+      }).when('/forgot', {
+        controller : adminController,
+        templateUrl : 'views/forgot.html',
         resolve : routeFilters
       }).when(
           '/auth/logoff',
