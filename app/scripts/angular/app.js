@@ -32,7 +32,12 @@ var routeFilters = {
             && !isStoreVisitor) {
           $location.path('/login');
         }
-      } ]
+      } ],
+  closeModals : [ '$rootScope', '$location', function($rootScope, $location) {
+    if (/\/(login|register|forgot)/.test($location.$$path)) {
+      $rootScope.$broadcast('closeModals');
+    }
+  } ]
 }
 
 // initialize routes
@@ -46,15 +51,18 @@ azureTicketsApp.config([
       }).when('/login', {
         controller : adminController,
         templateUrl : 'views/login.html',
-        resolve : routeFilters
+        resolve : routeFilters,
+        reloadOnSearch : true
       }).when('/register', {
         controller : adminController,
         templateUrl : 'views/register.html',
-        resolve : routeFilters
+        resolve : routeFilters,
+        reloadOnSearch : true
       }).when('/forgot', {
         controller : adminController,
         templateUrl : 'views/forgot.html',
-        resolve : routeFilters
+        resolve : routeFilters,
+        reloadOnSearch : true
       }).when(
           '/auth/logoff',
           {

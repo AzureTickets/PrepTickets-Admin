@@ -1,5 +1,5 @@
-function adminController($scope, $location, $window, $cookieStore, $filter,
-    $modal) {
+function adminController($rootScope, $scope, $location, $window, $cookieStore,
+    $filter, $modal) {
   $scope.authProviders = [], $scope.name = 'admin', $scope.registerOk = false,
       $scope.resetPasswordOk = false, $scope.passwdOk = true,
       $scope.modalLogin = {
@@ -20,6 +20,12 @@ function adminController($scope, $location, $window, $cookieStore, $filter,
   $scope.$on('resetDomainProfile', function() {
     delete $scope.DomainProfile;
   });
+
+  // close all modals
+  $rootScope.$on('closeModals', function() {
+    $scope.modalLogin.open = false, $scope.modalRegister.open = false,
+        $scope.modalForgot.open = false
+  })
 
   $scope.$watch('modalLogin.open', function(v) {
     if (v) {
@@ -334,5 +340,5 @@ function adminController($scope, $location, $window, $cookieStore, $filter,
   }
 }
 
-adminController.$inject = [ '$scope', '$location', '$window', '$cookieStore',
-    '$filter', '$modal' ];
+adminController.$inject = [ '$rootScope', '$scope', '$location', '$window',
+    '$cookieStore', '$filter', '$modal' ];
