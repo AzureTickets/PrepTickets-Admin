@@ -11,7 +11,7 @@ var azureTicketsApp = angular.module('azureTicketsApp', [ 'ui', 'ngCookies',
 var routeFilters = {
   rememberUrl : [ '$location', '$cookieStore', 'configService',
       function($location, $cookieStore, configService) {
-        if ($location.$$path !== '/auth/login') {
+        if ($location.$$path !== '/login') {
           $cookieStore.put(configService.cookies.lastPath, $location.$$path);
         }
       } ],
@@ -27,9 +27,9 @@ var routeFilters = {
         // direct access to store, don't redirect
         var isStoreVisitor = /^\/store\/[\w\-\d]+$/g.test($location.$$path);
 
-        if ((lc === null || !lc) && $location.$$path !== '/auth/login'
+        if ((lc === null || !lc) && $location.$$path !== '/login'
             && !isStoreVisitor) {
-          $location.path('/auth/login');
+          $location.path('/login');
         }
       } ]
 }
@@ -42,7 +42,7 @@ azureTicketsApp.config([
         templateUrl : 'views/dashboard.html',
         controller : adminController,
         resolve : routeFilters
-      }).when('/auth/login', {
+      }).when('/login', {
         controller : adminController,
         templateUrl : 'views/auth.html',
         resolve : routeFilters
@@ -136,7 +136,7 @@ azureTicketsApp.config([
         controller : scannerController,
         resolve : routeFilters
       }).when('/order', {
-        templateUrl : 'views/order.html',
+        templateUrl : 'views/orderList.html',
         controller : orderController,
         resolve : routeFilters
       }).when('/media', {

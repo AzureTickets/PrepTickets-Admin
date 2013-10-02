@@ -357,7 +357,7 @@ var CommonResources = {
   Text_CreateStore_Step1 : "Step 1: Information",
   Text_CreateStore_Step2 : "Step 2: Location",
   Text_CreateStore_Step3 : "Step 3: Picture",
-  Text_CreateStore_Step4 : "Step 3: Accounting",
+  Text_CreateStore_Step4 : "Step 4: Accounting",
   Text_Finished : "Finished",
   Text_Address : 'Address',
   Text_UploadImage : 'Upload Images. Ensure you upload the higest quality version you have. Accepted formats are gif, jpg and png. Maximum file size is 10MB.',

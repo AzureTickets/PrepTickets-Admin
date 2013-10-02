@@ -30,16 +30,13 @@ module.exports = function(grunt) {
       .initConfig({
         at : atConfig,
         watch : {
-          less : {
-            files : [ '<%= at.app %>/styles/**/*.less' ],
-            tasks : [ 'less' ]
-          },
           'static' : {
             files : [ '<%= at.app %>/**/*.html',
+                '<%= at.app %>/styles/**/*.less',
                 '{.tmp,<%= at.app %>}/' + atConfig.styles + '/{,*/}*.css',
                 '{.tmp,<%= at.app %>}/' + atConfig.scripts + '/**/*.js',
                 '<%= at.app %>/images/{,*/}*.{png,jpg,jpeg}' ],
-            tasks : [ '_internal' ]
+            tasks : [ 'less', '_internal' ]
           },
           livereload : {
             files : [ '<%= at.app %>/**/*.html',
@@ -252,7 +249,7 @@ module.exports = function(grunt) {
   grunt.registerTask('server', [ 'clean:server', 'livereload-start',
       'connect:livereload', 'open:server', 'watch' ]);
   grunt.registerTask('serverStatic', [ 'clean:server', 'connect:static',
-      'watch:less', 'watch:static' ]);
+      'watch:static' ]);
 
   grunt.registerTask('test', [ 'clean:server', 'less', 'concat', /*
                                                                    * 'connect:test' ,

@@ -2,5 +2,6 @@
   Text_DateOfPurChase : "Date of purchase",
   Text_PurchaseHistory : "Purchase History",
   Text_TicketsPurchase : "Tickets Purchase",
-  Text_OrderEmpty : 'No orders were found for your store'
+  Text_OrderEmpty : 'No orders were found for your store',
+  Text_OrdersList : 'Orders List'
 };

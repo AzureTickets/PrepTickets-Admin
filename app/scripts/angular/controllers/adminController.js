@@ -1,7 +1,11 @@
-function adminController($scope, $location, $window, $cookieStore, $filter) {
+function adminController($scope, $location, $window, $cookieStore, $filter,
+    $modal) {
   $scope.authProviders = [], $scope.name = 'admin', $scope.registerOk = false,
       $scope.resetPasswordOk = false, $scope.passwdOk = true,
-      $scope.doRegister = false, $scope.doForgotPassword = false;
+      $scope.doRegister = false, $scope.doForgotPassword = false,
+      $scope.modalAuth = {
+        open : false
+      };
 
   /**
    * models in play here.
@@ -15,12 +19,26 @@ function adminController($scope, $location, $window, $cookieStore, $filter) {
     delete $scope.DomainProfile;
   });
 
+  $scope.$watch('modalAuth.open', function(v) {
+    if (v) {
+      $scope.modalAuth.modal = $modal.open({
+        templateUrl : 'formAuth.html',
+        scope : $scope,
+        backdrop : 'static'
+      });
+    } else if (angular.isDefined($scope.modalAuth.modal)) {
+      $scope.modalAuth.modal.close();
+    }
+  })
+
   $scope.evDoRegister = function() {
+    $scope.error.log(null)
     $scope.doRegister = true;
     $scope.doForgotPassword = false;
   }
 
   $scope.evDoForgotPassword = function() {
+    $scope.error.log(null)
     $scope.doRegister = false;
     $scope.doForgotPassword = true;
   }
@@ -286,4 +304,4 @@ function adminController($scope, $location, $window, $cookieStore, $filter) {
 }
 
 adminController.$inject = [ '$scope', '$location', '$window', '$cookieStore',
-    '$filter' ];
+    '$filter', '$modal' ];

@@ -87,7 +87,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
           // redirect to login if no profile, but allow store visitors
           if (!angular.isDefined($routeParams.storeURI)
               && !$scope.auth.isDomainProfileReady()) {
-            $location.path('/auth/login');
+            $location.path('/login');
             return;
           }
 
