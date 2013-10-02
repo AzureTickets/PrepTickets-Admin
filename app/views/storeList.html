@@ -24,6 +24,10 @@
 						<td><p class="text clear">{{store.Description}}</p></td>
 						<td>
 							<div class="btn-group pull-left">
+								<a href="#/store" ui-if="Store.IsOwner"
+									class="btn btn-mini btn-success"
+									ng-click="setStoreKey(store.Key)">{{ 'Common.Text_Update' |
+									t }}</a>
 								<button ui-if="Store.IsOwner" class="btn btn-mini btn-info"
 									ng-click="setStoreKey(store.Key)">{{
 									'Common.Text_Choose' | t }}</button>
