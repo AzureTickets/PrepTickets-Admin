@@ -51,18 +51,15 @@ azureTicketsApp.config([
       }).when('/login', {
         controller : adminController,
         templateUrl : 'views/login.html',
-        resolve : routeFilters,
-        reloadOnSearch : true
+        resolve : routeFilters
       }).when('/register', {
         controller : adminController,
         templateUrl : 'views/register.html',
-        resolve : routeFilters,
-        reloadOnSearch : true
+        resolve : routeFilters
       }).when('/forgot', {
         controller : adminController,
         templateUrl : 'views/forgot.html',
-        resolve : routeFilters,
-        reloadOnSearch : true
+        resolve : routeFilters
       }).when(
           '/auth/logoff',
           {
@@ -108,6 +105,9 @@ azureTicketsApp.config([
         redirectTo : '/'
       }).when('/store', {
         templateUrl : 'views/store.html',
+        resolve : routeFilters
+      }).when('/storeList', {
+        templateUrl : 'views/storeList.html',
         resolve : routeFilters
       }).when('/storeRequest', {
         templateUrl : 'views/storePreRegister.html',

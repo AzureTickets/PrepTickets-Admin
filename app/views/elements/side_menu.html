@@ -38,9 +38,8 @@
 					<li ui-if="auth.isDomainProfileReady() && !auth.isAdministrator()"><a
 						href="#/storeRequest" ng-click="requestAccess()">{{
 							'Common.Text_RequestAccess' | t }}</a></li>
-					<li ui-if="stores && stores.length > 0" class="divider"></li>
-					<li ng-repeat="s in stores"><a ui-if="s.IsOwner"
-						ng-click="setStoreKey(s.Key)" href="#/store">{{s.Name}}</a></li>
+					<li ui-if="auth.isDomainProfileReady()"><a href="#/storeList">{{
+							'Common.Text_StoreList' | t }}</a></li>
 				</ul></li>
 			<li class="nyellow"
 				ui-if="Store && Store.Key != null && Store.IsOwner || false"
