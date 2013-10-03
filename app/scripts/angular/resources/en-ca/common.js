@@ -299,6 +299,7 @@ var CommonResources = {
   Text_Description : "Description",
   Text_Live : "Live",
   Text_OnHold : "On Hold",
+  Text_Contact : 'Contact',
   Text_InventoryNumberAvailable : 'Available',
   Text_InventoryNumberLocked : 'Locked',
   Text_InventoryNumberSold : 'Sold',

@@ -75,7 +75,8 @@ azureTicketsApp
                                   && prop !== ''
                                   && prop !== 0
                                   && hideProps.indexOf(p) === -1) {
-                                out[$filter('t')(resPrefix + p)] = prop;
+                                out[$filter('t')(resPrefix + p)] = /EmailAddress/
+                                    .test(p) ? $filter('linky')(prop) : prop;
                               } else if (angular.isString(prop)
                                   && p === BWL.Model.Currency.Type) {
                                 // handle Currency property
@@ -83,6 +84,7 @@ azureTicketsApp
                                     'ISO', prop);
                                 out[$filter('t')(resPrefix + p)] = c.Name;
                               } else if (angular.isObject(prop) && prop.Type
+                                  && hideProps.indexOf(prop.Type) === -1
                                   && hideProps.indexOf(p) === -1) {
                                 switch (prop.Type) {
                                 // handle Address type

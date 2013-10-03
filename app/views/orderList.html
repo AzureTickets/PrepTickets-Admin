@@ -12,16 +12,19 @@
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>{{ 'Common.Text_Name' | t}}</th>
-						<th>{{ 'Common.Text_Description' | t}}</th>
+						<th>{{ 'Common.Text_OrderDate' | t}}</th>
+						<th>{{ 'Common.Text_Contact' | t}}</th>
 						<th>{{ 'Common.Text_Control' | t}}</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr ng-repeat="order in orders">
 						<td>{{ $index+1 }}</td>
-						<td>{{order.Name}}</td>
-						<td>{{order.Description}}</td>
+						<td><span class="label">Created on {{
+								order.DateCreated | date:'MM/dd/yyyy @ h:mma' }}</span></td>
+						<td><atmodel ui-if="order && order.Contact"
+								ng-model="order.Contact" at-copy-of="Contact"
+								at-hide-props="DateCreated,DateModified,StoreKey,Address,FirstName,LastName,DateOfBirth,Age,Gender,ContactRole"></atmodel></td>
 						<td>
 							<div class="btn-group pull-left">
 								<button ui-if="Store.IsOwner" ng-click="deleteOrder(order)"
