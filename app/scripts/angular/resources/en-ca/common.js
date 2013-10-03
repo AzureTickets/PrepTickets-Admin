@@ -380,6 +380,7 @@ var CommonResources = {
   Text_RegistrationStep2 : "Administrator Contact Information",
   Text_RegistrationStep3 : "Payment Providers",
   Text_RegistrationStep4 : "Completed",
+  Text_Reset : 'Reset',
 
   Text_AdminContact_Description : "Please ensure that the following information is correct, we will only contact you when necessary and we will not share your information with any 3rd party for any reason.",
   Text_Payment_Description : "In order to collect payments you must add and configure payment gateway.",

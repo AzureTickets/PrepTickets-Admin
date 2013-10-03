@@ -50,5 +50,7 @@ var LoginResources = {
   'labelCreateAccount' : 'Create an account:',
   'labelSchoolRegistration' : 'School Registration',
   'labelMySchool' : 'My School',
+  'labelNotRegistered' : 'Not Registered?',
+  'labelAlreadyRegistered' : 'Already Registered?',
   'Caption_LoginConfirm' : 'Are you a ticket buyer or school administrator?'
 };

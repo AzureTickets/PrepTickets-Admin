@@ -32,12 +32,7 @@ var routeFilters = {
             && !isStoreVisitor) {
           $location.path('/login');
         }
-      } ],
-  closeModals : [ '$rootScope', '$location', function($rootScope, $location) {
-    if (/\/(login|register|forgot)/.test($location.$$path)) {
-      $rootScope.$broadcast('closeModals');
-    }
-  } ]
+      } ]
 }
 
 // initialize routes

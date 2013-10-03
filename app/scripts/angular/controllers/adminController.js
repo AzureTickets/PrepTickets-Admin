@@ -1,13 +1,7 @@
 function adminController($rootScope, $scope, $location, $window, $cookieStore,
-    $filter, $modal) {
+    $filter) {
   $scope.authProviders = [], $scope.name = 'admin', $scope.registerOk = false,
-      $scope.resetPasswordOk = false, $scope.passwdOk = true,
-      $scope.modalLogin = {
-        open : false
-      }, $scope.modalRegister = angular.copy($scope.modalLogin),
-      $scope.modalForgot = angular.copy($scope.modalLogin);
-
-  $scope.path = $location.$$path
+      $scope.resetPasswordOk = false, $scope.passwdOk = true;
 
   /**
    * models in play here.
@@ -20,64 +14,6 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
   $scope.$on('resetDomainProfile', function() {
     delete $scope.DomainProfile;
   });
-
-  // close all modals
-  $rootScope.$on('closeModals', function() {
-    $scope.modalLogin.open = false, $scope.modalRegister.open = false,
-        $scope.modalForgot.open = false
-  })
-
-  $scope.$watch('modalLogin.open', function(v) {
-    if (v) {
-      $scope.modalLogin.modal = $modal.open({
-        templateUrl : 'formLogin.html',
-        scope : $scope,
-        backdrop : 'static'
-      });
-    } else if (angular.isDefined($scope.modalLogin.modal)) {
-      $scope.modalLogin.modal.close();
-    }
-  })
-  $scope.$watch('modalRegister.open', function(v) {
-    if (v) {
-      $scope.modalRegister.modal = $modal.open({
-        templateUrl : 'formRegister.html',
-        scope : $scope,
-        backdrop : 'static'
-      });
-    } else if (angular.isDefined($scope.modalRegister.modal)) {
-      $scope.modalRegister.modal.close();
-    }
-  })
-  $scope.$watch('modalForgot.open', function(v) {
-    if (v) {
-      $scope.modalForgot.modal = $modal.open({
-        templateUrl : 'formForgot.html',
-        scope : $scope,
-        backdrop : 'static'
-      });
-    } else if (angular.isDefined($scope.modalForgot.modal)) {
-      $scope.modalForgot.modal.close();
-    }
-  })
-
-  $scope.init = function() {
-    // modal switch
-    switch ($scope.path) {
-    case '/login':
-      $scope.modalLogin.open = true, $scope.modalRegister.open = false,
-          $scope.modalForgot.open = false
-      break;
-    case '/register':
-      $scope.modalLogin.open = false, $scope.modalRegister.open = true,
-          $scope.modalForgot.open = false
-      break;
-    case '/forgot':
-      $scope.modalLogin.open = false, $scope.modalRegister.open = false,
-          $scope.modalForgot.open = true
-      break;
-    }
-  }
 
   $scope.loadAuthProviders = function() {
     $scope.auth.loadAuthProviders().then(function(providers) {
@@ -93,8 +29,7 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
       $location.path($cookieStore.get($scope.config.cookies.lastPath));
       $cookieStore.put($scope.config.cookies.loggedStatus, true);
 
-      $scope.modalLogin.open = false;
-      $scope.$parent.init();
+      $scope.init();
     }
 
     if (angular.isDefined(provider) && angular.isString(provider)) {
@@ -341,4 +276,4 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
 }
 
 adminController.$inject = [ '$rootScope', '$scope', '$location', '$window',
-    '$cookieStore', '$filter', '$modal' ];
+    '$cookieStore', '$filter' ];
