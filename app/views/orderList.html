@@ -14,17 +14,21 @@
 						<th>#</th>
 						<th>{{ 'Common.Text_OrderDate' | t}}</th>
 						<th>{{ 'Common.Text_Contact' | t}}</th>
+						<th>{{ 'Order.Text_Total' | t}}</th>
+						<th>{{ 'Order.Text_State' | t}}</th>
 						<th>{{ 'Common.Text_Control' | t}}</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr ng-repeat="order in orders">
 						<td>{{ $index+1 }}</td>
-						<td><span class="label">Created on {{
-								order.DateCreated | date:'MM/dd/yyyy @ h:mma' }}</span></td>
+						<td><span class="label">Placed on {{ order.Placed |
+								date:'MM/dd/yyyy @ h:mma' }}</span></td>
 						<td><atmodel ui-if="order && order.Contact"
 								ng-model="order.Contact" at-copy-of="Contact"
 								at-hide-props="DateCreated,DateModified,StoreKey,Address,FirstName,LastName,DateOfBirth,Age,Gender,ContactRole"></atmodel></td>
+						<td>{{ order.Total.ItemPrice | currency }}</td>
+						<td>{{ order.State | api:'enumReplace':'OrderStateEnum' }}</td>
 						<td>
 							<div class="btn-group pull-left">
 								<button ui-if="Store.IsOwner" ng-click="deleteOrder(order)"

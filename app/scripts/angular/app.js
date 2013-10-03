@@ -11,7 +11,7 @@ var azureTicketsApp = angular.module('azureTicketsApp', [ 'ui', 'ngCookies',
 var routeFilters = {
   rememberUrl : [ '$location', '$cookieStore', 'configService',
       function($location, $cookieStore, configService) {
-        if ($location.$$path !== '/login') {
+        if (!/\/(login|register|forgot)/.test($location.$$path)) {
           $cookieStore.put(configService.cookies.lastPath, $location.$$path);
         }
       } ],
