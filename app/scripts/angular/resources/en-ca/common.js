@@ -389,5 +389,9 @@ var CommonResources = {
   Text_Paypro_MockPayment : 'Mock Payment',
   Text_Paypro_Moneris : 'Moneris',
   Text_Paypro_NoPayment : 'Without Payment',
-  Text_Paypro_PayPal : 'PayPal'
+  Text_Paypro_PayPal : 'PayPal',
+
+  LabelContactFullName : 'Full Name',
+  LabelContactPhone : 'Phone',
+  LabelContactEmailAddress : 'Email Address'
 };
