@@ -1,6 +1,17 @@
 function orderController($scope, $cookieStore, $filter) {
   $scope.name = 'order';
 
+  $scope.ordersPagination = {
+    page : 1,
+    count : $scope.config.paginator.currentPageSize,
+    total : $scope.orders.length
+  }
+
+  $scope.$watch('ordersPagination', function(params) {
+    $scope.ordersPaginated = $scope.orders.slice((params.page - 1) * params.count,
+        params.page * params.count);
+  }, true);
+
   $scope.init = function() {
     $scope.order.loadOrders($scope);
   }

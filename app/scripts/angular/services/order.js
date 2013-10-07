@@ -14,8 +14,8 @@ azureTicketsApp.factory('orderService', [
         listOrdersAsync : function(storeKey, pages) {
           var def = $q.defer();
 
-          BWL.Services.ModelService.ListAsync(storeKey, 'Order', pages,
-              function(orders) {
+          BWL.Services.ModelService.ListAsync(storeKey, BWL.Model.Order.Type,
+              pages, function(orders) {
                 if (angular.isArray(orders)) {
                   _orders = orders;
                 } else {
@@ -37,13 +37,13 @@ azureTicketsApp.factory('orderService', [
           return _orders;
         },
         getOrder : function() {
-          return modelService.getInstanceOf('Order');
+          return modelService.getInstanceOf(BWL.Model.Order.Type);
         },
         initOrder : function(storeKey, orderKey) {
           var def = $q.defer();
 
           BWL.Services.ModelService
-              .ReadAsync(storeKey, "Order", orderKey, 10,
+              .ReadAsync(storeKey, BWL.Model.Order.Type, orderKey, 10,
                   function(order) {
                     if (!angular.isDefined(order.ShippingAddress)
                         || order.ShippingAddress === null) {
@@ -102,8 +102,9 @@ azureTicketsApp.factory('orderService', [
 
           BWL.Services.ModelService.CreateAsync(orderKey, "Address", address,
               function(addressKey) {
-                BWL.Services.ModelService.AddAsync(orderKey, "Order", orderKey,
-                    "ShippingAddress", "Address", addressKey, function(ret) {
+                BWL.Services.ModelService.AddAsync(orderKey,
+                    BWL.Model.Order.Type, orderKey, "ShippingAddress",
+                    "Address", addressKey, function(ret) {
                       $rootScope.$apply(def.resolve)
                     }, function(err) {
                       $rootScope.$apply(function() {
@@ -124,8 +125,8 @@ azureTicketsApp.factory('orderService', [
 
           delete tmpOrder.ShippingAddress;
 
-          BWL.Services.ModelService.UpdateAsync(storeKey, 'Order', _order.Key,
-              tmpOrder, function(ret) {
+          BWL.Services.ModelService.UpdateAsync(storeKey, BWL.Model.Order.Type,
+              _order.Key, tmpOrder, function(ret) {
                 $rootScope.$apply(function() {
                   def.resolve(_order)
                 });
@@ -178,5 +179,4 @@ azureTicketsApp.factory('orderService', [
           }
         }
       }
-    }
-]);
+    } ]);

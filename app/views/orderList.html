@@ -3,12 +3,15 @@
 	<div class="widget wviolet">
 		<div class="widget-head">
 			<div class="pull-left">{{ 'Order.Text_OrdersList' | t }}</div>
+			<div class="pull-right">paginator</div>
 			<div class="clearfix"></div>
 		</div>
 		<div class="widget-content">
 			<div ng-show="orders.length == 0" class="alert alert-info">{{
 				'Order.Text_OrderEmpty' | t }}</div>
-			<table class="table  table-bordered " ng-show="orders.length > 0">
+			<table class="table  table-bordered ng-table-responsive"
+				ng-show="orders.length > 0" ng-table="ordersPagination"
+				template-pagination="custom/pager">
 				<thead>
 					<tr>
 						<th>#</th>
@@ -20,7 +23,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="order in orders">
+					<tr ng-repeat="order in ordersPaginated">
 						<td>{{ $index+1 }}</td>
 						<td><span class="label">Placed on {{ order.Placed |
 								date:'MM/dd/yyyy @ h:mma' }}</span></td>
@@ -41,5 +44,6 @@
 			</table>
 		</div>
 	</div>
+	<div ng-include src="'views/elements/paginator.html'"></div>
 </div>
 

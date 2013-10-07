@@ -27,6 +27,11 @@ azureTicketsApp.factory('configService', function() {
         maxW : 1024,
         maxH : 768
       }
+    },
+    paginator : {
+      pageSizes : [ 5, 20, 50, 100 ],
+      currentPageSizes : 20,
+      currentPage : 1
     }
   }
 });
