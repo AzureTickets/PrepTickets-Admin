@@ -29,8 +29,8 @@ azureTicketsApp.factory('configService', function() {
       }
     },
     paginator : {
-      pageSizes : [ 5, 20, 50, 100 ],
-      currentPageSizes : 20,
+      pageSizes : [ 10, 25, 50, 100 ],
+      currentPageSize : 10,
       currentPage : 1
     }
   }

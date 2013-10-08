@@ -44,6 +44,23 @@
 			</table>
 		</div>
 	</div>
-	<div ng-include src="'views/elements/paginator.html'"></div>
+	<script type="text/ng-template" id="custom/pager">
+	<ul class="pager ng-cloak">
+		<li ng-repeat="page in pages"
+			ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}"
+			ng-show="page.type == 'prev' || page.type == 'next'"
+			ng-switch="page.type"><a ng-switch-when="prev"
+			ng-click="goToPage(page.number)" href="">&laquo; Previous</a> <a
+			ng-switch-when="next" ng-click="goToPage(page.number)" href="">Next
+				&raquo;</a></li>
+		<li>
+			<div class="btn-group">
+				<button ng-repeat="size in config.paginator.pageSizes" type="button"
+					ng-class="{'active':params.count == size}"
+					ng-click="changeCount(size)" class="btn btn-default">{{size}}</button>
+			</div>
+		</li>
+	</ul>
+	</script>
 </div>
 

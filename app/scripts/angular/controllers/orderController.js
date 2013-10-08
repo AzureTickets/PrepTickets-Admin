@@ -8,12 +8,14 @@ function orderController($scope, $cookieStore, $filter) {
   }
 
   $scope.$watch('ordersPagination', function(params) {
-    $scope.ordersPaginated = $scope.orders.slice((params.page - 1) * params.count,
-        params.page * params.count);
+    $scope.ordersPaginated = $scope.orders.slice((params.page - 1)
+        * params.count, params.page * params.count);
   }, true);
 
   $scope.init = function() {
-    $scope.order.loadOrders($scope);
+    $scope.order.loadOrders($scope).then(function() {
+      $scope.ordersPagination.total = $scope.orders.length
+    });
   }
 
   $scope.deleteOrder = function(order) {

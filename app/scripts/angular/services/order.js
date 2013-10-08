@@ -147,6 +147,8 @@ azureTicketsApp.factory('orderService', [
          * @returns
          */
         loadOrders : function($scope) {
+          var def = $q.defer()
+
           if (!_isOrdersLoading) {
             _isOrdersLoading = true;
 
@@ -157,12 +159,14 @@ azureTicketsApp.factory('orderService', [
             _this.listOrdersAsync($scope.storeKey, 0).then(
                 function() {
                   $scope.orders = _this.getOrders();
+                  $scope.ordersPaginated = angular.copy($scope.orders);
 
                   if ($scope.orders.length > 0) {
                     angular.forEach($scope.orders, function(order, i) {
                       _this.initOrder($scope.storeKey, order.Key).then(
                           function(order) {
                             $scope.orders[i] = order;
+                            $scope.ordersPaginated[i] = order;
                           })
                     });
                   }
@@ -172,11 +176,17 @@ azureTicketsApp.factory('orderService', [
                   }
 
                   _isOrdersLoading = false;
+                  
+                  def.resolve()
                 }, function(err) {
                   _isOrdersLoading = false;
                   $scope.error.log(err)
+                  
+                  def.reject(err)
                 });
           }
+
+          return def.promise;
         }
       }
     } ]);
