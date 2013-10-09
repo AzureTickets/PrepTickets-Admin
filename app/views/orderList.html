@@ -1,37 +1,35 @@
-<div class="clear row-fluid list" ng-init="init()">
+<div class="clear row-fluid list">
 	<!-- order list -->
 	<div class="widget wviolet">
 		<div class="widget-head">
 			<div class="pull-left">{{ 'Order.Text_OrdersList' | t }}</div>
-			<div class="pull-right">paginator</div>
+			<div class="pull-right">Paginator</div>
 			<div class="clearfix"></div>
 		</div>
 		<div class="widget-content">
-			<div ng-show="orders.length == 0" class="alert alert-info">{{
-				'Order.Text_OrderEmpty' | t }}</div>
-			<table class="table  table-bordered ng-table-responsive"
-				ng-show="orders.length > 0" ng-table="ordersPagination"
-				template-pagination="custom/pager">
+      <form class="form-inline">
+      	<label class="control-label" for="filterText">Search order:&nbsp;</label>
+        <input type="text" id="filterText" class="input-large" ng-model="textFilter" placeholder="">
+      </form>
+			<div ng-show="!results.length" class="alert alert-info">{{'Order.Text_OrderEmpty' | t}}</div>
+			<table class="table table-bordered ng-table-responsive" ng-show="results.length" >
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>{{ 'Common.Text_OrderDate' | t}}</th>
-						<th>{{ 'Common.Text_Contact' | t}}</th>
-						<th>{{ 'Order.Text_Total' | t}}</th>
-						<th>{{ 'Order.Text_State' | t}}</th>
-						<th>{{ 'Common.Text_Control' | t}}</th>
+						<th><a href="" ng-click="sort('Placed', reverse.Placed); reverse.Placed=!reverse.Placed">{{'Common.Text_OrderDate' | t}}</a></th>
+						<th><a href="" ng-click="sort('Contact', reverse.Contact); reverse.Contact=!reverse.Contact">{{'Common.Text_Contact' | t}}</a></th>
+						<th><a href="" ng-click="sort('Total.ItemPrice', reverse.Total); reverse.Total=!reverse.Total">{{'Order.Text_Total' | t}}</a></th>
+						<th><a href="" ng-click="sort('State', reverse.State); reverse.State=!reverse.State">{{'Order.Text_State' | t}}</a></th>
+						<th>{{'Common.Text_Control' | t}}</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="order in ordersPaginated">
-						<td>{{ $index+1 }}</td>
-						<td><span class="label">Placed on {{ order.Placed |
-								date:'MM/dd/yyyy @ h:mma' }}</span></td>
-						<td><atmodel ui-if="order && order.Contact"
-								ng-model="order.Contact" at-copy-of="Contact"
-								at-hide-props="DateCreated,DateModified,StoreKey,Address,FirstName,LastName,DateOfBirth,Age,Gender,ContactRole"></atmodel></td>
-						<td>{{ order.Total.ItemPrice | currency }}</td>
-						<td>{{ order.State | api:'enumReplace':'OrderStateEnum' }}</td>
+					<tr ng-show="results.length" ng-repeat="order in pageItems">
+						<td>{{$index + 1 + currentPageIndex*itemsPerPage}}</td>
+						<td><span class="label">Placed on {{ order.Placed | date:'MM/dd/yyyy @ h:mma' }}</span></td>
+						<td><atmodel ui-if="order && order.Contact"	ng-model="order.Contact" at-copy-of="Contact" at-hide-props="DateCreated,DateModified,StoreKey,Address,FirstName,LastName,DateOfBirth,Age,Gender,ContactRole"></atmodel></td>
+						<td>{{order.Total.ItemPrice | currency}}</td>
+						<td>{{order.State | api:'enumReplace':'OrderStateEnum'}}</td>
 						<td>
 							<div class="btn-group pull-left">
 								<button ui-if="Store.IsOwner" ng-click="deleteOrder(order)"
@@ -42,25 +40,13 @@
 					</tr>
 				</tbody>
 			</table>
+			
+      <div id="paginationDiv">
+        <div ng-pagination="{obj: 'order', def: 20, predicates: ['Placed', 'Contact', 'Total', 'State']}"></div>
+        <p class="text-center" ng-show="results.length" ng-cloak>Current page: {{currentPageIndex + 1}} - Items per page: {{itemsPerPage}} - Total pages: {{numberOfPages}} - Total items: {{results.length}}</p>
+      </div>
+			
 		</div>
 	</div>
-	<script type="text/ng-template" id="custom/pager">
-	<ul class="pager ng-cloak">
-		<li ng-repeat="page in pages"
-			ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}"
-			ng-show="page.type == 'prev' || page.type == 'next'"
-			ng-switch="page.type"><a ng-switch-when="prev"
-			ng-click="goToPage(page.number)" href="">&laquo; Previous</a> <a
-			ng-switch-when="next" ng-click="goToPage(page.number)" href="">Next
-				&raquo;</a></li>
-		<li>
-			<div class="btn-group">
-				<button ng-repeat="size in config.paginator.pageSizes" type="button"
-					ng-class="{'active':params.count == size}"
-					ng-click="changeCount(size)" class="btn btn-default">{{size}}</button>
-			</div>
-		</li>
-	</ul>
-	</script>
 </div>
 

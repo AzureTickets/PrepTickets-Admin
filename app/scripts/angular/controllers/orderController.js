@@ -12,11 +12,13 @@ function orderController($scope, $cookieStore, $filter) {
         * params.count, params.page * params.count);
   }, true);
 
+/*
   $scope.init = function() {
     $scope.order.loadOrders($scope).then(function() {
       $scope.ordersPagination.total = $scope.orders.length
     });
   }
+*/
 
   $scope.deleteOrder = function(order) {
     if (confirm($filter('t')('Common.Text_RemoveProduct'))) {
