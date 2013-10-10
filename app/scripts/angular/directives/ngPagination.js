@@ -16,20 +16,10 @@ azureTicketsApp.directive('ngPagination', ['$filter', '$parse', '$templateCache'
               '</div>',
     link: function($scope, $element, $attrs) {
       // Retrieve the data reference
-      var params = $parse($attrs.ngPagination)($scope),
-          loadDataMethodName = '';
+      var params = $parse($attrs.ngPagination)($scope);
 
       if (params.length == 0) {
       	return;
-      };
-
-      switch (params.obj) {
-      	case 'order':
-      	  loadDataMethodName = 'loadOrders';
-      	  returnedDataObj = 'orders';
-      	  break;
-      	default:
-      	  break;
       };
 
       // Initialize sort predicate
@@ -37,12 +27,12 @@ azureTicketsApp.directive('ngPagination', ['$filter', '$parse', '$templateCache'
       // Reversing object for orderBy filter
       $scope.reverse = {};
       for (var i = 0; i < params.predicates.length; i++) {
-        $scope.reverse[params.predicates[i]] = false;
+        $scope.reverse['' + params.predicates[i]] = false;
       };
 
-      $scope[params.obj][loadDataMethodName]($scope).then(function() {
-        // Attach the data from get orders API result
-        $scope.data = $scope[returnedDataObj];
+      $scope.$on('dataLoaded', function(event, loadedData) {
+        // Attach the data from controller's $broadcast call
+        $scope.data = loadedData;
 
         // Initialize number of items which are displayed per page
         $scope.itemsPerPage = params.def;
@@ -61,12 +51,12 @@ azureTicketsApp.directive('ngPagination', ['$filter', '$parse', '$templateCache'
             $scope.itemsPerPage = parseInt(itemsPerPage);
           };
           $scope.textFilter = textFilter;
-          if (predicate == undefined) {
+          if (predicate == undefined || predicate == null) {
             $scope.predicate = '';
           } else {
             $scope.predicate = predicate;
           };
-          if (reverse == undefined) {
+          if (reverse == undefined || reverse == null) {
             reverse = !$scope.reverse[$scope.predicate];
           };
 
@@ -95,6 +85,22 @@ azureTicketsApp.directive('ngPagination', ['$filter', '$parse', '$templateCache'
         };
         // First run of the watcher
         pagesWatcher($scope.itemsPerPage, $scope.textFilter);
+        
+        // 'itemDeleted' event received
+        $scope.$on('itemDeleted', reLoad);
+        function reLoad(event, arg) {
+        	var found = false;
+        	for (var i = 0; i < $scope.data.length; i++) {
+        		if (!found && $scope.data[i].Key === arg) {
+        			$scope.data.splice(i, 1);
+        			found = true;
+        			i = $scope.data.length;
+        		};
+          };
+          
+          // Reload the pagination
+          pagesWatcher($scope.itemsPerPage, $scope.textFilter, $scope.predicate);
+        };
 
         // Delegating watchers for filter models
         var itemsPerPageWatcher = function(newValue) {
@@ -107,8 +113,11 @@ azureTicketsApp.directive('ngPagination', ['$filter', '$parse', '$templateCache'
         $scope.$watch('textFilter', searchContentWatcher);
 
 
-        $scope.sort = function(predicate, reverse) {
-          pagesWatcher($scope.itemsPerPage, $scope.textFilter, predicate, reverse);
+        $scope.sort = function(predicate) {
+          pagesWatcher($scope.itemsPerPage, $scope.textFilter, predicate);
+          
+          // Update predicate reverse property
+          $scope.reverse[predicate] = !$scope.reverse[predicate];
         };
 
         // Content functions
