@@ -8,7 +8,6 @@
         "angular-cookies": "1.0.8",
         "angular-sanitize": "1.0.8",
         "angular-bootstrap" : "*",
-	"ng-table":"*",
         "jquery": "*",
         "jquery-ui":"*",
         "jquery-migrate": "*",
