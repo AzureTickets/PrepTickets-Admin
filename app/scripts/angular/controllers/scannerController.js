@@ -3,6 +3,18 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams) 
 
   // initialize wizard for ScanDevice
   $scope.wizardScanDevice = $scope.form.getWizard($scope);
+  
+  // Pagination setup
+  $scope.pagination = {
+    pageSize: 20,
+    predicates: [],
+    pageItems: function() {},
+    textFilter: '',
+    sort: function() {},
+    currentPageIndex: 0,
+    results: [],
+    numberOfPages: 0
+  };
 
   $scope.$watch('wizardScanDevice.open', function(v) {
     if (v) {

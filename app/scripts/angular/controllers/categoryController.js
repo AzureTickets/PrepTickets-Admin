@@ -3,6 +3,18 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
 
   // initialize wizard for Category
   $scope.wizardCategory = $scope.form.getWizard($scope);
+  
+  // Pagination setup
+  $scope.pagination = {
+    pageSize: 20,
+    predicates: ['Name', 'Brief'],
+    pageItems: function() {},
+    textFilter: '',
+    sort: function() {},
+    currentPageIndex: 0,
+    results: [],
+    numberOfPages: 0
+  };
 
   $scope.$watch('wizardCategory.open', function(v) {
     if (v) {

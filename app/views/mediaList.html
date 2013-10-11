@@ -6,6 +6,7 @@
 			<div class="clearfix"></div>
 		</div>
 		<div class="widget-content">
+			
 			<div ng-show="images.length == 0" class="alert alert-info">{{
 				'Common.Text_NoImages_Msg' | t }}</div>
 			<table class="table  table-bordered " ng-show="images.length > 0">
@@ -17,8 +18,8 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="image in images">
-						<td>{{ $index+1 }}</td>
+					<tr ng-repeat="image in pagination.pageItems()">
+						<td>{{$index + 1 + pagination.currentPageIndex*pagination.pageSize}}</td>
 						<td><a ng-href="#/media" ng-click="previewMedia(image)"
 							style="position: relative"><i class="icon-search icon-2x"
 								style="position: absolute; top: 1%; right: 40%"></i><img
@@ -33,6 +34,12 @@
 					</tr>
 				</tbody>
 			</table>
+			
+			<div class="paginationDiv">
+        <ng-pagination ui-if="images && images.length > 0" page-size="pagination.pageSize" predicates="pagination.predicates" page-items="pagination.pageItems" text-filter="pagination.textFilter" sort="pagination.sort" results="pagination.results" current-page-index="pagination.currentPageIndex" number-of-pages="pagination.numberOfPages" data="images"></ng-pagination>
+        <p class="text-center" ng-show="pagination.results.length" ng-cloak>{{'Common.Text_CurrentPage' | t}}: {{pagination.currentPageIndex + 1}} - {{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} - {{'Common.Text_TotalPages' | t}}: {{pagination.numberOfPages}} - {{'Common.Text_TotalItems' | t}}: {{pagination.results.length}}</p>
+      </div>
+			
 		</div>
 	</div>
 </div>

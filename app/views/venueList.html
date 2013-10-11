@@ -18,8 +18,8 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="venue in venues">
-						<td>{{ $index+1 }}</td>
+					<tr ng-repeat="venue in pagination.pageItems()">
+						<td>{{$index + 1 + pagination.currentPageIndex*pagination.pageSize}}</td>
 						<td>{{venue.Name}}</td>
 						<td>{{venue.Description}}</td>
 						<td><span ng-show="venue.Address" class="label">{{
@@ -37,6 +37,12 @@
 					</tr>
 				</tbody>
 			</table>
+			
+			<div class="paginationDiv">
+        <ng-pagination ui-if="venues && venues.length > 0" page-size="pagination.pageSize" predicates="pagination.predicates" page-items="pagination.pageItems" text-filter="pagination.textFilter" sort="pagination.sort" results="pagination.results" current-page-index="pagination.currentPageIndex" number-of-pages="pagination.numberOfPages" data="venues"></ng-pagination>
+        <p class="text-center" ng-show="pagination.results.length" ng-cloak>{{'Common.Text_CurrentPage' | t}}: {{pagination.currentPageIndex + 1}} - {{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} - {{'Common.Text_TotalPages' | t}}: {{pagination.numberOfPages}} - {{'Common.Text_TotalItems' | t}}: {{pagination.results.length}}</p>
+      </div>
+			
 		</div>
 	</div>
 </div>

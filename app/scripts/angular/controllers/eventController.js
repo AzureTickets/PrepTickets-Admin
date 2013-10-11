@@ -3,6 +3,18 @@ function eventController($scope, $cookieStore, $filter, $modal) {
 
   // initialize wizard for Event
   $scope.wizardEvent = $scope.form.getWizard($scope);
+  
+  // Pagination setup
+  $scope.pagination = {
+    pageSize: 20,
+    predicates: [],
+    pageItems: function() {},
+    textFilter: '',
+    sort: function() {},
+    currentPageIndex: 0,
+    results: [],
+    numberOfPages: 0
+  };
 
   $scope.$watch('wizardEvent.open', function(v) {
     if (v) {

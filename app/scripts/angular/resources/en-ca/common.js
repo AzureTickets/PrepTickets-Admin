@@ -129,6 +129,12 @@ var CommonResources = {
   Text_StoreCreate : 'You haven\'t created a store yet. Please follow these registration steps.',
   Text_Description : 'Description',
   Text_InvalidPattern : 'The format for {0} is not valid',
+  
+  Text_CurrentPage : 'Current page',
+  Text_ItemsPerPage : 'Items per page',
+  Text_TotalPages : 'Total pages',
+  Text_TotalItems : 'Total item(s)',
+  
   LabelStoreType : 'Store',
   LabelStoreCurrency : 'Currency',
   LabelStorePaymentProvider : 'Payment Provider',

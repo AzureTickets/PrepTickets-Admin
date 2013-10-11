@@ -20,7 +20,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="event in events">
+					<tr ng-repeat="event in pagination.pageItems()">
 						<td>{{ $index+1 }}</td>
 						<td>{{event.Name}}</td>
 						<td><p class="text clear">{{event.Description}}</p></td>
@@ -50,6 +50,12 @@
 					</tr>
 				</tbody>
 			</table>
+			
+			<div class="paginationDiv">
+        <ng-pagination ui-if="events && events.length > 0" page-size="pagination.pageSize" predicates="pagination.predicates" page-items="pagination.pageItems" text-filter="pagination.textFilter" sort="pagination.sort" results="pagination.results" current-page-index="pagination.currentPageIndex" number-of-pages="pagination.numberOfPages" data="events"></ng-pagination>
+        <p class="text-center" ng-show="pagination.results.length" ng-cloak>{{'Common.Text_CurrentPage' | t}}: {{pagination.currentPageIndex + 1}} - {{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} - {{'Common.Text_TotalPages' | t}}: {{pagination.numberOfPages}} - {{'Common.Text_TotalItems' | t}}: {{pagination.results.length}}</p>
+      </div>
+			
 		</div>
 	</div>
 </div>

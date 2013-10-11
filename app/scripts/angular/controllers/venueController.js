@@ -4,6 +4,18 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
 
   // initialize wizard for Venue
   $scope.wizardVenue = $scope.form.getWizard($scope);
+  
+  // Pagination setup
+  $scope.pagination = {
+    pageSize: 20,
+    predicates: [],
+    pageItems: function() {},
+    textFilter: '',
+    sort: function() {},
+    currentPageIndex: 0,
+    results: [],
+    numberOfPages: 0
+  };
 
   $scope.$watch('wizardVenue.open', function(v) {
     if (v) {
@@ -145,6 +157,7 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
       }
     }
   }
+  
 }
 
 venueController.$inject = [ '$rootScope', '$scope', '$timeout', '$cookieStore',

@@ -5,6 +5,18 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   $scope.wizardMedia = $scope.form.getWizard($scope), $scope.mediaPreview = {
     open : false
   };
+  
+  // Pagination setup
+  $scope.pagination = {
+    pageSize: 20,
+    predicates: [],
+    pageItems: function() {},
+    textFilter: '',
+    sort: function() {},
+    currentPageIndex: 0,
+    results: [],
+    numberOfPages: 0
+  };
 
   // image selector
   $scope.imageSelector = {

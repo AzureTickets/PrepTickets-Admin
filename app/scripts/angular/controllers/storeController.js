@@ -24,6 +24,18 @@ function storeController($scope, $cookieStore, $location, $timeout,
   // this is used to contain object selection made from child scopes created by
   // ng-include
   $scope.selection = {};
+  
+  // Pagination setup
+  $scope.pagination = {
+    pageSize: 20,
+    predicates: [],
+    pageItems: function() {},
+    textFilter: '',
+    sort: function() {},
+    currentPageIndex: 0,
+    results: [],
+    numberOfPages: 0
+  };
 
   // initialize wizard for Store
   $scope.wizard = $scope.form.getWizard($scope);
