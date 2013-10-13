@@ -1,0 +1,33 @@
+<div class="modal-header">
+  <button type="button" ng-click="wizardMedia.open = false"
+    class="close">&times;</button>
+  <h3>
+    <p class="text-info">{{ 'Common.Text_Images' | t}}</p>
+  </h3>
+</div>
+<div class="modal-body">
+  <!-- messages -->
+  <div ng-switch="wizardMedia.currentStep">
+    <div class="alert alert-info" ng-switch-when="1">
+      <strong>{{ 'Common.Text_Upload' | t }}</strong>
+    </div>
+  </div>
+  <div class="alert alert-success"
+    ui-if="wizardMedia.saved && wizardMedia.finished">
+    <strong>{{ 'Common.Text_Congrats' | t }}</strong> {{
+      'Common.Text_WizardComplete' | t }}
+  </div>
+  <!-- form -->
+  <ng-form name="atMedia" ng-submit="save()">
+    <form ui-if="wizardMedia.currentStep == 1" name="atEvent1"
+      ng-submit="wizardMedia.next('atMedia1')">
+      <dl class="clearfix">
+        <dd>
+          <div id="uploader" class="clearfix"
+            ng-init="media.createUploader(Store.Key,onImageUpload,onError)"></div>
+        </dd>
+      </dl>
+    </form>
+  </ng-form>
+</div>
+<div class="modal-footer"></div>

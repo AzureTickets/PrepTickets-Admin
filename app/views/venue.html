@@ -1,7 +1,8 @@
 <div class="atPanel" ui-if="DomainProfile && DomainProfile.Key || false"
 	ng-controller="venueController" ng-cloak>
+	
 	<script type="text/ng-template" id="formVenue.html">
-	<div class="modal-header">
+	    <div class="modal-header">
 				<button type="button" ng-click="wizardVenue.open = false"
 					class="close">&times;</button>
 				<h3>
@@ -66,11 +67,11 @@
 				</form>
 				<form ui-if="images && images.length > 0 || false" ng-show="wizardVenue.currentStep == 3" name="atVenue3"
 					ng-submit="wizardVenue.next('atVenue3')">
+					
 					<dl class="clearfix">
-						<dd>
-							<div ng-controller="mediaController" onload="modelName = 'Place'" ng-include src="'views/elements/store/imagesSelector.html'"></div>			
-						</dd>
-						<dd class="clear"></dd>
+					  <!-- Media selector -->
+						<dd class="media-selector" ng-controller="mediaController" ng-init="init(); modelName='Place'" ng-include src="'views/elements/store/mediaSelector.html'"></dd>
+						
 						<dd class="pull-left">
 							<a ng-show="wizardVenue.currentStep>1"
 								ng-click="wizardVenue.currentStep = wizardVenue.currentStep-1"
@@ -82,6 +83,7 @@
 		 							'Common.Text_Next' | t }}" />
 						</dd>
 					</dl>
+					
 				</form>
 				<form ui-if="wizardVenue.currentStep == 4 && !wizardVenue.saved"
 					name="atVenue4" ng-submit="wizardVenue.next('atVenue4', true)">

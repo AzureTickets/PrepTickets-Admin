@@ -103,15 +103,11 @@
 		</form>
 		<form ng-show="wizard.currentStep == 3" name="atStore3"
 			ng-submit="wizard.next('atStore3')">
+			
 			<dl class="clearfix">
-				<dd ng-class="{'atStoreImgSel': images.length>0}">
-					<div ng-show="images.length == 0" class="alert alert-info">{{
-						'Common.Text_NoImages_Msg' | t }}</div>
-					<div ui-if="images && images.length > 0 || false"
-						ng-controller="mediaController" onload="modelName='Store'"
-						ng-include src="'views/elements/store/imagesSelector.html'"></div>
-				</dd>
-				<dd class="clear"></dd>
+				<!-- Media selector -->
+				<dd class="media-selector" ng-class="{'atStoreImgSel': images.length > 0}" ng-controller="mediaController" ng-init="init(); modelName='Store'" ng-include src="'views/elements/store/mediaSelector.html'"></dd>
+				
 				<dd class="pull-left">
 					<a ng-show="wizard.currentStep>1"
 						ng-click="wizard.currentStep = wizard.currentStep-1"

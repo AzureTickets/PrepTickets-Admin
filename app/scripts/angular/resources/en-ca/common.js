@@ -19,7 +19,7 @@ var CommonResources = {
   Text_EmailToFriend : 'Email to Friend',
   Text_EmailAddress : 'Email Address',
   Text_Message : "Message",
-  Text_Upload : 'Upload',
+  Text_Upload : 'Upload New',
   Text_Preview : 'Preview',
   Text_Control : 'Controls',
   Text_Details : 'Details',
@@ -134,6 +134,7 @@ var CommonResources = {
   Text_ItemsPerPage : 'Items per page',
   Text_TotalPages : 'Total pages',
   Text_TotalItems : 'Total item(s)',
+  Text_YourSelect : 'Your select',
   
   LabelStoreType : 'Store',
   LabelStoreCurrency : 'Currency',

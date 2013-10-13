@@ -46,6 +46,13 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
       $scope[$scope.modelName].Image = $scope.imageSelector.currentImage;
     }
   }
+  
+  // Image selecting function for the new media selector
+  $scope.selectImage = function($index) {
+  	if ($index != undefined && $index != null) {
+  	  $scope[$scope.modelName].Image = $scope.images[$index];
+    };
+  };
 
   $scope.$watch('mediaPreview.open', function(v) {
     if (v) {
@@ -62,7 +69,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   $scope.$watch('wizardMedia.open', function(v) {
     if (v) {
       $scope.wizardMedia.modal = $modal.open({
-        templateUrl : 'formMedia.html',
+        templateUrl : '/views/elements/store/formMedia.html',
         scope : $scope,
         backdrop : 'static'
       });

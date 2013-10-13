@@ -25,7 +25,7 @@ azureTicketsApp.directive('ngPagination', ['$filter', '$parse', '$templateCache'
                   '<li ng-class="loadClass(' + '\'next\'' + ', 0)"><a href="" ng-click="loadNextPage()">&raquo;</a></li>' +
                 '</ul>' +
               '</div>',
-    link: function($scope, $element, $attrs) {
+    link: function($scope, $element, $attr) {
 
       // Initialize sort predicate
       $scope.predicate = '';

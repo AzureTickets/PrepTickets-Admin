@@ -113,11 +113,11 @@
 				</form>
 				<form ui-if="images && images.length > 0 || false" ng-show="wizardScanDevice.currentStep == 4" name="atScanDevice4"
 					ng-submit="wizardScanDevice.next('atScanDevice4')">
+					
 					<dl class="clearfix">
-						<dd>
-							<div ng-controller="mediaController" onload="modelName = 'ScanDevice'" ng-include src="'views/elements/store/imagesSelector.html'"></div>			
-						</dd>
-						<dd class="clear"></dd>
+					  <!-- Media selector -->
+				    <dd class="media-selector" ng-class="{'atStoreImgSel': images.length > 0}" ng-controller="mediaController" ng-init="init(); modelName='ScanDevice'" ng-include src="'views/elements/store/mediaSelector.html'"></dd>
+						
 						<dd class="pull-left">
 							<a ng-show="wizardScanDevice.currentStep>1"
 								ng-click="wizardScanDevice.currentStep = wizardScanDevice.currentStep-1"

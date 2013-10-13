@@ -1,0 +1,17 @@
+<ul class="inline">
+  <li>
+    <span class="upload-icon">
+      <a href="" ng-click="create()"><i class="icon-plus-sign"></i></a><br />
+      {{'Common.Text_Upload' | t}}
+    </span>
+  </li>
+  <li ng-repeat="image in pagination.pageItems()" ng-mouseover="show=true" ng-mouseleave="show=false">
+    <a href="" ng-click="selectImage($index + pagination.currentPageIndex*7)"><img ng-src="{{image.BaseURL}}{{image.ThumbFile}}" /></a>
+    <a class="delete-icon" href="" ng-click="deleteImage(image)" ng-show="show" ng-mouseover="show=true"><i class="icon-minus-sign red"></i></a>
+    <span class="selected-icon" ng-show="this[modelName].Image.Key == image.Key"><i class="icon-ok green"></i></span>
+  </li>
+</ul>
+<ng-pagination ui-if="images && images.length > 0" page-size="7" predicates="pagination.predicates" page-items="pagination.pageItems" text-filter="pagination.textFilter" sort="pagination.sort" results="pagination.results" current-page-index="pagination.currentPageIndex" number-of-pages="pagination.numberOfPages" data="images" class="pull-right"></ng-pagination>
+<p>{{'Common.Text_YourSelect' | t}}: {{this[modelName].Image.Name}}</p>
+<p class="clear"></p>
+<p class="pull-right">{{'Common.Text_TotalPages' | t}}: {{pagination.numberOfPages}}</p>
