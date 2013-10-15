@@ -17,35 +17,6 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
     results: [],
     numberOfPages: 0
   };
-
-  // image selector
-  $scope.imageSelector = {
-    currentIndex : 0,
-    currentImage : null,
-    nextImage : function() {
-      if (!$scope.images || $scope.images.length === 0)
-        return;
-
-      $scope.imageSelector.currentIndex = ($scope.imageSelector.currentIndex + 1) <= $scope.images.length ? $scope.imageSelector.currentIndex + 1
-          : 0;
-      $scope.imageSelector.currentImage = $scope.imageSelector.currentIndex === 0 ? null
-          : $scope.images[$scope.imageSelector.currentIndex - 1]
-
-      $scope[$scope.modelName].Image = $scope.imageSelector.currentImage;
-    },
-    prevImage : function() {
-      if (!$scope.images || $scope.images.length === 0)
-        return;
-
-      $scope.imageSelector.currentIndex = ($scope.imageSelector.currentIndex - 1) >= 1 ? $scope.imageSelector.currentIndex - 1
-          : ((($scope.imageSelector.currentIndex - 1) == 0) ? $scope.imageSelector.currentIndex - 1
-              : $scope.images.length);
-      $scope.imageSelector.currentImage = $scope.imageSelector.currentIndex === 0 ? null
-          : $scope.images[$scope.imageSelector.currentIndex - 1]
-
-      $scope[$scope.modelName].Image = $scope.imageSelector.currentImage;
-    }
-  }
   
   // Image selecting function for the new media selector
   $scope.selectImage = function($index) {
