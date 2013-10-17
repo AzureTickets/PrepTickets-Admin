@@ -15,7 +15,7 @@
 					<div class="widget-content">
 						<div class="padd">
 
-							<form name="updateAccount" ng-submit="updateAccount()" class="">
+							<form name="updateAccountForm" ng-submit="updateAccount()" class="">
 								<div class="control-group">
 								  <atfield at-required class="input-large" ng-model="profile.Contact.FirstName" label="'Login.labelFirstName' | t" />
 								</div>
@@ -41,7 +41,7 @@
 									<atfield class="input-large" ng-model="profile.Contact.CompanyName" label="'Common.LabelContactCompanyName' | t" />
 								</div>
 								<div class="control-group">
-									<atfield class="input-large" ng-model="profile.Contact.newPassword" label="'Login.labelNewPassword' | t" />
+									<atfield type="password" class="input-large" ng-model="profile.Contact.newPassword" label="'Login.labelNewPassword' | t" />
 								</div>
 								<div class="control-group">
 									<div class="controls">
