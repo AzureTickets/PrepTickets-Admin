@@ -98,6 +98,10 @@ azureTicketsApp.config([
         resolve : routeFilters
       }).otherwise({
         redirectTo : '/'
+      }).when('/accountUpdate', {
+        templateUrl : 'views/accountUpdate.html',
+        controller : adminController,
+        resolve : routeFilters
       }).when('/store', {
         templateUrl : 'views/store.html',
         resolve : routeFilters

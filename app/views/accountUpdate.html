@@ -1,0 +1,59 @@
+<div ng-init="prepareAccount()" ng-cloak class="atPanel">
+	<div ng-include src="'views/elements/error.html'"></div>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12">
+				<!-- Widget starts -->
+				<div class="widget wviolet">
+					<div class="widget-head">
+						<i class="icon-unlock-alt"></i> {{'Login.labelMyAccount' | t}}
+					</div>
+          <div class="alert alert-success" ng-show="updateAccountdOk">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{'Login.Text_AccountUpdatedSuccessfully' | t}}
+          </div>
+					<div class="widget-content">
+						<div class="padd">
+
+							<form name="updateAccountForm" ng-submit="updateAccount()" class="">
+								<div class="control-group">
+								  <atfield at-required class="input-large" ng-model="profile.Contact.FirstName" label="'Login.labelFirstName' | t" />
+								</div>
+								<div class="control-group">
+								  <atfield at-required class="input-large" ng-model="profile.Contact.LastName" label="'Login.labelLastName' | t" />
+								</div>
+								<div class="control-group">
+									<atfield class="input-large" ng-model="profile.Contact.DateOfBirth" label="'Common.Text_DateOfBirth' | t" />
+								</div>
+								<div class="control-group">
+									<atfield at-required class="input-large" ng-model="profile.Contact.Gender" label="'Common.LabelContactGender' | t" />
+								</div>
+								<div class="control-group">
+									<atfield at-required class="input-large" ng-model="profile.Contact.EmailAddress" label="'Common.Text_EmailAddress' | t" />
+								</div>
+								<div class="control-group">
+									<atfield class="input-large" ng-model="profile.Contact.Phone" label="'Common.LabelContactPhone' | t" />
+								</div>
+								<div class="control-group">
+									<atfield class="input-large" ng-model="profile.Contact.AlternativePhone" label="'Common.LabelContactAlternativePhone' | t" />
+								</div>
+								<div class="control-group">
+									<atfield class="input-large" ng-model="profile.Contact.CompanyName" label="'Common.LabelContactCompanyName' | t" />
+								</div>
+								<div class="control-group">
+									<atfield type="password" class="input-large" ng-model="profile.Contact.newPassword" label="'Login.labelNewPassword' | t" />
+								</div>
+								<div class="control-group">
+									<div class="controls">
+										<button type="submit" class="btn btn-primary">{{'Login.labelUpdate' | t}}</button>
+									</div>
+								</div>
+							</form>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
