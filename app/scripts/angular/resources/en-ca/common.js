@@ -400,6 +400,9 @@ var CommonResources = {
   Text_Paypro_PayPal : 'PayPal',
 
   LabelContactFullName : 'Full Name',
+  LabelContactGender : 'Gender',
   LabelContactPhone : 'Phone',
-  LabelContactEmailAddress : 'Email Address'
+  LabelContactAlternativePhone : 'Alternative Phone',
+  LabelContactEmailAddress : 'Email Address',
+  LabelContactCompanyName : 'Company Name'
 };

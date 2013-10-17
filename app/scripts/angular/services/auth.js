@@ -162,6 +162,20 @@ azureTicketsApp
 
                   return def.promise;
                 },
+                updatePassword : function(newPasswordHash, account) {
+                  var def = $q.defer();
+
+                  BWL.Services.AccountService.ChangePasswordAsync(newPasswordHash, account,
+                      function() {
+                        $rootScope.$apply(def.resolve);
+                      }, function(err) {
+                        $rootScope.$apply(function() {
+                          def.reject(err)
+                        })
+                      });
+
+                  return def.promise;
+                },
                 logonAsync : function(account) {
                   var def = $q.defer();
 
