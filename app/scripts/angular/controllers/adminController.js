@@ -278,58 +278,33 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
   // For Account Update form, notify if there are changes
   $scope.updateAccountdOk = false;
   
-  // Watched properties
-  $scope.watchedContactProps = {
-  	'FirstName': false,
-  	'LastName': false,
-  	'DateOfBirth': false,
-  	'Gender': false,
-  	'EmailAddress': false,
-  	'Phone': false,
-  	'AlternativePhone': false,
-  	'CompanyName': false,
-  	'newPassword': false
-  };
-  
   // Fetch the account info to feed the form
   $scope.prepareAccount = function() {
     if ($scope.auth.isLogged()) {
       $scope.profile = $scope.auth.getDomainProfile();
       
-      if ($scope.profile != null && $scope.profile.Contact != null) {
+      if ($scope.auth.getDomainProfile() != null && $scope.profile.Contact != null) {
       	// Place an initial date of birth if the user has not yet define one
       	if ($scope.profile.Contact.DateOfBirth == null || $scope.profile.Contact.DateOfBirth == undefined) {
       		$scope.profile.Contact.DateOfBirth = '01/01/1970 07:00 AM';
       	};
-      	
-      	// Initialize fields which doesn't yet exist
-        for (prop in $scope.watchedContactProps) {
-          if ($scope.profile.Contact[prop] == null || $scope.profile.Contact[prop] == undefined) {
-            $scope.profile.Contact[prop] = '';
-          };
-        };
       };
+      
+      // Prepare an empty password
+      $scope.newPassword = '';
     };
   };
   
   // Update Contact and password
   $scope.updateAccount = function() {
-  	$scope.updateObj = {
-      'FirstName': $scope.profile.Contact.FirstName,
-      'LastName': $scope.profile.Contact.LastName,
-      'FullName': '' + $scope.profile.Contact.FirstName + $scope.profile.Contact.LastName,
-      'DateOfBirth': $scope.profile.Contact.DateOfBirth,
-      'Gender': $scope.profile.Contact.Gender,
-      'EmailAddress': $scope.profile.Contact.EmailAddress,
-      'Phone': $scope.profile.Contact.Phone,
-      'AlternativePhone': $scope.profile.Contact.AlternativePhone,
-      'CompanyName': $scope.profile.Contact.CompanyName,
-    };
   	
-    $scope.model.update(BWL.Model.Contact.Type, $scope.profile.Contact.Key, $scope.updateObj)
+  	$scope.profile.Contact.FullName = $scope.profile.Contact.FirstName + $scope.profile.Contact.LastName;
+  	$scope.profile.Contact.Gender = parseInt($scope.profile.Contact.Gender);
+  	
+    $scope.model.update(BWL.Model.Contact.Type, $scope.profile.Contact.Key, $scope.profile.Contact)
       .then(function() {
-         if ($scope.profile.Contact.newPassword) {
-           $scope.auth.updatePassword(BWL.Auth.HashPassword($scope.profile.Contact.newPassword), { Email : $scope.profile.Contact.EmailAddress })
+         if ($scope.newPassword) {
+           $scope.auth.updatePassword(BWL.Auth.HashPassword($scope.newPassword), { Email : $scope.profile.Contact.EmailAddress })
              .then(function() {
                $scope.updateAccountdOk = true;
              }, function(err) {

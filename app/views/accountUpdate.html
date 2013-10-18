@@ -1,4 +1,4 @@
-<div ng-init="prepareAccount()" ng-cloak class="atPanel">
+<div ng-cloak ng-init="prepareAccount()" ui-if="auth.isDomainProfileReady()" class="atPanel">
 	<div ng-include src="'views/elements/error.html'"></div>
 	<div class="container-fluid">
 		<div class="row-fluid">
@@ -8,7 +8,7 @@
 					<div class="widget-head">
 						<i class="icon-unlock-alt"></i> {{'Login.labelMyAccount' | t}}
 					</div>
-          <div class="alert alert-success" ng-show="updateAccountdOk">
+          <div class="alert alert-success" ng-show="updateAccountdOk" ng-click="updateAccountdOk=false">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             {{'Login.Text_AccountUpdatedSuccessfully' | t}}
           </div>
@@ -41,7 +41,10 @@
 									<atfield class="input-large" ng-model="profile.Contact.CompanyName" label="'Common.LabelContactCompanyName' | t" />
 								</div>
 								<div class="control-group">
-									<atfield type="password" class="input-large" ng-model="profile.Contact.newPassword" label="'Login.labelNewPassword' | t" />
+                  <label class="control-label">{{'Login.labelNewPassword' | t}}</label>
+                  <div class="controls">
+                    <input type="password" class="input-large" ng-model="newPassword" placeholder="Enter your new password" />
+                  </div>
 								</div>
 								<div class="control-group">
 									<div class="controls">
