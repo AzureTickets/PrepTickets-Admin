@@ -20,7 +20,8 @@
 									<label class="control-label">{{
 										'Common.Text_EmailAddress' | t }}</label>
 									<div class="controls">
-										<input type="email" required ng-model="AccountProfile.Email" />
+										<input type="email" autocomplete="on" required
+											ng-model="AccountProfile.Email" />
 									</div>
 								</div>
 								<!-- Password -->
@@ -28,8 +29,8 @@
 									<label class="control-label">{{ 'Login.labelPassword' |
 										t }}</label>
 									<div class="controls">
-										<input ng-model="AccountProfile.Password" type="password"
-											required />
+										<input ng-model="AccountProfile.Password" autocomplete="on"
+											type="password" required />
 									</div>
 								</div>
 								<div class="control-group">

@@ -23,7 +23,7 @@ azureTicketsApp.filter('t', [
               && angular.isDefined($window[r][tt[1]]) ? eval(r + '.' + tt[1])
               : t;
         } else {
-          return t.replace(/([A-Z])/g, ' $1')
+          return t.replace(/([A-Z])|\./g, ' $1').trim()
         }
       };
     } ]);
