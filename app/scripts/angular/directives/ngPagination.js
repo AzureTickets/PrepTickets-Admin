@@ -109,11 +109,11 @@ azureTicketsApp.directive('ngPagination', ['$filter', '$parse', '$templateCache'
         // realPageIndex equals $scope.currentPageIndex + 1;
         if (realPageIndex && realPageIndex == $scope.numberOfPages) {
           $scope.pageItems = function() {
-        	  return ($filter('orderBy')($filter('filter')($scope.data, $scope.textFilter), $scope.predicate)).slice($scope.itemsPerPage*(realPageIndex - 1));
+        	  return ($filter('orderBy')($filter('filter')($scope.data, $scope.textFilter), $scope.predicate, $scope.reverse[$scope.predicate])).slice($scope.itemsPerPage*(realPageIndex - 1));
           };
         } else {
         	$scope.pageItems = function() {
-        	  return ($filter('orderBy')($filter('filter')($scope.data, $scope.textFilter), $scope.predicate)).slice($scope.itemsPerPage*(realPageIndex - 1), $scope.itemsPerPage*realPageIndex);
+        	  return ($filter('orderBy')($filter('filter')($scope.data, $scope.textFilter), $scope.predicate, $scope.reverse[$scope.predicate])).slice($scope.itemsPerPage*(realPageIndex - 1), $scope.itemsPerPage*realPageIndex);
           };
         };
 

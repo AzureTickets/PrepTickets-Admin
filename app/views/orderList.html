@@ -12,9 +12,9 @@
 					ng-model="pagination.textFilter" placeholder="">
 				<button class="btn btn-primary btn-mini" ui-if="false" ng-click="">{{'Order.Text_LoadMore'
 					| t}}</button>
-				<div ui-if="false" class="pull-right" ui-if="orders && orders.length > 0 || false"
+				<div class="pull-right" ui-if="orders && orders.length > 0 || false"
 					ng-include
-					onload="_model='Order'; _fields = ['PlacedFromDate','PlacedToDate','Contact','Total.ItemPrice','State']"
+					ng-init="_model='Order'; _fields = ['PlacedFromDate','PlacedToDate','Contact','Total.ItemPrice','State']"
 					src="'views/elements/store/filters.html'"></div>
 			</form>
 
