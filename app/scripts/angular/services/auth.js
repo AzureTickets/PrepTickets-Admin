@@ -162,11 +162,11 @@ azureTicketsApp
 
                   return def.promise;
                 },
-                updatePassword : function(newPasswordHash, account) {
+                updatePassword : function(account) {
                   var def = $q.defer();
 
-                  BWL.Services.AccountService.ChangePasswordAsync(newPasswordHash, account,
-                      function() {
+                  BWL.Services.AccountService.ChangePasswordAsync(
+                      account.PasswordHash, account, function() {
                         $rootScope.$apply(def.resolve);
                       }, function(err) {
                         $rootScope.$apply(function() {
