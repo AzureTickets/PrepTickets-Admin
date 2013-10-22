@@ -1,5 +1,5 @@
 {
-  "name": "AzureTickets",
+  "name": "PrepTickets Admin",
   "path" : {
 	"app" : "app",
 	"dist" : "dist",
