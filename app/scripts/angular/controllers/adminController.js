@@ -13,6 +13,20 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
   $scope.AccountProfile = $scope.auth.getAccountProfile();
   $scope.RegisterAccountProfile = angular.copy($scope.AccountProfile);
 
+  // Pagination setup
+  $scope.pagination = {
+    pageSize : 20,
+    predicates : [],
+    pageItems : function() {
+    },
+    textFilter : '',
+    sort : function() {
+    },
+    currentPageIndex : 0,
+    results : [],
+    numberOfPages : 0
+  };
+
   $scope.$on('resetDomainProfile', function() {
     delete $scope.DomainProfile;
   });
