@@ -8,10 +8,10 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
    * 
    * @todo inject models, using array of strings maybe.
    */
-  
+
   $scope.AccountProfile = $scope.auth.getAccountProfile();
   $scope.RegisterAccountProfile = angular.copy($scope.AccountProfile);
-  
+
   $scope.$on('resetDomainProfile', function() {
     delete $scope.DomainProfile;
   });
@@ -83,8 +83,8 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
     });
   }
 
-  $scope.validatePasswords = function() {
-    $scope.passwdOk = $scope.RegisterAccountProfile.Password === $scope.RegisterAccountProfile.ConfirmPassword;
+  $scope.validatePasswords = function(model) {
+    $scope.passwdOk = model.Password === model.ConfirmPassword;
   }
 
   $scope.getPendingAccessRequests = function() {
@@ -274,48 +274,36 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
 
     return ret;
   }
-  
+
   // For Account Update form, notify if there are changes
   $scope.updateAccountdOk = false;
-  
-  // Fetch the account info to feed the form
-  $scope.prepareAccount = function() {
-    if ($scope.auth.isLogged()) {
-      $scope.profile = $scope.auth.getDomainProfile();
-      
-      if ($scope.auth.getDomainProfile() != null && $scope.profile.Contact != null) {
-      	// Place an initial date of birth if the user has not yet define one
-      	if ($scope.profile.Contact.DateOfBirth == null || $scope.profile.Contact.DateOfBirth == undefined) {
-      		$scope.profile.Contact.DateOfBirth = '01/01/1970 07:00 AM';
-      	};
-      };
-      
-      // Prepare an empty password
-      $scope.newPassword = '';
-    };
-  };
-  
+
   // Update Contact and password
   $scope.updateAccount = function() {
-  	
-  	$scope.profile.Contact.FullName = $scope.profile.Contact.FirstName + $scope.profile.Contact.LastName;
-  	$scope.profile.Contact.Gender = parseInt($scope.profile.Contact.Gender);
-  	
-    $scope.model.update(BWL.Model.Contact.Type, $scope.profile.Contact.Key, $scope.profile.Contact)
-      .then(function() {
-         if ($scope.newPassword) {
-           $scope.auth.updatePassword(BWL.Auth.HashPassword($scope.newPassword), { Email : $scope.profile.Contact.EmailAddress })
-             .then(function() {
-               $scope.updateAccountdOk = true;
-             }, function(err) {
-               $scope.error.log(err);
-           });
-         } else {
-           $scope.updateAccountdOk = true;
-         };
-      }, function(err) {
-        $scope.error.log(err);
-    });
+    $scope.DomainProfile.Contact.FullName = $scope.DomainProfile.Contact.FirstName
+        + $scope.DomainProfile.Contact.LastName;
+    $scope.DomainProfile.Contact.Gender = parseInt($scope.DomainProfile.Contact.Gender);
+
+    $scope.model.update(BWL.Model.Contact.Type,
+        $scope.DomainProfile.Contact.Key, $scope.DomainProfile.Contact).then(
+        function() {
+          if ($scope.DomainProfile.Password
+              && $scope.DomainProfile.ConfirmPassword) {
+            $scope.auth.updatePassword(
+                BWL.Auth.HashPassword($scope.newPassword), {
+                  Email : $scope.DomainProfile.Contact.EmailAddress
+                }).then(function() {
+              $scope.updateAccountdOk = true;
+            }, function(err) {
+              $scope.error.log(err);
+            });
+          } else {
+            $scope.updateAccountdOk = true;
+          }
+          ;
+        }, function(err) {
+          $scope.error.log(err);
+        });
   };
 }
 
