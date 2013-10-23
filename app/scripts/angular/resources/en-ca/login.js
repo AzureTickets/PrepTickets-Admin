@@ -50,7 +50,7 @@ var LoginResources = {
   'labelReEnterPassword' : 'Re-enter Password',
   'labelRegisterNow' : 'Register Now',
   'labelRegister' : 'Register',
-  'Text_AccountUpdatedSuccessfully' : 'Your Account information <br/>has been updated successfully',
+  'Text_AccountUpdatedSuccessfully' : 'Your Account information has been updated successfully',
   'labelCreateAccount' : 'Create an account:',
   'labelSchoolRegistration' : 'School Registration',
   'labelMySchool' : 'My School',

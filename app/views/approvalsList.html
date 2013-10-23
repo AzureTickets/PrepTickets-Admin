@@ -14,16 +14,24 @@
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>{{ 'Common.Text_Date' | t }}</th>
-						<th>{{ 'Common.Text_Type' | t }}</th>
-						<th>{{ 'Common.Text_Details' | t }}</th>
-						<th>{{ 'Common.Text_Profile' | t }} {{'Common.Text_ID' | t}}</th>
+						<th><a href=""
+							ng-click="paginationApproval.sort('DateCreated')">{{
+								'Common.Text_Date' | t }}</a></th>
+						<th><a href=""
+							ng-click="paginationApproval.sort('RequestedItem.Type')">{{
+								'Common.Text_Type' | t }}</a></th>
+						<th><a href=""
+							ng-click="paginationApproval.sort('RequestedItem.Name')">{{
+								'Common.Text_Details' | t }}</a></th>
+						<th><a href=""
+							ng-click="paginationApproval.sort('RequestedByKey')">{{
+								'Common.Text_Profile' | t }}</a> {{'Common.Text_ID' | t}}</th>
 						<th ui-if="auth.isAdministrator()">{{ 'Common.Text_Control' |
 							t }}</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="approval in approvals">
+					<tr ng-repeat="approval in paginationApproval.pageItems()">
 						<td>{{ $index+1 }}</td>
 						<td><span class="label label-inverse"> {{
 								approval.DateCreated | date:'MM/dd/yyyy @ h:mma' }}</span></td>
@@ -44,6 +52,23 @@
 					</tr>
 				</tbody>
 			</table>
+			<div class="paginationDiv">
+				<ng-pagination ui-if="approvals && approvals.length > 0"
+					page-size="paginationApproval.pageSize"
+					predicates="paginationApproval.predicates"
+					page-items="paginationApproval.pageItems"
+					text-filter="paginationApproval.textFilter"
+					sort="paginationApproval.sort" results="paginationApproval.results"
+					current-page-index="paginationApproval.currentPageIndex"
+					number-of-pages="paginationApproval.numberOfPages" data="approvals"></ng-pagination>
+				<p class="text-center" ng-show="paginationApproval.results.length"
+					ng-cloak>{{'Common.Text_CurrentPage' | t}}:
+					{{paginationApproval.currentPageIndex + 1}} -
+					{{'Common.Text_ItemsPerPage' | t}}: {{paginationApproval.pageSize}}
+					- {{'Common.Text_TotalPages' | t}}:
+					{{paginationApproval.numberOfPages}} - {{'Common.Text_TotalItems' |
+					t}}: {{paginationApproval.results.length}}</p>
+			</div>
 		</div>
 	</div>
 </div>

@@ -37,7 +37,7 @@ azureTicketsApp
                   var _el, _label = null, _tip = null;
                   var _attr = {
                     placeholder : f,
-                    name : m + '_' + f,
+                    name : m.replace(/\./g, '_') + '_' + f,
                     id : $attrs.ngModel.replace(/\./g, '-')
                   };
                   var isPass = /Password/g.test(f), dateTimeScript = null;
@@ -84,10 +84,12 @@ azureTicketsApp
                   } else if (/^Date|Time/g.test(fieldType)) {
                     _attr.type = 'text', _el = jQuery('<input ' + _req + '/>');
                     dateTimeScript = jQuery('<script type="text/javascript" />');
+                    var hasTime = !angular.isDefined($attrs.noTimePicker) ? 'true, timeFormat: \'hh:mm tt\''
+                        : 'false';
 
                     // ensure format is ok
-                    $scope.atModel = objectService
-                        .dateToUIPicker($scope.atModel);
+                    $scope.atModel = objectService.dateToUIPicker(
+                        $scope.atModel, !(hasTime === 'false'));
 
                     // we're outside angular, so we need to do some tricks here
                     // in order to update the model
@@ -98,7 +100,7 @@ azureTicketsApp
                       var ctrlScope = formScope.$parent;\
                       ctrlScope.$apply(function(){\
                   		  ctrlScope."
-                        + m
+                        + $attrs.ngModel.replace(/^(.*)\.[^\.]+$/g, '$1')
                         + "."
                         + f
                         + " = v;\
@@ -106,11 +108,9 @@ azureTicketsApp
                       }\
                       ";
 
-                    dateTimeScript
-                        .text("jQuery(function(){jQuery('#"
-                            + _attr.id
-                            + "').datetimepicker({timeFormat: 'hh:mm tt', onClose: "
-                            + js + " });});");
+                    dateTimeScript.text("jQuery(function(){jQuery('#"
+                        + _attr.id + "').datetimepicker({showTimepicker : "
+                        + hasTime + ", onClose: " + js + " });});");
 
                     if (angular.isDefined($attrs.uiDateFormat)) {
                       _el.attr('ui-date-format', $attrs.uiDateFormat)
