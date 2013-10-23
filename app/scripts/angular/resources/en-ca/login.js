@@ -44,6 +44,8 @@ var LoginResources = {
   'labelNewMemberRegister' : 'New members securely register now',
   'labelFullname' : 'Full Name',
   'labelUsername' : 'User Name',
+  'labelConfirmEmail' : 'Confirm Email',
+  'labelConfirmEmailFail' : 'Email does not match',
   'labelConfirmPassword' : 'Confirm Password',
   'labelNewPassword' : 'New Password',
   'labelConfirmPasswordFail' : 'Passwords do not match',

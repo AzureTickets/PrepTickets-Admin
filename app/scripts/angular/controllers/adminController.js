@@ -86,7 +86,7 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
 
   $scope.register = function() {
     // register account
-    if ($scope.passwdOk) {
+    if ($scope.passwdOk && $scope.emailOk) {
       $scope.auth.registerAsync(
           {
             FullName : $scope.RegisterAccountProfile.FullName,
@@ -96,10 +96,20 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
             PasswordHash : BWL.Auth
                 .HashPassword($scope.RegisterAccountProfile.Password)
           }).then(function() {
+          	// Clear the fields
+          	$scope.RegisterAccountProfile = angular.copy($scope.AccountProfile);
+          	
         $scope.registerOk = true;
       }, function(err) {
         $scope.error.log(err)
       });
+    } else {
+    	if (!$scope.passwdOk) {
+    		$scope.error.log($filter('t')('Login.labelConfirmPasswordFail'));
+    	}
+    	if (!$scope.emailOk) {
+    		$scope.error.log($filter('t')('Login.labelConfirmEmailFail'));
+    	}
     }
   }
 
@@ -112,6 +122,14 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
     }, function(err) {
       $scope.error.log(err)
     });
+  }
+
+  $scope.validateEmail = function(model) {
+    if (!angular.isDefined(model.Email) || !angular.isDefined(model.ConfirmEmail)) {
+    	$scope.emailOk = false;
+    } else {
+    	$scope.emailOk = model.Email === model.ConfirmEmail;
+    }
   }
 
   $scope.validatePasswords = function(model) {

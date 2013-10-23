@@ -1,7 +1,4 @@
-<div ng-cloak class="admin-form atPanel">
-	<div ng-include src="'views/elements/error.html'"></div>
-	<div class="alert alert-success" ng-show="registerOk || false">{{
-		'Login.registerOk' | t }}</div>
+<div ng-cloak ng-init="error.log(null)" class="admin-form atPanel">
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="span12">
@@ -13,7 +10,7 @@
 					<div class="widget-content">
 						<div class="padd">
 
-							<form name="register1" ng-submit="register()"
+							<form name="register1" ng-submit="error.log(null); registerOk=false; register()"
 								class="form-horizontal">
 								<div class="control-group">
 									<label class="control-label">{{ 'Login.labelFirstName'
@@ -35,16 +32,30 @@
 									<label class="control-label">{{
 										'Common.Text_EmailAddress' | t }}</label>
 									<div class="controls">
+										<input type="email" class="input-large" 
+											ng-model="RegisterAccountProfile.Email" 
+											ng-change="validateEmail(RegisterAccountProfile)" 
+											required />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">{{
+										'Login.labelConfirmEmail' | t }}</label>
+									<div class="controls">
 										<input type="email" class="input-large"
-											ng-model="RegisterAccountProfile.Email" required />
+											ng-model="RegisterAccountProfile.ConfirmEmail"
+											ng-change="validateEmail(RegisterAccountProfile)"
+											required />
 									</div>
 								</div>
 								<div class="control-group">
 									<label class="control-label">{{ 'Login.labelPassword' |
 										t }}</label>
 									<div class="controls">
-										<input type="password" class="input-large"
-											ng-model="RegisterAccountProfile.Password" required />
+										<input type="password" class="input-large" 
+											ng-model="RegisterAccountProfile.Password" 
+											ng-change="validatePasswords(RegisterAccountProfile)" 
+											required />
 									</div>
 								</div>
 								<div class="control-group">
@@ -57,11 +68,14 @@
 											required />
 									</div>
 								</div>
+                <div ng-include src="'views/elements/error.html'"></div>
+                <div class="alert alert-success" ng-show="registerOk || false">{{
+                  'Login.registerOk' | t }}</div>
 								<div class="control-group">
 									<div class="controls">
 										<button type="submit" class="btn btn-primary">{{
 											'Login.labelRegister' | t }}</button>
-										<button type="reset" class="btn">{{
+										<button type="reset" class="btn" ng-click="error.log(null); registerOk=false">{{
 											'Common.Text_Reset' | t }}</button>
 									</div>
 								</div>

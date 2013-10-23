@@ -1,7 +1,4 @@
-<div ng-cloak class="admin-form atPanel">
-	<div ng-include src="'views/elements/error.html'"></div>
-	<div class="alert alert-success" ng-show="resetPasswordOk || false">{{
-		'Login.resetPasswordOk' | t }}</div>
+<div ng-cloak ng-init="error.log(null)" class="admin-form atPanel">
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="span12">
@@ -13,7 +10,7 @@
 					<div class="widget-content">
 						<div class="padd">
 
-							<form name="reset1" ng-submit="resetPassword()"
+							<form name="reset1" ng-submit="error.log(null); resetPasswordOk=false; resetPassword()"
 								class="form-horizontal">
 								<div class="control-group">
 									<label class="control-label">{{
@@ -23,11 +20,14 @@
 											ng-model="ForgotPassword.Email" required />
 									</div>
 								</div>
+                <div ng-include src="'views/elements/error.html'"></div>
+                <div class="alert alert-success" ng-show="resetPasswordOk || false">{{
+                  'Login.resetPasswordOk' | t }}</div>
 								<div class="control-group">
 									<div class="controls">
 										<button type="submit" class="btn btn-primary">{{
 											'Common.Text_Submit' | t }}</button>
-										<button type="reset" class="btn">{{
+										<button type="reset" class="btn" ng-click="error.log(null); resetPasswordOk=false">{{
 											'Common.Text_Reset' | t }}</button>
 									</div>
 								</div>

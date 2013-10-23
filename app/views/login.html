@@ -1,7 +1,5 @@
 <!-- Form area -->
-<div ng-cloak class="admin-form atPanel">
-	<div ng-include src="'views/elements/error.html'"></div>
-	<div class="alert alert-error" ng-show="loginErr || false">{{loginErr}}</div>
+<div ng-cloak ng-init="error.log(null)" class="admin-form atPanel">
 	<div class="container-fluid" ng-hide="DomainProfile.Key || false">
 		<div class="row-fluid">
 			<div class="span12">
@@ -14,7 +12,7 @@
 					<div class="widget-content">
 						<div class="padd">
 							<!-- Login form -->
-							<form class="form-horizontal" ng-submit="login()" name="login1">
+							<form class="form-horizontal" ng-submit="error.log(null); login()" name="login1">
 								<!-- Email -->
 								<div class="control-group">
 									<label class="control-label">{{
@@ -32,11 +30,13 @@
 											required />
 									</div>
 								</div>
+                <div ng-include src="'views/elements/error.html'"></div>
+                <div class="alert alert-error" ng-show="loginErr || false">{{loginErr}}</div>
 								<div class="control-group">
 									<div class="controls">
 										<button type="submit" class="btn btn-primary">{{
 											'Login.labelLogin' | t }}</button>
-										<button type="reset" class="btn">{{
+										<button type="reset" class="btn" ng-click="error.log(null)">{{
 											'Common.Text_Reset' | t }}</button>
 									</div>
 								</div>
