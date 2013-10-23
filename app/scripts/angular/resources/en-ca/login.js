@@ -13,6 +13,7 @@ var LoginResources = {
   'Page_Desc' : 'Please select your main social network provider to login to our service',
   'Error_AccountClosed' : 'Account has been closed, cannot login',
   'Error_LoginFailed' : 'There was an error with the login, the error we received was {0}, please try again',
+  'Error_Auth20Failed' : 'You are trying to access a restricted area only for administrators without the correct permissions.',
   'Error_Declined' : 'You declined to login, some features require you to login',
   'labelMyAccount' : 'My Account',
   'registerOk' : 'Congratulations! Your account has been created. Please check your inbox and proceed to activation.',

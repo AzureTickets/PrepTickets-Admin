@@ -7,8 +7,9 @@ azureTicketsApp
         'atfield',
         [
             '$compile',
+            '$parse',
             'objectService',
-            function($compile, objectService) {
+            function($compile, $parse, objectService) {
               return {
                 restrict : 'EA',
                 scope : {
@@ -22,8 +23,6 @@ azureTicketsApp
                   // atPattern : '@ngPattern',
                   atBlur : '=ngBlur'
                 },
-                template : '<div></div>',
-                replace : true,
                 link : function($scope, $element, $attrs) {
                   var ss = $attrs.ngModel.split('.'), isBoolean = false;
                   var m = ss.length === 3 ? ss[1] : ss[0];// model name
@@ -51,13 +50,13 @@ azureTicketsApp
                   }
                   // set label if defined
                   if (angular.isDefined($attrs.label)) {
-                    _label = jQuery('<label></label>');
+                    _label = jQuery('<label />');
                     _label.text('{{atLabel}}');
                     if (angular.isDefined($attrs.labelClass)) {
                       _label.addClass($attrs.labelClass);
                     }
                   } else {
-                    _label = jQuery('<label></label>');
+                    _label = jQuery('<label />');
                     _label.text(f.replace(/([A-Z])/g, ' $1'));
                   }
 
@@ -188,7 +187,26 @@ azureTicketsApp
                     jQuery(_el).addClass('btn').addClass('btn-inverse')
                   }
 
-                  $element.append(_label).append(_tip).append(_el);
+var ht = '';
+if (_label != null) {
+  //$element.append(_label);
+  ht += $compile(_label)($scope);
+
+}
+if (_tip != null) {
+  //$element.append(_tip);
+  ht += $compile(_tip)($scope);
+}
+if (_el != null) {
+  //$element.append(_el);
+  ht += $compile(_el)($scope);
+}
+
+  alert(ht);
+if (ht != null) {
+	$element.append(ht);
+}
+                  //$element.innerHTML = _label.toString() + _tip.toString() + _el.toString();//(_label);//.append(_tip).append(_el);
 
                   if (dateTimeScript !== null) {
                     $element.after(dateTimeScript);

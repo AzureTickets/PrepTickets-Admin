@@ -27,6 +27,20 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
   $scope.login = function(provider) {
     var _init = function() {
       $scope.DomainProfile = $scope.auth.getDomainProfile();
+      
+      // If DomainProfile.ProfileRole < 20, logout and notify error
+      if ($scope.auth.isDomainProfileReady() && $scope.DomainProfile.ProfileRole < 20) {
+      	$scope.auth.logoffAsync().then(function() {
+      		// There's nothing yet except DomainProfile, so delete it
+      		delete $scope.DomainProfile;
+      		
+      		$scope.error.log($filter('t')('Login.Error_Auth20Failed'));
+      		return;
+      	}, function(err) {
+      	  $scope.error.log(err);
+      	});
+      }
+      
       $location.path($cookieStore.get($scope.config.cookies.lastPath));
       $cookieStore.put($scope.config.cookies.loggedStatus, true);
 

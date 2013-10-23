@@ -11,6 +11,10 @@ azureTicketsApp.factory('errorService', [
          */
         log : function(msg) {
           $rootScope.errorMsg = msg;
+        },
+        
+        clearError : function() {
+        	$rootScope.errorMsg = '';
         }
       }
     }
