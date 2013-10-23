@@ -14,7 +14,7 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
   $scope.RegisterAccountProfile = angular.copy($scope.AccountProfile);
 
   // Pagination setup
-  $scope.pagination = {
+  $scope.paginationPreRegister = {
     pageSize : 20,
     predicates : [],
     pageItems : function() {
@@ -26,6 +26,8 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
     results : [],
     numberOfPages : 0
   };
+
+  $scope.paginationApproval = angular.copy($scope.paginationPreRegister)
 
   $scope.$on('resetDomainProfile', function() {
     delete $scope.DomainProfile;

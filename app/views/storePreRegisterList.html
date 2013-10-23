@@ -13,16 +13,24 @@
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>{{ 'Common.Text_Name' | t }}</th>
-						<th>{{ 'Common.Text_Address' | t }}</th>
-						<th>{{ 'Address.LabelCity' | t }}</th>
-						<th>{{ 'Address.LabelCounty' | t }}</th>
-						<th>{{ 'Address.LabelCountry' | t }}</th>
+						<th><a href="" ng-click="paginationPreRegister.sort('Name')">{{
+								'Common.Text_Name' | t }}</a></th>
+						<th><a href=""
+							ng-click="paginationPreRegister.sort('AddressLine1')">{{
+								'Common.Text_Address' | t }}</a></th>
+						<th><a href="" ng-click="paginationPreRegister.sort('City')">{{
+								'Address.LabelCity' | t }}</a></th>
+						<th><a href=""
+							ng-click="paginationPreRegister.sort('County')">{{
+								'Address.LabelCounty' | t }}</a></th>
+						<th><a href=""
+							ng-click="paginationPreRegister.sort('Country')">{{
+								'Address.LabelCountry' | t }}</a></th>
 						<th>{{ 'Common.Text_Choose' | t }}</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="spr in pagination.pageItems()">
+					<tr ng-repeat="spr in paginationPreRegister.pageItems()">
 						<td>{{$index+1}}</td>
 						<td>{{spr.Name}}</td>
 						<td>{{spr.AddressLine1}}</td>
@@ -42,17 +50,23 @@
 			<div class="paginationDiv">
 				<ng-pagination
 					ui-if="storePreRegisters && storePreRegisters.length > 0"
-					page-size="pagination.pageSize" predicates="pagination.predicates"
-					page-items="pagination.pageItems"
-					text-filter="pagination.textFilter" sort="pagination.sort"
-					results="pagination.results"
-					current-page-index="pagination.currentPageIndex"
-					number-of-pages="pagination.numberOfPages" data="storePreRegisters"></ng-pagination>
-				<p class="text-center" ng-show="pagination.results.length" ng-cloak>{{'Common.Text_CurrentPage'
-					| t}}: {{pagination.currentPageIndex + 1}} -
-					{{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} -
-					{{'Common.Text_TotalPages' | t}}: {{pagination.numberOfPages}} -
-					{{'Common.Text_TotalItems' | t}}: {{pagination.results.length}}</p>
+					page-size="paginationPreRegister.pageSize"
+					predicates="paginationPreRegister.predicates"
+					page-items="paginationPreRegister.pageItems"
+					text-filter="paginationPreRegister.textFilter"
+					sort="paginationPreRegister.sort"
+					results="paginationPreRegister.results"
+					current-page-index="paginationPreRegister.currentPageIndex"
+					number-of-pages="paginationPreRegister.numberOfPages"
+					data="storePreRegisters"></ng-pagination>
+				<p class="text-center"
+					ng-show="paginationPreRegister.results.length" ng-cloak>{{'Common.Text_CurrentPage'
+					| t}}: {{paginationPreRegister.currentPageIndex + 1}} -
+					{{'Common.Text_ItemsPerPage' | t}}:
+					{{paginationPreRegister.pageSize}} - {{'Common.Text_TotalPages' |
+					t}}: {{paginationPreRegister.numberOfPages}} -
+					{{'Common.Text_TotalItems' | t}}:
+					{{paginationPreRegister.results.length}}</p>
 			</div>
 		</div>
 	</div>
