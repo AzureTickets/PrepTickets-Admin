@@ -21,7 +21,7 @@
 							'Common.Text_CreateSchool' | t }}</a></li>
 					<li class="submenu" ui-if="auth.isDomainProfileReady()"><a href="#/storeList">{{
 							'Common.Text_SchoolList' | t }}</a></li>
-					<li class="submenu" ui-if="auth.isDomainProfileReady() && approvals.length"><a href="#/approvals">{{
+					<li class="submenu" ui-if="auth.isDomainProfileReady() && approvals && approvals.length > 0"><a href="#/approvals">{{
 							'Common.Text_Pending_Approvals' | t }}</a></li>
 					<li class="submenu" ui-if="auth.isDomainProfileReady() && !auth.isAdministrator()"><a
 						  href="#/storeRequest" ng-click="requestAccess()">{{
