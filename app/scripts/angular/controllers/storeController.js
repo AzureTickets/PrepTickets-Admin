@@ -225,8 +225,8 @@ function storeController($scope, $cookieStore, $location, $timeout,
       return;
     }
 
-    $scope.Store.URI = angular.isDefined($scope.Store.URI)
-        || $scope.Store.URI.length === 0 ? $scope.Store.URI : null;
+    $scope.Store.URI = angular.isDefined($scope.Store.URI) ? $scope.Store.URI
+        : null;
     $scope.URIAvailable = true;
 
     // suggest URIs
@@ -277,7 +277,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
         if (angular.isDefined(forwardUrl))
           $location.url(forwardUrl)
       })
-    }, 500);
+    }, 1000);
   }
 
   $scope.initStore = function(storeKey, resetWizard) {
