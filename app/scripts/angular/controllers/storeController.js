@@ -277,7 +277,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
         if (angular.isDefined(forwardUrl))
           $location.url(forwardUrl)
       })
-    }, 500);
+    }, 1000);
   }
 
   $scope.initStore = function(storeKey, resetWizard) {

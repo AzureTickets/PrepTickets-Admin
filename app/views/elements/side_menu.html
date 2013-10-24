@@ -33,8 +33,9 @@
 					{{ 'Common.Text_DashboardMenu_Dashboard' | t }}</a></li>
 			<li
 				ui-if="auth.isDomainProfileReady() && Store && Store.Key != null && Store.IsOwner || false"
-				class="nviolet"><a href="#/store"><i class="icon-book"></i>
-					{{ 'Common.Text_StoreInfo' | t }}</a></li>
+				class="nviolet"><a href="#/store"
+				ng-click="setStoreKey(Store.Key)"><i class="icon-book"></i> {{
+					'Common.Text_StoreInfo' | t }}</a></li>
 			<li class="nyellow"
 				ui-if="Store && Store.Key != null && Store.IsOwner || false"
 				ui-route="#/category" ng-class="{active: $uiRoute}"><a
