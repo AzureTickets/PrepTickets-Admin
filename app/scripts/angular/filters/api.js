@@ -21,11 +21,13 @@ azureTicketsApp.filter('api', [ '$window', '$q', '$timeout',
             }
           }
 
-          $timeout(function() {
-            t = 'aasdasdsad';
-          }, 500)
+//          $timeout(function() {
+//            t = 'aasdasdsad';
+//          }, 500)
           break;
-        // 1st arg:
+        // t: Key
+        // 1st arg: model for Key
+        // 2nd arg: property to display
         case 'modelReplace':
           break;
         }

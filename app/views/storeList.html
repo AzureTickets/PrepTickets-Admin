@@ -19,8 +19,9 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="store in pagination.pageItems()"
-						ng-click="setStoreKey(store.Key, '/');">
-						<td>{{ $index+1 }}</td>
+						ng-click="setStoreKey(store.Key, '/');"
+						mousestyle>
+						<td>{{$index + 1 + pagination.currentPageIndex*pagination.pageSize}}</td>
 						<td>{{store.Name}}</td>
 					</tr>
 				</tbody>

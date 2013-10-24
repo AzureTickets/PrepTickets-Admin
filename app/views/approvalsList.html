@@ -52,7 +52,7 @@
 					</tr>
 				</tbody>
 			</table>
-			<div class="paginationDiv">
+			<div class="paginationDiv" ng-show="paginationApproval.results.length > 20">
 				<ng-pagination ui-if="approvals && approvals.length > 0"
 					page-size="paginationApproval.pageSize"
 					predicates="paginationApproval.predicates"
@@ -61,7 +61,7 @@
 					sort="paginationApproval.sort" results="paginationApproval.results"
 					current-page-index="paginationApproval.currentPageIndex"
 					number-of-pages="paginationApproval.numberOfPages" data="approvals"></ng-pagination>
-				<p class="text-center" ng-show="paginationApproval.results.length"
+				<p class="text-center"
 					ng-cloak>{{'Common.Text_CurrentPage' | t}}:
 					{{paginationApproval.currentPageIndex + 1}} -
 					{{'Common.Text_ItemsPerPage' | t}}: {{paginationApproval.pageSize}}
