@@ -19,11 +19,8 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="image in pagination.pageItems()">
-						<td>{{$index + 1 + pagination.currentPageIndex*pagination.pageSize}}</td>
-						<td><a ng-href="#/media" ng-click="previewMedia(image)"
-							style="position: relative"><i class="icon-search icon-2x"
-								style="position: absolute; top: 1%; right: 40%"></i><img
-								ng-src="{{image.BaseURL}}{{image.ThumbFile}}" /></a></td>
+						<td ng-click="previewMedia(image)" mousestyle>{{$index + 1 + pagination.currentPageIndex*pagination.pageSize}}</td>
+						<td ng-click="previewMedia(image)" mousestyle><img ng-src="{{image.BaseURL}}{{image.ThumbFile}}" /></td>
 						<td>
 							<div class="btn-group pull-left">
 								<button ui-if="Store.IsOwner" ng-click="deleteImage(image)"
@@ -35,9 +32,9 @@
 				</tbody>
 			</table>
 			
-			<div class="paginationDiv">
+			<div class="paginationDiv" ng-show="pagination.results.length > 20">
         <ng-pagination ui-if="images && images.length > 0" page-size="pagination.pageSize" predicates="pagination.predicates" page-items="pagination.pageItems" text-filter="pagination.textFilter" sort="pagination.sort" results="pagination.results" current-page-index="pagination.currentPageIndex" number-of-pages="pagination.numberOfPages" data="images"></ng-pagination>
-        <p class="text-center" ng-show="pagination.results.length" ng-cloak>{{'Common.Text_CurrentPage' | t}}: {{pagination.currentPageIndex + 1}} - {{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} - {{'Common.Text_TotalPages' | t}}: {{pagination.numberOfPages}} - {{'Common.Text_TotalItems' | t}}: {{pagination.results.length}}</p>
+        <p class="text-center" ng-cloak>{{'Common.Text_CurrentPage' | t}}: {{pagination.currentPageIndex + 1}} - {{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} - {{'Common.Text_TotalPages' | t}}: {{pagination.numberOfPages}} - {{'Common.Text_TotalItems' | t}}: {{pagination.results.length}}</p>
       </div>
 			
 		</div>
