@@ -8,32 +8,20 @@
 		<div class="widget-content">
 			<div ng-show="stores.length == 0" class="alert alert-info">{{
 				'Common.Text_EmptyList' | t }}</div>
-			<table class="table  table-bordered " ng-show="stores.length > 0">
+			<table class="table table-bordered table-hover"
+				ng-show="stores.length > 0">
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>{{ 'Common.Text_Name' | t}}</th>
-						<th>{{ 'Common.Text_Control' | t}}</th>
+						<th><a href="" ng-click="pagination.sort('Name')">{{
+								'Common.Text_Name' | t }}</a></th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="store in pagination.pageItems()">
+					<tr ng-repeat="store in pagination.pageItems()"
+						ng-click="setStoreKey(store.Key, '/');">
 						<td>{{ $index+1 }}</td>
-						<td ui-if="Store.IsOwner"><a href="#/store" class="btn btn-mini btn-success"
-									ng-click="setStoreKey(store.Key)" title="{{'Common.Text_Update' | t }}">{{store.Name}}</a>
-						</td>
-						<td ui-if="!Store.IsOwner">{{store.Name}}</td>
-						<td>
-							<div class="btn-group pull-left">
-								<a href="#/store" ui-if="Store.IsOwner"
-									class="btn btn-mini btn-success"
-									ng-click="setStoreKey(store.Key)">{{ 'Common.Text_Update' |
-									t }}</a>
-								<button ui-if="Store.IsOwner" class="btn btn-mini btn-info"
-									ng-click="setStoreKey(store.Key)">{{
-									'Common.Text_Choose' | t }}</button>
-							</div>
-						</td>
+						<td>{{store.Name}}</td>
 					</tr>
 				</tbody>
 			</table>

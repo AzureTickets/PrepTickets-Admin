@@ -24,17 +24,19 @@ function storeController($scope, $cookieStore, $location, $timeout,
   // this is used to contain object selection made from child scopes created by
   // ng-include
   $scope.selection = {};
-  
+
   // Pagination setup
   $scope.pagination = {
-    pageSize: 20,
-    predicates: [],
-    pageItems: function() {},
-    textFilter: '',
-    sort: function() {},
-    currentPageIndex: 0,
-    results: [],
-    numberOfPages: 0
+    pageSize : 20,
+    predicates : [],
+    pageItems : function() {
+    },
+    textFilter : '',
+    sort : function() {
+    },
+    currentPageIndex : 0,
+    results : [],
+    numberOfPages : 0
   };
 
   // initialize wizard for Store
@@ -258,7 +260,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
     })
   }
 
-  $scope.setStoreKey = function(key) {
+  $scope.setStoreKey = function(key, forwardUrl) {
     // here $watch is not being triggered, so we later call initStore manually
     if ($scope.storeKey !== key) {
       $scope.storeKey = key;
@@ -271,6 +273,9 @@ function storeController($scope, $cookieStore, $location, $timeout,
     $timeout(function() {
       $scope.$apply(function() {
         $scope.initStore($scope.storeKey, true);
+
+        if (angular.isDefined(forwardUrl))
+          $location.url(forwardUrl)
       })
     }, 500);
   }
@@ -641,9 +646,10 @@ function storeController($scope, $cookieStore, $location, $timeout,
       }
     }
   }
-  
+
   // Get the approvals list for 'Pending Approvals' menu item to be displayed
-  // The side_menu.html is loaded before approvalsList.html so we place ng-init="getPendingAccessRequests()" there
+  // The side_menu.html is loaded before approvalsList.html so we place
+  // ng-init="getPendingAccessRequests()" there
   // The returned $scope.approvals will live in the storeController scope
   // so approvalsList.html is able to get its data
   // Remove the ng-init="getPendingAccessRequests()" in the approvalsList.html

@@ -103,11 +103,14 @@
 		</form>
 		<form ng-show="wizard.currentStep == 3" name="atStore3"
 			ng-submit="wizard.next('atStore3')">
-			
+
 			<dl class="clearfix">
 				<!-- Media selector -->
-				<dd class="media-selector" ng-class="{'atStoreImgSel': images.length > 0}" ng-controller="mediaController" ng-init="init(); modelName='Store'" ng-include src="'views/elements/store/mediaSelector.html'"></dd>
-				
+				<dd class="media-selector"
+					ng-class="{'atStoreImgSel': images.length > 0}"
+					ng-controller="mediaController" ng-init="init(); modelName='Store'"
+					ng-include src="'views/elements/store/mediaSelector.html'"></dd>
+
 				<dd class="pull-left">
 					<a ng-show="wizard.currentStep>1"
 						ng-click="wizard.currentStep = wizard.currentStep-1"
@@ -228,11 +231,6 @@
 						class="label">{{ 'Common.Text_Save' | t }} {{
 							'Common.Text_Location' | t }}</span></li>
 				</ul>
-			</dd>
-			<dd class="pull-left">
-				<a ng-show="wizard.currentStep>1 && wizard.saved"
-					ng-click="wizard.currentStep = wizard.currentStep-2; wizard.finished = false; wizard.saved = false"
-					class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
 			</dd>
 		</dl>
 		</ng-form>
