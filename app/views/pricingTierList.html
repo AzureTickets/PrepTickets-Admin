@@ -14,7 +14,7 @@
 						| t }}</button>
 					<button ng-controller="cartController" ui-if="!Store.IsOwner"
 						class="btn btn-mini btn-success" ng-click="addToCart(_ticket)">
-						<i style="margin-top: 3px" class="icon-ok pull-left"
+						<i style="margin-top: 3px" class="fa fa-ok pull-left"
 							ui-if="_ticket.added && _ticket.added == true" ui-jq="fadeOut"
 							ui-options="{duration: 1000, complete:evAddItem(_ticket)}"></i>{{
 						'ShoppingCart.labelAddToCart' | t }}

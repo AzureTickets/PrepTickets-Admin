@@ -1,17 +1,17 @@
 <ul class="inline">
   <li>
     <span class="upload-icon">
-      <a href="" ng-click="create()"><i class="icon-plus-sign icon-4x"></i></a><br />
+      <a href="" ng-click="create()"><i class="fa fa-plus-sign fa fa-4x"></i></a><br />
       {{'Common.Text_Upload' | t}}
     </span>
   </li>
   <li ng-repeat="image in pagination.pageItems()">
     <a href="" ng-click="selectImage($index + pagination.currentPageIndex*7)"><img ng-src="{{image.BaseURL}}{{image.ThumbFile}}" /></a>
-    <a class="delete-icon" href="" ng-click="deleteImage(image)"><i class="icon-remove red"></i></a>
-    <span class="selected-icon" ng-show="this[modelName].Image.Key == image.Key"><i class="icon-ok green"></i></span>
+    <a class="delete-icon" href="" ng-click="deleteImage(image)"><i class="fa fa-remove red"></i></a>
+    <span class="selected-icon" ng-show="this[modelName].Image.Key == image.Key"><i class="fa fa-ok green"></i></span>
   </li>
 </ul>
 <ng-pagination ui-if="images && images.length > 0" page-size="7" predicates="pagination.predicates" page-items="pagination.pageItems" text-filter="pagination.textFilter" sort="pagination.sort" results="pagination.results" current-page-index="pagination.currentPageIndex" number-of-pages="pagination.numberOfPages" data="images" class="pull-right"></ng-pagination>
-<p>{{'Common.Text_YourSelect' | t}}: {{this[modelName].Image.Name}}&nbsp;<i ng-show="!this[modelName].Image.Name" class="icon-spinner icon-spin"></i></p>
+<p>{{'Common.Text_YourSelect' | t}}: {{this[modelName].Image.Name}}&nbsp;<i ng-show="!this[modelName].Image.Name" class="fa fa-spinner fa fa-spin"></i></p>
 <p class="clear"></p>
 <p class="pull-right">{{'Common.Text_TotalPages' | t}}: {{pagination.numberOfPages}}</p>

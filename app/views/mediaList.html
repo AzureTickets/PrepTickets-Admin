@@ -21,7 +21,7 @@
 					<tr ng-repeat="image in pagination.pageItems()">
 						<td>{{$index + 1 + pagination.currentPageIndex*pagination.pageSize}}</td>
 						<td><a ng-href="#/media" ng-click="previewMedia(image)"
-							style="position: relative"><i class="icon-search icon-2x"
+							style="position: relative"><i class="fa fa-search fa fa-2x"
 								style="position: absolute; top: 1%; right: 40%"></i><img
 								ng-src="{{image.BaseURL}}{{image.ThumbFile}}" /></a></td>
 						<td>
