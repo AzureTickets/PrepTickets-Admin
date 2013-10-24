@@ -351,7 +351,7 @@ var CommonResources = {
   Text_DateOfBirth : "Date of birth",
   Text_Sex : "Sex",
   Text_Email : "E-mail",
-  Text_CustomURI : "URL Alias Name",
+  Text_CustomURI : "Share Link URL",
   Text_TipCustomURI : "Example: my-beautiful-school",
   Text_TipMaxAllowed : "Limit per buyer",
   Text_CustomURIUnavailable : "This URL has been taken",
