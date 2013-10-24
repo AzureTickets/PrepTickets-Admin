@@ -13,20 +13,22 @@
 			<li class="has_submenu nlightblue open"><a href="#"> <!-- Menu name with icon -->
 					<i class="icon-th"></i> {{ 'Common.Text_School' | t }} <!-- Icon for dropdown -->
 					<span class="pull-right"><i class="icon-angle-right"></i></span>
-			  </a>
-			</li>
-				<ul>
-					<li class="submenu" ui-if="auth.isDomainProfileReady() && auth.isAdministrator()"><a
-						href="#/store" ng-click="createStore()">{{
-							'Common.Text_CreateSchool' | t }}</a></li>
-					<li class="submenu" ui-if="auth.isDomainProfileReady()"><a href="#/storeList">{{
-							'Common.Text_SchoolList' | t }}</a></li>
-					<li class="submenu" ui-if="auth.isDomainProfileReady() && approvals.length"><a href="#/approvals">{{
-							'Common.Text_Pending_Approvals' | t }}</a></li>
-					<li class="submenu" ui-if="auth.isDomainProfileReady() && !auth.isAdministrator()"><a
-						  href="#/storeRequest" ng-click="requestAccess()">{{
-							'Common.Text_RequestAccess' | t }}</a></li>
-				</ul>
+			</a></li>
+			<ul>
+				<li class="submenu"
+					ui-if="auth.isDomainProfileReady() && auth.isAdministrator()"><a
+					href="#/store" ng-click="createStore()">{{
+						'Common.Text_CreateSchool' | t }}</a></li>
+				<li class="submenu" ui-if="auth.isDomainProfileReady()"><a
+					href="#/storeList">{{ 'Common.Text_SchoolList' | t }}</a></li>
+				<li class="submenu"
+					ui-if="auth.isDomainProfileReady() && approvals && approvals.length > 0"><a
+					href="#/approvals">{{ 'Common.Text_Pending_Approvals' | t }}</a></li>
+				<li class="submenu"
+					ui-if="auth.isDomainProfileReady() && !auth.isAdministrator()"><a
+					href="#/storeRequest" ng-click="requestAccess()">{{
+						'Common.Text_RequestAccess' | t }}</a></li>
+			</ul>
 			<li class="nred"><a href="#/"><i class="icon-desktop"></i>
 					{{ 'Common.Text_DashboardMenu_Dashboard' | t }}</a></li>
 			<li class="nyellow"
@@ -78,7 +80,7 @@
         menu_li.addClass("open");
       }
     });
-    
+
     $(".sidebar-dropdown a").on('click', function(e) {
       e.preventDefault();
 
