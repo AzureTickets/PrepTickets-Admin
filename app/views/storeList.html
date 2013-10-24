@@ -37,18 +37,6 @@
 					</tr>
 				</tbody>
 			</table>
-			<ul class="" ng-show="stores.length > 0">
-				<li><span>No.</span><span>{{ 'Common.Text_Name' | t}}</span></li>
-				<li ng-repeat="store in pagination.pageItems()">
-					<a ui-if="Store.IsOwner" class="btn btn-mini" ng-click="setStoreKey(store.Key)">
-						<span>{{ $index+1 }}</span>
-						<span>{{store.Name}}</span>
-						<span class="pull-right">
-							<a href="#/store" class="btn btn-mini" ng-click="setStoreKey(store.Key)">{{'Common.Text_Update' | t}}</a>
-						</span>
-					</a>
-			  </li>
-			</ul>
 
 			<div class="paginationDiv" ng-show="pagination.results.length > 20">
 				<ng-pagination ui-if="stores && stores.length > 0"

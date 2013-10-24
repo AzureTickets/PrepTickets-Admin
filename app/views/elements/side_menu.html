@@ -24,7 +24,7 @@
 					<li class="submenu" ui-if="auth.isDomainProfileReady() && approvals.length"><a href="#/approvals">{{
 							'Common.Text_Pending_Approvals' | t }}</a></li>
 					<li class="submenu" ui-if="auth.isDomainProfileReady() && !auth.isAdministrator()"><a
-						id="hiphop" href="#/storeRequest" ng-click="requestAccess()">{{
+						  href="#/storeRequest" ng-click="requestAccess()">{{
 							'Common.Text_RequestAccess' | t }}</a></li>
 				</ul>
 			<li class="nred"><a href="#/"><i class="icon-desktop"></i>
@@ -62,8 +62,7 @@
 	</div>
 </div>
 <script type="text/javascript">
-  //$(function() {
-  $(document).ready(function() {
+  $(function() {
     $(".has_submenu > a").click(function(e) {
       e.preventDefault();
       var menu_li = $(this).parent("li");
@@ -98,7 +97,6 @@
         $(".sidebar .sidebar-inner").slideUp(350);
       }
     });
-  });
-  //})
+  })
 </script>
 <!-- Sidebar ends -->
