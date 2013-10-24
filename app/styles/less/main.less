@@ -666,16 +666,16 @@ body {
 		color: #fff;
 	}
 
-	.sidebar .navi li ul {
+	.sidebar .navi li + ul {
 		display: none;
 		background: #181818;
 	}
 
-	.sidebar .navi li.open ul {
+	.sidebar .navi li.open + ul {
 		display: block;
 	}
 
-	.sidebar .navi li ul li a {
+	.sidebar .navi li + ul li a {
 		display: block;
 		background: none;
 		padding: 10px 0px;
@@ -685,17 +685,17 @@ body {
 		border-bottom: 1px solid #222;
 	}
 
-	.sidebar .navi li ul li.active a {
+	.sidebar .navi li + ul li.active a {
 		background: #131313;
 		border-bottom: 1px solid #222;
 	}
 
-	.sidebar .navi li ul li a:hover {
+	.sidebar .navi li + ul li a:hover {
 		background: #131313;
 		border-bottom: 1px solid #222;
 	}
 
-	.sidebar .navi > li.nlightblue > a:hover , .sidebar .navi > li.open.nlightblue > a , .sidebar .navi > li.current.nlightblue > a {
+	.sidebar .navi > li.nlightblue > a:hover , .sidebar .navi > li.active.nlightblue > a , .sidebar .navi > li.current.nlightblue > a {
 		background: #52b9e9 ! important;
 		-webkit-transition: background 0.5s ease;
 		-moz-transition: background 0.5s ease;
@@ -703,7 +703,7 @@ body {
 		transition: background 0.5s ease;
 	}
 
-	.sidebar .navi > li.nblue > a:hover , .sidebar .navi > li.open.nblue > a , .sidebar .navi > li.current.nblue > a {
+	.sidebar .navi > li.nblue > a:hover , .sidebar .navi > li.active.nblue > a , .sidebar .navi > li.current.nblue > a {
 		background: #1171a3 ! important;
 		-webkit-transition: background 0.5s ease;
 		-moz-transition: background 0.5s ease;
@@ -711,7 +711,7 @@ body {
 		transition: background 0.5s ease;
 	}
 
-	.sidebar .navi > li.nyellow > a:hover , .sidebar .navi > li.open.nyellow > a , .sidebar .navi > li.current.nyellow > a {
+	.sidebar .navi > li.nyellow > a:hover , .sidebar .navi > li.active.nyellow > a , .sidebar .navi > li.current.nyellow > a {
 		background: #808000 ! important;
 		-webkit-transition: background 0.5s ease;
 		-moz-transition: background 0.5s ease;
@@ -719,7 +719,7 @@ body {
 		transition: background 0.5s ease;
 	}
 
-	.sidebar .navi > li.ngreen > a:hover , .sidebar .navi > li.open.ngreen > a , .sidebar .navi > li.current.ngreen > a {
+	.sidebar .navi > li.ngreen > a:hover , .sidebar .navi > li.active.ngreen > a , .sidebar .navi > li.current.ngreen > a {
 		background: #43c83c ! important;
 		-webkit-transition: background 0.5s ease;
 		-moz-transition: background 0.5s ease;
@@ -727,7 +727,7 @@ body {
 		transition: background 0.5s ease;
 	}
 
-	.sidebar .navi > li.norange > a:hover , .sidebar .navi > li.open.norange > a , .sidebar .navi > li.current.norange > a {
+	.sidebar .navi > li.norange > a:hover , .sidebar .navi > li.active.norange > a , .sidebar .navi > li.current.norange > a {
 		background: #f88529 ! important;
 		-webkit-transition: background 0.5s ease;
 		-moz-transition: background 0.5s ease;
@@ -735,7 +735,7 @@ body {
 		transition: background 0.5s ease;
 	}
 
-	.sidebar .navi > li.nred > a:hover , .sidebar .navi > li.open.nred > a , .sidebar .navi > li.current.nred > a {
+	.sidebar .navi > li.nred > a:hover , .sidebar .navi > li.active.nred > a , .sidebar .navi > li.current.nred > a {
 		background: #fa3031 ! important;
 		-webkit-transition: background 0.5s ease;
 		-moz-transition: background 0.5s ease;
@@ -743,7 +743,7 @@ body {
 		transition: background 0.5s ease;
 	}
 
-	.sidebar .navi > li.nviolet > a:hover , .sidebar .navi > li.open.nviolet > a , .sidebar .navi > li.current.nviolet > a {
+	.sidebar .navi > li.nviolet > a:hover , .sidebar .navi > li.active.nviolet > a , .sidebar .navi > li.current.nviolet > a {
 		background: #932ab6 ! important;
 		-webkit-transition: background 0.5s ease;
 		-moz-transition: background 0.5s ease;
@@ -976,7 +976,7 @@ body {
 
 	.mainbar .matter {
 		border-top: 1px solid #ddd;
-		padding: 15px 0px;
+		padding: 15px 12px;
 	}
 
 	.widget {

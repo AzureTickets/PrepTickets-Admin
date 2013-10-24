@@ -2,7 +2,7 @@
 	<!-- store list -->
 	<div class="widget wviolet">
 		<div class="widget-head">
-			<div class="pull-left">{{ 'Common.Text_StoreList' | t }}</div>
+			<div class="pull-left">{{ 'Common.Text_SchoolList' | t }}</div>
 			<div class="clear"></div>
 		</div>
 		<div class="widget-content">
@@ -13,15 +13,16 @@
 					<tr>
 						<th>#</th>
 						<th>{{ 'Common.Text_Name' | t}}</th>
-						<th>{{ 'Common.Text_Description' | t}}</th>
 						<th>{{ 'Common.Text_Control' | t}}</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr ng-repeat="store in pagination.pageItems()">
 						<td>{{ $index+1 }}</td>
-						<td>{{store.Name}}</td>
-						<td><p class="text clear">{{store.Description}}</p></td>
+						<td ui-if="Store.IsOwner"><a href="#/store" class="btn btn-mini btn-success"
+									ng-click="setStoreKey(store.Key)" title="{{'Common.Text_Update' | t }}">{{store.Name}}</a>
+						</td>
+						<td ui-if="!Store.IsOwner">{{store.Name}}</td>
 						<td>
 							<div class="btn-group pull-left">
 								<a href="#/store" ui-if="Store.IsOwner"
@@ -36,8 +37,20 @@
 					</tr>
 				</tbody>
 			</table>
+			<ul class="" ng-show="stores.length > 0">
+				<li><span>No.</span><span>{{ 'Common.Text_Name' | t}}</span></li>
+				<li ng-repeat="store in pagination.pageItems()">
+					<a ui-if="Store.IsOwner" class="btn btn-mini" ng-click="setStoreKey(store.Key)">
+						<span>{{ $index+1 }}</span>
+						<span>{{store.Name}}</span>
+						<span class="pull-right">
+							<a href="#/store" class="btn btn-mini" ng-click="setStoreKey(store.Key)">{{'Common.Text_Update' | t}}</a>
+						</span>
+					</a>
+			  </li>
+			</ul>
 
-			<div class="paginationDiv">
+			<div class="paginationDiv" ng-show="pagination.results.length > 20">
 				<ng-pagination ui-if="stores && stores.length > 0"
 					page-size="pagination.pageSize" predicates="pagination.predicates"
 					page-items="pagination.pageItems"

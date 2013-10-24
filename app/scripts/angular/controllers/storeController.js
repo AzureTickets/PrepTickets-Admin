@@ -213,7 +213,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
           $scope.error.log(err)
         })
       } else {
-        $scope.error.log($filter('t')('Common.Text_ExistingStoreRequest'))
+        $scope.error.log($filter('t')('Common.Text_ExistingSchoolRequest'))
       }
     }
   }
@@ -640,6 +640,19 @@ function storeController($scope, $cookieStore, $location, $timeout,
         }
       }
     }
+  }
+  
+  // Get the approvals list for 'Pending Approvals' menu item to be displayed
+  // The side_menu.html is loaded before approvalsList.html so we place ng-init="getPendingAccessRequests()" there
+  // The returned $scope.approvals will live in the storeController scope
+  // so approvalsList.html is able to get its data
+  // Remove the ng-init="getPendingAccessRequests()" in the approvalsList.html
+  $scope.getPendingAccessRequests = function() {
+    $scope.account.getAccessRequests().then(function(pending) {
+      $scope.approvals = angular.isArray(pending) ? pending : [];
+    }, function(err) {
+      $scope.error.log(err)
+    });
   }
 }
 

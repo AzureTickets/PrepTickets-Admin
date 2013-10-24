@@ -2,13 +2,13 @@
 	<li ng-class="{active: wizard.currentStep == 1}"><a
 		href="#/storeRequest"
 		ng-click="wizard.currentStep = 1;wizard.finished = false">{{
-			'Common.Text_StorePreRegister_Step1' | t }}</a> <span
+			'Common.Text_SchoolPreRegister_Step1' | t }}</a> <span
 		ui-if="wizard.checkStep.1" class="divider">/</span></li>
 	<li ui-if="wizard.checkStep.1"
 		ng-class="{active: wizard.currentStep == 2}"><a
 		href="#/storeRequest"
 		ng-click="wizard.currentStep = 2;wizard.finished = false">{{
-			'Common.Text_StorePreRegister_Step2' | t }}</a> <span
+			'Common.Text_SchoolPreRegister_Step2' | t }}</a> <span
 		ui-if="wizard.checkStep.2" class="divider">/</span></li>
 	<li ui-if="wizard.checkStep.3" ng-show="wizard.saved"
 		ng-class="{active: wizard.saved}"><a href="#/storeRequest"

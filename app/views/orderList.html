@@ -57,7 +57,7 @@
 				</tbody>
 			</table>
 
-			<div class="paginationDiv">
+			<div class="paginationDiv" ng-show="pagination.results.length > 20">
 				<ng-pagination ui-if="orders && orders.length > 0"
 					page-size="pagination.pageSize" predicates="pagination.predicates"
 					page-items="pagination.pageItems"

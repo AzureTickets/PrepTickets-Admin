@@ -136,23 +136,13 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
     $scope.passwdOk = model.Password === model.ConfirmPassword;
   }
 
-  $scope.getPendingAccessRequests = function() {
-    $scope.error.log(null);
-
-    $scope.account.getAccessRequests().then(function(pending) {
-      $scope.approvals = angular.isArray(pending) ? pending : [];
-    }, function(err) {
-      $scope.error.log(err)
-    })
-  }
-
   /**
    * Store access request process
    */
   $scope.confirmApproval = function(approval) {
     if (approval.RequestedItem.Type === BWL.Model.StorePreRegister.Type
         && $scope.hasPendingStoreRequest(approval)) {
-      $scope.error.log($filter('t')('Common.Text_ExistingStoreRequest'))
+      $scope.error.log($filter('t')('Common.Text_ExistingSchoolRequest'))
     } else {
       // get approval item
       $scope.model
@@ -275,7 +265,7 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
   $scope.rejectApproval = function(approval) {
     if (approval.RequestedItem.Type === BWL.Model.StorePreRegister.Type
         && $scope.hasPendingStoreRequest(approval)) {
-      $scope.error.log($filter('t')('Common.Text_ExistingStoreRequest'))
+      $scope.error.log($filter('t')('Common.Text_ExistingSchoolRequest'))
     } else {
       $scope.account.rejectRequest(approval.Key).then(function(ret) {
         $scope.getPendingAccessRequests();

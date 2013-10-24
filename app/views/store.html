@@ -13,7 +13,7 @@
 			<div ng-switch="wizard.currentStep">
 				<div ng-switch-when="1" ng-show="!Store.Key || false" class="alert">
 					<button type="button" class="close" data-dismiss="alert">&times;</button>
-					{{ 'Common.Text_StoreCreate' | t }}
+					{{ 'Common.Text_SchoolCreate' | t }}
 				</div>
 				<div class="alert alert-info" ng-switch-when="2">
 					<strong>{{ 'Common.Text_LocationInfo' | t }}</strong>
@@ -22,7 +22,7 @@
 					<strong>{{ 'Common.Text_ImageSelect' | t }}</strong>
 				</div>
 				<div class="alert alert-info" ng-switch-when="4">
-					<strong>{{ 'Common.Text_StoreMenu_PaymentSettings' | t }}</strong>
+					<strong>{{ 'Common.Text_SchoolMenu_PaymentSettings' | t }}</strong>
 				</div>
 				<div class="alert alert-info" ng-switch-when="5">
 					<strong>{{ 'Common.Text_Confirm' | t }}</strong>
@@ -60,7 +60,7 @@
 			<dl class="clearfix">
 				<dd>
 					<atfield at-required class="input-xlarge" ng-model="Store.Name"
-						label="'Common.Text_StoreName' | t"></atfield>
+						label="'Common.Text_SchoolName' | t"></atfield>
 				</dd>
 				<dd>
 					<atfield autocomplete="off" at-required
@@ -124,7 +124,7 @@
 			ng-submit="wizard.next('atStore4')">
 			<dl class="clearfix">
 				<dd>
-					<label>{{'Common.Text_StoreCurrency' | t}}</label> <select
+					<label>{{'Common.Text_SchoolCurrency' | t}}</label> <select
 						ui-select2="{containerCssClass:'input-xlarge'}" at-required
 						name="Store_Currency"
 						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
@@ -136,7 +136,7 @@
 					</select>
 				</dd>
 				<dd ng-show="Store.Currency || false">
-					<label>{{'Common.Text_StoreMenu_PaymentProvider' | t}}</label> <select
+					<label>{{'Common.Text_SchoolMenu_PaymentProvider' | t}}</label> <select
 						type="text" ui-select2="{containerCssClass:'input-xlarge'}"
 						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}" at-required
 						name="Store_PaymentProvider"
@@ -210,7 +210,7 @@
 					<li><span
 						ng-class="{'label-success': wizard.checkStep.store, 'label-important':!wizard.checkStep.store}"
 						class="label">{{ 'Common.Text_Save' | t }} {{
-							'Common.Text_Store' | t }}</span></li>
+							'Common.Text_School' | t }}</span></li>
 					<li><span
 						ng-class="{'label-success': wizard.checkStep.uri, 'label-important':!wizard.checkStep.uri}"
 						class="label">{{ 'Common.Text_Save' | t }} {{
@@ -218,7 +218,7 @@
 					<li><span
 						ng-class="{'label-success': wizard.checkStep.payment, 'label-important':!wizard.checkStep.payment}"
 						class="label">{{ 'Common.Text_Save' | t }} {{
-							'Common.LabelStorePaymentProvider' | t }}</span></li>
+							'Common.LabelSchoolPaymentProvider' | t }}</span></li>
 					<li ui-if="images && images.length > 0 || false"><span
 						ng-class="{'label-success': wizard.checkStep.image, 'label-important': wizard.checkStep.image}"
 						class="label">{{ 'Common.Text_Save' | t }} {{
