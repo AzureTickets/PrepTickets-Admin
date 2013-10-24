@@ -31,31 +31,39 @@
 			</ul>
 			<li class="nred"><a href="#/"><i class="icon-desktop"></i>
 					{{ 'Common.Text_DashboardMenu_Dashboard' | t }}</a></li>
+			<li
+				ui-if="auth.isDomainProfileReady() && Store && Store.Key != null && Store.IsOwner || false"
+				class="nviolet"><a href="#/store"><i class="icon-book"></i>
+					{{ 'Common.Text_StoreInfo' | t }}</a></li>
 			<li class="nyellow"
 				ui-if="Store && Store.Key != null && Store.IsOwner || false"
 				ui-route="#/category" ng-class="{active: $uiRoute}"><a
 				href="#/category"><i class="icon-code-fork"></i>{{
 					'Common.Text_Categories' | t }}</a></li>
+			<li class="norange"
+				ui-if="Store && Store.Key != null && Store.IsOwner || false"
+				ui-route="#/venue" ng-class="{active: $uiRoute}"><a
+				href="#/venue"><i class="icon-building"></i>{{
+					'Common.Text_VenueMenu_Venue' | t }}</a></li>
+			<li class="ngreen"
+				ui-if="Store && Store.Key != null && Store.IsOwner && venues && venues.length > 0 || false"
+				ui-route="#/(event|ticket).*" ng-class="{active: $uiRoute}"><a
+				href="#/event"><i class="icon-time"></i>{{
+					'Common.Text_EventMenu_Events' | t }}</a></li>
+			<li
+				ui-if="Store && Store.Key != null && Store.IsOwner && events && events.length > 0 || false"
+				ui-route="#/order" ng-class="{active: $uiRoute}"><a
+				href="#/order"><i class="icon-ticket"></i>{{
+					'Common.Text_OrdersMenu_Orders' | t }}</a></li>
+			<li ui-if="Store && Store.Key != null && Store.IsOwner || false"
+				ui-route="#/scanner" ng-class="{active: $uiRoute}"><a
+				href="#/scanner"><i class="icon-mobile-phone"></i>{{
+					'Common.Text_ScannerMenu_Scanner' | t }}</a></li>
 			<li class="nblue"
 				ui-if="Store && Store.Key != null && Store.IsOwner || false"
 				ui-route="#/media" ng-class="{active: $uiRoute}"><a
 				href="#/media"><i class="icon-picture"></i>{{
 					'Common.Text_MediaLibraryMenu_MediaLibrary' | t }}</a></li>
-			<li class="norange"
-				ui-if="Store && Store.Key != null && Store.IsOwner || false"
-				ui-route="#/venue" ng-class="{active: $uiRoute}"><a
-				href="#/venue">{{ 'Common.Text_VenueMenu_Venue' | t }}</a></li>
-			<li class="ngreen"
-				ui-if="Store && Store.Key != null && Store.IsOwner && venues && venues.length > 0 || false"
-				ui-route="#/(event|ticket).*" ng-class="{active: $uiRoute}"><a
-				href="#/event">{{ 'Common.Text_EventMenu_Events' | t }}</a></li>
-			<li
-				ui-if="Store && Store.Key != null && Store.IsOwner && events && events.length > 0 || false"
-				ui-route="#/order" ng-class="{active: $uiRoute}"><a
-				href="#/order">{{ 'Common.Text_OrdersMenu_Orders' | t }}</a></li>
-			<li ui-if="Store && Store.Key != null && Store.IsOwner || false"
-				ui-route="#/scanner" ng-class="{active: $uiRoute}"><a
-				href="#/scanner">{{ 'Common.Text_ScannerMenu_Scanner' | t }}</a></li>
 		</ul>
 		<!-- Date -->
 		<div class="sidebar-widget">
