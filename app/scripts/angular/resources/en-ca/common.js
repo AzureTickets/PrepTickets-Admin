@@ -52,6 +52,7 @@ var CommonResources = {
   Text_ExistingSchoolRequest : 'There is already a School being managed for this approval request.',
   Text_ApprovalEmpty : 'There are no pending requests',
   Text_Showmap : "show map",
+  Text_Proceed : 'Are you sure you want to proceed?',
   Text_Confirmation : 'Confirmation',
   Text_GetRoute : "Get Route",
   Text_Bingmap : "Bing map",
@@ -131,13 +132,13 @@ var CommonResources = {
   Text_SchoolCreate : 'You haven\'t created a school yet. Please follow these registration steps.',
   Text_Description : 'Description',
   Text_InvalidPattern : 'The format for {0} is not valid',
-  
+
   Text_CurrentPage : 'Current page',
   Text_ItemsPerPage : 'Items per page',
   Text_TotalPages : 'Total pages',
   Text_TotalItems : 'Total item(s)',
   Text_YourSelect : 'Your select',
-  
+
   LabelSchoolType : 'School',
   LabelSchoolCurrency : 'Currency',
   LabelSchoolPaymentProvider : 'Payment Provider',

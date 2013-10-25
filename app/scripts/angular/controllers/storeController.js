@@ -323,18 +323,14 @@ function storeController($scope, $cookieStore, $location, $timeout,
                 // was an URI set
                 // initially (or not)
 
-                // init venues, events
-                if ($scope.auth.isDomainProfileReady() && $scope.Store.IsOwner) {
-                  $scope.place.loadPlaces($scope);
-                }
-
+                // init venues, events, approvals
                 if ($scope.auth.isDomainProfileReady()) {
                   $scope.media.loadImages($scope)
-                }
+                  $scope.getPendingAccessRequests();
 
-                if ($scope.auth.isDomainProfileReady()) {
                   // always load whole set of events for owners
                   if ($scope.Store.IsOwner) {
+                    $scope.place.loadPlaces($scope);
                     $scope.event.loadEvents($scope);
                   } else if (angular.isDefined($scope.Store.Events)) {
                     $scope.events = angular.copy($scope.Store.Events);
@@ -647,12 +643,6 @@ function storeController($scope, $cookieStore, $location, $timeout,
     }
   }
 
-  // Get the approvals list for 'Pending Approvals' menu item to be displayed
-  // The side_menu.html is loaded before approvalsList.html so we place
-  // ng-init="getPendingAccessRequests()" there
-  // The returned $scope.approvals will live in the storeController scope
-  // so approvalsList.html is able to get its data
-  // Remove the ng-init="getPendingAccessRequests()" in the approvalsList.html
   $scope.getPendingAccessRequests = function() {
     $scope.account.getAccessRequests().then(function(pending) {
       $scope.approvals = angular.isArray(pending) ? pending : [];
