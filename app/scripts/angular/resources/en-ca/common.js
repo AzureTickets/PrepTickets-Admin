@@ -32,7 +32,7 @@ var CommonResources = {
   Text_CategoryInformation : 'Category Information',
   Text_BriefDescription : 'Brief Description',
   Text_ChildCategories : 'Child Categories',
-  Text_StoreInfo : 'School Info',
+  Text_SchoolInfo : 'School Info',
   LabelCategoryName : 'Category Name',
   Text_Pending_Approvals : 'Pending Approvals',
   Text_Approval : 'Approval',
