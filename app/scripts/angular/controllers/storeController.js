@@ -21,6 +21,21 @@ function storeController($scope, $cookieStore, $location, $timeout,
       $scope.media = mediaService, $scope.scanner = scannerService,
       $scope.enums = BWL.ModelEnum, $scope.storeHasChanged = false;
 
+  $scope.storeAgreement = {
+    open : false
+  }
+  $scope.$watch('storeAgreement.open', function(v) {
+    if (v) {
+      $scope.storeAgreement.modal = $modal.open({
+        templateUrl : 'agreement.html',
+        scope : $scope,
+        backdrop : 'static'
+      });
+    } else if (angular.isDefined($scope.storeAgreement.modal)) {
+      $scope.storeAgreement.modal.close();
+    }
+  })
+
   // this is used to contain object selection made from child scopes created by
   // ng-include
   $scope.selection = {};
@@ -158,15 +173,6 @@ function storeController($scope, $cookieStore, $location, $timeout,
     $scope.initStoreURI();
 
     $scope.wizard.reset();
-
-    // // show agreement
-    // if (!$scope.auth.isAdministrator()) {
-    // $timeout(function() {
-    // $scope.$apply(function() {
-    // jQuery('#serviceAgreement').modal('show');
-    // })
-    // }, 500);
-    // }
   }
 
   $scope.requestAccess = function() {

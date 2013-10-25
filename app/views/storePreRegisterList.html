@@ -31,7 +31,7 @@
 				<tbody>
 					<tr
 						ng-click="selection.StorePreRegisterKey = spr.Key; wizardPreRegister.next('atStorePreRegister2', true, submitRequest)"
-						ng-repeat="spr in paginationPreRegister.pageItems()">
+						ng-repeat="spr in paginationPreRegister.pageItems()" mousestyle>
 						<td>{{$index+1}}</td>
 						<td>{{spr.Name}}</td>
 						<td>{{spr.AddressLine1}}</td>
