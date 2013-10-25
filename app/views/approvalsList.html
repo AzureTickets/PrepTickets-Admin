@@ -37,7 +37,8 @@
 						<td>{{approval.RequestedItem.Type | t:true}}</td>
 						<td>{{approval.RequestedItem.Name || (RequestedItem |
 							address) }}</td>
-						<td>{{approval.RequestedByKey}}</td>
+						<td>{{approval.RequestedByKey |
+							api:'modelReplace':'DomainProfile':'Contact.FullName'}}</td>
 						<td ui-if="auth.isAdministrator()">
 							<div class="btn-group pull-right">
 								<button class="btn btn-mini btn-success"

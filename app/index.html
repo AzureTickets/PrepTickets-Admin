@@ -90,11 +90,12 @@
     experience this site.</p>
 <![endif]-->
 
-  <!-- Login, Register and Reset Password Pages -->
-  <div ui-if="!DomainProfile.Key" ng-cloak ng-view></div>
+	<!-- Login, Register and Reset Password Pages -->
+	<div ui-if="!DomainProfile.Key" ng-cloak ng-view></div>
 
-  <!-- Other Pages -->
-	<div ng-include src="'views/elements/top_menu.html'" ui-if="DomainProfile.Key"></div>
+	<!-- Other Pages -->
+	<div ng-include src="'views/elements/top_menu.html'"
+		ui-if="DomainProfile.Key"></div>
 	<div class="content" ng-cloak ui-if="DomainProfile.Key">
 		<div ng-include src="'views/elements/side_menu.html'"></div>
 		<!-- Main bar -->
@@ -109,6 +110,6 @@
 		</div>
 		<div class="clearfix"></div>
 	</div>
-	<span class="totop"><a href="#"><i class="icon-chevron-up"></i></a></span>
+	<span class="totop"><a href="#"><i class="fa fa-chevron-up"></i></a></span>
 </body>
 </html>

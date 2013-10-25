@@ -69,7 +69,7 @@
 						label="'Common.Text_CustomURI' | t"
 						tip="'Common.Text_TipCustomURI' | t"></atfield>
 					<i
-						ng-class="{'icon-ok': (Store.URI.length > config.typeahead.minLength && URIAvailable), 'icon-ban-circle': !URIAvailable || Store.URI.length <= config.typeahead.minLength}">
+						ng-class="{'fa fa-ok': (Store.URI.length > config.typeahead.minLength && URIAvailable), 'fa fa-ban-circle': !URIAvailable || Store.URI.length <= config.typeahead.minLength}">
 					</i><span ui-if="!URIAvailable" class="label label-important">
 						{{'Common.Text_CustomURIUnavailable' | t}}</span>
 				</dd>

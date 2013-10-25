@@ -33,40 +33,63 @@
 				</ul>
 			<li class="nred"
 				ui-route="#/" ng-class="{active: $uiRoute}"><a href="#/"><i class="icon-desktop"></i>
+			<li class="has_submenu nlightblue open"><a href="#"> <i
+					class="fa fa-fw fa-th"></i> {{ 'Common.Text_School' | t }} <span
+					class="pull-right"><i class="fa fa-fw fa-angle-right"></i></span>
+			</a></li>
+			<ul>
+				<li class="submenu"
+					ui-if="auth.isDomainProfileReady() && auth.isAdministrator()"><a
+					href="#/store" ng-click="createStore()">{{
+						'Common.Text_CreateSchool' | t }}</a></li>
+				<li class="submenu" ui-if="auth.isDomainProfileReady()"><a
+					href="#/storeList">{{ 'Common.Text_SchoolListMenu' | t }}</a></li>
+				<li class="submenu"
+					ui-if="auth.isDomainProfileReady() && approvals && approvals.length > 0"><a
+					href="#/approvals">{{ 'Common.Text_Pending_Approvals' | t }}</a></li>
+				<li class="submenu"
+					ui-if="auth.isDomainProfileReady() && !auth.isAdministrator()"><a
+					href="#/storeRequest" ng-click="requestAccess()">{{
+						'Common.Text_RequestAccess' | t }}</a></li>
+			</ul>
+			<li class="nred"><a href="#/"><i class="fa fa-fw fa-desktop"></i>
 					{{ 'Common.Text_DashboardMenu_Dashboard' | t }}</a></li>
 			<li class="nviolet"
 				ui-if="auth.isDomainProfileReady() && Store && Store.Key != null && Store.IsOwner || false"
 				ui-route="#/store" ng-class="{active: $uiRoute}"><a href="#/store"
 				ng-click="setStoreKey(Store.Key)"><i class="icon-book"></i> {{
 					'Common.Text_SchoolInfo' | t }}</a></li>
+				class="nviolet"><a href="#/store"
+				ng-click="setStoreKey(Store.Key)"><i class="fa fa-fw fa-book"></i>
+					{{ 'Common.Text_StoreInfo' | t }}</a></li>
 			<li class="nyellow"
 				ui-if="Store && Store.Key != null && Store.IsOwner || false"
 				ui-route="#/category" ng-class="{active: $uiRoute}"><a
-				href="#/category"><i class="icon-code-fork"></i>{{
+				href="#/category"><i class="fa fa-fw fa-code-fork"></i>{{
 					'Common.Text_Categories' | t }}</a></li>
 			<li class="norange"
 				ui-if="Store && Store.Key != null && Store.IsOwner || false"
 				ui-route="#/venue" ng-class="{active: $uiRoute}"><a
-				href="#/venue"><i class="icon-building"></i>{{
+				href="#/venue"><i class="fa fa-fw fa-building"></i>{{
 					'Common.Text_VenueMenu_Venue' | t }}</a></li>
 			<li class="ngreen"
 				ui-if="Store && Store.Key != null && Store.IsOwner && venues && venues.length > 0 || false"
 				ui-route="#/(event|ticket).*" ng-class="{active: $uiRoute}"><a
-				href="#/event"><i class="icon-time"></i>{{
+				href="#/event"><i class="fa fa-fw fa-clock-o"></i>{{
 					'Common.Text_EventMenu_Events' | t }}</a></li>
 			<li
 				ui-if="Store && Store.Key != null && Store.IsOwner && events && events.length > 0 || false"
 				ui-route="#/order" ng-class="{active: $uiRoute}"><a
-				href="#/order"><i class="icon-ticket"></i>{{
+				href="#/order"><i class="fa fa-fw fa-ticket"></i>{{
 					'Common.Text_OrdersMenu_Orders' | t }}</a></li>
 			<li ui-if="Store && Store.Key != null && Store.IsOwner || false"
 				ui-route="#/scanner" ng-class="{active: $uiRoute}"><a
-				href="#/scanner"><i class="icon-mobile-phone"></i>{{
+				href="#/scanner"><i class="fa fa-fw fa-mobile-phone"></i>{{
 					'Common.Text_ScannerMenu_Scanner' | t }}</a></li>
 			<li class="nblue"
 				ui-if="Store && Store.Key != null && Store.IsOwner || false"
 				ui-route="#/media" ng-class="{active: $uiRoute}"><a
-				href="#/media"><i class="icon-picture"></i>{{
+				href="#/media"><i class="fa fa-fw fa-picture-o"></i>{{
 					'Common.Text_MediaLibraryMenu_MediaLibrary' | t }}</a></li>
 		</ul>
 		<!-- Date -->
