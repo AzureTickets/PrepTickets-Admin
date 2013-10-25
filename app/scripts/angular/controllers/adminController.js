@@ -141,9 +141,10 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
   /**
    * Store access request process
    */
-  $scope.confirmApproval = function(approval) {
-    if (confirm($filter('t')('Common.Text_Proceed'))) {
-      if (approval.RequestedItem.Type === BWL.Model.StorePreRegister.Type
+  $scope.confirmApproval = function(approval, force) {
+    if (force || confirm($filter('t')('Common.Text_Proceed'))) {
+      if (!force
+          && approval.RequestedItem.Type === BWL.Model.StorePreRegister.Type
           && $scope.hasPendingStoreRequest(approval)) {
         $scope.error.log($filter('t')('Common.Text_ExistingSchoolRequest'))
       } else {
@@ -203,7 +204,18 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
                                                 .then(
                                                     function(ret) {
                                                       $scope
-                                                          .getPendingAccessRequests();
+                                                          .getPendingAccessRequests()
+                                                          .then(
+                                                              function() {
+                                                                // auto approve
+                                                                // Store request
+                                                                var sr = $scope
+                                                                    .getStoreByStorePreRegisterRequest(approveItem);
+                                                                $scope
+                                                                    .confirmApproval(
+                                                                        sr,
+                                                                        true);
+                                                              });
                                                     }, function(err) {
                                                       $scope.error.log(err)
                                                     })
@@ -296,7 +308,8 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
 
     angular.forEach($scope.approvals, function(v, k) {
       if (v.RequestedItem.Type === BWL.Model.Store.Type
-          && v.RequestedByKey === sprRequest.RequestedByKey) {
+          && v.RequestedByKey === sprRequest.RequestedByKey
+          && v.RequestedItem.Name === sprRequest.RequestedItem.Name) {
         ret = true;
         return;
       }
@@ -318,6 +331,27 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
               if (v.RequestedItem.Type === BWL.Model.StorePreRegister.Type
                   && v.RequestedByKey === storeRequest.RequestedByKey
                   && (storeRequest.RequestedItem.Address.City === v.RequestedItem.City && storeRequest.RequestedItem.Name === v.RequestedItem.Name)) {
+                ret = v;
+                return;
+              }
+            })
+
+    return ret;
+  }
+
+  /**
+   * Retrieve Store obj based on an already processed StorePreRegister request.
+   */
+  $scope.getStoreByStorePreRegisterRequest = function(storePreRegisterRequest) {
+    var ret = null;
+
+    angular
+        .forEach(
+            $scope.approvals,
+            function(v, k) {
+              if (v.RequestedItem.Type === BWL.Model.Store.Type
+                  && v.RequestedByKey === storePreRegisterRequest.RequestedByKey
+                  && (storePreRegisterRequest.RequestedItem.Name === v.RequestedItem.Name)) {
                 ret = v;
                 return;
               }

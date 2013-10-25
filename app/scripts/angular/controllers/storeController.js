@@ -2,7 +2,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
     $routeParams, configService, authService, permService, storeService,
     modelService, errorService, geoService, formService, objectService,
     placeService, orderService, eventService, ticketService, cartService,
-    accountService, mediaService, categoryService, scannerService) {
+    accountService, mediaService, categoryService, scannerService, $q) {
   /**
    * The following vars are shared across controllers and accessible via $scope
    */
@@ -207,6 +207,9 @@ function storeController($scope, $cookieStore, $location, $timeout,
           if (ret) {
             $scope.wizardPreRegister.checkStep.requested = true;
             $scope.wizardPreRegister.saved = true;
+
+            // refresh
+            $scope.getPendingAccessRequests()
           }
         }, function(err) {
           $scope.wizardPreRegister.checkStep.requested = false;
@@ -644,11 +647,19 @@ function storeController($scope, $cookieStore, $location, $timeout,
   }
 
   $scope.getPendingAccessRequests = function() {
+    var def = $q.defer();
+
     $scope.account.getAccessRequests().then(function(pending) {
       $scope.approvals = angular.isArray(pending) ? pending : [];
+
+      def.resolve();
     }, function(err) {
       $scope.error.log(err)
+
+      def.reject()
     });
+
+    return def.promise;
   }
 }
 
@@ -657,4 +668,4 @@ storeController.$inject = [ '$scope', '$cookieStore', '$location', '$timeout',
     'storeService', 'modelService', 'errorService', 'geoService',
     'formService', 'objectService', 'placeService', 'orderService',
     'eventService', 'ticketService', 'cartService', 'accountService',
-    'mediaService', 'categoryService', 'scannerService' ];
+    'mediaService', 'categoryService', 'scannerService', '$q' ];
