@@ -673,14 +673,6 @@ function storeController($scope, $cookieStore, $location, $timeout,
   		$scope.tinyInstance = null;
   	}
   }
-  
-  $scope.tinymceOptions = {
-  	'theme' : 'modern',
-    'theme_url': 'components/tinymce/themes/modern/theme.js',
-    'skin' : 'lightgray',
-    'skin_url' : 'components/tinymce/skins/lightgray',
-    'height' : 200
-  }
 }
 
 storeController.$inject = [ '$scope', '$cookieStore', '$location', '$timeout',
