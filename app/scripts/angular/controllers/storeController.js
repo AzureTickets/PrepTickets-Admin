@@ -2,7 +2,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
     $routeParams, configService, authService, permService, storeService,
     modelService, errorService, geoService, formService, objectService,
     placeService, orderService, eventService, ticketService, cartService,
-    accountService, mediaService, categoryService, scannerService) {
+    accountService, mediaService, categoryService, scannerService, $q) {
   /**
    * The following vars are shared across controllers and accessible via $scope
    */
@@ -20,6 +20,21 @@ function storeController($scope, $cookieStore, $location, $timeout,
       $scope.account = accountService, $scope.category = categoryService,
       $scope.media = mediaService, $scope.scanner = scannerService,
       $scope.enums = BWL.ModelEnum, $scope.storeHasChanged = false;
+
+  $scope.storeAgreement = {
+    open : false
+  }
+  $scope.$watch('storeAgreement.open', function(v) {
+    if (v) {
+      $scope.storeAgreement.modal = $modal.open({
+        templateUrl : 'agreement.html',
+        scope : $scope,
+        backdrop : 'static'
+      });
+    } else if (angular.isDefined($scope.storeAgreement.modal)) {
+      $scope.storeAgreement.modal.close();
+    }
+  })
 
   // this is used to contain object selection made from child scopes created by
   // ng-include
@@ -158,15 +173,6 @@ function storeController($scope, $cookieStore, $location, $timeout,
     $scope.initStoreURI();
 
     $scope.wizard.reset();
-
-    // // show agreement
-    // if (!$scope.auth.isAdministrator()) {
-    // $timeout(function() {
-    // $scope.$apply(function() {
-    // jQuery('#serviceAgreement').modal('show');
-    // })
-    // }, 500);
-    // }
   }
 
   $scope.requestAccess = function() {
@@ -207,6 +213,9 @@ function storeController($scope, $cookieStore, $location, $timeout,
           if (ret) {
             $scope.wizardPreRegister.checkStep.requested = true;
             $scope.wizardPreRegister.saved = true;
+
+            // refresh
+            $scope.getPendingAccessRequests()
           }
         }, function(err) {
           $scope.wizardPreRegister.checkStep.requested = false;
@@ -323,18 +332,14 @@ function storeController($scope, $cookieStore, $location, $timeout,
                 // was an URI set
                 // initially (or not)
 
-                // init venues, events
-                if ($scope.auth.isDomainProfileReady() && $scope.Store.IsOwner) {
-                  $scope.place.loadPlaces($scope);
-                }
-
+                // init venues, events, approvals
                 if ($scope.auth.isDomainProfileReady()) {
                   $scope.media.loadImages($scope)
-                }
+                  $scope.getPendingAccessRequests();
 
-                if ($scope.auth.isDomainProfileReady()) {
                   // always load whole set of events for owners
                   if ($scope.Store.IsOwner) {
+                    $scope.place.loadPlaces($scope);
                     $scope.event.loadEvents($scope);
                   } else if (angular.isDefined($scope.Store.Events)) {
                     $scope.events = angular.copy($scope.Store.Events);
@@ -647,18 +652,20 @@ function storeController($scope, $cookieStore, $location, $timeout,
     }
   }
 
-  // Get the approvals list for 'Pending Approvals' menu item to be displayed
-  // The side_menu.html is loaded before approvalsList.html so we place
-  // ng-init="getPendingAccessRequests()" there
-  // The returned $scope.approvals will live in the storeController scope
-  // so approvalsList.html is able to get its data
-  // Remove the ng-init="getPendingAccessRequests()" in the approvalsList.html
   $scope.getPendingAccessRequests = function() {
+    var def = $q.defer();
+
     $scope.account.getAccessRequests().then(function(pending) {
       $scope.approvals = angular.isArray(pending) ? pending : [];
+
+      def.resolve();
     }, function(err) {
       $scope.error.log(err)
+
+      def.reject()
     });
+
+    return def.promise;
   }
   
   // Remove TinyMCE instance on closing the popup window
@@ -680,4 +687,4 @@ storeController.$inject = [ '$scope', '$cookieStore', '$location', '$timeout',
     'storeService', 'modelService', 'errorService', 'geoService',
     'formService', 'objectService', 'placeService', 'orderService',
     'eventService', 'ticketService', 'cartService', 'accountService',
-    'mediaService', 'categoryService', 'scannerService' ];
+    'mediaService', 'categoryService', 'scannerService', '$q' ];

@@ -82,12 +82,6 @@
 						class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
 				</dd>
 				<dd class="pull-left">
-					{{selStorePreRegisterKey}} <input
-						ng-disabled="!selection.StorePreRegisterKey || selection.StorePreRegisterKey == null"
-						type="submit" class="btn btn-success clear"
-						value="{{
-		 							'Common.Text_SendRequest' | t }}" />
-				</dd>
 			</dl>
 		</form>
 		<dl ui-if="wizardPreRegister.finished" class="clearfix">
@@ -97,12 +91,6 @@
 						ng-class="{'label-success': wizardPreRegister.checkStep.requested, 'label-important':!wizardPreRegister.checkStep.requested}"
 						class="label">{{ 'Common.Text_SendRequest' | t }}</span></li>
 				</ul>
-			</dd>
-			<dd class="pull-left">
-				<a
-					ng-show="wizardPreRegister.currentStep>1 && wizardPreRegister.saved"
-					ng-click="wizardPreRegister.currentStep = wizardPreRegister.currentStep-1; wizardPreRegister.finished = false; wizardPreRegister.saved = false"
-					class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
 			</dd>
 		</dl>
 		</ng-form>

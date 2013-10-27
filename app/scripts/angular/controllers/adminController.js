@@ -44,20 +44,21 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
   $scope.login = function(provider) {
     var _init = function() {
       $scope.DomainProfile = $scope.auth.getDomainProfile();
-      
+
       // If DomainProfile.ProfileRole < 20, logout and notify error
-      if ($scope.auth.isDomainProfileReady() && $scope.DomainProfile.ProfileRole < 20) {
-      	$scope.auth.logoffAsync().then(function() {
-      		// There's nothing yet except DomainProfile, so delete it
-      		delete $scope.DomainProfile;
-      		
-      		$scope.error.log($filter('t')('Login.Error_Auth20Failed'));
-      		return;
-      	}, function(err) {
-      	  $scope.error.log(err);
-      	});
+      if ($scope.auth.isDomainProfileReady()
+          && $scope.DomainProfile.ProfileRole < 20) {
+        $scope.auth.logoffAsync().then(function() {
+          // There's nothing yet except DomainProfile, so delete it
+          delete $scope.DomainProfile;
+
+          $scope.error.log($filter('t')('Login.Error_Auth20Failed'));
+          return;
+        }, function(err) {
+          $scope.error.log(err);
+        });
       }
-      
+
       $location.path($cookieStore.get($scope.config.cookies.lastPath));
       $cookieStore.put($scope.config.cookies.loggedStatus, true);
 
@@ -96,20 +97,20 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
             PasswordHash : BWL.Auth
                 .HashPassword($scope.RegisterAccountProfile.Password)
           }).then(function() {
-          	// Clear the fields
-          	$scope.RegisterAccountProfile = angular.copy($scope.AccountProfile);
-          	
+        // Clear the fields
+        $scope.RegisterAccountProfile = angular.copy($scope.AccountProfile);
+
         $scope.registerOk = true;
       }, function(err) {
         $scope.error.log(err)
       });
     } else {
-    	if (!$scope.passwdOk) {
-    		$scope.error.log($filter('t')('Login.labelConfirmPasswordFail'));
-    	}
-    	if (!$scope.emailOk) {
-    		$scope.error.log($filter('t')('Login.labelConfirmEmailFail'));
-    	}
+      if (!$scope.passwdOk) {
+        $scope.error.log($filter('t')('Login.labelConfirmPasswordFail'));
+      }
+      if (!$scope.emailOk) {
+        $scope.error.log($filter('t')('Login.labelConfirmEmailFail'));
+      }
     }
   }
 
@@ -125,10 +126,11 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
   }
 
   $scope.validateEmail = function(model) {
-    if (!angular.isDefined(model.Email) || !angular.isDefined(model.ConfirmEmail)) {
-    	$scope.emailOk = false;
+    if (!angular.isDefined(model.Email)
+        || !angular.isDefined(model.ConfirmEmail)) {
+      $scope.emailOk = false;
     } else {
-    	$scope.emailOk = model.Email === model.ConfirmEmail;
+      $scope.emailOk = model.Email === model.ConfirmEmail;
     }
   }
 
@@ -139,139 +141,161 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
   /**
    * Store access request process
    */
-  $scope.confirmApproval = function(approval) {
-    if (approval.RequestedItem.Type === BWL.Model.StorePreRegister.Type
-        && $scope.hasPendingStoreRequest(approval)) {
-      $scope.error.log($filter('t')('Common.Text_ExistingSchoolRequest'))
-    } else {
-      // get approval item
-      $scope.model
-          .read(approval.Type, approval.Key, 4)
-          .then(
-              function(approveItem) {
-                if (angular.isObject(approveItem)
-                    && angular.isDefined(approveItem.Key)) {
-                  if (approveItem.RequestedItem.Type === BWL.Model.StorePreRegister.Type) {
-                    /**
-                     * StorePreRegister Approval process
-                     */
-                    // initialize store object
-                    var store = {};
-                    store.isNew = true; // removed by storeService on save,
-                    // temporary
-                    store.Public = true;
-                    store.Currency = 'USD';
-                    store.Name = approveItem.RequestedItem.Name;
+  $scope.confirmApproval = function(approval, force) {
+    if (force || confirm($filter('t')('Common.Text_Proceed'))) {
+      if (!force
+          && approval.RequestedItem.Type === BWL.Model.StorePreRegister.Type
+          && $scope.hasPendingStoreRequest(approval)) {
+        $scope.error.log($filter('t')('Common.Text_ExistingSchoolRequest'))
+      } else {
+        // get approval item
+        $scope.model
+            .read(approval.Type, approval.Key, 4)
+            .then(
+                function(approveItem) {
+                  if (angular.isObject(approveItem)
+                      && angular.isDefined(approveItem.Key)) {
+                    if (approveItem.RequestedItem.Type === BWL.Model.StorePreRegister.Type) {
+                      /**
+                       * StorePreRegister Approval process
+                       */
+                      // initialize store object
+                      var store = {};
+                      store.isNew = true; // removed by storeService on save,
+                      // temporary
+                      store.Public = true;
+                      store.Currency = 'USD';
+                      store.Name = approveItem.RequestedItem.Name;
 
-                    // get geo info
-                    $scope.geo
-                        .getCityByName(approveItem.RequestedItem.City,
-                            approveItem.RequestedItem.Region,
-                            approveItem.RequestedItem.Country)
-                        .then(
-                            function(city) {
-                              if (angular.isObject(city)) {
-                                store.Address = {
-                                  'AddressLine1' : approveItem.RequestedItem.AddressLine1,
-                                  'AddressType' : $scope.enums.AddressTypeEnum.Home,
-                                  'City' : approveItem.RequestedItem.City,
-                                  'PostalCode' : approveItem.RequestedItem.PostalCode,
-                                  'Region' : approveItem.RequestedItem.Region,
-                                  'District' : approveItem.RequestedItem.District,
-                                  'Country' : approveItem.RequestedItem.Country,
-                                  'County' : approveItem.RequestedItem.County,
-                                  'Timezone' : city.TimezoneName
-                                };
+                      // get geo info
+                      $scope.geo
+                          .getCityByName(approveItem.RequestedItem.City,
+                              approveItem.RequestedItem.Region,
+                              approveItem.RequestedItem.Country)
+                          .then(
+                              function(city) {
+                                if (angular.isObject(city)) {
+                                  store.Address = {
+                                    'AddressLine1' : approveItem.RequestedItem.AddressLine1,
+                                    'AddressType' : $scope.enums.AddressTypeEnum.Home,
+                                    'City' : approveItem.RequestedItem.City,
+                                    'PostalCode' : approveItem.RequestedItem.PostalCode,
+                                    'Region' : approveItem.RequestedItem.Region,
+                                    'District' : approveItem.RequestedItem.District,
+                                    'Country' : approveItem.RequestedItem.Country,
+                                    'County' : approveItem.RequestedItem.County,
+                                    'Timezone' : city.TimezoneName
+                                  };
 
-                                // create store
-                                $scope.store
-                                    .createStore(store)
-                                    .then(
-                                        function(storeKey) {
-                                          // request access to newly created
-                                          // store
-                                          // for profile
-                                          $scope.account
-                                              .accessRequestFor(
-                                                  BWL.Model.Store.Type,
-                                                  storeKey,
-                                                  approveItem.RequestedByKey,
-                                                  $scope.enums.ModelAccessTypeEnum.FullAccess)
-                                              .then(
-                                                  function(ret) {
-                                                    $scope
-                                                        .getPendingAccessRequests();
-                                                  }, function(err) {
-                                                    $scope.error.log(err)
-                                                  })
-                                        }, function(err) {
-                                          $scope.error.log(err)
-                                        })
-                              }
-                            }, function(err) {
-                              $scope.error.log(err)
-                            })
-                  } else if (approveItem.RequestedItem.Type === BWL.Model.Store.Type) {
-                    /**
-                     * Store Approval process
-                     */
-                    $scope.account.approveRequest(approveItem.Key).then(
-                        function() {
-                          // update StorePreRegister request obj with new
-                          // Store
-                          // key
-                          var spr = $scope
-                              .getStorePreRegisterByStoreRequest(approveItem);
-                          var sprKey = spr.RequestedItem.Key;
-                          var approveKey = spr.Key;
-
-                          $scope.model.update(BWL.Model.StorePreRegister.Type,
-                              sprKey, {
-                                'StoreKey' : approveItem.RequestedItem.Key
-                              }).then(
-                              function() {
-                                // finally, approve original StorePreRegister
-                                // request
-                                $scope.account.approveRequest(approveKey).then(
-                                    function() {
-                                      $scope.getPendingAccessRequests();
-                                    }, function(err) {
-                                      $scope.error.log(err)
-                                    })
+                                  // create store
+                                  $scope.store
+                                      .createStore(store)
+                                      .then(
+                                          function(storeKey) {
+                                            // request access to newly created
+                                            // store
+                                            // for profile
+                                            $scope.account
+                                                .accessRequestFor(
+                                                    BWL.Model.Store.Type,
+                                                    storeKey,
+                                                    approveItem.RequestedByKey,
+                                                    $scope.enums.ModelAccessTypeEnum.FullAccess)
+                                                .then(
+                                                    function(ret) {
+                                                      $scope
+                                                          .getPendingAccessRequests()
+                                                          .then(
+                                                              function() {
+                                                                // auto approve
+                                                                // Store request
+                                                                var sr = $scope
+                                                                    .getStoreByStorePreRegisterRequest(approveItem);
+                                                                $scope
+                                                                    .confirmApproval(
+                                                                        sr,
+                                                                        true);
+                                                              });
+                                                    }, function(err) {
+                                                      $scope.error.log(err)
+                                                    })
+                                          }, function(err) {
+                                            $scope.error.log(err)
+                                          })
+                                }
                               }, function(err) {
                                 $scope.error.log(err)
                               })
-                        }, function(err) {
-                          $scope.error.log(err)
-                        })
-                  } else if (approveItem.RequestedItem.Type === BWL.Model.Address.Type) {
-                    /**
-                     * Address Approval process
-                     */
-                    $scope.account.approveRequest(approveItem.Key).then(
-                        function() {
-                          $scope.getPendingAccessRequests();
-                        }, function(err) {
-                          $scope.error.log(err)
-                        })
+                    } else if (approveItem.RequestedItem.Type === BWL.Model.Store.Type) {
+                      /**
+                       * Store Approval process
+                       */
+                      $scope.account
+                          .approveRequest(approveItem.Key)
+                          .then(
+                              function() {
+                                // update StorePreRegister request obj with new
+                                // Store
+                                // key
+                                var spr = $scope
+                                    .getStorePreRegisterByStoreRequest(approveItem);
+                                var sprKey = spr.RequestedItem.Key;
+                                var approveKey = spr.Key;
+
+                                $scope.model
+                                    .update(
+                                        BWL.Model.StorePreRegister.Type,
+                                        sprKey,
+                                        {
+                                          'StoreKey' : approveItem.RequestedItem.Key
+                                        }).then(
+                                        function() {
+                                          // finally, approve original
+                                          // StorePreRegister
+                                          // request
+                                          $scope.account.approveRequest(
+                                              approveKey).then(function() {
+                                            $scope.getPendingAccessRequests();
+                                          }, function(err) {
+                                            $scope.error.log(err)
+                                          })
+                                        }, function(err) {
+                                          $scope.error.log(err)
+                                        })
+                              }, function(err) {
+                                $scope.error.log(err)
+                              })
+                    } else if (approveItem.RequestedItem.Type === BWL.Model.Address.Type) {
+                      /**
+                       * Address Approval process
+                       */
+                      $scope.account.approveRequest(approveItem.Key).then(
+                          function() {
+                            $scope.getPendingAccessRequests();
+                          }, function(err) {
+                            $scope.error.log(err)
+                          })
+                    }
                   }
-                }
-              }, function(err) {
-                $scope.error.log(err)
-              })
+                }, function(err) {
+                  $scope.error.log(err)
+                })
+      }
     }
   }
 
   $scope.rejectApproval = function(approval) {
-    if (approval.RequestedItem.Type === BWL.Model.StorePreRegister.Type
-        && $scope.hasPendingStoreRequest(approval)) {
-      $scope.error.log($filter('t')('Common.Text_ExistingSchoolRequest'))
-    } else {
-      $scope.account.rejectRequest(approval.Key).then(function(ret) {
-        $scope.getPendingAccessRequests();
-      }, function(err) {
-        $scope.error.log(err)
-      })
+    if (confirm($filter('t')('Common.Text_Proceed'))) {
+      if (approval.RequestedItem.Type === BWL.Model.StorePreRegister.Type
+          && $scope.hasPendingStoreRequest(approval)) {
+        $scope.error.log($filter('t')('Common.Text_ExistingSchoolRequest'))
+      } else {
+        $scope.account.rejectRequest(approval.Key).then(function(ret) {
+          $scope.getPendingAccessRequests();
+        }, function(err) {
+          $scope.error.log(err)
+        })
+      }
     }
   }
 
@@ -284,7 +308,8 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
 
     angular.forEach($scope.approvals, function(v, k) {
       if (v.RequestedItem.Type === BWL.Model.Store.Type
-          && v.RequestedByKey === sprRequest.RequestedByKey) {
+          && v.RequestedByKey === sprRequest.RequestedByKey
+          && v.RequestedItem.Name === sprRequest.RequestedItem.Name) {
         ret = true;
         return;
       }
@@ -306,6 +331,27 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
               if (v.RequestedItem.Type === BWL.Model.StorePreRegister.Type
                   && v.RequestedByKey === storeRequest.RequestedByKey
                   && (storeRequest.RequestedItem.Address.City === v.RequestedItem.City && storeRequest.RequestedItem.Name === v.RequestedItem.Name)) {
+                ret = v;
+                return;
+              }
+            })
+
+    return ret;
+  }
+
+  /**
+   * Retrieve Store obj based on an already processed StorePreRegister request.
+   */
+  $scope.getStoreByStorePreRegisterRequest = function(storePreRegisterRequest) {
+    var ret = null;
+
+    angular
+        .forEach(
+            $scope.approvals,
+            function(v, k) {
+              if (v.RequestedItem.Type === BWL.Model.Store.Type
+                  && v.RequestedByKey === storePreRegisterRequest.RequestedByKey
+                  && (storePreRegisterRequest.RequestedItem.Name === v.RequestedItem.Name)) {
                 ret = v;
                 return;
               }
