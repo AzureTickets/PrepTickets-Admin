@@ -660,6 +660,27 @@ function storeController($scope, $cookieStore, $location, $timeout,
       $scope.error.log(err)
     });
   }
+  
+  // Remove TinyMCE instance on closing the popup window
+  // This is to avoid bug #6013: http://www.tinymce.com/develop/bugtracker_view.php?id=6013
+  // If we haven't got this, 'NS_ERROR_UNEXPECTED' will appear on the third opening the Create/Update buttons
+  // Place this function here so that it can be used in any Create/Update popups
+  // descTinymce: @param - the ID of <textarea> element where tinymce directive is used
+  $scope.removeTinymceIns = function() {
+    $scope.tinyInstance = tinymce.get('descTinymce');
+  	if ($scope.tinyInstance) {
+  		$scope.tinyInstance.remove();
+  		$scope.tinyInstance = null;
+  	}
+  }
+  
+  $scope.tinymceOptions = {
+  	'theme' : 'modern',
+    'theme_url': 'components/tinymce/themes/modern/theme.js',
+    'skin' : 'lightgray',
+    'skin_url' : 'components/tinymce/skins/lightgray',
+    'height' : 200
+  }
 }
 
 storeController.$inject = [ '$scope', '$cookieStore', '$location', '$timeout',
