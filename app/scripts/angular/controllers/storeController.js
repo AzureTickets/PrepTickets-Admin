@@ -2,7 +2,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
     $routeParams, configService, authService, permService, storeService,
     modelService, errorService, geoService, formService, objectService,
     placeService, orderService, eventService, ticketService, cartService,
-    accountService, mediaService, categoryService, scannerService, $q) {
+    accountService, mediaService, categoryService, scannerService, $q, $filter) {
   /**
    * The following vars are shared across controllers and accessible via $scope
    */
@@ -187,6 +187,8 @@ function storeController($scope, $cookieStore, $location, $timeout,
   }
 
   $scope.searchStorePreRegister = function() {
+    $scope.error.info($filter('t')('Common.Text_WaitLoading'))
+
     $scope.model.find({
       Name : $scope.StorePreRegister.Name,
       City : $scope.StorePreRegister.City,
@@ -195,8 +197,11 @@ function storeController($scope, $cookieStore, $location, $timeout,
       if (angular.isArray(ret)) {
         $scope.storePreRegisters = ret;
       }
+
+      $scope.error.info(null)
     }, function(err) {
       $scope.error.log(err)
+      $scope.error.info(null)
     });
   }
 
@@ -224,7 +229,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
           $scope.error.log(err)
         })
       } else {
-        $scope.error.log($filter('t')('Common.Text_ExistingSchoolRequest'))
+        $scope.error.log()
       }
     }
   }
@@ -653,32 +658,39 @@ function storeController($scope, $cookieStore, $location, $timeout,
   }
 
   $scope.getPendingAccessRequests = function() {
+    $scope.error.info($filter('t')('Common.Text_WaitLoading'))
+
     var def = $q.defer();
 
     $scope.account.getAccessRequests().then(function(pending) {
       $scope.approvals = angular.isArray(pending) ? pending : [];
 
       def.resolve();
+      $scope.error.info(null)
     }, function(err) {
       $scope.error.log(err)
+      $scope.error.info(null)
 
       def.reject()
     });
 
     return def.promise;
   }
-  
+
   // Remove TinyMCE instance on closing the popup window
-  // This is to avoid bug #6013: http://www.tinymce.com/develop/bugtracker_view.php?id=6013
-  // If we haven't got this, 'NS_ERROR_UNEXPECTED' will appear on the third opening the Create/Update buttons
+  // This is to avoid bug #6013:
+  // http://www.tinymce.com/develop/bugtracker_view.php?id=6013
+  // If we haven't got this, 'NS_ERROR_UNEXPECTED' will appear on the third
+  // opening the Create/Update buttons
   // Place this function here so that it can be used in any Create/Update popups
-  // descTinymce: @param - the ID of <textarea> element where tinymce directive is used
+  // descTinymce: @param - the ID of <textarea> element where tinymce directive
+  // is used
   $scope.removeTinymceIns = function() {
     $scope.tinyInstance = tinymce.get('descTinymce');
-  	if ($scope.tinyInstance) {
-  		$scope.tinyInstance.remove();
-  		$scope.tinyInstance = null;
-  	}
+    if ($scope.tinyInstance) {
+      $scope.tinyInstance.remove();
+      $scope.tinyInstance = null;
+    }
   }
 }
 
@@ -687,4 +699,4 @@ storeController.$inject = [ '$scope', '$cookieStore', '$location', '$timeout',
     'storeService', 'modelService', 'errorService', 'geoService',
     'formService', 'objectService', 'placeService', 'orderService',
     'eventService', 'ticketService', 'cartService', 'accountService',
-    'mediaService', 'categoryService', 'scannerService', '$q' ];
+    'mediaService', 'categoryService', 'scannerService', '$q', '$filter' ];

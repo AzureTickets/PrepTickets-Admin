@@ -8,6 +8,8 @@
 		<div class="widget-content">
 			<div ng-show="storePreRegisters.length == 0" class="alert alert-info">{{
 				'Common.Text_NoResults' | t }}</div>
+			<div class="alert alert-info"
+				ng-show="infoMsg && infoMsg != null || false">{{infoMsg}}</div>
 			<table class="table table-bordered table-hover"
 				ui-if="storePreRegisters.length > 0">
 				<thead>

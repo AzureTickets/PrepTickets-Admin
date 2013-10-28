@@ -8,6 +8,8 @@
 		</div>
 		<div ng-show="approvals.length == 0" class="alert alert-info">{{
 			'Common.Text_ApprovalEmpty' | t }}</div>
+		<div class="alert alert-info"
+			ng-show="infoMsg && infoMsg != null || false">{{infoMsg}}</div>
 		<div class="widget-content" ng-show="approvals.length > 0">
 			<table class="table table-bordered ">
 				<thead>
