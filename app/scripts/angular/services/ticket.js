@@ -63,6 +63,8 @@ azureTicketsApp
                  * @returns
                  */
                 loadTickets : function($scope) {
+                  var def = $q.defer();
+
                   if (!_isTicketsLoading) {
                     _isTicketsLoading = true;
 
@@ -89,11 +91,17 @@ azureTicketsApp
                           }
 
                           _isTicketsLoading = false;
+
+                          def.resolve();
                         }, function(err) {
                           _isTicketsLoading = false;
                           $scope.error.log(err)
+
+                          def.reject();
                         });
                   }
+
+                  return def.promise;
                 },
                 initTicket : function(storeKey, ticketKey) {
                   var def = $q.defer(), _this = this;
