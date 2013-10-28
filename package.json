@@ -11,7 +11,8 @@
   },
   "url" : {
   	"api" : "https://stage.revvly.com",
-  	"geo" : "https://geo.revvly.com/"
+  	"geo" : "https://geo.revvly.com/",
+  	"logo" : "https://www.preptickets.com/img/PrepTicketsLogo.png"
   },
   "version": "1.0.0",
   "dependencies": {},
