@@ -239,7 +239,7 @@ module.exports = function(grunt) {
               dest : '<%= at.app %>/<%= at.components %>/angular-ui-tinymce/src',
               src : [ 'angular-ui-tinymce/src/*.js' ]
             } ]
-          }
+          },
           replaceTinyMCEThemeFile : {
             files : [ {
               dot : true,
