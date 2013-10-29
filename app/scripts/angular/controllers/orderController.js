@@ -4,7 +4,7 @@ function orderController($scope, $cookieStore, $filter) {
   // pagination setup
   $scope.pagination = {
     pageSize: 20,
-    predicates: ['Placed', 'Contact', 'Total.ItemPrice', 'State'],
+    predicates: ['Placed', 'OrderId', 'Total.ItemPrice', 'State'],
     pageItems: function() {},
     textFilter: '',
     sort: function() {},

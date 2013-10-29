@@ -4,7 +4,7 @@
 angular.module('ui.tinymce', [])
   .value('uiTinymceConfig', {
   	'theme' : 'modern',
-    'theme_url': 'components/tinymce/themes/modern/theme.js',
+    'theme_url': 'components/tinymce/themes/modern/theme.min.js',
     'skin' : 'lightgray',
     'skin_url' : 'components/tinymce/skins/lightgray',
     'external_plugins': {
