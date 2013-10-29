@@ -24,6 +24,8 @@
 				<thead>
 					<tr>
 						<th>#</th>
+						<th><a href="" ng-click="pagination.sort('OrderId')">{{'Order.Text_OrderId'
+							  | t}}</a></th>
 						<th><a href="" ng-click="pagination.sort('Placed')">{{'Common.Text_OrderDate'
 								| t}}</a></th>
 						<th><a href="" ng-click="pagination.sort('Total.ItemPrice')">{{'Order.Text_Total'
@@ -36,6 +38,7 @@
 					<tr ng-repeat="order in pagination.pageItems()">
 						<td>{{$index + 1 +
 							pagination.currentPageIndex*pagination.pageSize}}</td>
+						<td>{{order.OrderId}}</td>
 						<td><span class="label">Placed on {{ order.Placed |
 								date:'MM/dd/yyyy @ h:mma' }}</span></td>
 						<td>{{order.Total.ItemPrice | currency}}</td>
