@@ -52,6 +52,16 @@ function eventController($scope, $cookieStore, $filter, $modal) {
     $scope.Event.tmpVenues = $scope.venues.length > 1 ? $scope.venues.splice(0,
         1) : $scope.venues;
     $scope.Event._tmpVenues = angular.copy($scope.Event.tmpVenues);
+    
+    // Default values for event datetime fields
+    // Not complete due to time zone problem with timepicker
+    var date = new Date();
+    $scope.Event.StartTime = new Date(new String(new Date(date.getTime() + 6*24*60*60*1000)).slice(0, 15) + ' 18:00:00');
+    $scope.Event.EndTime
+      = $scope.Event.OnSaleDateTimeEnd
+      = new Date(new String(new Date(date.getTime() + 6*24*60*60*1000)).slice(0, 15) + ' 22:00:00');
+    $scope.Event.OnSaleDateTimeStart = new Date(date.getTime());
+    
     $scope.wizardEvent.open = true;
     $scope.wizardEvent.reset();
   }

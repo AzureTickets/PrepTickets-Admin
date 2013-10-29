@@ -115,6 +115,8 @@ azureTicketsApp
                     if (angular.isDefined($attrs.uiDateFormat)) {
                       _el.attr('ui-date-format', $attrs.uiDateFormat)
                     }
+                    
+                    var calendarIcon = jQuery('<i class="fa fa-calendar datetimeInput"></i>');
                   } else if (/^.*Enum(?=\b).*$/g.test(fieldType)) {
                     _el = jQuery('<select />');
                     var _enum = BWL.ModelEnum[fieldType.replace(
@@ -189,6 +191,12 @@ azureTicketsApp
                   }
 
                   $element.append(_label).append(_tip).append(_el);
+
+                  // Append the calendar icon
+                  if (calendarIcon !== null) {
+                  	$element.addClass('relative');
+                  	$element.append(calendarIcon);
+                  }
 
                   if (dateTimeScript !== null) {
                     $element.after(dateTimeScript);

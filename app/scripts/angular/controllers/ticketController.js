@@ -163,6 +163,7 @@ function ticketController($scope, $cookieStore, $filter, $routeParams,
         $scope.ticket.createTicket($scope.storeKey, {
           Public : true,
           Name : $scope[ticketType].Name,
+          Brief : $scope[ticketType].Brief,
           Policy : $scope[ticketType].Policy,
           Price : $scope[ticketType].Price,
           MaxPurchaseQuantity : $scope[ticketType].MaxPurchaseQuantity,
