@@ -180,6 +180,9 @@ azureTicketsApp
                   if ($attrs.uiJq) {
                     _el.attr('ui-jq', $attrs.uiJq);
                   }
+                  if ($attrs.min) {
+                    _el.attr('min', $attrs.min);
+                  }
                   if (_label !== null) {
                     $compile(_label)($scope);
                   }

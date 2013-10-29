@@ -91,7 +91,7 @@
 					</dl>
 				</form>
 				<form ng-show="wizardEvent.currentStep == 3" name="atEvent3"
-					ng-submit="wizardEvent.next('atEvent3')">
+					ng-submit="!atEvent3.$error.min && wizardEvent.next('atEvent3')">
 					<dl class="clearfix">
 						<dd>
 							<label>{{ 'Common.Text_Venue' | t}}</label>
@@ -101,17 +101,18 @@
 								ui-select2="optsSelVenue" at-required ng-model="Event.tmpVenues"
 								name="Event_tmpVenues" />
 						</dd>
+						<dd class="clear">
+							<atfield class="input-small" ng-model="Event.MaximumCapacity" min="1"
+								at-required />
+							<div ng-show="atEvent3.$error.min" class="alert alert-error">Maximum capacity must be greater than 0</div>
+						</dd>
 						<dd>
 							<label>{{ 'Common.Text_Categories' | t}}</label>
 							<!-- @todo make this part of the atfield directive -->
 							<input type="text" ui-if="Event._tmpCategories"
 								data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-								ui-select2="optsSelCategories" ng-model="Event.tmpCategories"
+								ui-select2="optsSelCategories" at-required ng-model="Event.tmpCategories"
 								name="Event_tmpCategories" ng-init="evCategories()" />
-						</dd>
-						<dd class="clear">
-							<atfield class="input-small" ng-model="Event.MaximumCapacity"
-								at-required />
 						</dd>
 						<dd class="clear"></dd>
 						<dd class="pull-left">

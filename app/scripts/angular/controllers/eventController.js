@@ -49,18 +49,20 @@ function eventController($scope, $cookieStore, $filter, $modal) {
     $scope.Event = $scope.model.getInstanceOf('Event');
     $scope.Event.tmpCategories = [];
     $scope.Event._tmpCategories = angular.copy($scope.Event.tmpCategories);
-    $scope.Event.tmpVenues = $scope.venues.length > 1 ? $scope.venues.splice(0,
-        1) : $scope.venues;
+    $scope.Event.tmpVenues = [];
     $scope.Event._tmpVenues = angular.copy($scope.Event.tmpVenues);
+    
+    // Default value for MaximumCapacity
+    $scope.Event.MaximumCapacity = 1;
     
     // Default values for event datetime fields
     // Not complete due to time zone problem with timepicker
     var date = new Date();
-    $scope.Event.StartTime = new Date(new String(new Date(date.getTime() + 6*24*60*60*1000)).slice(0, 15) + ' 18:00:00');
+    $scope.Event.StartTime = new String(new Date(date.getTime() + 7*24*60*60*1000)).slice(0, 15) + ' 18:00:00';
     $scope.Event.EndTime
       = $scope.Event.OnSaleDateTimeEnd
-      = new Date(new String(new Date(date.getTime() + 6*24*60*60*1000)).slice(0, 15) + ' 22:00:00');
-    $scope.Event.OnSaleDateTimeStart = new Date(date.getTime());
+      = new String(new Date(date.getTime() + 7*24*60*60*1000)).slice(0, 15) + ' 22:00:00';
+    $scope.Event.OnSaleDateTimeStart = new String(new Date(date.getTime()));
     
     $scope.wizardEvent.open = true;
     $scope.wizardEvent.reset();
