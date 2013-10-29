@@ -14,25 +14,21 @@
 					<tr>
 						<th>#</th>
 						<th>{{ 'Common.Text_Name' | t}}</th>
-						<th>{{ 'Common.Text_Description' | t}}</th>
-						<th>{{ 'Common.Text_Control' | t}}</th>
+						<th>{{ 'Scanner.Text_DeviceInfo' | t}}</th>
+						<th>{{ 'Scanner.Text_LastSyncDate' | t}}</th>
+						<th>{{ 'Scanner.Text_Status' | t}}</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="scanDevice in pagination.pageItems() | filter:filterByEvent">
-						<td>{{ $index+1 }}</td>
+					<tr ng-repeat="scanDevice in pagination.pageItems() | filter:filterByEvent" ng-click="update(scanDevice)" mousestyle>
+						<td>{{$index + 1 +
+							pagination.currentPageIndex*pagination.pageSize}}</td>
 						<td>{{scanDevice.Name}}</td>
-						<td><p class="text clear">{{scanDevice.Description}}</p></td>
+						<td>{{scanDevice.DeviceInfo.OS || 'Scanner.Text_UnregisteredDevice' | t}}</td>
+						<td>{{scanDevice.LastSyncDateTime}}</td>
 						<td>
-							<div class="btn-group pull-left">
-								<button ui-if="Store.IsOwner" class="btn btn-mini btn-success"
-									ng-click="update(scanDevice)">{{ 'Common.Text_Update'
-									| t }}</button>
-								<button ui-if="Store.IsOwner"
-									ng-click="deleteScanDevice(scanDevice)"
-									class="btn btn-mini btn-danger">{{
-									'Common.Text_Remove' | t }}</button>
-							</div>
+							<span class="label label-success" ng-show="scanDevice.Active">{{'Scanner.Text_StatusActive' | t}}</span>
+							<span class="label" ng-show="!scanDevice.Active">{{'Scanner.Text_StatusDisabled' | t}}</span>
 						</td>
 					</tr>
 				</tbody>

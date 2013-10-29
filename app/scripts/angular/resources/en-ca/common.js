@@ -284,6 +284,7 @@ var CommonResources = {
   Text_Date : "Date",
   Text_StartDate : "Start Date",
   Text_EndDate : "End Date",
+  Text_Events : "Events",
   Text_EventName : "Event Name",
   Text_EventDate : "Event Date",
   Text_Price : "Price",
