@@ -240,6 +240,16 @@ module.exports = function(grunt) {
               src : [ 'angular-ui-tinymce/src/*.js' ]
             } ]
           }
+          replaceTinyMCEThemeFile : {
+            files : [ {
+              dot : true,
+              expand : true,
+              flatten : true,
+              cwd : '<%= at.app %>/patches',
+              dest : '<%= at.app %>/<%= at.components %>/tinymce/themes/modern',
+              src : [ 'tinymce/themes/modern/*.js' ]
+            } ]
+          }
         },
         compress : {
           wordpress : {
