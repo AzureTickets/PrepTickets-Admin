@@ -108,6 +108,16 @@ function ticketController($scope, $cookieStore, $filter, $routeParams,
        * atmodel display.
        */
       $scope.GeneralAdmissionTicketItemInfo.Stock = 0;
+      
+      // Default ticket's date to event's date
+      if ($scope.Event != null) {
+      	$scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeStart = $scope.Event.OnSaleDateTimeStart;
+        $scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeEnd = $scope.Event.OnSaleDateTimeEnd;
+      } else {
+      	var date = new Date();
+      	$scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeStart = new String(new Date(date.getTime()));
+      	$scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeEnd = new String(new Date(date.getTime() + 7*24*60*60*1000)).slice(0, 15) + ' 22:00:00';
+      }
 
       $scope.wizardTicket.open = true;
       $scope.wizardTicket.reset();
