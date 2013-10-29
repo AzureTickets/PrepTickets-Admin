@@ -294,6 +294,7 @@ var CommonResources = {
   Message_CreateOrUseSchool : 'Create a new School or use an existing School?',
   Text_Loading : 'Loading...',
   Text_Waiting : 'Please Wait...',
+  Text_WaitLoading : 'Please wait, loading...',
   Text_OnlyOutOfStockAccept : 'Only products in stock have been added to your shopping cart',
   Text_EventStartAt : 'Event Starts at',
   Text_EnjoyEvent : "Enjoy the event.",

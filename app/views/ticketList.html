@@ -1,6 +1,8 @@
 <div class="clear row-fluid list">
-	<div preload-postload ui-if="tickets.length == 0" class="alert alert-info">
-		No tickets</div>
+	<div ng-show="tickets.length == 0 && infoMsg == null"
+		class="alert alert-info">{{ 'Common.Text_TicketEmpty' | t }}</div>
+	<div class="alert alert-info"
+		ng-show="infoMsg && infoMsg != null || false">{{infoMsg}}</div>
 	<!-- ticket list -->
 	<ul class="thumbnails" ui-if="tickets.length>0">{{tickets[0]}}
 		<li ng-repeat="ticket in tickets | filter:filterByEvent" class="span4">

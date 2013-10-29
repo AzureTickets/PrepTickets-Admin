@@ -39,10 +39,16 @@ function ticketController($scope, $cookieStore, $filter, $routeParams,
   }
 
   $scope.init = function(resetEvent) {
+    $scope.error.info($filter('t')('Common.Text_WaitLoading'))
+
     if (!angular.isDefined(resetEvent) || resetEvent) {
       $scope.loadEvent();
     }
-    $scope.ticket.loadTickets($scope);
+    $scope.ticket.loadTickets($scope).then(function() {
+      $scope.error.info(null)
+    }, function() {
+      $scope.error.info(null)
+    });
   }
 
   $scope.filterByEvent = function(ticket) {

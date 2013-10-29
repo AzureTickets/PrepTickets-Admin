@@ -20,6 +20,7 @@ module.exports = function(grunt) {
     atConfig.config = require('./package.json').path.config || null;
     atConfig.components = require('./package.json').path.lib || null;
     atConfig.name = require('./package.json').name || null;
+    atConfig.logo = require('./package.json').url.logo || null;
     atConfig.urlApi = require('./package.json').url.api || null;
     atConfig.urlGeo = require('./package.json').url.geo || null;
   } catch (e) {

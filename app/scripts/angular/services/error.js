@@ -1,4 +1,4 @@
-// error service
+// error/warning service
 azureTicketsApp.factory('errorService', [
     '$rootScope', function($rootScope) {
       return {
@@ -12,7 +12,9 @@ azureTicketsApp.factory('errorService', [
         log : function(msg) {
           $rootScope.errorMsg = msg;
         },
-        
+        info : function(msg){
+          $rootScope.infoMsg = msg;
+        },
         clearError : function() {
         	$rootScope.errorMsg = '';
         }
