@@ -1,0 +1,3 @@
+[submodule "dist"]
+	path = dist
+	url = https://bwldev@ptadmin.scm.azurewebsites.net:443/ptadmin.git

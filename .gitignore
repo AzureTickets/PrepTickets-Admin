@@ -3,7 +3,7 @@ node_modules
 nbproject
 .project
 .settings
-dist
+dist/**
 .tmp
 .sass-cache
 app/components
