@@ -45,8 +45,10 @@
 								label="'Common.Text_CustomURI' | t"></atfield>
 						</dd>
 						<dd>
-						  <label for="descTinymce">{{'Common.Text_Description' | t}}</lable>
-						  <textarea id="descTinymce" ui-tinymce ng-model="Event.Description" ng-cloak></textarea>
+						  <atfield class="input-xxlarge" ng-model="Event.Description"
+								label="'Common.Text_Description' | t" rows="5" />
+						  <!--<label for="descTinymce">{{'Common.Text_Description' | t}}</lable>
+						  <textarea id="descTinymce" ui-tinymce ng-model="Event.Description" ng-cloak></textarea>-->
 						</dd>
 						<dd>
 							<input type="submit" class="btn btn-primary clear"
