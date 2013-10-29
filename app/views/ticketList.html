@@ -4,7 +4,7 @@
 	<div class="alert alert-info"
 		ng-show="infoMsg && infoMsg != null || false">{{infoMsg}}</div>
 	<!-- ticket list -->
-	<ul class="thumbnails" ui-if="tickets.length>0">{{tickets[0]}}
+	<ul class="thumbnails" ui-if="tickets.length>0">
 		<li ng-repeat="ticket in tickets | filter:filterByEvent" class="span4">
 			<div class="thumbnail">
 				<h4 class="pull-left">{{ticket.Name}}</h4>
