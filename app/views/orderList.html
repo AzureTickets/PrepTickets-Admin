@@ -32,7 +32,6 @@
 								| t}}</a></th>
 						<th><a href="" ng-click="pagination.sort('State')">{{'Order.Text_State'
 								| t}}</a></th>
-						<th>{{'Common.Text_Control' | t}}</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -46,13 +45,6 @@
 								at-hide-props="DateCreated,DateModified,StoreKey,Address,FirstName,LastName,DateOfBirth,Age,Gender,ContactRole"></atmodel></td>
 						<td>{{order.Total.ItemPrice | currency}}</td>
 						<td>{{order.State | api:'enumReplace':'OrderStateEnum'}}</td>
-						<td>
-							<div class="btn-group pull-left">
-								<button ui-if="Store.IsOwner" ng-click="deleteOrder(order)"
-									class="btn btn-mini btn-danger">{{
-									'Common.Text_Remove' | t }}</button>
-							</div>
-						</td>
 					</tr>
 				</tbody>
 			</table>

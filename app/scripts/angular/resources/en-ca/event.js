@@ -28,6 +28,7 @@ var EventResources = {
   Text_Event_Type : "Event Type",
   Text_EventEndAt : 'Event Ends at',
   Text_Venue : 'Venue',
+  Text_MaximumCapacityMinFail : 'Maximum capacity must be greater than 0',
   Text_Address : 'Address',
   Text_ComfirmCode : 'Confirmation code',
   Text_SaleStartAt : "Sales Starts at",

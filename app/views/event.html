@@ -104,7 +104,7 @@
 						<dd class="clear">
 							<atfield class="input-small" ng-model="Event.MaximumCapacity" min="1"
 								at-required />
-							<div ng-show="atEvent3.$error.min" class="alert alert-error">Maximum capacity must be greater than 0</div>
+							<div ng-show="atEvent3.$error.min" class="alert alert-error">{{ 'Event.Text_MaximumCapacityMinFail' | t }}</div>
 						</dd>
 						<dd>
 							<label>{{ 'Common.Text_Categories' | t}}</label>
