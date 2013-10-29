@@ -1,5 +1,6 @@
 {
-  "name": "PrepTickets Admin",
+  "name": "revvly",
+  "siteName" : "PrepTickets Admin",
   "path" : {
 	"app" : "app",
 	"dist" : "dist",
@@ -30,7 +31,7 @@
     "grunt-contrib-livereload": "*",
     "grunt-contrib-compress": "*",
     "grunt-bower-hooks": "*",
-    "grunt-usemin": "*",
+    "grunt-usemin": "0.1.12",
     "grunt-regarde": "*",
     "gruntacular": "*",
     "grunt-open": "*",
