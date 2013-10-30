@@ -284,6 +284,25 @@ module.exports = function(grunt) {
               src : [ '**' ]
             } ]
           }
+        },
+        shell : {
+          // retrieve git submodules, including dist/ folder used for publishing
+          // project on azure's site
+          gitSubmodules : {
+            command : 'git submodule update --init && cd dist && git checkout master',
+            options : {
+              stdout : true,
+              stderr : true,
+            }
+          },
+          // push dist to azure's repo
+          publish : {
+            command : 'cd dist && git add . && git commit -m "publishing" && git push -f origin master',
+            options : {
+              stdout : true,
+              stderr : true,
+            }
+          }
         }
       });
 
@@ -302,13 +321,15 @@ module.exports = function(grunt) {
   grunt.registerTask('test:continuous', [ 'clean:server', 'less', 'concat',
       'connect:test', 'testacular:continuous' ]);
 
-  grunt.registerTask('build', [ 'clean:dist', /* 'jshint', */
+  grunt.registerTask('build', [ 'clean:dist', 'shell:gitSubmodules', /* 'jshint', */
   'test', 'useminPrepare', 'copy', 'cssmin', 'htmlmin', 'usemin', 'concat',
       'ngmin', /* 'uglify' */
   ]);
 
   grunt.registerTask('_internal', [ 'useminPrepare', 'htmlmin', 'usemin',
       'concat', 'ngmin' ]);
+
+  grunt.registerTask('publish', [ 'shell:publish' ]);
 
   grunt.registerTask('wp', [ 'build', 'compress:wordpress' ]);
 

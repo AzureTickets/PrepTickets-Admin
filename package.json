@@ -33,6 +33,7 @@
     "grunt-bower-hooks": "*",
     "grunt-usemin": "0.1.12",
     "grunt-regarde": "*",
+    "grunt-shell": "*",
     "gruntacular": "*",
     "grunt-open": "*",
     "matchdep": "*",
