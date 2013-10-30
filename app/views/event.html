@@ -3,7 +3,7 @@
 	ng-init="media.loadImages(this); category.loadCategories(this)">
 	<script type="text/ng-template" id="formEvent.html">
 			<div class="modal-header">
-				<button type="button" ng-click="wizardEvent.open = false"
+				<button type="button" ng-click="removeTinymceIns(); wizardEvent.open = false"
 					class="close">&times;</button>
 				<h3>
 					<p class="text-info">{{ 'Common.Text_Event' | t}}</p>
@@ -45,8 +45,8 @@
 								label="'Common.Text_CustomURI' | t"></atfield>
 						</dd>
 						<dd>
-						  <atfield class="input-xxlarge" ng-model="Event.Description"
-								label="'Common.Text_Description' | t" rows="5" />
+						  <label for="descTinymce">{{'Common.Text_Description' | t}}</lable>
+						  <textarea id="descTinymce" ui-tinymce ng-model="Event.Description" ng-cloak></textarea>
 						</dd>
 						<dd>
 							<input type="submit" class="btn btn-primary clear"
@@ -174,7 +174,7 @@
 					</dd>
 					<dd class="pull-left">
 						<a ng-show="wizardEvent.currentStep>1 && wizardEvent.saved"
-							ng-click="wizardEvent.open = false"
+							ng-click="removeTinymceIns(); wizardEvent.open = false"
 							class="btn btn-primary clear">{{ 'Common.Text_Close' | t }}</a>
 					</dd>
 				</dl>

@@ -230,6 +230,27 @@ module.exports = function(grunt) {
               src : [ 'font-awesome/*.less' ]
             } ]
           },
+          // TinyMCE patch and fix
+          replaceUIModule : {
+            files : [ {
+              dot : true,
+              expand : true,
+              flatten : true,
+              cwd : '<%= at.app %>/patches',
+              dest : '<%= at.app %>/<%= at.components %>/angular-ui/build',
+              src : [ 'angular-ui/build/*.js' ]
+            } ]
+          },
+          replaceTinyMCESource : {
+            files : [ {
+              dot : true,
+              expand : true,
+              flatten : true,
+              cwd : '<%= at.app %>/patches',
+              dest : '<%= at.app %>/<%= at.components %>/tinymce',
+              src : [ 'tinymce/*.js' ]
+            } ]
+          },
           replaceTinyMCEModule : {
             files : [ {
               dot : true,
@@ -250,6 +271,7 @@ module.exports = function(grunt) {
               src : [ 'tinymce/themes/modern/*.js' ]
             } ]
           }
+          
         },
         compress : {
           wordpress : {
