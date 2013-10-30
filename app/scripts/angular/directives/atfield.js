@@ -79,7 +79,7 @@ azureTicketsApp
                     _el.text(_label.text());
                     jQuery(_el)
                         .prepend(
-                            '<i ui-if="atModel" class="icon-ok" /><i ui-if="!atModel" class="icon-remove" />')
+                            '<i ui-if="atModel" class="fa fa-check" /><i ui-if="!atModel" class="fa fa-times" />')
                     _label = null;
                   } else if (/^Date|Time/g.test(fieldType)) {
                     _attr.type = 'text', _el = jQuery('<input ' + _req + '/>');
