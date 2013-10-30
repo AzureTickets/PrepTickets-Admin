@@ -1,7 +1,7 @@
 'use strict';
 
-var azureTicketsApp = angular.module('azureTicketsApp', [ 'ui', 'ngCookies',
-    'ui.bootstrap', 'ui.tinymce', 'ngSanitize' ]);
+var azureTicketsApp = angular.module('azureTicketsApp', [ 'ui',
+    'ui.directives', 'ngCookies', 'ui.bootstrap', 'ui.tinymce', 'ngSanitize' ]);
 
 /**
  * Apply additional logic on any route request. Order is important.

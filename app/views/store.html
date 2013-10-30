@@ -1,8 +1,6 @@
 <div class="atPanel" ng-cloak>
 	<!-- top menu -->
 	<div ng-include src="'views/elements/error.html'"></div>
-	<div ui-if="DomainProfile.Key && wizard.currentStep > 0 || false"
-		ng-include src="'views/elements/store/bcSettings.html'"></div>
 	<!-- store info update -->
 	<div ui-if="DomainProfile && DomainProfile.Key" class="row-fluid"
 		ng-init="loadCurrencies()">
@@ -36,158 +34,123 @@
 		</span>
 		<ng-form ui-if="Store && Store.isNew || Store && Store.IsOwner"
 			name="atStore" ng-submit="save()">
-		<form ng-show="wizard.currentStep == 1" name="atStore1"
-			ng-submit="URIAvailable && wizard.next('atStore1') || false">
-			<dl class="clearfix">
-				<dd>
-					<atfield at-required class="input-xlarge" ng-model="Store.Name"
-						label="'Common.Text_SchoolName' | t"></atfield>
-				</dd>
-				<dd>
-					<atfield autocomplete="off" at-required
-						ng-readonly="tmpURI || false" class="input-xlarge"
-						ng-model="Store.URI" at-copy="CustomURI"
-						label="'Common.Text_CustomURI' | t"
-						tip="'Common.Text_TipCustomURI' | t"></atfield>
-					<i
-						ng-class="{'fa fa-ok': (Store.URI.length > config.typeahead.minLength && URIAvailable), 'fa fa-ban-circle': !URIAvailable || Store.URI.length <= config.typeahead.minLength}">
-					</i><span ui-if="!URIAvailable" class="label label-important">
-						{{'Common.Text_CustomURIUnavailable' | t}}</span>
-				</dd>
-				<dd>
-					<atfield class="input-xlarge" ng-model="Store.Description"
-						label="'Common.Text_Description' | t" rows="5"></atfield>
-				</dd>
-				<dd>
-					<input type="submit" class="btn btn-primary clear"
-						value="{{
-							'Common.Text_Next' | t }}" />
-				</dd>
-			</dl>
-		</form>
-		<form ui-if="Store.Address || false" ng-show="wizard.currentStep == 2"
-			name="atStore2" ng-submit="wizard.next('atStore2')">
-			<!-- location info -->
-			<div ng-include src="'views/address.html'" onload="modelName='Store'"></div>
-			<dl>
-				<dd class="pull-left">
-					<a ng-show="wizard.currentStep>1"
-						ng-click="wizard.currentStep = wizard.currentStep-1"
-						class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
-				</dd>
-				<dd class="pull-left">
-					<input type="submit" class="btn btn-primary clear"
-						value="{{
-		 							'Common.Text_Next' | t }}" />
-				</dd>
-			</dl>
-		</form>
-		<form ng-show="wizard.currentStep == 3" name="atStore3"
-			ng-submit="wizard.next('atStore3')">
+		<div class="alert alert-info"
+			ng-click="collapseStep1 = !collapseStep1" mousestyle>{{
+			'Common.Text_CreateSchool_Step1' | t }}</div>
+		<div ng-init="collapseStep1 = false" collapse="collapseStep1">
+			<form name="atStore1"
+				ng-submit="URIAvailable && wizard.next('atStore1') || false">
+				<dl class="clearfix">
+					<dd>
+						<atfield at-required class="input-xlarge" ng-model="Store.Name"
+							label="'Common.Text_SchoolName' | t"></atfield>
+					</dd>
+					<dd>
+						<atfield autocomplete="off" at-required
+							ng-readonly="tmpURI || false" class="input-xlarge"
+							ng-model="Store.URI" at-copy="CustomURI"
+							label="'Common.Text_CustomURI' | t"
+							tip="'Common.Text_TipCustomURI' | t"></atfield>
+						<i
+							ng-class="{'fa fa-ok': (Store.URI.length > config.typeahead.minLength && URIAvailable), 'fa fa-ban-circle': !URIAvailable || Store.URI.length <= config.typeahead.minLength}">
+						</i><span ui-if="!URIAvailable" class="label label-important">
+							{{'Common.Text_CustomURIUnavailable' | t}}</span>
+					</dd>
+					<dd>
+						<atfield class="input-xlarge" ng-model="Store.Description"
+							label="'Common.Text_Description' | t" rows="5"></atfield>
+					</dd>
+				</dl>
+			</form>
+		</div>
+		<div class="alert alert-info"
+			ng-click="collapseStep2 = !collapseStep2" mousestyle>{{
+			'Common.Text_CreateSchool_Step2' | t }}</div>
+		<div ng-init="collapseStep2 = true" collapse="collapseStep2">
+			<form ui-if="Store.Address || false" name="atStore2"
+				ng-submit="wizard.next('atStore2')">
+				<!-- location info -->
+				<div ng-include src="'views/address.html'"
+					onload="modelName='Store'"></div>
+			</form>
+		</div>
+		<div class="alert alert-info"
+			ng-click="collapseStep3 = !collapseStep3" mousestyle>{{
+			'Common.Text_CreateSchool_Step3' | t }}</div>
+		<div ng-init="collapseStep3 = true" collapse="collapseStep3">
+			<form name="atStore3" ng-submit="wizard.next('atStore3')">
 
-			<dl class="clearfix">
-				<!-- Media selector -->
-				<dd class="media-selector"
-					ng-class="{'atStoreImgSel': images.length > 0}"
-					ng-controller="mediaController" ng-init="init(); modelName='Store'"
-					ng-include src="'views/elements/store/mediaSelector.html'"></dd>
-
-				<dd class="pull-left">
-					<a ng-show="wizard.currentStep>1"
-						ng-click="wizard.currentStep = wizard.currentStep-1"
-						class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
-				</dd>
-				<dd class="pull-left">
-					<input type="submit" class="btn btn-primary clear"
-						value="{{
-		 							'Common.Text_Next' | t }}" />
-				</dd>
-			</dl>
-		</form>
-		<form ng-show="wizard.currentStep == 4" name="atStore4"
-			ng-submit="wizard.next('atStore4')">
-			<dl class="clearfix">
-				<dd>
-					<label>{{'Common.Text_SchoolCurrency' | t}}</label> <select
-						ui-select2="{containerCssClass:'input-xlarge'}" at-required
-						name="Store_Currency"
-						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-						ng-model="Store.Currency"
-						ng-change="loadPaymentProvidersByCurrency(Store.Currency)">
-						<option></option>
-						<option ng-selected="curr.ISO == Store.Currency"
-							ng-repeat="curr in currencies" value="{{curr.ISO}}">{{curr.Name}}</option>
-					</select>
-				</dd>
-				<dd ng-show="Store.Currency || false">
-					<label>{{'Common.Text_SchoolMenu_PaymentProvider' | t}}</label> <select
-						type="text" ui-select2="{containerCssClass:'input-xlarge'}"
-						data-placeholder="{{ 'Common.Text_ChooseOption' | t}}" at-required
-						name="Store_PaymentProvider"
-						ng-model="Store.tmpPaymentProvider.ProviderType"
-						ng-change="loadPaymentProviderInfo(Store.tmpPaymentProvider)">
-						<option></option>
-						<option ng-selected="Store.tmpPaymentProvider.ProviderType == p"
-							ng-repeat="p in paymentProviders" value="{{p}}">{{'Common.Text_Paypro_'+p
-							| t}}</option>
-					</select>
-				</dd>
-				<dd
-					ui-if="tmpPaymentProviderInfo && tmpPaymentProviderInfo.RequiresProviderId || false">
-					<atfield at-required class="input-xxlarge"
-						ng-model="Store.tmpPaymentProvider.ProviderId"
-						at-copy="PaymentProvider"
-						label="tmpPaymentProviderInfo.ProviderIdText"></atfield>
-				</dd>
-				<dd
-					ui-if="tmpPaymentProviderInfo && tmpPaymentProviderInfo.RequiresProviderToken || false">
-					<atfield class="input-xxlarge"
-						ng-model="Store.tmpPaymentProvider.ProviderToken"
-						at-copy="PaymentProvider"
-						label="tmpPaymentProviderInfo.ProviderTokenText"></atfield>
-				</dd>
-				<dd ui-if="tmpPaymentProviderInfo || false">
-					<atfield class="input-xxlarge"
-						ng-model="Store.tmpPaymentProvider.Policy" at-required
-						at-copy="PaymentProvider" label="'Common.Text_Policy' | t"
-						rows="5"></atfield>
-				</dd>
-			</dl>
-			<dl>
-				<dd class="pull-left">
-					<a ng-show="wizard.currentStep>1"
-						ng-click="wizard.currentStep = wizard.currentStep-1"
-						class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
-				</dd>
-				<dd class="pull-left">
-					<input type="submit" class="btn btn-primary clear"
-						value="{{
-							'Common.Text_Next' | t }}" />
-				</dd>
-			</dl>
-		</form>
-		<form ui-if="Store && wizard.currentStep == 5 && !wizard.saved"
-			name="atStore5" ng-submit="wizard.next('atStore5', true)">
-			<dl>
-				<dd class="clear row-fluid">
-					<div class="span6">
-						<!-- store details -->
-						<atmodel ng-model="Store" extra1="geo" extra2="currencies"
-							at-hide-props="DateCreated,DateModified"></atmodel>
-					</div>
-				</dd>
-				<dd class="pull-left">
-					<a ng-show="wizard.currentStep>1"
-						ng-click="wizard.currentStep = wizard.currentStep-1"
-						class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
-				</dd>
-				<dd class="pull-left">
-					<input type="submit" class="btn btn-success clear"
-						value="{{
+				<dl class="clearfix">
+					<!-- Media selector -->
+					<dd class="media-selector"
+						ng-class="{'atStoreImgSel': images.length > 0}"
+						ng-controller="mediaController"
+						ng-init="init(); modelName='Store'" ng-include
+						src="'views/elements/store/mediaSelector.html'"></dd>
+				</dl>
+			</form>
+		</div>
+		<div class="alert alert-info"
+			ng-click="collapseStep4 = !collapseStep4" mousestyle>{{
+			'Common.Text_CreateSchool_Step4' | t }}</div>
+		<div ng-init="collapseStep4 = true" collapse="collapseStep4">
+			<form name="atStore4" ng-submit="wizard.next('atStore4')">
+				<dl class="clearfix">
+					<dd>
+						<label>{{'Common.Text_SchoolCurrency' | t}}</label> <select
+							ui-select2="{containerCssClass:'input-xlarge'}" at-required
+							name="Store_Currency"
+							data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
+							ng-model="Store.Currency"
+							ng-change="loadPaymentProvidersByCurrency(Store.Currency)">
+							<option></option>
+							<option ng-selected="curr.ISO == Store.Currency"
+								ng-repeat="curr in currencies" value="{{curr.ISO}}">{{curr.Name}}</option>
+						</select>
+					</dd>
+					<dd ng-show="Store.Currency || false">
+						<label>{{'Common.Text_SchoolMenu_PaymentProvider' | t}}</label> <select
+							type="text" ui-select2="{containerCssClass:'input-xlarge'}"
+							data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
+							at-required name="Store_PaymentProvider"
+							ng-model="Store.tmpPaymentProvider.ProviderType"
+							ng-change="loadPaymentProviderInfo(Store.tmpPaymentProvider)">
+							<option></option>
+							<option ng-selected="Store.tmpPaymentProvider.ProviderType == p"
+								ng-repeat="p in paymentProviders" value="{{p}}">{{'Common.Text_Paypro_'+p
+								| t}}</option>
+						</select>
+					</dd>
+					<dd
+						ui-if="tmpPaymentProviderInfo && tmpPaymentProviderInfo.RequiresProviderId || false">
+						<atfield at-required class="input-xxlarge"
+							ng-model="Store.tmpPaymentProvider.ProviderId"
+							at-copy="PaymentProvider"
+							label="tmpPaymentProviderInfo.ProviderIdText"></atfield>
+					</dd>
+					<dd
+						ui-if="tmpPaymentProviderInfo && tmpPaymentProviderInfo.RequiresProviderToken || false">
+						<atfield class="input-xxlarge"
+							ng-model="Store.tmpPaymentProvider.ProviderToken"
+							at-copy="PaymentProvider"
+							label="tmpPaymentProviderInfo.ProviderTokenText"></atfield>
+					</dd>
+					<dd ui-if="tmpPaymentProviderInfo || false">
+						<atfield class="input-xxlarge"
+							ng-model="Store.tmpPaymentProvider.Policy" at-required
+							at-copy="PaymentProvider" label="'Common.Text_Policy' | t"
+							rows="5"></atfield>
+					</dd>
+				</dl>
+			</form>
+		</div>
+		<dl>
+			<dd>
+				<input type="submit" class="btn btn-success clear"
+					value="{{
 		 							'Common.Text_Save' | t }}" />
-				</dd>
-			</dl>
-		</form>
+			</dd>
+		</dl>
 		<dl ui-if="wizard.finished" class="clearfix">
 			<dd class="clear">
 				<ul ui-if="!wizard.saved" class="wizardProgress">
