@@ -56,25 +56,27 @@ function addressController($scope) {
 
   $scope.loadCountry = function(address) {
     if (angular.isDefined(address) && angular.isDefined(address.Country)) {
-      $scope.geo.loadCountry(address.Country).then(function(country) {
-        // anytime we change country, reset address
-        address.City = null, address.Region = null, address.Timezone = null;
-        $scope.regions = [], $scope.timezones = [];
-        $scope.Country = country;
-        address.tmpContinentIso = country.ContinentISO;
+      $scope.geo.loadCountry(address.Country).then(
+          function(country) {
+            // anytime we change country, reset address
+            address.City = null, address.Region = null,
+                address.Timezone = null, address.PostalCode = null;
+            $scope.regions = [], $scope.timezones = [];
+            $scope.Country = country;
+            address.tmpContinentIso = country.ContinentISO;
 
-        if (!country.HasPostalCodes) {
-          $scope.loadRegionsByCountry(address)
-        }
-        if ($scope.countries.length === 0) {
-          $scope.loadCountries(address)
-        }
-        if ($scope.timezones.length === 0) {
-          $scope.loadTimezonesByCountry(address)
-        }
-      }, function(err) {
-        $scope.error.log(err)
-      });
+            if (!country.HasPostalCodes) {
+              $scope.loadRegionsByCountry(address)
+            }
+            if ($scope.countries.length === 0) {
+              $scope.loadCountries(address)
+            }
+            if ($scope.timezones.length === 0) {
+              $scope.loadTimezonesByCountry(address)
+            }
+          }, function(err) {
+            $scope.error.log(err)
+          });
     }
   }
 

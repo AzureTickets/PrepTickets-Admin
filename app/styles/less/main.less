@@ -18,21 +18,22 @@ body {
 	background: #111;
 	padding-top: 45px;
 	-webkit-font-smoothing: antialiased;
-	.content-main{
-		padding-top:25px
+	.content-main {
+		padding-top: 25px
 	}
-	.brand{
-		.logo{
-			width:82px
+
+	.brand {
+		.logo {
+			width: 82px
 		}
 	}
-	
-	.navbar-fixed-top{
-		ul.nav{
-			margin-top:14px
+
+	.navbar-fixed-top {
+		ul.nav {
+			margin-top: 14px
 		}
 	}
-	
+
 	.container {
 		width: 97%;
 		padding-left: 1.5%;
@@ -51,10 +52,9 @@ body {
 		}
 
 		.atStoreImgSel {
-			//max-width: 160px;
 		}
 	}
-	
+
 	.modal {
 		top: 2% ! important;
 		position: absolute;
@@ -83,85 +83,83 @@ body {
 			}
 		}
 	}
-	
-  .media-selector {
-    width: 510px;
-    
-    .transition(@property: all; @duration: 1s; @ease: ease) {
-      -webkit-transition: @arguments;
-      -moz-transition: @arguments;
-      -o-transition: @arguments;
-      transition: @arguments;
-    }
 
-    ul li {
-      margin: 0 2px 12px;
-      max-height: 110px;
-      position: relative;
-      text-align: center;
-      vertical-align: middle;
-      width: 22%;
+	.media-selector {
+		width: 510px;
+		.transition (@property: all;
+		@duration: 1s;
+		@ease: ease) {
+			-webkit-transition: @arguments;
+			-moz-transition: @arguments;
+			-o-transition: @arguments;
+			transition: @arguments;
+		}
 
-      img {
-        max-height: 110px;
-      }
+		ul li {
+			margin: 0 2px 12px;
+			max-height: 110px;
+			position: relative;
+			text-align: center;
+			vertical-align: middle;
+			width: 22%;
+			img {
+				max-height: 110px;
+			}
 
-      .upload-icon {
-        position: relative;
-        top: 20%;
+			.upload-icon {
+				position: relative;
+				top: 20%;
+				.icon-plus-sign {
+					color: #3A87AD;
+					.transition (color;
+					0.4s);
+					&:hover {
+						color: #932AB6;
+					}
+				}
+			}
 
-        .icon-plus-sign {
-          color: #3A87AD;
-          .transition(color; 0.4s);
-          
-          &:hover {
-            color: #932AB6;
-          }
-        }
-      }
+			.delete-icon {
+				left: 6px;
+				opacity: 0;
+				position: absolute;
+				top: -2px;
+				.transition (opacity;
+				0.7s);
+			}
 
-      .delete-icon {
-        left: 6px;
-        opacity: 0;
-        position: absolute;
-        top: -2px;
-        
-        .transition(opacity; 0.7s);
-      }
+			.selected-icon {
+				position: absolute;
+				right: 6px;
+				bottom: -3px;
+				font-size: 160%;
+			}
 
-      .selected-icon {
-        position: absolute;
-        right: 6px;
-        bottom: -3px;
-        font-size: 160%;
-      }
-      
-      &:hover {
-        .delete-icon {
-          opacity: 0.8;
-        }
-      }
-    }
-			  
-    ul + .pagination {
-      margin: 0 -20px 0 0;
-    }
-  }
-  
-  .relative {
-    position: relative;
-    
-    input + .datetimeInput {
-      position: absolute;
-      left: 138px;
-      top: 26px;
-    }
-  }
+			&:hover {
+				.delete-icon {
+					opacity: 0.8;
+				}
+			}
+		}
+
+		ul + .pagination {
+			margin: 0 -20px 0 0;
+		}
+	}
+
+	.relative {
+		position: relative;
+		input + .datetimeInput {
+			position: absolute;
+			left: 138px;
+			top: 26px;
+		}
+	}
 
 	.pad (@padding: .5em) {
 		padding: @padding;
 	}
-	
+
 	.clear {
 		display: block;
 		clear: both;
@@ -173,6 +171,16 @@ body {
 
 	form * {
 		font-family: "Open Sans", Arial, Helvetica, sans-serif;
+	}
+
+	form {
+		dl {
+			dd {
+				.select2-container {
+					padding-bottom: 5px
+				}
+			}
+		}
 	}
 
 	input , textarea {
