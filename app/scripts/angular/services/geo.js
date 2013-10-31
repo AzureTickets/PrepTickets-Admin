@@ -63,6 +63,24 @@ azureTicketsApp
 
                   return def.promise;
                 },
+                getCountries : function() {
+                  var def = $q.defer();
+
+                  BWL.Services.GeoService.ListCountriesAsync(
+                      function(countries) {
+                        _countries = countries;
+
+                        $rootScope.$apply(function() {
+                          def.resolve(countries)
+                        })
+                      }, function(err) {
+                        $rootScope.$apply(function() {
+                          def.reject(err)
+                        })
+                      })
+
+                  return def.promise;
+                },
                 getCityByName : function(name, regionIso, countryIso) {
                   var def = $q.defer();
 

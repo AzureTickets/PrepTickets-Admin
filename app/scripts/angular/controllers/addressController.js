@@ -18,33 +18,29 @@ function addressController($scope) {
     $scope.addressEditable = !$scope.addressEditable;
   }
 
-  $scope.loadCountriesByContinent = function(address, reset) {
-    if (angular.isDefined(address.tmpContinentIso)) {
-      var continentIso = address.tmpContinentIso;
+  $scope.loadCountries = function(address, reset) {
 
-      // reset lists
-      $scope.countries = [];
-      $scope.regions = [];
-      $scope.timezones = [];
+    // reset lists
+    $scope.countries = [];
+    $scope.regions = [];
+    $scope.timezones = [];
 
-      // reset address
-      if (reset) {
-        $scope.Country = null;
-        address.City = null, address.AddressLine1 = null,
-            address.AddressLine2 = null, address.Timezone = null,
-            address.Region = null, address.PostalCode = null;
-      }
-
-      $scope.geo.getCountriesByContinent(continentIso).then(
-          function(countries) {
-            // prepend most used
-            var c = [ 'CA', 'US', 'GB' ];
-            $scope.countries = $scope.object
-                .prioritizeSort(countries, c, 'ISO');
-          }, function(err) {
-            $scope.error.log(err)
-          });
+    // reset address
+    if (reset) {
+      $scope.Country = null;
+      address.City = null, address.AddressLine1 = null,
+          address.AddressLine2 = null, address.Timezone = null,
+          address.Region = null, address.PostalCode = null;
     }
+
+    $scope.geo.getCountries().then(function(countries) {
+      // prepend most used
+      var c = [ 'CA', 'US', 'GB' ];
+      $scope.countries = $scope.object.prioritizeSort(countries, c, 'ISO');
+    }, function(err) {
+      $scope.error.log(err)
+    });
+
   }
 
   $scope.loadTimezonesByCountry = function(address) {

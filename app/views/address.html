@@ -1,5 +1,5 @@
 <div ng-controller="addressController" class="clearfix"
-	ng-init="loadContinents();loadCountry(this[modelName].Address)">
+	ng-init="loadCountries();loadCountry(this[modelName].Address)">
 	<dl ui-if="modelName == 'Store'" class="clearfix">
 		<dd class="pull-left">{{ this[modelName].Address | address }}</dd>
 		<dd class="pull-left">
@@ -71,19 +71,6 @@
 				<option></option>
 				<option ng-selected="c.ISO == this[modelName].Address.Country"
 					ng-repeat="c in countries" value="{{c.ISO}}">{{c.Name}}</option>
-			</select>
-		</dd>
-		<dd class="clear">
-			<label>{{'Address.LabelContinent' | t}}</label> <select
-				data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-				ui-select2="{containerCssClass:'input-xlarge'}" at-required
-				name="Address_Continent"
-				ng-model="this[modelName].Address.tmpContinentIso"
-				ng-change="loadCountriesByContinent(this[modelName].Address, true)">
-				<option></option>
-				<option
-					ng-selected="cc.ISO == this[modelName].Address.tmpContinentIso"
-					ng-repeat="cc in continents" value="{{cc.ISO}}">{{cc.Name}}</option>
 			</select>
 		</dd>
 	</dl>
