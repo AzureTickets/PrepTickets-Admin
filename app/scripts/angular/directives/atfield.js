@@ -19,6 +19,7 @@ azureTicketsApp
                   atReadonly : '=ngReadonly',
                   atUiValidate : '&uiValidate',
                   atUiValidateWatch : '&uiValidateWatch',
+                  atBtnExp : '&appendBtnExp',
                   // atPattern : '@ngPattern',
                   atBlur : '=ngBlur'
                 },
@@ -34,7 +35,7 @@ azureTicketsApp
                   var fieldType = copyOf === null
                       && angular.isDefined(BWL.ModelMeta[m]) ? BWL.ModelMeta[m][f]
                       : copyOf[f];
-                  var _el, _label = null, _tip = null;
+                  var _el, _label = null, _tip = null, _btn = null;
                   var _attr = {
                     placeholder : f,
                     name : m.replace(/\./g, '_') + '_' + f,
@@ -115,7 +116,7 @@ azureTicketsApp
                     if (angular.isDefined($attrs.uiDateFormat)) {
                       _el.attr('ui-date-format', $attrs.uiDateFormat)
                     }
-                    
+
                     var calendarIcon = jQuery('<i class="fa fa-calendar datetimeInput"></i>');
                   } else if (/^.*Enum(?=\b).*$/g.test(fieldType)) {
                     _el = jQuery('<select />');
@@ -137,14 +138,27 @@ azureTicketsApp
                     if (angular.isString($attrs[p])
                         && [ 'ngModel', 'ngRequired', 'ngChange', 'uiValidate',
                             'uiValidateWatch', 'ngBlur', 'uiEvent',
-                            'uiDateFormat', 'ngPattern', 'uiJq' ].indexOf(p) === -1
-                            ) {
+                            'appendBtnExp', 'appendBtnIco', 'uiDateFormat',
+                            'ngPattern', 'uiJq' ].indexOf(p) === -1) {
                       var pp = p.replace(/([A-Z]+)/g, '-$1').toLowerCase();
                       var v = $scope.$eval($attrs[p]) !== 0 ? $scope
                           .$eval($attrs[p]) : $attrs[p]
 
                       _el.attr(pp, angular.isDefined(v) ? v : '');
                     }
+                  }
+
+                  // if we should append button
+                  if ($attrs.appendBtnExp) {
+                    $element.addClass('input-append');
+                    _btn = jQuery('<button type="button" class="btn" />');
+                    _btn.html('<i class="' + $attrs.appendBtnIco + '"></i>');
+
+                    _btn.click(function() {
+                      $scope.$apply(function() {
+                        $scope.atBtnExp();
+                      })
+                    })
                   }
 
                   // make new element available
@@ -189,16 +203,19 @@ azureTicketsApp
                   if (_tip !== null) {
                     $compile(_tip)($scope);
                   }
+                  if (_btn !== null) {
+                    $compile(_btn)($scope);
+                  }
                   if (isBoolean) {
                     jQuery(_el).addClass('btn').addClass('btn-inverse')
                   }
 
-                  $element.append(_label).append(_tip).append(_el);
+                  $element.append(_label).append(_tip).append(_el).append(_btn);
 
                   // Append the calendar icon
                   if (calendarIcon !== null) {
-                  	$element.addClass('relative');
-                  	$element.append(calendarIcon);
+                    $element.addClass('relative');
+                    $element.append(calendarIcon);
                   }
 
                   if (dateTimeScript !== null) {

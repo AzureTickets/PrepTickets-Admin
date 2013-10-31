@@ -22,18 +22,6 @@
 				ng-model="this[modelName].Address.AddressLine2"
 				label="'Address.LabelAddress2' | t" />
 		</dd>
-		<dd
-			ui-if="this[modelName].Address.City && timezones.length > 0 || false">
-			<label>{{'Address.LabelTimezone' | t}}</label> <select
-				data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-				ui-select2="{containerCssClass:'input-xlarge'}" at-required
-				name="Address_Timezone" ng-model="this[modelName].Address.Timezone"
-				ng-change="a=1">
-				<option></option>
-				<option ng-selected="t.Name == this[modelName].Address.Timezone"
-					ng-repeat="t in timezones" value="{{t.Name}}">{{t.Name}}</option>
-			</select>
-		</dd>
 		<dd ui-if="this[modelName].Address.Region || false" class="clear">
 			<atfield at-required class="input-xlarge"
 				ng-model="this[modelName].Address.City"
@@ -51,16 +39,14 @@
 					ng-repeat="r in regions" value="{{r.ISO}}">{{r.Name}}</option>
 			</select>
 		</dd>
-		<dd ui-if="this[modelName].Address.Country" class="pull-left">
+		<dd
+			ui-if="this[modelName].Address.Country && Country && Country.HasPostalCodes || false"
+			class="pull-left">
 			<atfield at-required class="input-small"
 				ng-model="this[modelName].Address.PostalCode"
-				label="'Address.LabelPostalCode' | t" />
-		</dd>
-		<dd ui-if="Country && Country.HasPostalCodes || false"
-			class="pull-left" style="padding-top: 17px">
-			<a class="btn"
-				ng-click="getCityByPostalCode(this[modelName].Address)"><i
-				class="fa fa-search"></i></a>
+				label="'Address.LabelPostalCode' | t"
+				append-btn-exp="getCityByPostalCode(this[modelName].Address)"
+				append-btn-ico="fa fa-search"></atfield>
 		</dd>
 		<dd class="clear" ui-if="countries.length > 0">
 			<label>{{'Address.LabelCountry' | t}}</label> <select
@@ -72,6 +58,12 @@
 				<option ng-selected="c.ISO == this[modelName].Address.Country"
 					ng-repeat="c in countries" value="{{c.ISO}}">{{c.Name}}</option>
 			</select>
+		</dd>
+		<dd
+			ui-if="this[modelName].Address.City && timezones.length > 0 || false">
+			<atfield at-required readonly class="input-xlarge"
+				ng-model="this[modelName].Address.Timezone"
+				label="'Address.LabelTimezone' | t" />
 		</dd>
 	</dl>
 </div>

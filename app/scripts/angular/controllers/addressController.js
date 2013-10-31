@@ -57,6 +57,7 @@ function addressController($scope) {
   $scope.loadCountry = function(address) {
     if (angular.isDefined(address) && angular.isDefined(address.Country)) {
       $scope.geo.loadCountry(address.Country).then(function(country) {
+        $scope.regions = [];
         $scope.Country = country;
         address.tmpContinentIso = country.ContinentISO;
 
