@@ -5,7 +5,8 @@ azureTicketsApp.factory('formService',
         '$rootScope',
         'modelService',
         'configService',
-        function($q, $rootScope, modelService, configService) {
+        '$q',
+        function($q, $rootScope, modelService, configService, $q) {
           var _fieldTypes = [ 'input', 'textarea', 'select' ];
 
           var _validates = function(e) {
@@ -79,6 +80,8 @@ azureTicketsApp.factory('formService',
              * @returns
              */
             next : function(formName, finish, cbk) {
+              var def = $q.defer();
+
               this.finished = false;
               this.saved = false;
               var errors = [];
@@ -99,7 +102,13 @@ azureTicketsApp.factory('formService',
                 if (angular.isFunction(cbk)) {
                   cbk();
                 }
+
+                def.resolve();
+              } else {
+                def.reject();
               }
+
+              return def.promise;
             },
             /**
              * @param step

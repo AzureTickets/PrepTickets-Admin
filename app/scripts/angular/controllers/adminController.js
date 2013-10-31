@@ -62,6 +62,9 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
       $location.path($cookieStore.get($scope.config.cookies.lastPath));
       $cookieStore.put($scope.config.cookies.loggedStatus, true);
 
+      // reset store cookie
+      $cookieStore.remove($scope.config.cookies.storeKey)
+
       $scope.init();
     }
 
