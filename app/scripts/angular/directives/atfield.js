@@ -21,7 +21,8 @@ azureTicketsApp
                   atUiValidateWatch : '&uiValidateWatch',
                   atBtnExp : '&appendBtnExp',
                   // atPattern : '@ngPattern',
-                  atBlur : '=ngBlur'
+                  atBlur : '=ngBlur',
+                  atValidate : '=atValidate'
                 },
                 template : '<div></div>',
                 replace : true,
@@ -139,7 +140,7 @@ azureTicketsApp
                         && [ 'ngModel', 'ngRequired', 'ngChange', 'uiValidate',
                             'uiValidateWatch', 'ngBlur', 'uiEvent',
                             'appendBtnExp', 'appendBtnIco', 'uiDateFormat',
-                            'ngPattern', 'uiJq' ].indexOf(p) === -1) {
+                            'atValidate', 'ngPattern', 'uiJq' ].indexOf(p) === -1) {
                       var pp = p.replace(/([A-Z]+)/g, '-$1').toLowerCase();
                       var v = $scope.$eval($attrs[p]) !== 0 ? $scope
                           .$eval($attrs[p]) : $attrs[p]
@@ -196,6 +197,9 @@ azureTicketsApp
                   }
                   if ($attrs.min) {
                     _el.attr('min', $attrs.min);
+                  }
+                  if ($attrs.atValidate) {
+                    _el.attr('at-validate', 'atValidate');
                   }
                   if (_label !== null) {
                     $compile(_label)($scope);

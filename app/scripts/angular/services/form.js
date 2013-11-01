@@ -45,6 +45,7 @@ azureTicketsApp.factory('formService',
                 var v = jQuery(e).val() || false;
                 var req = angular.isDefined(jQuery(e).attr('at-required'));
                 var err = null;
+                var atValidate = angular.element(e).scope()['atValidate']
 
                 if (!v && req) {
                   // check required
@@ -52,6 +53,15 @@ azureTicketsApp.factory('formService',
                       .replace(/([A-Z](?:[a-z])|\d+)/g, ' $1').trim());
                   _validationErrors.push(err);
                   _renderError(n, err);
+                } else if (angular.isDefined(atValidate) && atValidate.fn
+                    && atValidate.opts) {
+                  // use cross browser validation library
+                  try {
+                    Validate[atValidate.fn](v, atValidate.opts);
+                  } catch (err) {
+                    _validationErrors.push(err.message)
+                    _renderError(n, err.message);
+                  }
                 } else if (angular.isObject(model.$error)) {
                   // pattern error
                   if (model.$error.pattern && model.$error.pattern === true) {

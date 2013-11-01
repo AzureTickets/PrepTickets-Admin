@@ -43,18 +43,11 @@
 					</tr>
 				</tbody>
 			</table>
-			<div class="paginationDiv">
-				<ng-pagination
-					ui-if="storePreRegisters && storePreRegisters.length > 0"
-					page-size="paginationPreRegister.pageSize"
-					predicates="paginationPreRegister.predicates"
-					page-items="paginationPreRegister.pageItems"
-					text-filter="paginationPreRegister.textFilter"
-					sort="paginationPreRegister.sort"
-					results="paginationPreRegister.results"
-					current-page-index="paginationPreRegister.currentPageIndex"
-					number-of-pages="paginationPreRegister.numberOfPages"
-					data="storePreRegisters"></ng-pagination>
+			<div class="paginationDiv" ng-show="paginationPreRegister.results.length > 20">
+				<ng-pagination ui-if="storePreRegisters && storePreRegisters.length > 0"
+					pagination-data="paginationPreRegister"
+					data="storePreRegisters">
+          </ng-pagination>
 				<p class="text-center"
 					ng-show="paginationPreRegister.results.length" ng-cloak>{{'Common.Text_CurrentPage'
 					| t}}: {{paginationPreRegister.currentPageIndex + 1}} -

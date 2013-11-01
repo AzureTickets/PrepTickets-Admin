@@ -45,15 +45,15 @@
 							<atfield class="input-xxlarge" ng-model="ScanDevice.Brief"
 								label="'Common.Text_BriefDescription' | t" rows="5" />
 						</dd>
-						<dd ui-if="ScanDevice.Key && (ScanDevice.DeviceInfo == null || ScanDevice.DeviceInfo == {})">
+						<dd ui-if="ScanDevice.Key && isInfoEmpty(ScanDevice.DeviceInfo)">
 						  <p>{{ 'Scanner.Text_ShouldRegister' | t }}</p>
 							<img ng-src="{{serverPath}}/scanner.svc/{{ScanDevice.StoreKey}}/config/{{ScanDevice.Key}}" />
 						</dd>
 						<dd class="alert alert-success" ng-show="updateSuccess">
 						  <p>{{ 'Scanner.Text_UpdateDeviceSuccess' | t }}</p>
 						</dd>
-						<dd ui-if="ScanDevice.Key && ScanDevice.DeviceInfo != null && ScanDevice.DeviceInfo != {}">
-						  <p>
+						<dd ui-if="ScanDevice.Key && !isInfoEmpty(ScanDevice.DeviceInfo)">
+						  <p class="pull-right">
 						    <button ng-show="!ScanDevice.Active" class="btn btn-success"
 						      ng-click="updateDevice(ScanDevice, {Active: true})">
 						        {{ 'Scanner.Text_Activate' | t }}</button>
@@ -61,7 +61,7 @@
 						      ng-click="updateDevice(ScanDevice, {Active: false})">
 						        {{ 'Scanner.Text_Deactivate' | t }}</button>
 						    <button class="btn btn-danger"
-						      ng-click="updateDevice(ScanDevice, {DeviceInfo: {}})">
+						      ng-click="unregisterDevice(ScanDevice)">
 						        {{ 'Scanner.Text_Destroy' | t }}</button>
 						  </p>
 						</dd>

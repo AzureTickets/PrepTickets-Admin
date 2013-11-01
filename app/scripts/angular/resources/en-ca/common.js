@@ -410,5 +410,8 @@ var CommonResources = {
   LabelContactPhone : 'Phone',
   LabelContactAlternativePhone : 'Alternative Phone',
   LabelContactEmailAddress : 'Email Address',
-  LabelContactCompanyName : 'Company Name'
+  LabelContactCompanyName : 'Company Name',
+
+  Validation_Maximum : 'Maximum allowed is {0} characters long',
+  Validation_Minimum : 'Minimum allowed is {0} characters long'
 };

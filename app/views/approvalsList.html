@@ -57,13 +57,9 @@
 			<div class="paginationDiv"
 				ng-show="paginationApproval.results.length > 20">
 				<ng-pagination ui-if="approvals && approvals.length > 0"
-					page-size="paginationApproval.pageSize"
-					predicates="paginationApproval.predicates"
-					page-items="paginationApproval.pageItems"
-					text-filter="paginationApproval.textFilter"
-					sort="paginationApproval.sort" results="paginationApproval.results"
-					current-page-index="paginationApproval.currentPageIndex"
-					number-of-pages="paginationApproval.numberOfPages" data="approvals"></ng-pagination>
+					pagination-data="paginationApproval"
+					data="approvals">
+          </ng-pagination>
 				<p class="text-center" ng-cloak>{{'Common.Text_CurrentPage' |
 					t}}: {{paginationApproval.currentPageIndex + 1}} -
 					{{'Common.Text_ItemsPerPage' | t}}: {{paginationApproval.pageSize}}
