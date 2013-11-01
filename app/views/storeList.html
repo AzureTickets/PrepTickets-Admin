@@ -29,12 +29,9 @@
 
 			<div class="paginationDiv" ng-show="pagination.results.length > 20">
 				<ng-pagination ui-if="stores && stores.length > 0"
-					page-size="pagination.pageSize" predicates="pagination.predicates"
-					page-items="pagination.pageItems"
-					text-filter="pagination.textFilter" sort="pagination.sort"
-					results="pagination.results"
-					current-page-index="pagination.currentPageIndex"
-					number-of-pages="pagination.numberOfPages" data="stores"></ng-pagination>
+					pagination-data="pagination"
+					data="stores">
+          </ng-pagination>
 				<p class="text-center" ng-show="pagination.results.length" ng-cloak>{{'Common.Text_CurrentPage'
 					| t}}: {{pagination.currentPageIndex + 1}} -
 					{{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} -

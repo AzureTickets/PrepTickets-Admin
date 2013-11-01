@@ -14,14 +14,7 @@ azureTicketsApp
                 restrict : 'EA',
                 scope : {
                   data : '=data',
-                  pageSize : '=pageSize',
-                  predicates : '=predicates',
-                  pageItems : '=pageItems',
-                  textFilter : '=textFilter',
-                  sort : '=sort',
-                  currentPageIndex : '=currentPageIndex',
-                  results : '=results',
-                  numberOfPages : '=numberOfPages',
+                  atPagination : '=paginationData'
                 },
                 replace : true,
                 template : '<div class="pagination pagination-centered" ng-cloak>'
@@ -42,28 +35,35 @@ azureTicketsApp
                   $scope.predicate = '';
                   // Reversing object for orderBy filter
                   $scope.reverse = {};
-                  for ( var i = 0; i < $scope.predicates.length; i++) {
-                    $scope.reverse['' + $scope.predicates[i]] = false;
-                  }
-                  ;
+                  for ( var i = 0; i < $scope.atPagination.predicates.length; i++) {
+                    $scope.reverse['' + $scope.atPagination.predicates[i]] = false;
+                  };
 
                   // Initialize number of items which are displayed per page
-                  $scope.itemsPerPage = $scope.pageSize;
+                  $scope.itemsPerPage = $scope.atPagination.pageSize;
                   // Initialize filtering text
-                  $scope.textFilter = '';
+                  $scope.atPagination.textFilter = '';
+                  
+                  // Generate the filter function
+                  //$scope.advancedSearchScope = $scope.atPagination.advancedSearchScope;
+                  //if ($scope.atPagination.filters.length) {
+                  //  for (var i = 0; i < $scope.atPagination.filters.length; i++) {
+                  	  
+                  //  }
+                  //}
 
-                  // Pagination watcher for changes via filters
+                  // Pagination watcher for changes via filters and predicates
                   var pagesWatcher = function(itemsPerPage, textFilter,
                       predicate, reverse) {
                     if (!angular.isNumber(itemsPerPage)) {
-                      $scope.itemsPerPage = $scope.pageSize;
+                      $scope.itemsPerPage = $scope.atPagination.pageSize;
                     } else if (parseInt(itemsPerPage) <= 0) {
-                      $scope.itemsPerPage = $scope.pageSize;
+                      $scope.itemsPerPage = $scope.atPagination.pageSize;
                     } else {
                       $scope.itemsPerPage = parseInt(itemsPerPage);
                     }
                     ;
-                    $scope.textFilter = textFilter;
+                    $scope.atPagination.textFilter = textFilter;
                     if (predicate == undefined || predicate == null) {
                       $scope.predicate = '';
                     } else {
@@ -76,29 +76,29 @@ azureTicketsApp
                     ;
 
                     // Current page index
-                    $scope.currentPageIndex = 0;
+                    $scope.atPagination.currentPageIndex = 0;
                     // Initialize the start index of the pagination
                     $scope.startRange = 0;
 
                     // First page items
                     // Filter $scope.data directly to get the Angular way of
                     // binding, not attach to any other variables
-                    $scope.pageItems = function() {
+                    $scope.atPagination.pageItems = function() {
                       return ($filter('orderBy')($filter('filter')($scope.data,
-                          $scope.textFilter), predicate, reverse)).slice(0,
+                          $scope.atPagination.textFilter), predicate, reverse)).slice(0,
                           $scope.itemsPerPage);
                     };
 
-                    $scope.results = $filter('orderBy')(
-                        $filter('filter')($scope.data, $scope.textFilter),
+                    $scope.atPagination.results = $filter('orderBy')(
+                        $filter('filter')($scope.data, $scope.atPagination.textFilter),
                         predicate, reverse);
 
-                    $scope.numberOfPages = ($scope.results.length % $scope.itemsPerPage) == 0 ? Math
-                        .floor($scope.results.length / $scope.itemsPerPage)
-                        : Math.floor($scope.results.length
+                    $scope.atPagination.numberOfPages = ($scope.atPagination.results.length % $scope.itemsPerPage) == 0 ? Math
+                        .floor($scope.atPagination.results.length / $scope.itemsPerPage)
+                        : Math.floor($scope.atPagination.results.length
                             / $scope.itemsPerPage) + 1;
                     $scope.numberOfPagesArrayForm = [];
-                    for ( var i = 0; i < $scope.numberOfPages; i++) {
+                    for ( var i = 0; i < $scope.atPagination.numberOfPages; i++) {
                       $scope.numberOfPagesArrayForm.push({
                         index : i
                       });
@@ -110,11 +110,11 @@ azureTicketsApp
                         $scope.startRange, $scope.startRange + 10);
                   };
                   // First run of the watcher
-                  pagesWatcher($scope.itemsPerPage, $scope.textFilter);
+                  pagesWatcher($scope.itemsPerPage, $scope.atPagination.textFilter);
 
                   // Delegating watchers for filter models
                   var itemsPerPageWatcher = function(newValue) {
-                    return pagesWatcher(newValue, $scope.textFilter,
+                    return pagesWatcher(newValue, $scope.atPagination.textFilter,
                         $scope.predicate);
                   };
                   var searchContentWatcher = function(newValue) {
@@ -122,10 +122,10 @@ azureTicketsApp
                         $scope.predicate);
                   };
                   $scope.$watch('itemsPerPage', itemsPerPageWatcher);
-                  $scope.$watch('textFilter', searchContentWatcher);
+                  $scope.$watch('atPagination.textFilter', searchContentWatcher);
 
-                  $scope.sort = function(predicate) {
-                    pagesWatcher($scope.itemsPerPage, $scope.textFilter,
+                  $scope.atPagination.sort = function(predicate) {
+                    pagesWatcher($scope.itemsPerPage, $scope.atPagination.textFilter,
                         predicate);
 
                     // Update predicate reverse property
@@ -135,18 +135,18 @@ azureTicketsApp
                   // Content functions
                   // Load page content
                   $scope.loadPageContent = function(realPageIndex) {
-                    // realPageIndex equals $scope.currentPageIndex + 1;
-                    if (realPageIndex && realPageIndex == $scope.numberOfPages) {
-                      $scope.pageItems = function() {
+                    // realPageIndex equals $scope.atPagination.currentPageIndex + 1;
+                    if (realPageIndex && realPageIndex == $scope.atPagination.numberOfPages) {
+                      $scope.atPagination.pageItems = function() {
                         return ($filter('orderBy')($filter('filter')(
-                            $scope.data, $scope.textFilter), $scope.predicate,
+                            $scope.data, $scope.atPagination.textFilter), $scope.predicate,
                             $scope.reverse[$scope.predicate]))
                             .slice($scope.itemsPerPage * (realPageIndex - 1));
                       };
                     } else {
-                      $scope.pageItems = function() {
+                      $scope.atPagination.pageItems = function() {
                         return ($filter('orderBy')($filter('filter')(
-                            $scope.data, $scope.textFilter), $scope.predicate,
+                            $scope.data, $scope.atPagination.textFilter), $scope.predicate,
                             $scope.reverse[$scope.predicate])).slice(
                             $scope.itemsPerPage * (realPageIndex - 1),
                             $scope.itemsPerPage * realPageIndex);
@@ -154,21 +154,21 @@ azureTicketsApp
                     }
                     ;
 
-                    $scope.currentPageIndex = realPageIndex - 1;
+                    $scope.atPagination.currentPageIndex = realPageIndex - 1;
                   };
 
                   // Load next page content
                   $scope.loadNextPage = function() {
                     // When current page index is not the last one on the
                     // pagination
-                    if ((parseInt($scope.currentPageIndex) < $scope.startRange + 10 - 1)
-                        && (parseInt($scope.currentPageIndex) < $scope.numberOfPages - 1)) {
-                      $scope.loadPageContent($scope.currentPageIndex + 1 + 1);
+                    if ((parseInt($scope.atPagination.currentPageIndex) < $scope.startRange + 10 - 1)
+                        && (parseInt($scope.atPagination.currentPageIndex) < $scope.atPagination.numberOfPages - 1)) {
+                      $scope.loadPageContent($scope.atPagination.currentPageIndex + 1 + 1);
                       // When current page index is the last one on the
                       // pagination
-                    } else if ((parseInt($scope.currentPageIndex) == $scope.startRange + 10 - 1)
-                        && (parseInt($scope.currentPageIndex) < $scope.numberOfPages - 1)) {
-                      $scope.loadPageContent($scope.currentPageIndex + 1 + 1);
+                    } else if ((parseInt($scope.atPagination.currentPageIndex) == $scope.startRange + 10 - 1)
+                        && (parseInt($scope.atPagination.currentPageIndex) < $scope.atPagination.numberOfPages - 1)) {
+                      $scope.loadPageContent($scope.atPagination.currentPageIndex + 1 + 1);
                       $scope.startRange += 10;
                       $scope.displayedNoP = $scope.numberOfPagesArrayForm
                           .slice($scope.startRange, $scope.startRange + 10);
@@ -179,13 +179,13 @@ azureTicketsApp
                   $scope.loadPrePage = function() {
                     // When current page index is not the first one on the
                     // pagination
-                    if (parseInt($scope.currentPageIndex) > $scope.startRange) {
-                      $scope.loadPageContent($scope.currentPageIndex);
+                    if (parseInt($scope.atPagination.currentPageIndex) > $scope.startRange) {
+                      $scope.loadPageContent($scope.atPagination.currentPageIndex);
                       // When current page index is the first one on the
                       // pagination
                     } else if (($scope.startRange > 10 - 1)
-                        && (parseInt($scope.currentPageIndex) == $scope.startRange)) {
-                      $scope.loadPageContent($scope.currentPageIndex);
+                        && (parseInt($scope.atPagination.currentPageIndex) == $scope.startRange)) {
+                      $scope.loadPageContent($scope.atPagination.currentPageIndex);
                       $scope.startRange -= 10;
                       $scope.displayedNoP = $scope.numberOfPagesArrayForm
                           .slice($scope.startRange, $scope.startRange + 10);
@@ -196,22 +196,22 @@ azureTicketsApp
                   $scope.loadClass = function(arg, pageIndex) {
                     switch (arg) {
                     case 'previous':
-                      if ($scope.currentPageIndex == 0) {
+                      if ($scope.atPagination.currentPageIndex == 0) {
                         return "disabled";
                       } else {
                         return '';
                       }
                       break;
                     case 'page':
-                      if (pageIndex == $scope.currentPageIndex) {
+                      if (pageIndex == $scope.atPagination.currentPageIndex) {
                         return "active";
                       } else {
                         return '';
                       }
                       break;
                     case 'next':
-                      if ($scope.currentPageIndex + 1 == $scope.numberOfPages
-                          || $scope.numberOfPages == 0) {
+                      if ($scope.atPagination.currentPageIndex + 1 == $scope.atPagination.numberOfPages
+                          || $scope.atPagination.numberOfPages == 0) {
                         return "disabled";
                       } else {
                         return '';

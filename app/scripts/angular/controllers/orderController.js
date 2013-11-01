@@ -5,13 +5,14 @@ function orderController($scope, $cookieStore, $filter) {
   $scope.pagination = {
     pageSize: 20,
     predicates: ['Placed', 'OrderId', 'Total.ItemPrice', 'State'],
-    filters: ['OrderId', 'Total.ItemPrice', 'State', 'PlacedFromDate'],
+    filters: ['OrderId', 'Total.ItemPrice', 'State', 'Placed__Date'],
     pageItems: function() {},
     textFilter: '',
     sort: function() {},
     currentPageIndex: 0,
     results: [],
-    numberOfPages: 0
+    numberOfPages: 0,
+    advancedSearchScope: {}
   };
 
   $scope.init = function() {

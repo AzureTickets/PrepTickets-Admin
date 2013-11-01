@@ -25,7 +25,7 @@
 					pagination-data="pagination" />
 				</div>
 			</form>
-
+      
 			<div ng-show="!pagination.results.length" class="alert alert-info">{{'Order.Text_OrderEmpty'
 				| t}}</div>
 			<table class="table table-bordered ng-table-responsive" ng-show="pagination.results.length">
@@ -57,12 +57,9 @@
 
 			<div class="paginationDiv" ng-show="pagination.results.length > 20">
 				<ng-pagination ui-if="orders && orders.length > 0"
-					page-size="pagination.pageSize" predicates="pagination.predicates"
-					page-items="pagination.pageItems"
-					text-filter="pagination.textFilter" sort="pagination.sort"
-					results="pagination.results"
-					current-page-index="pagination.currentPageIndex"
-					number-of-pages="pagination.numberOfPages" data="orders"></ng-pagination>
+					pagination-data="pagination"
+					data="orders">
+          </ng-pagination>
 				<p class="text-center" ng-cloak>{{'Common.Text_CurrentPage' |
 					t}}: {{pagination.currentPageIndex + 1}} -
 					{{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} -

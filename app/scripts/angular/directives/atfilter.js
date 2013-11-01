@@ -4,10 +4,12 @@ azureTicketsApp
       '$compile',
       'objectService',
       'modelService',
-      function($compile, objectService, modelService) {
+      '$parse',
+      function($compile, objectService, modelService, $parse) {
         return {
           restrict : 'EA',
           scope : {
+          	atLabel : '=label',
             atPagination : '=paginationData'
           },
           template: '<div></div>',
@@ -19,85 +21,170 @@ azureTicketsApp
           		$scope.atModel = modelService.getInstanceOf($attr.atModel);
           	}
           	
+          	// Populate the advancedSearchScope for ng-pagination to apply filters
+          	$scope.atPagination.advancedSearchScope = $scope;
+          	
+          	// Object to determine if property is single search or range search
+          	$scope.equalSearchPropObj = {};
+          	$scope.roofSearchPropObj = [];
+          	$scope.floorSearchPropObj = [];
+          	
           	if ($scope.atPagination.filters && $scope.atPagination.filters.length) {
           		for (var i = 0; i < $scope.atPagination.filters.length; i++) {
           		  // if field is date range
           		  var f = /(?:From|To)Date/g.test($scope.atPagination.filters[i]) ? $scope.atPagination.filters[i]
           		    .replace(/(?:From|To)Date/g, '')
           		    : $scope.atPagination.filters[i];
+          		  
+          	    // Property to check if Date is true
+          	    var isDate = false,
+          	        isRange = false,
+          	        propName = '';
+          		  
+          		  if ($scope.atPagination.filters[i].indexOf('__Date') > -1) {
+          		  	isDate = true;
+          		  	propName = $scope.atPagination.filters[i].slice(
+          		  	             0, 
+          		  	             $scope.atPagination.filters[i].indexOf('__Date')
+          		  	           );
+          		  } else if ($scope.atPagination.filters[i].indexOf('__Range') > -1) {
+          		  	isRange = true;
+          		  	propName = $scope.atPagination.filters[i].slice(
+          		  	             0, 
+          		  	             $scope.atPagination.filters[i].indexOf('__Range')
+          		  	           );
+          		  } else {
+          		  	propName = $scope.atPagination.filters[i];
+          		  }
 
-          		  var fType = BWL.ModelMeta[$scope.atModel.Type][f];
-          		  var dateTimeScript = null, _el = jQuery('<input />');
+          		  var propType = BWL.ModelMeta[$scope.atModel.Type][propName],
+          		      label = null,
+          		      _el = null,
+          		      additionalFields = null,
+          		      dateTimeScript = null;
+          		  
+          		  // Attributes for the generated fields
           		  var _attr = {
-          		    placeholder : $scope.atPagination.filters[i].replace(/([A-Z])|\./g, ' $1')
-          		    .trim(),
-          		    // The objproperty is a property name of $scope.atModel (which is $scope.filterModel in filterController)
-          		    objproperty : f,
-          		    name : $scope.atModel.Type + '_' + $scope.atPagination.filters[i],
-          		    id : $scope.atModel.Type + '_' + $scope.atPagination.filters[i]
+          		    placeholder : propName.replace(/([A-Z])|\./g, ' $1')
+          		                  .trim(),
+          		    name : $scope.atModel.Type + '_' + propName,
+          		    id : $scope.atModel.Type + '_' + propName
           		  };
-            
-          		  var label = jQuery('<label class="control-label" for=' + $scope.atModel.Type + '_' + $scope.atPagination.filters[i] + '></label>');
-          		  label.text($scope.atPagination.filters[i].replace(/([A-Z])|\./g, ' $1').trim());
+          		  
+          		  if (isDate) {
+          		  	_el = jQuery('<select></select>');
+          		  	label = jQuery('<label class="control-label" for=' + _attr.id + '></label>');
+          		  	
+          		  	additionalFields = jQuery('<div></div>');
+          		  	var dateTimeScriptFrom = jQuery('<script type="text/javascript" />'),
+          		  	    dateTimeScriptTo = jQuery('<script type="text/javascript" />');
+          		  	
+          		  	$scope.atModel[propName + '_From'] = objectService.dateToUIPicker(new Date());
+          		  	$scope.atModel[propName + '_To'] = objectService.dateToUIPicker(new Date());
+          		  	
+          		  	var jsFrom = "function(v, tp){\
+          		  	  var formScope = angular.element(jQuery(this)).scope();\
+          		  	  formScope.$apply(function(){\
+          		  	    formScope.atModel"
+          		  	    + "."
+          		  	    + propName + '_From'
+          		  	    + " = v;\
+          		  	    });\
+          		  	  }\
+          		  	";
+          		  	var jsTo = "function(v, tp){\
+          		  	  var formScope = angular.element(jQuery(this)).scope();\
+          		  	  formScope.$apply(function(){\
+          		  	    formScope.atModel"
+          		  	    + "."
+          		  	    + propName + '_To'
+          		  	    + " = v;\
+          		  	    });\
+          		  	  }\
+          		  	";
+          		  	
+          		  	dateTimeScriptFrom.text(
+          		  	  "jQuery(function(){jQuery('#"
+          		  	  + $scope.atModel.Type + '_' + propName + '_From'
+          		  	  + "').datetimepicker({timeFormat: 'hh:mm tt', onClose: "
+          		  	  + jsFrom + " });});"
+          		  	);
+          		  	dateTimeScriptTo.text(
+          		  	  "jQuery(function(){jQuery('#"
+          		  	  + $scope.atModel.Type + '_' + propName + '_To'
+          		  	  + "').datetimepicker({timeFormat: 'hh:mm tt', onClose: "
+          		  	  + jsTo + " });});"
+          		  	);
+          		  	
+          		  	fieldFrom = jQuery(
+          		  	  '<label for="' + $scope.atModel.Type + '_' + propName + '_From"' + '>' +
+          		  	    'From' +
+          		  	  '</label>' +
+          		  	  '<input type = "text" id="' + $scope.atModel.Type + '_' + propName + '_From"' +
+          		  	    'ng-model="atModel.' + propName + '_From">' +
+          		  	    
+          		  	  '</input>'
+          		  	);
+          		  	fieldTo = jQuery(
+          		  	  '<label for="' + $scope.atModel.Type + '_' + propName + '_To"' + '>' +
+          		  	    'To' +
+          		  	  '</label>' +
+          		  	  '<input type = "text" id="' + $scope.atModel.Type + '_' + propName + '_To"' +
+          		  	    'ng-model="atModel.' + propName + '_To">' +
+          		  	    
+          		  	  '</input>'
+          		  	);
+          		  	
+          		  	additionalFields.append(fieldFrom);
+          		  	additionalFields.append(dateTimeScriptFrom);
+          		  	additionalFields.append(fieldTo);
+          		  	additionalFields.append(dateTimeScriptTo);
+          		  	_el = _el.after(additionalFields);
+          		  } else if (isRange) {
+          		  	
+          		  } else {
+          		  	$scope.equalSearchPropObj[propName] = function() { return $scope.atModel[propName]; };
+          		  	
+          		  	_el = jQuery('<input></input>');
 
-          		  switch (fType) {
-            		  case 'DateTime':
-                    _attr.type = 'text';
-                    _el.attr('ng-model', 'atModel');
-                    dateTimeScript = jQuery('<script type="text/javascript" />');
-
-                    // ensure format is ok
-                    $scope.atModel = objectService.dateToUIPicker(new Date());
-
-                    // we're outside angular, so we need to do some tricks here
-                    // in order to update the model
-                    var js = "function(v, tp){\
-                      var formScope = angular.element(jQuery('#"
-                        + _attr.id
-                        + "').parents('form').first()).scope();\
-                      var ctrlScope = formScope.$parent;\
-                      ctrlScope.$apply(function(){\
-                        ctrlScope.filterModel"
-                        + "."
-                        + $scope.atPagination.filters[i]
-                        + " = v;\
-                        });\
-                        }\
-                      ";
-
-                    dateTimeScript
-                      .text("jQuery(function(){jQuery('#"
-                        + _attr.id
-                        + "').datetimepicker({timeFormat: 'hh:mm tt', onClose: "
-                        + js + " });});");
-
-                    break;
+          		  switch (propType) {
                   case 'IContact':
                     _attr.type = 'text';
                     // Attach model to the field.
                     // This model is a property of $scope.atModel which two-way binds to $scope.filterModel in filterController
-                    _el.attr('ng-model', 'atModel' + '.' + [f]);
+                    _el.attr('ng-model', 'atModel' + '.' + [propName]);
                     break;
             		  case 'OrderStateEnum':
                     _attr.type = 'number';
-                    _el.attr('ng-model', 'atModel' + '.' + [f]);
+                    _el.attr('ng-model', 'atModel' + '.' + [propName]);
                     break;
             		  case 'Price':
                     _attr.type = 'number';
-                    _el.attr('ng-model', 'atModel' + '.' + [f]);
+                    _el.attr('ng-model', 'atModel' + '.' + [propName]);
                     break;
             		  case 'Double':
                     _attr.type = 'number';
-                    _el.attr('ng-model', 'atModel' + '.' + [f]);
+                    _el.attr('ng-model', 'atModel' + '.' + [propName]);
                     break;
             		  case 'String':
                     _attr.type = 'text';
-                    _el.attr('ng-model', 'atModel' + '.' + [f]);
+                    _el.attr('ng-model', 'atModel' + '.' + [propName]);
                     break;
             		  default:
                     _attr.type = 'number';
-                    _el.attr('ng-model', 'atModel' + '.' + [f]);
+                    _el.attr('ng-model', 'atModel' + '.' + [propName]);
                 }
+                }
+                
+          		  label = jQuery('<label class="control-label" for=' + _attr.id + '></label>');
+          		  if (angular.isDefined($attr.label)) {
+          		    label.text('{{atLabel}}');
+          		    if (angular.isDefined($attr.labelClass)) {
+          		      label.addClass($attr.labelClass);
+          		    }
+          		  } else {
+          		    label.text(propName.replace(/([A-Z])|\./g, ' $1').trim());
+          		  }
 
           		  if (_el !== null) {
           		    // make new element available
@@ -110,16 +197,22 @@ azureTicketsApp
 
                   var controlGroupdiv = jQuery('<div class="control-group"></div>'),
                       controlDiv = jQuery('<div class="controls"></div>');
+          		  	_el.append('{{atModel}}');
                   controlDiv.append(_el);
           		    controlGroupdiv.append(label);
           		    controlGroupdiv.append(controlDiv);
-          		    if (dateTimeScript !== null) {
-          		      controlGroupdiv.append(dateTimeScript);
+          		    if (additionalFields !== null) {
+          		      controlGroupdiv.append(additionalFields);
           		    }
           		    
           		    $element.append(controlGroupdiv);
 
           		    $compile(_el)($scope);
+          		  }
+          		  
+          		  // Populate the single search properties
+          		  if (!isDate && !isRange) {
+          		  	//$scope.equalSearchPropObj.push();
           		  }
               }
             }
