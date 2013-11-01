@@ -40,6 +40,9 @@ azureTicketsApp
                   };
 
                   // Initialize number of items which are displayed per page
+                  if (angular.isDefined($attr.pageSize) && parseInt($attr.pageSize) > 0) {
+                  	$scope.atPagination.pageSize = parseInt($attr.pageSize);
+                  }
                   $scope.itemsPerPage = $scope.atPagination.pageSize;
                   // Initialize filtering text
                   $scope.atPagination.textFilter = '';

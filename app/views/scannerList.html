@@ -9,7 +9,7 @@
 			<div ng-show="scanDevices.length == 0" class="alert alert-info">{{
 				'Scanner.Text_EmptyList' | t }}</div>
 			<table class="table  table-bordered "
-				ng-show="scanDevices.length > 0">{{scanDevices[0].Key}}
+				ng-show="scanDevices.length > 0">
 				<thead>
 					<tr>
 						<th>#</th>
@@ -28,7 +28,8 @@
 						<td>{{scanDevice.LastSyncDateTime | date:'MM/dd/yyyy h:mma'}}</td>
 						<td>
 							<span class="label label-success" ng-show="scanDevice.Active">{{'Scanner.Text_StatusActive' | t}}</span>
-							<span class="label" ng-show="!scanDevice.Active">{{'Scanner.Text_StatusDisabled' | t}}</span>
+							<span class="label" ng-show="!scanDevice.Active && scanDevice.DeviceInfo != null && scanDevice.DeviceInfo != {}">{{'Scanner.Text_StatusDisabled' | t}}</span>
+							<span class="label label-inverse" ng-show="scanDevice.DeviceInfo == null || scanDevice.DeviceInfo == {}">{{'Scanner.Text_Unregistered' | t}}</span>
 						</td>
 					</tr>
 				</tbody>

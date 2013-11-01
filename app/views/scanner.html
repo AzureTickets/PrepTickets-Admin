@@ -35,8 +35,7 @@
 				</div>
 				<!-- form -->
 				<ng-form ui-if="ScanDevice" name="atScanDevice" ng-submit="save()">
-				<form ui-if="wizardScanDevice.currentStep == 1" name="atScanDevice1"
-					ng-submit="wizardScanDevice.next('atScanDevice1')">
+				<form ui-if="wizardScanDevice.currentStep == 1" name="atScanDevice1">
 					<dl class="clearfix">
 						<dd>
 							<atfield at-required class="input-xxlarge" ng-model="ScanDevice.Name"
@@ -46,13 +45,30 @@
 							<atfield class="input-xxlarge" ng-model="ScanDevice.Brief"
 								label="'Common.Text_BriefDescription' | t" rows="5" />
 						</dd>
-						<dd>
-							<img ng-src="https://stage.revvly.com/scanner.svc/{{ScanDevice.StoreKey}}/config/{{ScanDevice.Key}}" />
+						<dd ui-if="ScanDevice.Key && (ScanDevice.DeviceInfo == null || ScanDevice.DeviceInfo == {})">
+						  <p>{{ 'Scanner.Text_ShouldRegister' | t }}</p>
+							<img ng-src="{{serverPath}}/scanner.svc/{{ScanDevice.StoreKey}}/config/{{ScanDevice.Key}}" />
+						</dd>
+						<dd class="alert alert-success" ng-show="updateSuccess">
+						  <p>{{ 'Scanner.Text_UpdateDeviceSuccess' | t }}</p>
+						</dd>
+						<dd ui-if="ScanDevice.Key && ScanDevice.DeviceInfo != null && ScanDevice.DeviceInfo != {}">
+						  <p>
+						    <button ng-show="!ScanDevice.Active" class="btn btn-success"
+						      ng-click="updateDevice(ScanDevice, {Active: true})">
+						        {{ 'Scanner.Text_Activate' | t }}</button>
+						    <button ng-show="ScanDevice.Active" class="btn"
+						      ng-click="updateDevice(ScanDevice, {Active: false})">
+						        {{ 'Scanner.Text_Deactivate' | t }}</button>
+						    <button class="btn btn-danger"
+						      ng-click="updateDevice(ScanDevice, {DeviceInfo: {}})">
+						        {{ 'Scanner.Text_Destroy' | t }}</button>
+						  </p>
 						</dd>
 						<dd>
 							<input type="submit" class="btn btn-primary clear"
-								value="{{
-							'Common.Text_Next' | t }}" />
+							  value="{{ 'Common.Text_Next' | t }}"
+							  ng-click="wizardScanDevice.next('atScanDevice1')" />
 						</dd>
 					</dl>
 				</form>
@@ -60,20 +76,16 @@
 					ng-submit="wizardScanDevice.next('atScanDevice2')">
 					<dl class="clearfix">
 						<dd>
-							<atfield at-copy-of="DeviceInfo" at-required class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.Name"
-								label="'Scanner.Text_DeviceName' | t" />
+							<atfield at-copy-of="DeviceInfo" class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.Name"
+								label="'Scanner.Text_DeviceName' | t" ng-readonly=true />
 						</dd>
 						<dd>
-							<atfield at-copy-of="DeviceInfo" at-required class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.UniqueID"
-								label="'Scanner.Text_UniqueID' | t" />
+							<atfield at-copy-of="DeviceInfo" class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.Hardware"
+								label="'Scanner.Text_Hardware' | t" ng-readonly=true />
 						</dd>
 						<dd>
-							<atfield at-copy-of="DeviceInfo" at-required class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.Hardware"
-								label="'Scanner.Text_Hardware' | t" />
-						</dd>
-						<dd>
-							<atfield at-copy-of="DeviceInfo" at-required class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.OS"
-								label="'Scanner.Text_OSVersion' | t" />
+							<atfield at-copy-of="DeviceInfo" class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.OS"
+								label="'Scanner.Text_OSVersion' | t" ng-readonly=true />
 						</dd>
 						<dd>
 							<input type="submit" class="btn btn-primary clear"
