@@ -3,17 +3,33 @@ function eventController($scope, $cookieStore, $filter, $modal) {
 
   // initialize wizard for Event
   $scope.wizardEvent = $scope.form.getWizard($scope);
-  
+
+  // custom validation
+  $scope.validation = {
+    Event : {
+      Brief : {
+        fn : 'Length',
+        opts : {
+          maximum : 170,
+          tooLongMessage : $filter('t')('Common.Validation_Maximum').replace(
+              /\{0\}/g, '170')
+        }
+      }
+    }
+  }
+
   // Pagination setup
   $scope.pagination = {
-    pageSize: 20,
-    predicates: [],
-    pageItems: function() {},
-    textFilter: '',
-    sort: function() {},
-    currentPageIndex: 0,
-    results: [],
-    numberOfPages: 0
+    pageSize : 20,
+    predicates : [],
+    pageItems : function() {
+    },
+    textFilter : '',
+    sort : function() {
+    },
+    currentPageIndex : 0,
+    results : [],
+    numberOfPages : 0
   };
 
   $scope.$watch('wizardEvent.open', function(v) {
@@ -51,19 +67,21 @@ function eventController($scope, $cookieStore, $filter, $modal) {
     $scope.Event._tmpCategories = angular.copy($scope.Event.tmpCategories);
     $scope.Event.tmpVenues = [];
     $scope.Event._tmpVenues = angular.copy($scope.Event.tmpVenues);
-    
+
     // Default value for MaximumCapacity
     $scope.Event.MaximumCapacity = 1;
-    
+
     // Default values for event datetime fields
     // Not complete due to time zone problem with timepicker
     var date = new Date();
-    $scope.Event.StartTime = new String(new Date(date.getTime() + 7*24*60*60*1000)).slice(0, 15) + ' 18:00:00';
-    $scope.Event.EndTime
-      = $scope.Event.OnSaleDateTimeEnd
-      = new String(new Date(date.getTime() + 7*24*60*60*1000)).slice(0, 15) + ' 22:00:00';
+    $scope.Event.StartTime = new String(new Date(date.getTime() + 7 * 24 * 60
+        * 60 * 1000)).slice(0, 15)
+        + ' 18:00:00';
+    $scope.Event.EndTime = $scope.Event.OnSaleDateTimeEnd = new String(
+        new Date(date.getTime() + 7 * 24 * 60 * 60 * 1000)).slice(0, 15)
+        + ' 22:00:00';
     $scope.Event.OnSaleDateTimeStart = new String(new Date(date.getTime()));
-    
+
     $scope.wizardEvent.open = true;
     $scope.wizardEvent.reset();
   }
