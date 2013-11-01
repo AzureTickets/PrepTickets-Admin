@@ -45,10 +45,6 @@
 							<atfield class="input-xxlarge" ng-model="ScanDevice.Brief"
 								label="'Common.Text_BriefDescription' | t" rows="5" />
 						</dd>
-						<dd ui-if="ScanDevice.Key && isInfoEmpty(ScanDevice.DeviceInfo)">
-						  <p>{{ 'Scanner.Text_ShouldRegister' | t }}</p>
-							<img ng-src="{{serverPath}}/scanner.svc/{{ScanDevice.StoreKey}}/config/{{ScanDevice.Key}}" />
-						</dd>
 						<dd class="alert alert-success" ng-show="updateSuccess">
 						  <p>{{ 'Scanner.Text_UpdateDeviceSuccess' | t }}</p>
 						</dd>
@@ -77,15 +73,15 @@
 					<dl class="clearfix">
 						<dd>
 							<atfield at-copy-of="DeviceInfo" class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.Name"
-								label="'Scanner.Text_DeviceName' | t" ng-readonly=true />
+								label="'Scanner.Text_DeviceName' | t" ng-required />
 						</dd>
 						<dd>
 							<atfield at-copy-of="DeviceInfo" class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.Hardware"
-								label="'Scanner.Text_Hardware' | t" ng-readonly=true />
+								label="'Scanner.Text_Hardware' | t" ng-required />
 						</dd>
 						<dd>
 							<atfield at-copy-of="DeviceInfo" class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.OS"
-								label="'Scanner.Text_OSVersion' | t" ng-readonly=true />
+								label="'Scanner.Text_OSVersion' | t" ng-required />
 						</dd>
 						<dd>
 							<input type="submit" class="btn btn-primary clear"
