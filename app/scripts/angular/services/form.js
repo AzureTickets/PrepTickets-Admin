@@ -6,7 +6,8 @@ azureTicketsApp.factory('formService',
         'modelService',
         'configService',
         '$q',
-        function($q, $rootScope, modelService, configService, $q) {
+        '$timeout',
+        function($q, $rootScope, modelService, configService, $q, $timeout) {
           var _fieldTypes = [ 'input', 'textarea', 'select' ];
 
           var _validates = function(e) {
@@ -18,6 +19,18 @@ azureTicketsApp.factory('formService',
                 width : 'auto'
               });
               jQuery(e).after(errDiv);
+
+              // expand collapsible section
+              var cs = jQuery(e).parents('dl').first().parent('div[collapse]'); // collapsible
+              // section
+              var cc = jQuery(cs).prev('.collapser'); // element to click
+
+              if (cc.length !== 0) {
+                // get collapse var
+                var cv = jQuery(cc).attr('ng-click').replace(
+                    /(collapse[^\s]+).*/gi, '$1')
+                angular.element(cc).scope()[cv] = false;
+              }
             }
 
             var n = jQuery(e).attr('name') || null;

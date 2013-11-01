@@ -1,6 +1,7 @@
 ﻿var AddressResources = {
   LabelPostalCode : 'Postal Code',
   LabelZipCode : 'Zip Code',
+  LabelPostCode : 'Post Code',
   LabelPostalCodeHelp : 'The postal code for the administrator',
   LabelZipCodeHelp : 'The zip code for the administrator',
   LabelAddressType : 'Address Type',
@@ -10,6 +11,7 @@
   LabelCity : 'City',
   LabelProvince : 'Province',
   LabelState : 'State',
+  LabelRegion : 'Region',
   LabelAreYouSureRemove : 'Are you sure you would like to remove this address from the contact ?',
   LabelAddress1 : 'Address Line 1',
   LabelAddress2 : 'Address Line 2',
@@ -18,10 +20,8 @@
   Field_PostalCode : 'Postal Code',
   Field_PostalCodeUS : 'Zip Code',
   Field_PostalCodeGB : 'Post Code',
-  Field_PostalCode_Help : [
-      'The postal code for the administrator',
-      'The zip code for the administrator'
-  ],
+  Field_PostalCode_Help : [ 'The postal code for the administrator',
+      'The zip code for the administrator' ],
   Error_IncorrectPostalCode : 'Please enter a valid Postal Code.',
   Error_IncorrectPostalCodeUS : 'Please enter a valid Zip Code.',
   Error_IncorrectPostalCodeGB : 'Please enter a valid Post Code.',

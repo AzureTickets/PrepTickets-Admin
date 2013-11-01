@@ -16,7 +16,7 @@
 		</span>
 		<form ui-if="Store && Store.isNew || Store && Store.IsOwner"
 			name="atStore" ng-submit="wizard.next('atStore', true, save)">
-			<div class="alert alert-info"
+			<div class="alert alert-info collapser"
 				ng-click="collapseStep1 = !collapseStep1" mousestyle>{{
 				'Common.Text_CreateSchool_Step1' | t }}</div>
 			<div ng-init="collapseStep1 = true" collapse="collapseStep1">
@@ -42,7 +42,7 @@
 					</dd>
 				</dl>
 			</div>
-			<div class="alert alert-info"
+			<div class="alert alert-info collapser"
 				ng-click="collapseStep2 = !collapseStep2" mousestyle>{{
 				'Common.Text_CreateSchool_Step2' | t }}</div>
 			<div ng-init="collapseStep2 = true" collapse="collapseStep2">
@@ -50,7 +50,7 @@
 				<div ng-include src="'views/address.html'"
 					onload="modelName='Store'"></div>
 			</div>
-			<div class="alert alert-info"
+			<div class="alert alert-info collapser"
 				ng-click="collapseStep3 = !collapseStep3" mousestyle>{{
 				'Common.Text_CreateSchool_Step3' | t }}</div>
 			<div ng-init="collapseStep3 = true" collapse="collapseStep3">
@@ -63,7 +63,7 @@
 						src="'views/elements/store/mediaSelector.html'"></dd>
 				</dl>
 			</div>
-			<div class="alert alert-info"
+			<div class="alert alert-info collapser"
 				ng-click="collapseStep4 = !collapseStep4" mousestyle>{{
 				'Common.Text_CreateSchool_Step4' | t }}</div>
 			<div ng-init="collapseStep4 = true" collapse="collapseStep4">
