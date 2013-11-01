@@ -4,6 +4,7 @@
   "path" : {
 	"app" : "app",
 	"dist" : "dist",
+	"build" : "build",
 	"test" : "test",
 	"config" : "config",
 	"js" : "scripts",

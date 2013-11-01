@@ -1,0 +1,46 @@
+{
+  "name": "revvly",
+  "siteName" : "PrepTickets Admin",
+  "path" : {
+	"app" : "app",
+	"dist" : "dist",
+	"build" : "build",
+	"test" : "test",
+	"config" : "config",
+	"js" : "scripts",
+	"lib" : "components",
+	"styles" : "styles"
+  },
+  "url" : {
+  	"api" : "https://api.preptickets.com/",
+  	"geo" : "https://geo.revvly.com/",
+  	"logo" : "https://www.preptickets.com/img/PrepTicketsLogo.png"
+  },
+  "version": "1.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-less": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-cssmin": "*",
+    "grunt-contrib-connect": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-htmlmin": "*",
+    "grunt-contrib-livereload": "*",
+    "grunt-contrib-compress": "*",
+    "grunt-bower-hooks": "*",
+    "grunt-usemin": "0.1.12",
+    "grunt-regarde": "*",
+    "grunt-shell": "*",
+    "gruntacular": "*",
+    "grunt-open": "*",
+    "matchdep": "*",
+    "grunt-ngmin": "*"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  }
+}
