@@ -1,4 +1,4 @@
-function scannerController($scope, $cookieStore, $filter, $modal, $routeParams) {
+function scannerController($scope, $cookieStore, $filter, $modal, $routeParams, $timeout) {
   $scope.name = 'scanner';
 
   // initialize wizard for ScanDevice
@@ -142,13 +142,7 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams) 
             return {
               Key : v.Key
             }
-          }),
-          DeviceInfo : {
-            Name : $scope.ScanDevice.DeviceInfo.Name,
-            UniqueID : $scope.ScanDevice.DeviceInfo.UniqueID,
-            Hardware : $scope.ScanDevice.DeviceInfo.Hardware,
-            OS : $scope.ScanDevice.DeviceInfo.OS
-          }
+          })
         }).then(
             function(scanDeviceKey) {
               $scope.ScanDevice.Key = scanDeviceKey;
@@ -208,7 +202,89 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams) 
       }
     }
   }
+  
+  // Server path for getting QR code
+  $scope.serverPath = BWL.Server;
+  
+  // Function to check if DeviceInfo of a device is empty
+  $scope.isInfoEmpty = function(DeviceInfo) {
+  	if (DeviceInfo == null || DeviceInfo == {}) {
+  		return true;
+  	} else {
+  		var isEmpty = true;
+  		for (var i in DeviceInfo) {
+  		  if (i != 'Type' && DeviceInfo[i] != null && DeviceInfo[i] != '') {
+  		  	isEmpty = false;
+  		  }
+    	}
+    	
+    	return isEmpty;
+  	}
+  }
+  
+  // Update device properties
+  $scope.updateDevice = function(ScanDevice, propObject) {
+  	if (ScanDevice && angular.isObject(propObject)) {
+      $scope.updateSuccess = false;
+      
+  		for (var prop in propObject) {
+  			if (prop != 'DeviceInfo' && ScanDevice.hasOwnProperty(prop)) {
+  				ScanDevice[prop] = propObject[prop];
+  			}
+  		}
+  		
+  		// Update device
+  		$scope.scanner.updateScanDevice($scope.storeKey, ScanDevice)
+  		  .then(function() {
+	  	  	$scope.updateSuccess = true;
+	  	  	
+	  	  	// Reload device list
+	  	  	$scope.init();
+	  	  	
+	  	  	// Hide the message in 3 seconds
+	  	  	$timeout(function() {
+	  	  		$scope.updateSuccess = false;
+	  	  	}, 1000, false);
+  		  }, function() {
+  		  	$scope.error.log(err)
+  		});
+  	}
+  }
+  
+  // Unregister device
+  $scope.unregisterDevice = function(ScanDevice) {
+  	if (ScanDevice) {
+      $scope.updateSuccess = false;
+      
+      if (confirm($filter('t')('Scanner.Text_UnregisterDevice'))) {
+        ScanDevice.DeviceInfo = {
+          Name : '',
+          UniqueID : '',
+          Hardware : '',
+          OS : '',
+          Version : ''
+        };
+        ScanDevice.Active = false;
+        
+    		// Update device
+    		$scope.scanner.updateScanDevice($scope.storeKey, ScanDevice)
+    		  .then(function() {
+	    	  	$scope.updateSuccess = true;
+	  	  	  
+	    	  	// Reload device list
+	    	  	$scope.init();
+	  	  	  
+  	  	  	// Hide the message in 3 seconds
+	    	  	$timeout(function() {
+	    	  		$scope.updateSuccess = false;
+	    	  	}, 1000, false);
+    		  }, function() {
+    		  	$scope.error.log(err)
+    		});
+  		}
+  	}
+  }
 }
 
 scannerController.$inject = [ '$scope', '$cookieStore', '$filter', '$modal',
-    '$routeParams' ];
+    '$routeParams', '$timeout' ];

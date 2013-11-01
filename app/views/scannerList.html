@@ -27,15 +27,19 @@
 						<td>{{scanDevice.DeviceInfo.OS || 'Scanner.Text_UnregisteredDevice' | t}}</td>
 						<td>{{scanDevice.LastSyncDateTime | date:'MM/dd/yyyy h:mma'}}</td>
 						<td>
-							<span class="label label-success" ng-show="scanDevice.Active">{{'Scanner.Text_StatusActive' | t}}</span>
-							<span class="label" ng-show="!scanDevice.Active">{{'Scanner.Text_StatusDisabled' | t}}</span>
+							<span class="label label-success" ng-show="scanDevice.Active && !isInfoEmpty(scanDevice.DeviceInfo)">{{'Scanner.Text_StatusActive' | t}}</span>
+							<span class="label" ng-show="!scanDevice.Active && !isInfoEmpty(scanDevice.DeviceInfo)">{{'Scanner.Text_StatusDisabled' | t}}</span>
+							<span class="label label-inverse" ng-show="isInfoEmpty(scanDevice.DeviceInfo)">{{'Scanner.Text_Unregistered' | t}}</span>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 			
 			<div class="paginationDiv" ng-show="pagination.results.length > 20">
-        <ng-pagination ui-if="scanDevices && scanDevices.length > 0" page-size="pagination.pageSize" predicates="pagination.predicates" page-items="pagination.pageItems" text-filter="pagination.textFilter" sort="pagination.sort" results="pagination.results" current-page-index="pagination.currentPageIndex" number-of-pages="pagination.numberOfPages" data="scanDevices"></ng-pagination>
+				<ng-pagination ui-if="scanDevices && scanDevices.length > 0"
+					pagination-data="pagination"
+					data="scanDevices">
+          </ng-pagination>
         <p class="text-center" ng-cloak>{{'Common.Text_CurrentPage' | t}}: {{pagination.currentPageIndex + 1}} - {{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} - {{'Common.Text_TotalPages' | t}}: {{pagination.numberOfPages}} - {{'Common.Text_TotalItems' | t}}: {{pagination.results.length}}</p>
       </div>
 			

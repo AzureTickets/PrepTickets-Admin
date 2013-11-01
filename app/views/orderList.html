@@ -6,21 +6,30 @@
 			<div class="clear"></div>
 		</div>
 		<div class="widget-content">
-			<form class="form-inline">
-				<label class="control-label" for="filterText">{{'Common.Text_Search'
-					| t}}:&nbsp;</label> <input type="text" id="filterText" class="input-large"
-					ng-model="pagination.textFilter" placeholder="">
+			<form class="form-horizontal">
+				<div class="control-group">
+	  			<label class="control-label" for="filterText">{{'Common.Text_Search'
+		  			| t}}:&nbsp;</label>
+		  		<div class="controls">
+		  		  <input type="text" id="filterText" class="input-large"
+		  		    ng-model="pagination.textFilter" placeholder="">
+		  		  <button class="btn btn-primary btn-mini"
+				      ng-click="advancedSearch=true">{{'Common.Text_AdvancedSearch'
+				      | t}}</button>
+		  		</div>
+		  	</div>
 				<button class="btn btn-primary btn-mini" ui-if="false" ng-click="">{{'Order.Text_LoadMore'
 					| t}}</button>
-				<div class="pull-right" ui-if="orders && orders.length > 0 || false"
-					ng-include
-					ng-init="_model='Order'; _fields = ['PlacedFromDate','PlacedToDate','Contact','Total.ItemPrice','State']"
-					src="'views/elements/store/filters.html'"></div>
+				<atfilter
+					ui-if="false"
+					at-model="Order"
+					pagination-data="pagination" />
+				</div>
 			</form>
-
+      
 			<div ng-show="!pagination.results.length" class="alert alert-info">{{'Order.Text_OrderEmpty'
 				| t}}</div>
-			<table class="table table-bordered ng-table-responsive">
+			<table class="table table-bordered ng-table-responsive" ng-show="pagination.results.length">
 				<thead>
 					<tr>
 						<th>#</th>
@@ -49,12 +58,9 @@
 
 			<div class="paginationDiv" ng-show="pagination.results.length > 20">
 				<ng-pagination ui-if="orders && orders.length > 0"
-					page-size="pagination.pageSize" predicates="pagination.predicates"
-					page-items="pagination.pageItems"
-					text-filter="pagination.textFilter" sort="pagination.sort"
-					results="pagination.results"
-					current-page-index="pagination.currentPageIndex"
-					number-of-pages="pagination.numberOfPages" data="orders"></ng-pagination>
+					pagination-data="pagination"
+					data="orders">
+          </ng-pagination>
 				<p class="text-center" ng-cloak>{{'Common.Text_CurrentPage' |
 					t}}: {{pagination.currentPageIndex + 1}} -
 					{{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} -

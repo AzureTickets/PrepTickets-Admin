@@ -11,13 +11,11 @@
 		ng-show="this[modelName].Image.Key == image.Key"><i
 			class="fa fa-check green"></i></span></li>
 </ul>
-<ng-pagination ui-if="images && images.length > 7" page-size="7"
-	predicates="pagination.predicates" page-items="pagination.pageItems"
-	text-filter="pagination.textFilter" sort="pagination.sort"
-	results="pagination.results"
-	current-page-index="pagination.currentPageIndex"
-	number-of-pages="pagination.numberOfPages" data="images"
-	class="pull-right"></ng-pagination>
+<ng-pagination ui-if="images && images.length > 0"
+  pagination-data="pagination"
+  page-size="7"
+  data="images">
+  </ng-pagination>
 <p>
 	{{'Common.Text_YourSelect' | t}}: {{this[modelName].Image.Name}}&nbsp;<i
 		ng-show="!this[modelName].Image.Name" class="fa fa-spinner fa fa-spin"></i>
