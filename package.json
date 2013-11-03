@@ -13,7 +13,7 @@
   },
   "url" : {
   	"api" : "https://stage.revvly.com",
-  	"geo" : "https://geo.revvly.com/"
+  	"geo" : "https://geo.revvly.com"
   },
   "version": "1.0.0",
   "dependencies": {},
