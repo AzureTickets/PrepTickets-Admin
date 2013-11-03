@@ -61,7 +61,7 @@
 				data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
 				ui-select2="{containerCssClass:'input-xlarge'}" at-required
 				name="Address_Country" ng-model="this[modelName].Address.Country"
-				ng-change="loadCountry(this[modelName].Address)">
+				ng-change="loadCountry(this[modelName].Address, true)">
 				<option></option>
 				<option ng-selected="c.ISO == this[modelName].Address.Country"
 					ng-repeat="c in countries" value="{{c.ISO}}">{{c.Name}}</option>

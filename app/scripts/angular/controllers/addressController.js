@@ -54,14 +54,17 @@ function addressController($scope) {
     }
   }
 
-  $scope.loadCountry = function(address) {
+  $scope.loadCountry = function(address, triggeredFromCtrl) {
     if (angular.isDefined(address) && angular.isDefined(address.Country)) {
       $scope.geo.loadCountry(address.Country).then(
           function(country) {
             // anytime we change country, reset address
-            address.City = null, address.Region = null,
-                address.Timezone = null, address.PostalCode = null;
-            $scope.regions = [], $scope.timezones = [];
+            if (triggeredFromCtrl) {
+              address.City = null, address.Region = null,
+                  address.Timezone = null, address.PostalCode = null;
+              $scope.regions = [], $scope.timezones = [];
+            }
+
             $scope.Country = country;
             address.tmpContinentIso = country.ContinentISO;
 
