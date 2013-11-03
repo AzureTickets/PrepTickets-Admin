@@ -86,7 +86,7 @@ function addressController($scope, $q, $timeout) {
             $scope.Country = country;
             address.tmpContinentIso = country.ContinentISO;
 
-            if (!country.HasPostalCodes) {
+            if (!country.HasPostalCodes || $scope.regions.length === 0) {
               $scope.loadRegionsByCountry(address)
             }
             if ($scope.countries.length === 0) {
