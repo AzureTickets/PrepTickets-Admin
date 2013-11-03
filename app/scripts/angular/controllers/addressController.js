@@ -78,7 +78,8 @@ function addressController($scope, $q, $timeout) {
           function(country) {
             // anytime we change country, reset address
             if (triggeredFromCtrl) {
-              address.City = null, address.Region = null,
+              address.City = null, address.AddressLine1 = null,
+                  address.AddressLine2 = null, address.Region = null,
                   address.Timezone = null, address.PostalCode = null;
               $scope.regions = [], $scope.timezones = [];
             }
@@ -86,7 +87,7 @@ function addressController($scope, $q, $timeout) {
             $scope.Country = country;
             address.tmpContinentIso = country.ContinentISO;
 
-            if (!country.HasPostalCodes) {
+            if (!country.HasPostalCodes || $scope.regions.length === 0) {
               $scope.loadRegionsByCountry(address)
             }
             if ($scope.countries.length === 0) {
