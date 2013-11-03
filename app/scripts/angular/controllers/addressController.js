@@ -1,10 +1,16 @@
-function addressController($scope) {
+function addressController($scope, $q) {
   $scope.countries = [], $scope.continents = [], $scope.regions = [],
       $scope.timezones = [], $scope.addressEditable = false;
 
   $scope.$on('loadCountry', function(ev, address) {
     $scope.loadCountry(address);
   });
+
+  $scope.init = function(address) {
+    $scope.loadCountries().then(function() {
+      $scope.loadCountry(address)
+    })
+  }
 
   $scope.loadContinents = function() {
     $scope.geo.getContinents().then(function(continents) {
@@ -19,6 +25,12 @@ function addressController($scope) {
   }
 
   $scope.loadCountries = function(address, reset) {
+    var _def = $q.defer()
+
+    if ($scope.countries.length > 0) {
+      _def.resolve()
+      return;
+    }
 
     // reset lists
     $scope.countries = [];
@@ -37,10 +49,13 @@ function addressController($scope) {
       // prepend most used
       var c = [ 'CA', 'US', 'GB' ];
       $scope.countries = $scope.object.prioritizeSort(countries, c, 'ISO');
+      _def.resolve()
     }, function(err) {
+      _def.reject()
       $scope.error.log(err)
     });
 
+    return _def.promise;
   }
 
   $scope.loadTimezonesByCountry = function(address) {
@@ -55,6 +70,8 @@ function addressController($scope) {
   }
 
   $scope.loadCountry = function(address, triggeredFromCtrl) {
+    var def = $q.defer()
+
     if (angular.isDefined(address) && angular.isDefined(address.Country)) {
       $scope.geo.loadCountry(address.Country).then(
           function(country) {
@@ -77,10 +94,17 @@ function addressController($scope) {
             if ($scope.timezones.length === 0) {
               $scope.loadTimezonesByCountry(address)
             }
+
+            def.resolve()
           }, function(err) {
+            def.reject()
             $scope.error.log(err)
           });
+    } else {
+      def.resolve()
     }
+
+    return def.promise
   }
 
   $scope.loadRegionsByCountry = function(address) {
@@ -121,4 +145,4 @@ function addressController($scope) {
   }
 }
 
-addressController.$inject = [ '$scope' ];
+addressController.$inject = [ '$scope', '$q' ];

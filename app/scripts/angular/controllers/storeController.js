@@ -312,16 +312,16 @@ function storeController($scope, $cookieStore, $location, $timeout,
                   $scope.wizard.reset();
                 }
 
-                if ($scope.Store.Address
-                    && $scope.Store.Address.Country !== null) {
-                  // we've got a country, alert address
-                  // widget. somehow we should delay this
-                  // a bit in order to properly broadcast
-                  // msg
-                  $timeout(function() {
-                    $scope.$broadcast('loadCountry', $scope.Store.Address);
-                  }, 500);
-                }
+//                if ($scope.Store.Address
+//                    && $scope.Store.Address.Country !== null) {
+//                  // we've got a country, alert address
+//                  // widget. somehow we should delay this
+//                  // a bit in order to properly broadcast
+//                  // msg
+//                  $timeout(function() {
+//                    $scope.$broadcast('loadCountry', $scope.Store.Address);
+//                  }, 500);
+//                }
 
                 // this API call requires DomainProfile
                 if ($scope.Store.Currency && $scope.Store.Currency !== null
