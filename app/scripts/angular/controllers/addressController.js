@@ -1,6 +1,7 @@
-function addressController($scope, $q) {
-  $scope.countries = [], $scope.continents = [], $scope.regions = [],
-      $scope.timezones = [], $scope.addressEditable = false;
+function addressController($scope, $q, $timeout) {
+  $scope.name = 'address', $scope.countries = [], $scope.continents = [],
+      $scope.regions = [], $scope.timezones = [],
+      $scope.addressEditable = false;
 
   $scope.$on('loadCountry', function(ev, address) {
     $scope.loadCountry(address);
@@ -28,32 +29,32 @@ function addressController($scope, $q) {
     var _def = $q.defer()
 
     if ($scope.countries.length > 0) {
-      _def.resolve()
-      return;
+      // delay this a bit so we return the promise first
+      $timeout(_def.resolve, 100)
+    } else {
+      // reset lists
+      $scope.countries = [];
+      $scope.regions = [];
+      $scope.timezones = [];
+
+      // reset address
+      if (reset) {
+        $scope.Country = null;
+        address.City = null, address.AddressLine1 = null,
+            address.AddressLine2 = null, address.Timezone = null,
+            address.Region = null, address.PostalCode = null;
+      }
+
+      $scope.geo.getCountries().then(function(countries) {
+        // prepend most used
+        var c = [ 'CA', 'US', 'GB' ];
+        $scope.countries = $scope.object.prioritizeSort(countries, c, 'ISO');
+        _def.resolve()
+      }, function(err) {
+        _def.reject()
+        $scope.error.log(err)
+      });
     }
-
-    // reset lists
-    $scope.countries = [];
-    $scope.regions = [];
-    $scope.timezones = [];
-
-    // reset address
-    if (reset) {
-      $scope.Country = null;
-      address.City = null, address.AddressLine1 = null,
-          address.AddressLine2 = null, address.Timezone = null,
-          address.Region = null, address.PostalCode = null;
-    }
-
-    $scope.geo.getCountries().then(function(countries) {
-      // prepend most used
-      var c = [ 'CA', 'US', 'GB' ];
-      $scope.countries = $scope.object.prioritizeSort(countries, c, 'ISO');
-      _def.resolve()
-    }, function(err) {
-      _def.reject()
-      $scope.error.log(err)
-    });
 
     return _def.promise;
   }
@@ -145,4 +146,4 @@ function addressController($scope, $q) {
   }
 }
 
-addressController.$inject = [ '$scope', '$q' ];
+addressController.$inject = [ '$scope', '$q', '$timeout' ];
