@@ -404,6 +404,8 @@ var CommonResources = {
   Text_Paypro_Moneris : 'Moneris',
   Text_Paypro_NoPayment : 'Without Payment',
   Text_Paypro_PayPal : 'PayPal',
+  Text_Paypro_CheckChequePayment : 'Check / Cheque',
+  Text_Paypro_OfflinePayment : 'Offline Payment',
 
   LabelContactFullName : 'Full Name',
   LabelContactGender : 'Gender',
