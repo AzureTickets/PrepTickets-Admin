@@ -34,7 +34,7 @@
 			ui-if="isSpecialCountry && this[modelName].Address.Region || false"
 			class="clear">
 			<label>{{'Address.LabelCity' | t}}</label> <input type="{{'text'}}"
-				class="input-xxlarge"
+				class="input-xxlarge" autocomplete="off"
 				typeahead="city.Name for city in getCities($viewValue) | limitTo:20"
 				ng-model="this[modelName].Address.City" at-required
 				at-validate="validation.Address.City" name="Address_City" />
