@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<title></title>
+<title ng-cloak>{{ config.appName || 'revvly Admin' }}</title>
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="components/select2/select2.css" />
@@ -118,7 +118,9 @@
 	<!-- Other Pages -->
 	<div ng-include src="'views/elements/top_menu.html'"
 		ui-if="DomainProfile.Key"></div>
-	<div class="content content-main" ng-cloak ui-if="DomainProfile.Key">
+	<div class="content content-main"
+		ng-class="{'content-has-logo':config.appLogo}" ng-cloak
+		ui-if="DomainProfile.Key">
 		<div ng-include src="'views/elements/side_menu.html'"></div>
 		<!-- Main bar -->
 		<div class="mainbar">

@@ -1,6 +1,6 @@
 {
   "name": "revvly",
-  "siteName" : "revvly Admin",
+  "siteName" : "PrepTickets Admin",
   "path" : {
 	"app" : "app",
 	"dist" : "dist",
@@ -12,8 +12,9 @@
 	"styles" : "styles"
   },
   "url" : {
-  	"api" : "https://stage.revvly.com",
-  	"geo" : "https://geo.revvly.com"
+  	"api" : "https://api.preptickets.com/",
+  	"geo" : "https://geo.revvly.com/",
+  	"logo" : "https://www.preptickets.com/img/PrepTicketsLogo.png"
   },
   "version": "1.0.0",
   "dependencies": {},

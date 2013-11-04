@@ -65,8 +65,6 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams, 
 
   $scope.create = function() {
     $scope.ScanDevice = $scope.model.getInstanceOf('ScanDevice');
-    $scope.ScanDevice.tmpEvents = [];
-    $scope.ScanDevice._tmpEvents = angular.copy($scope.ScanDevice.tmpEvents);
     $scope.wizardScanDevice.open = true;
     $scope.wizardScanDevice.reset();
   }
@@ -140,65 +138,24 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams, 
           Brief : $scope.ScanDevice.Brief,
           // Active = true to allow the QR to work
           Active : true,
-          Description : $scope.ScanDevice.Description,
-          Events : $scope.ScanDevice._tmpEvents.map(function(v) {
-            return {
-              Key : v.Key
-            }
-          })
+          Description : $scope.ScanDevice.Description
         }).then(
-            function(scanDeviceKey) {
-              $scope.ScanDevice.Key = scanDeviceKey;
+          function(scanDeviceKey) {
+            $scope.ScanDevice.Key = scanDeviceKey;
+            $scope.wizardScanDevice.saved = true;
 
-              if ($scope.ScanDevice.Image && $scope.ScanDevice.Image.Key) {
-                $scope.model.associate($scope.ScanDevice, 'Image',
-                    $scope.ScanDevice.Image).then(function() {
-                  $scope.wizardScanDevice.saved = true;
-
-                  // reload list
-                  $scope.init();
-                }, function(err) {
-                  $scope.error.log(err)
-                })
-              } else {
-                $scope.wizardScanDevice.saved = true;
-
-                // reload list
-                $scope.init();
-              }
-            }, function(err) {
-              $scope.error.log(err)
-            });
+            // reload list
+            $scope.init();
+          }, function(err) {
+            $scope.error.log(err)
+          });
       } else {
         // update scanDevice
-
-        // update events
-        var _finishes = function() {
-          $scope.scanner.deleteEvents($scope.storeKey, $scope.ScanDevice).then(
-              function() {
-                $scope.scanner.addEvents($scope.storeKey, $scope.ScanDevice)
-                    .then(function() {
-                      $scope.wizardScanDevice.saved = true;
-                      $scope.init();
-                    }, function(err) {
-                      $scope.error.log(err)
-                    });
-              }, function(err) {
-                $scope.error.log(err)
-              });
-        }
-
         $scope.scanner.updateScanDevice($scope.storeKey, $scope.ScanDevice)
             .then(
                 function() {
-                  if ($scope.ScanDevice.Image && $scope.ScanDevice.Image.Key) {
-                    $scope.model.associate($scope.ScanDevice, 'Image',
-                        $scope.ScanDevice.Image).then(_finishes, function(err) {
-                      $scope.error.log(err)
-                    })
-                  } else {
-                    _finishes();
-                  }
+                  $scope.wizardScanDevice.saved = true;
+                  $scope.init();
                 }, function(err) {
                   $scope.error.log(err)
                 });

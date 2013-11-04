@@ -19,7 +19,7 @@
 			</form>
 
 			<div ng-show="images.length == 0" class="alert alert-info">{{
-				'Common.Text_NoImages_Msg' | t }}</div>{{images[0]}}
+				'Common.Text_NoImages_Msg' | t }}</div>
 				
 			<table class="table  table-bordered " ng-show="images.length > 0">
 				<thead>
@@ -36,13 +36,6 @@
 						<td>{{image.Name}}</td>
 						<td><img
 							ng-src="{{image.BaseURL}}{{image.ThumbFile}}" /></td>
-<!--						<td>
-							<div class="btn-group pull-left">
-								<button ui-if="Store.IsOwner" ng-click="deleteImage(image)"
-									class="btn btn-mini btn-danger">{{
-									'Common.Text_Remove' | t }}</button>
-							</div>
-						</td>-->
 					</tr>
 				</tbody>
 			</table>

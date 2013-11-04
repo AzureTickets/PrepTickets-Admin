@@ -47,28 +47,58 @@
 				</h3>
 			</div>
 			<div class="modal-body">
-				<!-- messages -->
 				<div class="clearfix">
-					<div class="alert alert-info">
-						<strong>Thong ass</strong>
+				  <!-- messages -->
+					<div class="alert alert-info"
+					  ui-if="!updateImageWizard.saved">
+						  <strong>{{ 'Common.Text_EditImage' | t}}</strong>
+					</div>
+					<div class="alert alert-success"
+					  ui-if="updateImageWizard.saved">
+					    <strong>{{ 'Common.Text_Congrats' | t }}</strong> {{
+					      'Common.Text_WizardComplete' | t }}
 					</div>
 					
-					<div>
-					  <div class="pull-left" ng-style="{'margin': '0 16px 16px'}">
-					    <a href="" ng-click="previewMedia(Image)"><img ng-src="{{Image.BaseURL}}{{Image.ThumbFile}}" /></a>
-					  </div>
+					<ng-form>
+  					<form ui-if="!updateImageWizard.saved">
+		  			  <!-- image info -->
+		  			  <dl>
+		  			    <dd>
+	      				  <div class="pull-left image-thumbnail">
+	  	    			    <a href="" ng-click="previewMedia(Image)"><img ng-src="{{Image.BaseURL}}{{Image.ThumbFile}}" /></a>
+	    		  		  </div>
+					        
+		    	  		  <div class="pull-right image-info">
+		  	  	  	    <atfield at-required class="input-large" ng-model="Image.Name"
+			  	    				label="'Common.Text_Name' | t"></atfield>
+			    	  			<a href="{{Image.BaseURL}}{{Image.ImageFile}}" target="_blank">{{ 'Common.Text_ImageDownload' | t }}</a>
+			    	  	  </div>
+			    		  </dd>
 					  
-					  <div class="pull-right" ng-style="{'margin-right': '16px'}">
-					    <atfield at-required class="input-large" ng-model="Image.Name"
-								label="'Common.Text_Name' | t"></atfield>
-							<a href="{{Image.BaseURL}}{{Image.ImageFile}}" target="_blank">{{ 'Common.Text_ImageDownload' | t }}</a>
-					  </div>
-					</div>
-					
-					<div>
-					  <button class="btn btn-success clear"
-					    ng-click="">{{ 'Common.Text_Save' | t }}</button>
-					</div>
+		    			  <!-- Action buttons -->
+		    			  <dd>
+		      			  <div class="clear"></div>
+			      		  <button class="btn btn-success pull-left"
+			      		    ng-click="saveUpdate(Image)">{{ 'Common.Text_Save' | t }}</button>
+			      		  <button class="btn btn-danger pull-right"
+			      		    ng-click="deleteImage(Image)">{{ 'Common.Text_Remove' | t }}</button>
+			        	</dd>
+			    		</dl>
+			  		</form>
+					  
+		  			<form ui-if="updateImageWizard.saved" class="clear">
+		  			  <dl>
+		  			    <dd class="pull-left">
+  	  		        <button ng-click="updateImageWizard.saved = false"
+	      	      		class="btn btn-primary">{{ 'Common.Text_Back' | t }}</button>
+	      	      </dd>
+	      	      <dd class="pull-left">
+	  	        		<button ng-click="updateImageWizard.open = false"
+		    	      		class="btn btn-primary">{{ 'Common.Text_Close' | t }}</button>
+		    	      </dd>
+		    	    </dl>
+	    			</form>
+	  			</ng-form>
 				</div>
 			</div>
 			<div class="modal-footer"></div>

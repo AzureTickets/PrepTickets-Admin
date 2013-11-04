@@ -4,6 +4,7 @@ nbproject
 .project
 .settings
 dist/**
+build/*.zip
 .tmp
 .sass-cache
 app/components

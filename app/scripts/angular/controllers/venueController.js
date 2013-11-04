@@ -47,13 +47,13 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
     $scope.wizardVenue.reset();
 
     // manually load location
-    $timeout(function() {
-      $scope.$apply(function() {
-        if (angular.isDefined($scope.Store)) {
-          $scope.$broadcast('loadCountry', $scope.Place.Address);
-        }
-      })
-    }, 500);
+//    $timeout(function() {
+//      $scope.$apply(function() {
+//        if (angular.isDefined($scope.Store)) {
+//          $scope.$broadcast('loadCountry', $scope.Place.Address);
+//        }
+//      })
+//    }, 500);
   }
 
   $scope.create = function() {

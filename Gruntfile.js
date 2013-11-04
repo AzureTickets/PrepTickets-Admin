@@ -5,6 +5,8 @@ var mountFolder = function(connect, dir) {
 };
 
 module.exports = function(grunt) {
+  var target = grunt.option('target') || 'dev';
+
   // load all grunt tasks
   require('matchdep').filterDev('grunt-*').concat([ 'gruntacular' ]).forEach(
       grunt.loadNpmTasks);
@@ -12,17 +14,19 @@ module.exports = function(grunt) {
   // configurable paths & app variables
   var atConfig = {};
   try {
-    atConfig.app = require('./package.json').path.app || null;
-    atConfig.dist = require('./package.json').path.dist || null;
-    atConfig.test = require('./package.json').path.test || null;
-    atConfig.scripts = require('./package.json').path.js || null;
-    atConfig.styles = require('./package.json').path.styles || null;
-    atConfig.config = require('./package.json').path.config || null;
-    atConfig.components = require('./package.json').path.lib || null;
-    atConfig.name = require('./package.json').siteName || null;
-    atConfig.logo = require('./package.json').url.logo || null;
-    atConfig.urlApi = require('./package.json').url.api || null;
-    atConfig.urlGeo = require('./package.json').url.geo || null;
+    var prefix = target === 'dev' ? './' : './config/' + target + '/';
+    atConfig.app = require(prefix + 'package.json').path.app || null;
+    atConfig.dist = require(prefix + 'package.json').path.dist || null;
+    atConfig.build = require(prefix + 'package.json').path.build || null;
+    atConfig.test = require(prefix + 'package.json').path.test || null;
+    atConfig.scripts = require(prefix + 'package.json').path.js || null;
+    atConfig.styles = require(prefix + 'package.json').path.styles || null;
+    atConfig.config = require(prefix + 'package.json').path.config || null;
+    atConfig.components = require(prefix + 'package.json').path.lib || null;
+    atConfig.name = require(prefix + 'package.json').siteName || null;
+    atConfig.logo = require(prefix + 'package.json').url.logo || null;
+    atConfig.urlApi = require(prefix + 'package.json').url.api || null;
+    atConfig.urlGeo = require(prefix + 'package.json').url.geo || null;
   } catch (e) {
     throw new Error(e).stack;
   }
@@ -271,12 +275,22 @@ module.exports = function(grunt) {
               src : [ 'tinymce/themes/modern/*.js' ]
             } ]
           }
-          
+
         },
         compress : {
           wordpress : {
             options : {
               archive : '<%= at.dist %>/wp-azuretickets.zip'
+            },
+            files : [ {
+              expand : true,
+              cwd : '<%= at.dist %>/',
+              src : [ '**' ]
+            } ]
+          },
+          build : {
+            options : {
+              archive : '<%= at.build %>/build-latest.zip'
             },
             files : [ {
               expand : true,
@@ -323,13 +337,13 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [ 'clean:dist', 'shell:gitSubmodules', /* 'jshint', */
   'test', 'useminPrepare', 'copy', 'cssmin', 'htmlmin', 'usemin', 'concat',
-      'ngmin', /* 'uglify' */
+      'ngmin' /* 'uglify' */
   ]);
 
   grunt.registerTask('_internal', [ 'useminPrepare', 'htmlmin', 'usemin',
       'concat', 'ngmin' ]);
 
-  grunt.registerTask('publish', [ 'shell:publish' ]);
+  grunt.registerTask('publish', [ 'shell:publish', 'compress:build' ]);
 
   grunt.registerTask('wp', [ 'build', 'compress:wordpress' ]);
 

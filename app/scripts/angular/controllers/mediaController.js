@@ -77,11 +77,21 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
     $scope.wizardMedia.reset();
   }
   
-  // Update image
+  // Open update image form
   $scope.update = function(image) {
   	$scope.Image = angular.copy(image);
     $scope.updateImageWizard.open = true;
     $scope.updateImageWizard.reset();
+  }
+  
+  // Save edited image function
+  $scope.saveUpdate = function(image) {
+  	$scope.media.updateImage($scope.storeKey, image).then(function() {
+  	  $scope.init();
+  	  $scope.updateImageWizard.saved = true;
+  	}, function(err) {
+  	  $scope.error.log(err)
+  	});
   }
 
   $scope.onImageUpload = function(files) {
@@ -104,6 +114,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
     if (confirm($filter('t')('Common.Text_RemoveProduct'))) {
       $scope.media.deleteImage($scope.storeKey, image.Key).then(function() {
         $scope.init();
+        $scope.updateImageWizard.open = false;
       }, function(err) {
         $scope.error.log(err)
       });

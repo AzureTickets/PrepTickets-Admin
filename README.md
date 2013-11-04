@@ -1,4 +1,4 @@
-AzureTickets WordPress Plugin Beta 0.1
+PrepTickets Admin Tool 1.0
 ===========================================
 <br />
 
@@ -34,4 +34,3 @@ Afterwards, use the *grunt* command to build or execute the tasks available for 
 * Use `grunt test` to execute the tests located in *./test*. This command makes use of *testacular* [http://testacular.github.com/]
 * Use `grunt wp` to generate a *WordPress* plugin package in *./dist/wp-azuretickets.zip*.
 * Use `grunt server` to start a local server on port 9001. [http://localhost:9001/#/admin]
-
