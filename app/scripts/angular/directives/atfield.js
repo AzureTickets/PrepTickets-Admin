@@ -17,12 +17,10 @@ azureTicketsApp
                   atTip : '=tip',
                   atChange : '=ngChange',
                   atReadonly : '=ngReadonly',
-                  atUiValidate : '&uiValidate',
-                  atUiValidateWatch : '&uiValidateWatch',
                   atBtnExp : '&appendBtnExp',
-                  // atPattern : '@ngPattern',
                   atBlur : '=ngBlur',
-                  atValidate : '=atValidate'
+                  atValidate : '=atValidate',
+                  atTypeahead : '&typeahead'
                 },
                 template : '<div></div>',
                 replace : true,
@@ -137,10 +135,10 @@ azureTicketsApp
                   }
                   for (p in $attrs) {
                     if (angular.isString($attrs[p])
-                        && [ 'ngModel', 'ngRequired', 'ngChange', 'uiValidate',
-                            'uiValidateWatch', 'ngBlur', 'uiEvent',
-                            'appendBtnExp', 'appendBtnIco', 'uiDateFormat',
-                            'atValidate', 'ngPattern', 'uiJq' ].indexOf(p) === -1) {
+                        && [ 'ngModel', 'ngRequired', 'ngChange', 'ngBlur',
+                            'uiEvent', 'appendBtnExp', 'appendBtnIco',
+                            'uiDateFormat', 'atValidate', 'ngPattern', 'uiJq' ]
+                            .indexOf(p) === -1) {
                       var pp = p.replace(/([A-Z]+)/g, '-$1').toLowerCase();
                       var v = $scope.$eval($attrs[p]) !== 0 ? $scope
                           .$eval($attrs[p]) : $attrs[p]
@@ -165,17 +163,8 @@ azureTicketsApp
                   // make new element available
                   _el.attr('ng-model', 'atModel');
 
-                  if ($attrs.uiValidate) {
-                    _el.attr('ui-validate', 'atUiValidate');
-                  }
-                  if ($attrs.uiValidateWatch) {
-                    _el.attr('ui-validate-watch', 'atUiValidateWatch');
-                  }
                   if ($attrs.ngPattern) {
                     _el.attr('ng-pattern', $attrs.ngPattern);
-                  }
-                  if ($attrs.bsTypeahead) {
-                    _el.attr('bs-typeahead', 'atTypeahead');
                   }
                   if ($attrs.ngBlur) {
                     _el.attr('ng-blur', 'atBlur');
@@ -188,9 +177,6 @@ azureTicketsApp
                   }
                   if ($attrs.autocomplete) {
                     _el.attr('autocomplete', $attrs.autocomplete);
-                  }
-                  if ($attrs.uiEvent) {
-                    _el.attr('ui-event', 'atUiEvent');
                   }
                   if ($attrs.uiJq) {
                     _el.attr('ui-jq', $attrs.uiJq);

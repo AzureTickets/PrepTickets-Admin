@@ -11,7 +11,82 @@ azureTicketsApp.factory('formService',
           var _fieldTypes = [ 'input', 'textarea', 'select' ];
 
           var _validates = function(e) {
-            var _renderError = function(n, err) {
+            var _def = $q.defer();
+
+            var n = jQuery(e).attr('name') || null;
+            var model = angular.element(e).data('$ngModelController');
+
+            if (n !== null) {
+              var m = n.split('_')[0];
+              var f = n.split('_')[1];
+
+              if (f) {
+                var v = jQuery(e).val() || false;
+                var req = angular.isDefined(jQuery(e).attr('at-required'));
+                var err = null;
+
+                if (angular.isDefined(jQuery(e).attr('at-validate'))) {
+                  var atValidate = angular.element(e).scope()['atValidate']
+                      || angular.element(e).scope().$eval(
+                          jQuery(e).attr('at-validate')) || undefined
+                }
+
+                if (!v && req) {
+                  // check required
+                  err = CommonResources.Text_RequiredField.replace(/\{0\}/g, f
+                      .replace(/([A-Z](?:[a-z])|\d+)/g, ' $1').trim());
+
+                  _def.resolve({
+                    e : e,
+                    err : err
+                  });
+                } else if (angular.isDefined(atValidate) && atValidate.fn
+                    && atValidate.opts) {
+                  if (atValidate.fn !== 'Custom') {
+                    // use cross browser validation library
+                    try {
+                      Validate[atValidate.fn](v, atValidate.opts);
+                      _def.resolve(true);
+                    } catch (err) {
+                      _def.resolve({
+                        e : e,
+                        err : err.message
+                      });
+                    }
+                  } else {
+                    // if it's a Custom fn, support promises
+                    _def.resolve();
+                  }
+                } else if (angular.isObject(model.$error)) {
+                  // pattern error
+                  if (model.$error.pattern && model.$error.pattern === true) {
+                    var perr = CommonResources.Text_InvalidPattern.replace(
+                        /\{0\}/g, f.replace(/([A-Z](?:[a-z])|\d+)/g, ' $1')
+                            .trim());
+                    _def.resolve({
+                      e : e,
+                      err : perr
+                    });
+                  } else {
+                    jQuery('.error-' + n).remove();
+                    _def.resolve(true);
+                  }
+                } else {
+                  jQuery('.error-' + n).remove();
+                  _def.resolve(true);
+                }
+              }
+            } else {
+              _def.resolve(true)
+            }
+
+            return _def.promise;
+          }
+
+          var _wizard = {
+            renderError : function(e, err) {
+              var n = jQuery(e).attr('name') || null
+
               jQuery('.error-' + n).remove();
               var errDiv = jQuery('<div class="error-' + n
                   + ' alert alert-error" />');
@@ -31,58 +106,7 @@ azureTicketsApp.factory('formService',
                     /(collapse[^\s]+).*/gi, '$1')
                 angular.element(cc).scope()[cv] = false;
               }
-            }
-
-            var n = jQuery(e).attr('name') || null;
-            var _validationErrors = [];
-            var model = angular.element(e).data('$ngModelController');
-
-            if (n !== null) {
-              var m = n.split('_')[0];
-              var f = n.split('_')[1];
-
-              if (f) {
-                var v = jQuery(e).val() || false;
-                var req = angular.isDefined(jQuery(e).attr('at-required'));
-                var err = null;
-                var atValidate = angular.element(e).scope()['atValidate']
-
-                if (!v && req) {
-                  // check required
-                  err = CommonResources.Text_RequiredField.replace(/\{0\}/g, f
-                      .replace(/([A-Z](?:[a-z])|\d+)/g, ' $1').trim());
-                  _validationErrors.push(err);
-                  _renderError(n, err);
-                } else if (angular.isDefined(atValidate) && atValidate.fn
-                    && atValidate.opts) {
-                  // use cross browser validation library
-                  try {
-                    Validate[atValidate.fn](v, atValidate.opts);
-                  } catch (err) {
-                    _validationErrors.push(err.message)
-                    _renderError(n, err.message);
-                  }
-                } else if (angular.isObject(model.$error)) {
-                  // pattern error
-                  if (model.$error.pattern && model.$error.pattern === true) {
-                    var perr = CommonResources.Text_InvalidPattern.replace(
-                        /\{0\}/g, f.replace(/([A-Z](?:[a-z])|\d+)/g, ' $1')
-                            .trim());
-                    _validationErrors.push(perr);
-                    _renderError(n, perr);
-                  } else {
-                    jQuery('.error-' + n).remove();
-                  }
-                } else {
-                  jQuery('.error-' + n).remove();
-                }
-              }
-            }
-
-            return _validationErrors;
-          }
-
-          var _wizard = {
+            },
             open : false,
             currentStep : 0,
             checkStep : {
@@ -107,29 +131,51 @@ azureTicketsApp.factory('formService',
 
               this.finished = false;
               this.saved = false;
-              var errors = [];
+              var checkAll = null, els = [], _this = this
 
+              // elements to check
               jQuery(angular.element('form[name=' + formName + ']')).find(
                   _fieldTypes.join(',')).each(function(i, e) {
-                errors = errors.concat(_validates(e));
+                els.push(e)
               });
 
-              if (errors.length === 0) {
-                this.checkStep[this.currentStep] = true;
-                this.currentStep++;
+              checkAll = $q.all(els.map(_validates));
 
-                if (angular.isDefined(finish) && finish) {
-                  this.finished = true;
+              checkAll.then(function(validations) {
+                if (validations === 0) {
+                  this.checkStep[this.currentStep] = true;
+                  this.currentStep++;
+
+                  if (angular.isDefined(finish) && finish) {
+                    this.finished = true;
+                  }
+
+                  if (angular.isFunction(cbk)) {
+                    cbk();
+                  }
+
+                  def.resolve();
+                } else {
+                  validations = validations.filter(function(vv) {
+                    return angular.isObject(vv)
+                  })
+
+                  if (validations.length === 0) {
+                    def.resolve()
+                  } else {
+                    // render errors
+                    angular.forEach(validations, function(v, k) {
+                      if (v.err && v.e) {
+                        _this.renderError(v.e, v.err)
+                      }
+                    })
+
+                    def.reject();
+                  }
                 }
-
-                if (angular.isFunction(cbk)) {
-                  cbk();
-                }
-
-                def.resolve();
-              } else {
-                def.reject();
-              }
+              }, function(err) {
+                throw new Error(err)
+              });
 
               return def.promise;
             },
@@ -154,6 +200,7 @@ azureTicketsApp.factory('formService',
              * @returns
              */
             getWizard : function($scope) {
+              _wizard._validationErrors = []
               return angular.copy(_wizard);
             }
           }
