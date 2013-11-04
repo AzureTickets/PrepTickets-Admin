@@ -10,6 +10,8 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
     predicates: ['Name', 'Brief'],
     pageItems: function() {},
     textFilter: '',
+    propFilter: '*',
+    filteringObj: {},
     sort: function() {},
     currentPageIndex: 0,
     results: [],

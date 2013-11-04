@@ -10,6 +10,8 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams, 
     predicates: [],
     pageItems: function() {},
     textFilter: '',
+    propFilter: '*',
+    filteringObj: {},
     sort: function() {},
     currentPageIndex: 0,
     results: [],
@@ -63,8 +65,6 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams, 
 
   $scope.create = function() {
     $scope.ScanDevice = $scope.model.getInstanceOf('ScanDevice');
-    $scope.ScanDevice.tmpEvents = [];
-    $scope.ScanDevice._tmpEvents = angular.copy($scope.ScanDevice.tmpEvents);
     $scope.wizardScanDevice.open = true;
     $scope.wizardScanDevice.reset();
   }
@@ -136,66 +136,26 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams, 
           Public : true,
           Name : $scope.ScanDevice.Name,
           Brief : $scope.ScanDevice.Brief,
-          Active : ($scope.ScanDevice.Active ? true : false),
-          Description : $scope.ScanDevice.Description,
-          Events : $scope.ScanDevice._tmpEvents.map(function(v) {
-            return {
-              Key : v.Key
-            }
-          })
+          // Active = true to allow the QR to work
+          Active : true,
+          Description : $scope.ScanDevice.Description
         }).then(
-            function(scanDeviceKey) {
-              $scope.ScanDevice.Key = scanDeviceKey;
+          function(scanDeviceKey) {
+            $scope.ScanDevice.Key = scanDeviceKey;
+            $scope.wizardScanDevice.saved = true;
 
-              if ($scope.ScanDevice.Image && $scope.ScanDevice.Image.Key) {
-                $scope.model.associate($scope.ScanDevice, 'Image',
-                    $scope.ScanDevice.Image).then(function() {
-                  $scope.wizardScanDevice.saved = true;
-
-                  // reload list
-                  $scope.init();
-                }, function(err) {
-                  $scope.error.log(err)
-                })
-              } else {
-                $scope.wizardScanDevice.saved = true;
-
-                // reload list
-                $scope.init();
-              }
-            }, function(err) {
-              $scope.error.log(err)
-            });
+            // reload list
+            $scope.init();
+          }, function(err) {
+            $scope.error.log(err)
+          });
       } else {
         // update scanDevice
-
-        // update events
-        var _finishes = function() {
-          $scope.scanner.deleteEvents($scope.storeKey, $scope.ScanDevice).then(
-              function() {
-                $scope.scanner.addEvents($scope.storeKey, $scope.ScanDevice)
-                    .then(function() {
-                      $scope.wizardScanDevice.saved = true;
-                      $scope.init();
-                    }, function(err) {
-                      $scope.error.log(err)
-                    });
-              }, function(err) {
-                $scope.error.log(err)
-              });
-        }
-
         $scope.scanner.updateScanDevice($scope.storeKey, $scope.ScanDevice)
             .then(
                 function() {
-                  if ($scope.ScanDevice.Image && $scope.ScanDevice.Image.Key) {
-                    $scope.model.associate($scope.ScanDevice, 'Image',
-                        $scope.ScanDevice.Image).then(_finishes, function(err) {
-                      $scope.error.log(err)
-                    })
-                  } else {
-                    _finishes();
-                  }
+                  $scope.wizardScanDevice.saved = true;
+                  $scope.init();
                 }, function(err) {
                   $scope.error.log(err)
                 });
@@ -203,8 +163,12 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams, 
     }
   }
   
-  // Server path for getting QR code
-  $scope.serverPath = BWL.Server;
+  // Get QR image source
+  $scope.getQR = function(ScanDevice) {
+  	if (ScanDevice) {
+  		return BWL.Server + '/scanner.svc/' + ScanDevice.StoreKey + '/config/' + ScanDevice.Key;
+  	}
+  }
   
   // Function to check if DeviceInfo of a device is empty
   $scope.isInfoEmpty = function(DeviceInfo) {
@@ -222,64 +186,111 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams, 
   	}
   }
   
+  // Post update action
+  $scope.postUpdate = function(successMessage) {
+    $scope.successMessage = successMessage;
+    	
+    // Reload device list
+    $scope.init();
+	  
+    // Hide the message in 1 seconds
+    $timeout(function() {
+      $scope.successMessage = '';
+    }, 1000, false);
+  }
+  
+  // Refresh the QR code after users scan it
+  $scope.refreshQR = function(ScanDevice) {
+  	if (ScanDevice && ScanDevice.Key) {
+  		$scope.successMessage = '';
+  		
+  		// Reload the scanner then return a fresh copy
+  		$scope.scanner.initScanDevice(ScanDevice.StoreKey, ScanDevice.Key)
+  		  .then(function(newLoadedScanDevice) {
+  		  	// Create a fresh copy
+  		  	$scope.ScanDevice = newLoadedScanDevice;
+  		  	
+  		  	if (!$scope.isInfoEmpty(newLoadedScanDevice.DeviceInfo)) {
+  		  	  $scope.postUpdate($filter('t')('Scanner.Text_RegisterSuccess'));
+  		  	}
+  		  }, function(err) {
+  		  	$scope.error.log(err);
+  		});
+  	}
+  }
+  
   // Update device properties
   $scope.updateDevice = function(ScanDevice, propObject) {
   	if (ScanDevice && angular.isObject(propObject)) {
-      $scope.updateSuccess = false;
+  		var propArray = [],
+  		    informMessage = '',
+  		    tempScanDevice = angular.copy(ScanDevice);
+      $scope.successMessage = '';
       
   		for (var prop in propObject) {
-  			if (prop != 'DeviceInfo' && ScanDevice.hasOwnProperty(prop)) {
-  				ScanDevice[prop] = propObject[prop];
+  			// DeviceInfo can only be updated through QR scanning
+  			if (prop != 'Key' && prop != 'DeviceInfo' && ScanDevice.hasOwnProperty(prop)) {
+  				tempScanDevice[prop] = propObject[prop];
+  				
+  				// Prop changed array to display success message
+  				propArray.push(prop);
   			}
   		}
   		
-  		// Update device
-  		$scope.scanner.updateScanDevice($scope.storeKey, ScanDevice)
-  		  .then(function() {
-	  	  	$scope.updateSuccess = true;
-	  	  	
-	  	  	// Reload device list
-	  	  	$scope.init();
-	  	  	
-	  	  	// Hide the message in 3 seconds
-	  	  	$timeout(function() {
-	  	  		$scope.updateSuccess = false;
-	  	  	}, 1000, false);
-  		  }, function() {
-  		  	$scope.error.log(err)
-  		});
+  		if ((propArray.length == 1) && (propArray[0] == 'Active') && (propObject[propArray[0]] == true)) {
+  		  informMessage = $filter('t')('Scanner.Text_ActiveDevice');
+  		} else if ((propArray.length == 1) && (propArray[0] == 'Active') && (propObject[propArray[0]] == false)) {
+  		  informMessage = $filter('t')('Scanner.Text_DeactiveDevice');
+  		} else {
+  		  informMessage = $filter('t')('Scanner.Text_UpdateDevice');
+  		}
+  		
+      if (propArray.length && confirm(informMessage)) {
+    		// Update device
+    		$scope.scanner.updateScanDevice($scope.storeKey, tempScanDevice)
+    		  .then(function() {
+    		  	angular.extend(ScanDevice, tempScanDevice);
+    		  	
+    		  	$scope.postUpdate($filter('t')('Scanner.Text_UpdateDeviceSuccess'));
+    		  }, function(err) {
+    		  	$scope.error.log(err);
+    		});
+      }
   	}
   }
   
   // Unregister device
   $scope.unregisterDevice = function(ScanDevice) {
   	if (ScanDevice) {
-      $scope.updateSuccess = false;
+  		var tempScanDevice = angular.copy(ScanDevice);
+      $scope.successMessage = '';
       
       if (confirm($filter('t')('Scanner.Text_UnregisterDevice'))) {
-        ScanDevice.DeviceInfo = {
+        tempScanDevice.DeviceInfo = {
           Name : '',
           UniqueID : '',
           Hardware : '',
           OS : '',
           Version : ''
         };
-        ScanDevice.Active = false;
+        // Activate the device so we can re-register through QR scanning
+        tempScanDevice.Active = true;
         
-    		// Update device
-    		$scope.scanner.updateScanDevice($scope.storeKey, ScanDevice)
+    		// Unregister
+    		$scope.scanner.updateScanDevice($scope.storeKey, tempScanDevice)
     		  .then(function() {
-	    	  	$scope.updateSuccess = true;
-	  	  	  
-	    	  	// Reload device list
-	    	  	$scope.init();
-	  	  	  
-  	  	  	// Hide the message in 3 seconds
-	    	  	$timeout(function() {
-	    	  		$scope.updateSuccess = false;
-	    	  	}, 1000, false);
-    		  }, function() {
-    		  	$scope.error.log(err)
+    		    // Reload the scanner
+    		    $scope.scanner.initScanDevice(ScanDevice.StoreKey, ScanDevice.Key)
+    		      .then(function(newLoadedScanDevice) {
+    		        // Create a fresh copy
+    		        $scope.ScanDevice = newLoadedScanDevice;
+  		  	      
+    		        $scope.postUpdate($filter('t')('Scanner.Text_UnRegisterSuccess'));
+    		      }, function(err) {
+    		        $scope.error.log(err);
+    		    });
+    		  }, function(err) {
+    		  	$scope.error.log(err);
     		});
   		}
   	}

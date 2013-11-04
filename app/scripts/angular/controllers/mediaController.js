@@ -5,6 +5,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   $scope.wizardMedia = $scope.form.getWizard($scope), $scope.mediaPreview = {
     open : false
   };
+  $scope.updateImageWizard = $scope.form.getWizard($scope);
   
   // Pagination setup
   $scope.pagination = {
@@ -12,6 +13,8 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
     predicates: [],
     pageItems: function() {},
     textFilter: '',
+    propFilter: 'Name',
+    filteringObj: {},
     sort: function() {},
     currentPageIndex: 0,
     results: [],
@@ -48,6 +51,19 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
       $scope.wizardMedia.modal.close();
     }
   })
+  
+  // Update image form
+  $scope.$watch('updateImageWizard.open', function(v) {
+    if (v) {
+      $scope.updateImageWizard.modal = $modal.open({
+        templateUrl : 'updateImageForm.html',
+        scope : $scope,
+        backdrop : 'static'
+      });
+    } else if (angular.isDefined($scope.updateImageWizard.modal)) {
+      $scope.updateImageWizard.modal.close();
+    }
+  })
 
   $scope.previewMedia = function(media) {
     if (media.Type === BWL.Model.Image.Type) {
@@ -59,6 +75,23 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   $scope.create = function() {
     $scope.wizardMedia.open = true;
     $scope.wizardMedia.reset();
+  }
+  
+  // Open update image form
+  $scope.update = function(image) {
+  	$scope.Image = angular.copy(image);
+    $scope.updateImageWizard.open = true;
+    $scope.updateImageWizard.reset();
+  }
+  
+  // Save edited image function
+  $scope.saveUpdate = function(image) {
+  	$scope.media.updateImage($scope.storeKey, image).then(function() {
+  	  $scope.init();
+  	  $scope.updateImageWizard.saved = true;
+  	}, function(err) {
+  	  $scope.error.log(err)
+  	});
   }
 
   $scope.onImageUpload = function(files) {
@@ -81,6 +114,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
     if (confirm($filter('t')('Common.Text_RemoveProduct'))) {
       $scope.media.deleteImage($scope.storeKey, image.Key).then(function() {
         $scope.init();
+        $scope.updateImageWizard.open = false;
       }, function(err) {
         $scope.error.log(err)
       });

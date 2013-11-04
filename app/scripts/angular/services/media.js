@@ -96,6 +96,25 @@ azureTicketsApp.factory('mediaService', [
 
           remoteServer.startUploader(storeKey, 'image');
         },
+        updateImage : function(storeKey, image) {
+          var def = $q.defer(), tempImage = angular.copy(image);
+
+          delete tempImage.Type;
+
+          BWL.Services.ModelService.UpdateAsync(storeKey,
+              BWL.Model.Image.Type, image.Key, tempImage,
+              function(ret) {
+                $rootScope.$apply(function() {
+                  def.resolve(image)
+                });
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err)
+                })
+              });
+
+          return def.promise;
+        },
         deleteImage : function(storeKey, imageKey) {
           var def = $q.defer();
 

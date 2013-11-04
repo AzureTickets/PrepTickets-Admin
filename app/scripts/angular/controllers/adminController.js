@@ -20,6 +20,8 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
     pageItems : function() {
     },
     textFilter : '',
+    propFilter: '*',
+    filteringObj: {},
     sort : function() {
     },
     currentPageIndex : 0,

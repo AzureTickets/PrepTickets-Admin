@@ -47,6 +47,8 @@ function storeController($scope, $cookieStore, $location, $timeout,
     pageItems : function() {
     },
     textFilter : '',
+    propFilter: '*',
+    filteringObj: {},
     sort : function() {
     },
     currentPageIndex : 0,

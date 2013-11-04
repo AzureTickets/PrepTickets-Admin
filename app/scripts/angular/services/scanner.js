@@ -110,8 +110,6 @@ azureTicketsApp.factory('scannerService', [
         updateScanDevice : function(storeKey, scanDevice) {
           var def = $q.defer(), tmpScanDevice = angular.copy(scanDevice);
 
-          delete tmpScanDevice.tmpEvents;
-          delete tmpScanDevice._tmpEvents;
           delete tmpScanDevice.Events;
           delete tmpScanDevice.Image;
           delete tmpScanDevice.$$hashKey;
