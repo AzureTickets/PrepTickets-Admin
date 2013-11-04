@@ -45,23 +45,31 @@
 							<atfield class="input-xxlarge" ng-model="ScanDevice.Brief"
 								label="'Common.Text_BriefDescription' | t" rows="5" />
 						</dd>
-						<dd class="alert alert-success" ng-show="updateSuccess">
-						  <p>{{ 'Scanner.Text_UpdateDeviceSuccess' | t }}</p>
+						<dd ui-if="ScanDevice.Key && isInfoEmpty(ScanDevice.DeviceInfo)">
+						  <p ng-style="{width: '545px'}">{{ 'Scanner.Text_ShouldRegister' | t }}</p>
+							<img ng-src="{{getQR(ScanDevice)}}" />
+							<button class="btn btn-info"
+							  ng-click="refreshQR(ScanDevice)">
+							  {{ 'Common.Text_Refresh' | t }}</button>
 						</dd>
-						<dd ui-if="ScanDevice.Key && !isInfoEmpty(ScanDevice.DeviceInfo)">
-						  <p class="pull-right">
+						<dd class="alert alert-success" ng-show="successMessage">
+						  <p>{{successMessage}}</p>
+						</dd>
+						<dd class="clear"><br /></dd>
+						<dd ui-if="ScanDevice.Key && !isInfoEmpty(ScanDevice.DeviceInfo)" class="pull-right">
+						  <p>
 						    <button ng-show="!ScanDevice.Active" class="btn btn-success"
-						      ng-click="updateDevice(ScanDevice, {Active: true})">
+						      ng-click="updateDevice(ScanDevice, {'Active': true})">
 						        {{ 'Scanner.Text_Activate' | t }}</button>
 						    <button ng-show="ScanDevice.Active" class="btn"
-						      ng-click="updateDevice(ScanDevice, {Active: false})">
+						      ng-click="updateDevice(ScanDevice, {'Active': false})">
 						        {{ 'Scanner.Text_Deactivate' | t }}</button>
 						    <button class="btn btn-danger"
 						      ng-click="unregisterDevice(ScanDevice)">
 						        {{ 'Scanner.Text_Destroy' | t }}</button>
 						  </p>
 						</dd>
-						<dd>
+						<dd class="pull-left">
 							<input type="submit" class="btn btn-primary clear"
 							  value="{{ 'Common.Text_Next' | t }}"
 							  ng-click="wizardScanDevice.next('atScanDevice1')" />
@@ -73,17 +81,23 @@
 					<dl class="clearfix">
 						<dd>
 							<atfield at-copy-of="DeviceInfo" class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.Name"
-								label="'Scanner.Text_DeviceName' | t" ng-required />
+								label="'Scanner.Text_DeviceName' | t" ng-readonly=true />
 						</dd>
 						<dd>
 							<atfield at-copy-of="DeviceInfo" class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.Hardware"
-								label="'Scanner.Text_Hardware' | t" ng-required />
+								label="'Scanner.Text_Hardware' | t" ng-readonly=true />
 						</dd>
 						<dd>
 							<atfield at-copy-of="DeviceInfo" class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.OS"
-								label="'Scanner.Text_OSVersion' | t" ng-required />
+								label="'Scanner.Text_OSVersion' | t" ng-readonly=true />
 						</dd>
-						<dd>
+						<dd class="clear"><br /></dd>
+						<dd class="pull-left">
+							<a ng-show="wizardScanDevice.currentStep>1"
+								ng-click="wizardScanDevice.currentStep = wizardScanDevice.currentStep-1"
+								class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
+						</dd>
+						<dd class="pull-left">
 							<input type="submit" class="btn btn-primary clear"
 								value="{{
 							'Common.Text_Next' | t }}" />
@@ -100,10 +114,6 @@
 								data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
 								ui-select2="optsSelEvents" ng-model="ScanDevice.tmpEvents"
 								name="ScanDevice_tmpEvents" ng-init="evEvents()" />
-						</dd>
-						<dd class="clear"><br /></dd>
-						<dd class="clear">
-							<atfield class="input-small" ng-model="ScanDevice.Active" />
 						</dd>
 						<dd class="clear"><br /></dd>
 						<dd class="pull-left">

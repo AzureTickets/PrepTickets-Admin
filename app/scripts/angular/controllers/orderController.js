@@ -8,6 +8,8 @@ function orderController($scope, $cookieStore, $filter) {
     filters: ['OrderId', 'Total.ItemPrice', 'State', 'Placed__Date'],
     pageItems: function() {},
     textFilter: '',
+    propFilter: '*',
+    filteringObj: {},
     sort: function() {},
     currentPageIndex: 0,
     results: [],

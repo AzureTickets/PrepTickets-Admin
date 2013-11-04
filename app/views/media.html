@@ -1,5 +1,6 @@
 <div class="atPanel" ui-if="DomainProfile && DomainProfile.Key || false"
 	ng-controller="mediaController" ng-cloak>
+	<!-- Add image form -->
 	<script type="text/ng-template" id="formMedia.html">
 			<div class="modal-header">
 				<button type="button" ng-click="wizardMedia.open = false"
@@ -32,6 +33,43 @@
 					</dl>
 				</form>
 				</ng-form>
+			</div>
+			<div class="modal-footer"></div>
+	</script>
+	
+	<!-- Update image form -->
+	<script type="text/ng-template" id="updateImageForm.html">
+			<div class="modal-header">
+				<button type="button" ng-click="updateImageWizard.open = false"
+					class="close">&times;</button>
+				<h3>
+					<p class="text-info">{{ 'Common.Text_Image' | t}}</p>
+				</h3>
+			</div>
+			<div class="modal-body">
+				<!-- messages -->
+				<div class="clearfix">
+					<div class="alert alert-info">
+						<strong>Thong ass</strong>
+					</div>
+					
+					<div>
+					  <div class="pull-left" ng-style="{'margin': '0 16px 16px'}">
+					    <a href="" ng-click="previewMedia(Image)"><img ng-src="{{Image.BaseURL}}{{Image.ThumbFile}}" /></a>
+					  </div>
+					  
+					  <div class="pull-right" ng-style="{'margin-right': '16px'}">
+					    <atfield at-required class="input-large" ng-model="Image.Name"
+								label="'Common.Text_Name' | t"></atfield>
+							<a href="{{Image.BaseURL}}{{Image.ImageFile}}" target="_blank">{{ 'Common.Text_ImageDownload' | t }}</a>
+					  </div>
+					</div>
+					
+					<div>
+					  <button class="btn btn-success clear"
+					    ng-click="">{{ 'Common.Text_Save' | t }}</button>
+					</div>
+				</div>
 			</div>
 			<div class="modal-footer"></div>
 	</script>

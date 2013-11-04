@@ -7,29 +7,42 @@
 		</div>
 		<div class="widget-content">
 
+			<form class="form-horizontal">
+				<div class="control-group">
+	  			<label class="control-label" for="filterText">{{'Common.Text_Search'
+		  			| t}}:&nbsp;</label>
+		  		<div class="controls">
+		  		  <input type="text" id="filterText" class="input-large"
+		  		    ng-model="pagination.textFilter" placeholder="">
+		  		</div>
+		  	</div>
+			</form>
+
 			<div ng-show="images.length == 0" class="alert alert-info">{{
-				'Common.Text_NoImages_Msg' | t }}</div>
+				'Common.Text_NoImages_Msg' | t }}</div>{{images[0]}}
+				
 			<table class="table  table-bordered " ng-show="images.length > 0">
 				<thead>
 					<tr>
 						<th>#</th>
+						<th>{{ 'Common.Text_Name' | t}}</th>
 						<th>{{ 'Common.Text_Preview' | t}}</th>
-						<th>{{ 'Common.Text_Control' | t}}</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="image in pagination.pageItems()">
-						<td ng-click="previewMedia(image)" mousestyle>{{$index + 1 +
+					<tr ng-repeat="image in pagination.pageItems()" ng-click="update(image)" mousestyle>
+						<td>{{$index + 1 +
 							pagination.currentPageIndex*pagination.pageSize}}</td>
-						<td ng-click="previewMedia(image)" mousestyle><img
+						<td>{{image.Name}}</td>
+						<td><img
 							ng-src="{{image.BaseURL}}{{image.ThumbFile}}" /></td>
-						<td>
+<!--						<td>
 							<div class="btn-group pull-left">
 								<button ui-if="Store.IsOwner" ng-click="deleteImage(image)"
 									class="btn btn-mini btn-danger">{{
 									'Common.Text_Remove' | t }}</button>
 							</div>
-						</td>
+						</td>-->
 					</tr>
 				</tbody>
 			</table>

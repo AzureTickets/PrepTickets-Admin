@@ -25,6 +25,8 @@ function eventController($scope, $cookieStore, $filter, $modal) {
     pageItems : function() {
     },
     textFilter : '',
+    propFilter: '*',
+    filteringObj: {},
     sort : function() {
     },
     currentPageIndex : 0,

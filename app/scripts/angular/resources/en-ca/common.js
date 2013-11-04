@@ -387,6 +387,7 @@ var CommonResources = {
   Text_NoImages_Msg : 'Media Library is empty.',
   Text_Images : 'Images',
   Text_Image : 'Picture',
+  Text_ImageDownload : 'Download Image',
   Text_Media : 'Media Library',
   Text_RegistrationStep0 : "Service Aggreement",
   Text_RegistrationStep1 : "School Information",
@@ -394,6 +395,7 @@ var CommonResources = {
   Text_RegistrationStep3 : "Payment Providers",
   Text_RegistrationStep4 : "Completed",
   Text_Reset : 'Reset',
+  Text_Refresh : 'Refresh',
 
   Text_AdminContact_Description : "Please ensure that the following information is correct, we will only contact you when necessary and we will not share your information with any 3rd party for any reason.",
   Text_Payment_Description : "In order to collect payments you must add and configure payment gateway.",

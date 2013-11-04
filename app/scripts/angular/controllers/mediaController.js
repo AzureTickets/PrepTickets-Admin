@@ -5,6 +5,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   $scope.wizardMedia = $scope.form.getWizard($scope), $scope.mediaPreview = {
     open : false
   };
+  $scope.updateImageWizard = $scope.form.getWizard($scope);
   
   // Pagination setup
   $scope.pagination = {
@@ -12,6 +13,8 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
     predicates: [],
     pageItems: function() {},
     textFilter: '',
+    propFilter: 'Name',
+    filteringObj: {},
     sort: function() {},
     currentPageIndex: 0,
     results: [],
@@ -48,6 +51,19 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
       $scope.wizardMedia.modal.close();
     }
   })
+  
+  // Update image form
+  $scope.$watch('updateImageWizard.open', function(v) {
+    if (v) {
+      $scope.updateImageWizard.modal = $modal.open({
+        templateUrl : 'updateImageForm.html',
+        scope : $scope,
+        backdrop : 'static'
+      });
+    } else if (angular.isDefined($scope.updateImageWizard.modal)) {
+      $scope.updateImageWizard.modal.close();
+    }
+  })
 
   $scope.previewMedia = function(media) {
     if (media.Type === BWL.Model.Image.Type) {
@@ -59,6 +75,13 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   $scope.create = function() {
     $scope.wizardMedia.open = true;
     $scope.wizardMedia.reset();
+  }
+  
+  // Update image
+  $scope.update = function(image) {
+  	$scope.Image = angular.copy(image);
+    $scope.updateImageWizard.open = true;
+    $scope.updateImageWizard.reset();
   }
 
   $scope.onImageUpload = function(files) {

@@ -2,6 +2,7 @@
   Text_ConfirmDeleteDevice : 'Are you sure want to delete this device?',
   Text_UpdateDeviceSuccess : 'The device has been updated successfully.',
   Text_CreateDeviceSuccess : 'The device has been created successfully.',
+  Text_RegisterSuccess : 'The device has been registered',
   Text_UnRegisterSuccess : 'The device has been un-registered',
   Text_ActiveDevice : 'Are you sure want to active this device?',
   Text_DeactiveDevice : 'Are you sure want to deactive this device?',
