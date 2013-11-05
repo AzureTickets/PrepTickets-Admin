@@ -39,13 +39,6 @@
 							<atfield class="input-xxlarge" ng-model="ScanDevice.Brief"
 								label="'Common.Text_BriefDescription' | t" rows="5" />
 						</dd>
-						<dd ui-if="ScanDevice.Key && isInfoEmpty(ScanDevice.DeviceInfo)">
-						  <p ng-style="{width: '545px'}">{{ 'Scanner.Text_ShouldRegister' | t }}</p>
-							<img ng-src="{{getQR(ScanDevice)}}" />
-							<button class="btn btn-info"
-							  ng-click="refreshQR(ScanDevice)">
-							  {{ 'Common.Text_Refresh' | t }}</button>
-						</dd>
 						<dd class="alert alert-success" ng-show="successMessage">
 						  <p>{{successMessage}}</p>
 						</dd>
@@ -75,15 +68,15 @@
 					<dl class="clearfix">
 						<dd>
 							<atfield at-copy-of="DeviceInfo" class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.Name"
-								label="'Scanner.Text_DeviceName' | t" ng-readonly=true />
+								label="'Scanner.Text_DeviceName' | t" />
 						</dd>
 						<dd>
 							<atfield at-copy-of="DeviceInfo" class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.Hardware"
-								label="'Scanner.Text_Hardware' | t" ng-readonly=true />
+								label="'Scanner.Text_Hardware' | t" />
 						</dd>
 						<dd>
 							<atfield at-copy-of="DeviceInfo" class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.OS"
-								label="'Scanner.Text_OSVersion' | t" ng-readonly=true />
+								label="'Scanner.Text_OSVersion' | t" />
 						</dd>
 						<dd class="clear"><br /></dd>
 						<dd class="pull-left">
