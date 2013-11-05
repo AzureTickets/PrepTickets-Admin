@@ -168,12 +168,16 @@ azureTicketsApp
                   checkAll = $q.all(els.map(_validates));
 
                   checkAll.then(function(validations) {
-                    if (validations === 0) {
-                      this.checkStep[this.currentStep] = true;
-                      this.currentStep++;
+                    validations = validations.filter(function(vv) {
+                      return angular.isObject(vv)
+                    })
+
+                    if (validations.length === 0) {
+                      _this.checkStep[_this.currentStep] = true;
+                      _this.currentStep++;
 
                       if (angular.isDefined(finish) && finish) {
-                        this.finished = true;
+                        _this.finished = true;
                       }
 
                       if (angular.isFunction(cbk)) {
@@ -182,22 +186,14 @@ azureTicketsApp
 
                       def.resolve();
                     } else {
-                      validations = validations.filter(function(vv) {
-                        return angular.isObject(vv)
+                      // render errors
+                      angular.forEach(validations, function(v, k) {
+                        if (v.err && v.e) {
+                          _this.renderError(v.e, v.err)
+                        }
                       })
 
-                      if (validations.length === 0) {
-                        def.resolve()
-                      } else {
-                        // render errors
-                        angular.forEach(validations, function(v, k) {
-                          if (v.err && v.e) {
-                            _this.renderError(v.e, v.err)
-                          }
-                        })
-
-                        def.reject();
-                      }
+                      def.reject();
                     }
                   }, function(err) {
                     throw new Error(err)

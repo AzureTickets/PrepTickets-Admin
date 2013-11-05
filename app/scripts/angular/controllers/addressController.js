@@ -15,10 +15,19 @@ function addressController($scope, $q, $timeout, $filter) {
         opts : {
           against : function(v, args) {
             var def = $q.defer();
+            var addr = $scope[$scope.modelName].Address;
 
-            $timeout(function() {
-              def.reject(false)
-            }, 100)
+            $scope.geo.getCityByName(v, addr.Region, addr.Country).then(
+                function(city) {
+                  var isValidCity = angular.isObject(city)
+                      && city.Type === BWL.Model.City.Type;
+
+                  if (isValidCity) {
+                    def.resolve()
+                  } else {
+                    def.reject()
+                  }
+                }, def.reject)
 
             return def.promise
           },
