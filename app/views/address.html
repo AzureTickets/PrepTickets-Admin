@@ -9,7 +9,7 @@
 				'Common.Text_Update' || 'Common.Text_DisableUpdate') | t }}</a>
 		</dd>
 	</dl>
-	<dl ui-if="modelName != 'Store' || addressEditable" class="clearfix"
+	<dl ng-show="modelName != 'Store' || addressEditable" class="clearfix"
 		ng-init="init(this[modelName].Address)">
 		<dd
 			ui-if="this[modelName].Address.Timezone || this[modelName].Address.City && timezones.length == 0 || false">
@@ -23,10 +23,21 @@
 				ng-model="this[modelName].Address.AddressLine2"
 				label="'Address.LabelAddress2' | t" />
 		</dd>
-		<dd ui-if="this[modelName].Address.Region || false" class="clear">
+		<dd
+			ui-if="!isSpecialCountry && this[modelName].Address.Region || false"
+			class="clear">
 			<atfield at-required class="input-xlarge"
 				ng-model="this[modelName].Address.City"
 				label="'Address.LabelCity' | t" />
+		</dd>
+		<dd
+			ui-if="isSpecialCountry && this[modelName].Address.Region || false"
+			class="clear">
+			<label>{{'Address.LabelCity' | t}}</label> <input type="{{'text'}}"
+				class="input-xxlarge" autocomplete="off"
+				typeahead="city.Name for city in getCities($viewValue) | limitTo:20"
+				ng-model="this[modelName].Address.City" at-required
+				at-validate="validation.Address.City" name="Address_City" />
 		</dd>
 		<dd class="clear"
 			ui-if="regions.length > 0 && this[modelName].Address.Country || false">

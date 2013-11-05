@@ -1,4 +1,4 @@
-function addressController($scope, $q, $timeout) {
+function addressController($scope, $q, $timeout, $filter) {
   $scope.name = 'address', $scope.countries = [], $scope.continents = [],
       $scope.regions = [], $scope.timezones = [],
       $scope.addressEditable = false;
@@ -7,10 +7,45 @@ function addressController($scope, $q, $timeout) {
     $scope.loadCountry(address);
   });
 
+  // custom validation
+  $scope.validation = {
+    Address : {
+      City : {
+        fn : 'Custom',
+        opts : {
+          against : function(v, args) {
+            var def = $q.defer();
+            var addr = $scope[$scope.modelName].Address;
+
+            $scope.geo.getCityByName(v, addr.Region, addr.Country).then(
+                function(city) {
+                  var isValidCity = angular.isObject(city)
+                      && city.Type === BWL.Model.City.Type;
+
+                  if (isValidCity) {
+                    def.resolve()
+                  } else {
+                    def.reject()
+                  }
+                }, def.reject)
+
+            return def.promise
+          },
+          failureMessage : $filter('t')('Common.Validation_City')
+        }
+      }
+    }
+  }
+
   $scope.init = function(address) {
-    $scope.loadCountries().then(function() {
-      $scope.loadCountry(address)
-    })
+    $scope.loadCountries().then(
+        function() {
+          $scope.loadCountry(address)
+
+          // countries with additional behavior
+          $scope.isSpecialCountry = $scope[$scope.modelName].Address.Country
+              .match(/^(?:US|UK|CA)$/g) !== null
+        })
   }
 
   $scope.loadContinents = function() {
@@ -23,6 +58,26 @@ function addressController($scope, $q, $timeout) {
 
   $scope.editAddress = function() {
     $scope.addressEditable = !$scope.addressEditable;
+  }
+
+  $scope.getCities = function(cityName) {
+    var def = $q.defer();
+
+    if (cityName.trim().length >= $scope.config.typeahead.minLength) {
+      var addr = $scope[$scope.modelName].Address;
+
+      $scope.geo.findCitiesByName(cityName.trim(), addr.Region, addr.Country)
+          .then(function(cities) {
+            def.resolve(cities)
+          }, function(err) {
+            $scope.error.log(err)
+          })
+
+    } else {
+      def.resolve([])
+    }
+
+    return def.promise
   }
 
   $scope.loadCountries = function(address, reset) {
@@ -74,34 +129,40 @@ function addressController($scope, $q, $timeout) {
     var def = $q.defer()
 
     if (angular.isDefined(address) && angular.isDefined(address.Country)) {
-      $scope.geo.loadCountry(address.Country).then(
-          function(country) {
-            // anytime we change country, reset address
-            if (triggeredFromCtrl) {
-              address.City = null, address.AddressLine1 = null,
-                  address.AddressLine2 = null, address.Region = null,
-                  address.Timezone = null, address.PostalCode = null;
-              $scope.regions = [], $scope.timezones = [];
-            }
+      $scope.geo
+          .loadCountry(address.Country)
+          .then(
+              function(country) {
+                // anytime we change country, reset address
+                if (triggeredFromCtrl) {
+                  address.City = null, address.AddressLine1 = null,
+                      address.AddressLine2 = null, address.Region = null,
+                      address.Timezone = null, address.PostalCode = null;
+                  $scope.regions = [], $scope.timezones = [];
 
-            $scope.Country = country;
-            address.tmpContinentIso = country.ContinentISO;
+                  // countries with additional behavior
+                  $scope.isSpecialCountry = $scope[$scope.modelName].Address.Country
+                      .match(/^(?:US|UK|CA)$/g) !== null
+                }
 
-            if (!country.HasPostalCodes || $scope.regions.length === 0) {
-              $scope.loadRegionsByCountry(address)
-            }
-            if ($scope.countries.length === 0) {
-              $scope.loadCountries(address)
-            }
-            if ($scope.timezones.length === 0) {
-              $scope.loadTimezonesByCountry(address)
-            }
+                $scope.Country = country;
+                address.tmpContinentIso = country.ContinentISO;
 
-            def.resolve()
-          }, function(err) {
-            def.reject()
-            $scope.error.log(err)
-          });
+                if (!country.HasPostalCodes || $scope.regions.length === 0) {
+                  $scope.loadRegionsByCountry(address)
+                }
+                if ($scope.countries.length === 0) {
+                  $scope.loadCountries(address)
+                }
+                if ($scope.timezones.length === 0) {
+                  $scope.loadTimezonesByCountry(address)
+                }
+
+                def.resolve()
+              }, function(err) {
+                def.reject()
+                $scope.error.log(err)
+              });
     } else {
       def.resolve()
     }
@@ -147,4 +208,4 @@ function addressController($scope, $q, $timeout) {
   }
 }
 
-addressController.$inject = [ '$scope', '$q', '$timeout' ];
+addressController.$inject = [ '$scope', '$q', '$timeout', '$filter' ];
