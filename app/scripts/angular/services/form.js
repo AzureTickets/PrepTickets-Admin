@@ -55,6 +55,8 @@ azureTicketsApp
                         // use cross browser validation library
                         try {
                           Validate[atValidate.fn](v, atValidate.opts);
+
+                          jQuery('.error-' + n).remove();
                           _def.resolve(true);
                         } catch (err) {
                           _def.resolve({
@@ -65,13 +67,15 @@ azureTicketsApp
                       } else {
                         // if it's a Custom fn, support promises (livevalidation
                         // workaround)
-                        atValidate.opts.against(v).then(_def.resolve,
-                            function() {
-                              _def.resolve({
-                                e : e,
-                                err : atValidate.opts.failureMessage
-                              });
-                            })
+                        atValidate.opts.against(v).then(function() {
+                          _def.resolve(true)
+                          jQuery('.error-' + n).remove();
+                        }, function() {
+                          _def.resolve({
+                            e : e,
+                            err : atValidate.opts.failureMessage
+                          });
+                        })
                       }
                     } else if (angular.isObject(model.$error)) {
                       // pattern error
@@ -113,7 +117,7 @@ azureTicketsApp
 
                   // if Address widget
                   var addr = angular
-                      .isDefined(angular.element(e).scope()['addressEditable']) || false
+                      .isDefined(angular.element(e).scope().$parent.addressEditable) || false
                   // expand collapsible section
                   var cs = !addr ? jQuery(e).parents('dl').first().parent(
                       'div[collapse]') : jQuery(e).parents('div[collapse]'); // collapsible
