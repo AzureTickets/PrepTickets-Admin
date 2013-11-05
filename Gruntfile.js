@@ -311,7 +311,7 @@ module.exports = function(grunt) {
           },
           // push dist to azure's repo
           publish : {
-            command : 'cd dist && git add . && git commit -m "publishing" && git push -f origin master',
+            command : 'cd dist && git add -u . && git commit -m "publishing" && git push -f origin master',
             options : {
               stdout : true,
               stderr : true,

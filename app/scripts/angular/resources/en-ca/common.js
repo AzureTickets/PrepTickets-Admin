@@ -419,5 +419,6 @@ var CommonResources = {
   LabelContactCompanyName : 'Company Name',
 
   Validation_Maximum : 'Maximum allowed is {0} characters long',
-  Validation_Minimum : 'Minimum allowed is {0} characters long'
+  Validation_Minimum : 'Minimum allowed is {0} characters long',
+  Validation_City : 'This City is not valid'
 };
