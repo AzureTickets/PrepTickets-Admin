@@ -9,7 +9,7 @@
 				'Common.Text_Update' || 'Common.Text_DisableUpdate') | t }}</a>
 		</dd>
 	</dl>
-	<dl ui-if="modelName != 'Store' || addressEditable" class="clearfix"
+	<dl ng-show="modelName != 'Store' || addressEditable" class="clearfix"
 		ng-init="init(this[modelName].Address)">
 		<dd
 			ui-if="this[modelName].Address.Timezone || this[modelName].Address.City && timezones.length == 0 || false">

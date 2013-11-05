@@ -17,7 +17,7 @@ function addressController($scope, $q, $timeout, $filter) {
             var def = $q.defer();
 
             $timeout(function() {
-              def.resolve(false)
+              def.reject(false)
             }, 100)
 
             return def.promise
