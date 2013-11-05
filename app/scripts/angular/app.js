@@ -157,7 +157,7 @@ azureTicketsApp.config([
         controller : orderController,
         resolve : routeFilters
       }).when('/order/:orderKey', {
-        templateUrl : 'views/order.html',
+        templateUrl : 'views/orderDetail.html',
         controller : orderController,
         resolve : routeFilters
       }).when('/order/:orderKey/:ticketKey', {

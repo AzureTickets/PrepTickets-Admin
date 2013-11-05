@@ -1,4 +1,4 @@
-function orderController($scope, $cookieStore, $filter) {
+function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
   $scope.name = 'order';
   
   // pagination setup
@@ -22,6 +22,21 @@ function orderController($scope, $cookieStore, $filter) {
       // Do nothing
     });
   }
+  
+  $scope.viewOrder = function(order) {
+  	$window.location.href = '#/order/' + order.Key;
+  }
+  
+  $scope.orderDetailInit = function() {
+  	if (angular.isDefined($routeParams.orderKey)) {
+      $scope.model.read(BWL.Model.Order.Type, $routeParams.orderKey, 5)
+  	    .then(function(returnedOrder) {
+  	  	  $scope.Order = returnedOrder;
+  	    }, function(err) {
+  	  	  $scope.error.log(err)
+  	  });
+    }
+  }
 
   $scope.deleteOrder = function(order) {
     if (confirm($filter('t')('Common.Text_RemoveProduct'))) {
@@ -36,4 +51,4 @@ function orderController($scope, $cookieStore, $filter) {
   }
 }
 
-orderController.$inject = [ '$scope', '$cookieStore', '$filter' ];
+orderController.$inject = [ '$scope', '$cookieStore', '$filter', '$window', '$routeParams' ];

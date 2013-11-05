@@ -1,0 +1,26 @@
+<div ng-init="orderDetailInit()">
+	<!-- Loading message -->
+  <div ng-show="!Order" class="alert alert-info">
+	  <i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Please wait, loading...
+  </div>
+  
+  <!-- Order info -->
+  <div ng-show="Order" class="order-details pull-left">
+  	<div>
+  		<h4>Order Details</h4>
+  		<dl class="dl-horizontal">
+  		  <dt>Order ID</dt><dd>{{Order.OrderId}}</dd>
+  		  <dt>Date of Order</dt><dd>{{Order.DateCreated | date:'MMMM dd yyyy, h:mm a'}}</dd>
+  		  <dt>Number of Items</dt><dd>...</dd>
+  		  <dt>Payment Type</dt><dd>{{Order.Transactions[0].ProviderType}}</dd>
+  		  <dt>Subtotal</dt><dd>{{Order.SubTotal.ItemPrice | currency}}</dd>
+  		  <dt>Fee</dt><dd>{{Order.Fees.ItemPrice | currency}}</dd>
+  		  <dt>Total</dt><dd>{{Order.Total.ItemPrice | currency}}</dd>
+  		</dl>
+  	</div>
+  	<div class="order-tickets pull-left">
+  		
+  	</div>
+  	{{Order}}
+  </div>
+</div>
