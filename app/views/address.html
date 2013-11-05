@@ -24,14 +24,14 @@
 				label="'Address.LabelAddress2' | t" />
 		</dd>
 		<dd
-			ui-if="!isSpecialCountry && this[modelName].Address.Region || false"
+			ng-show="!isSpecialCountry && this[modelName].Address.Region || false"
 			class="clear">
 			<atfield at-required class="input-xlarge"
 				ng-model="this[modelName].Address.City"
 				label="'Address.LabelCity' | t" />
 		</dd>
 		<dd
-			ui-if="isSpecialCountry && this[modelName].Address.Region || false"
+			ng-show="isSpecialCountry && this[modelName].Address.Region || false"
 			class="clear">
 			<label>{{'Address.LabelCity' | t}}</label> <input type="{{'text'}}"
 				class="input-xxlarge" autocomplete="off"
@@ -80,10 +80,22 @@
 			</select>
 		</dd>
 		<dd
-			ui-if="this[modelName].Address.City && timezones.length > 0 && this[modelName].Address.Timezone || false">
-			<atfield at-required readonly class="input-xlarge"
-				ng-model="this[modelName].Address.Timezone"
+			ui-if="timezones.length > 0 && (isSpecialCountry && this[modelName].Address.City && this[modelName].Address.Timezone) || false">
+			<atfield at-required ng-readonly="isSpecialCountry"
+				class="input-xlarge" ng-model="this[modelName].Address.Timezone"
 				label="'Address.LabelTimezone' | t" />
+		</dd>
+		<dd
+			ui-if="!isSpecialCountry && this[modelName].Address.City && timezones.length > 0 || false">
+			<label>{{'Address.LabelTimezone' | t}}</label> <select
+				data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
+				ui-select2="{containerCssClass:'input-xlarge'}" at-required
+				name="Address_Timezone" ng-model="this[modelName].Address.Timezone"
+				ng-change="a=1">
+				<option></option>
+				<option ng-selected="t.Name == this[modelName].Address.Timezone"
+					ng-repeat="t in timezones" value="{{t.Name}}">{{t.Name}}</option>
+			</select>
 		</dd>
 	</dl>
 </div>

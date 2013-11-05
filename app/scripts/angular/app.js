@@ -156,6 +156,14 @@ azureTicketsApp.config([
         templateUrl : 'views/orderList.html',
         controller : orderController,
         resolve : routeFilters
+      }).when('/order/:orderKey', {
+        templateUrl : 'views/order.html',
+        controller : orderController,
+        resolve : routeFilters
+      }).when('/order/:orderKey/:ticketKey', {
+        templateUrl : 'views/orderTicket.html',
+        controller : orderController,
+        resolve : routeFilters
       }).when('/media', {
         templateUrl : 'views/media.html',
         controller : mediaController,
