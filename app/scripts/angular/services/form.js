@@ -114,8 +114,8 @@ azureTicketsApp.factory('formService',
 
               // if Address widget
               var eScope = angular.element(e).scope();
-              var addr = eScope.$parent.addressEditable
-                  || eScope.addressEditable
+              var addr = eScope.$parent.name === 'address'
+                  || eScope.name === 'address'
 
               // expand collapsible section
               var cs = !angular.isDefined(addr) ? jQuery(e).parents('dl')
@@ -123,16 +123,6 @@ azureTicketsApp.factory('formService',
                   'div[collapse]'); // collapsible
               // section
               var cc = jQuery(cs).prev('.collapser'); // element to click
-
-              if (angular.isDefined(addr)) {
-                $timeout(function() {
-                  if (eScope.$parent.addressEditable) {
-                    eScope.$parent.addressEditable = true
-                  } else {
-                    eScope.addressEditable = true
-                  }
-                }, 100)
-              }
 
               if (cc.length !== 0) {
                 // get collapse var
