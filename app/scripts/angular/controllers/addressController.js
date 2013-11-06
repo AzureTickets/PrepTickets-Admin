@@ -1,7 +1,6 @@
 function addressController($scope, $q, $timeout, $filter) {
   $scope.name = 'address', $scope.countries = [], $scope.continents = [],
-      $scope.regions = [], $scope.timezones = [],
-      $scope.addressEditable = false;
+      $scope.regions = [], $scope.timezones = [];
 
   $scope.$on('loadCountry', function(ev, address) {
     $scope.loadCountry(address);
@@ -62,10 +61,6 @@ function addressController($scope, $q, $timeout, $filter) {
     }, function(err) {
       $scope.error.log(err)
     });
-  }
-
-  $scope.editAddress = function() {
-    $scope.addressEditable = !$scope.addressEditable;
   }
 
   $scope.getCities = function(cityName) {
