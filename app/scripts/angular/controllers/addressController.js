@@ -17,17 +17,25 @@ function addressController($scope, $q, $timeout, $filter) {
             var def = $q.defer();
             var addr = $scope[$scope.modelName].Address;
 
-            $scope.geo.getCityByName(v, addr.Region, addr.Country).then(
-                function(city) {
-                  var isValidCity = angular.isObject(city)
-                      && city.Type === BWL.Model.City.Type;
+            $scope.geo
+                .getCityByName(v, addr.Region, addr.Country)
+                .then(
+                    function(city) {
+                      var isValidCity = angular.isObject(city)
+                          && city.Type === BWL.Model.City.Type;
 
-                  if (isValidCity) {
-                    def.resolve()
-                  } else {
-                    def.reject()
-                  }
-                }, def.reject)
+                      if (isValidCity) {
+                        if (!$scope[$scope.modelName].Address.Latitude
+                            && !$scope[$scope.modelName].Address.Longitude) {
+                          $scope[$scope.modelName].Address.Latitude = city.Latitude;
+                          $scope[$scope.modelName].Address.Longitude = city.Longitude
+                        }
+
+                        def.resolve()
+                      } else {
+                        def.reject()
+                      }
+                    }, def.reject)
 
             return def.promise
           },
@@ -195,6 +203,9 @@ function addressController($scope, $q, $timeout, $filter) {
                     address.City = city.Name;
                     address.Region = city.RegionISO;
                     address.Timezone = city.TimezoneName;
+                    address.Latitude = city.Latitude
+                    address.Longitude = city.Longitude
+
                     $scope.loadRegionsByCountry(address);
                     $scope.loadTimezonesByCountry(address);
                   }
