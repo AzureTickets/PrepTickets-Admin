@@ -8,7 +8,7 @@ function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
     filters: ['OrderId', 'Total.ItemPrice', 'State', 'Placed__Date'],
     pageItems: function() {},
     textFilter: '',
-    propFilter: ['OrderId'],
+    propFilter: 'OrderId',
     filteringObj: {},
     sort: function() {},
     currentPageIndex: 0,
@@ -40,33 +40,38 @@ function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
   	    startDate = null,
   	    endDate = null;
   	
+  	var toBWLDateTime = function(date) {
+  		return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+  	}
+  	
   	switch (dateFrom.value) {
   		case 1:
-  		  startDate = new String(new Date(date.getTime() - 2 * 24 * 60 * 60 * 1000)).slice(0, 15);
-  		  endDate = new String(new Date(date.getTime())).slice(0, 15);
+  		  startDate = toBWLDateTime(new Date(date.getTime() - 1*86400000));
+  		  endDate = toBWLDateTime(new Date(date.getTime()));
   		  break;
   		  
   		case 2:
-  		  startDate = new String(new Date(date.getTime() - 7 * 24 * 60 * 60 * 1000)).slice(0, 15);
-  		  endDate = new String(new Date(date.getTime())).slice(0, 15);
+  		  startDate = toBWLDateTime(new Date(date.getTime() - 7*86400000));
+  		  endDate = toBWLDateTime(new Date(date.getTime()));
   		  break;
   		  
   		case 3:
-  		  startDate = new String(new Date(date.getTime() - 30 * 24 * 60 * 60 * 1000)).slice(0, 15);
-  		  endDate = new String(new Date(date.getTime())).slice(0, 15);
+  		  startDate = toBWLDateTime(new Date(date.getTime() - 30*86400000));
+  		  endDate = toBWLDateTime(new Date(date.getTime()));
   		  break;
   		  
   		case 4:
-  		  startDate = new String(new Date(date.getTime() - 61 * 24 * 60 * 60 * 1000)).slice(0, 15);
-  		  endDate = new String(new Date(date.getTime())).slice(0, 15);
+  		  startDate = toBWLDateTime(new Date(date.getTime() - 60*86400000));
+  		  endDate = toBWLDateTime(new Date(date.getTime()));
   		  break;
   		  
   		case 5:
-  		  startDate = new String(new Date(date.getTime() - 365 * 24 * 60 * 60 * 1000)).slice(0, 15);
-  		  endDate = new String(new Date(date.getTime())).slice(0, 15);
+  		  startDate = toBWLDateTime(new Date(date.getTime() - 365*86400000));
+  		  endDate = toBWLDateTime(new Date(date.getTime()));
   		  break;
   	}
-  	
+  	$scope.startDate = startDate;
+  	$scope.endDate = endDate;
   	return $scope.order.loadOrders($scope, orderState.value, startDate, endDate).then(function() {
       // Do nothing
     });

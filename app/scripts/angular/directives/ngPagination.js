@@ -40,19 +40,17 @@ azureTicketsApp
                   /*if (angular.isArray($scope.atPagination.propFilter)) {
                   	for (var i = 0; i < $scope.atPagination.propFilter.length; i++) {
                   		$scope.atPagination.filteringObj[$scope.atPagination.propFilter[i]] = '';
-                  	}
-                  	
-                  	for (var i = 0; i < $scope.atPagination.propFilter.length; i++) {
-                  	$scope.$watch(function() { return $scope.atPagination.propFilter[i] }, function searchContentWatcher(newValue) {
-                  		$scope.atPagination.filteringObj[$scope.atPagination.propFilter[i]] = newValue;
                   		
-                  		return pagesWatcher($scope.itemsPerPage, $scope.atPagination.filteringObj,
-                        $scope.predicate);
-                  	});
-                  }
+                  		$scope.$watch(function() { return $scope.atPagination.filteringObj[$scope.atPagination.propFilter[i]]; }, function searchContentWatcher(newValue) {
+                    		return pagesWatcher($scope.itemsPerPage, $scope.atPagination.filteringObj,
+                          $scope.predicate);
+                    	});
+                  	}
                   } else {
                   	$scope.propName = '$';
                   	$scope.atPagination.filteringObj[$scope.propName] = '';
+                  	
+                  	$scope.$watch('atPagination.textFilter', searchContentWatcher);
                   }*/
                   
                   if (!angular.isString($scope.atPagination.propFilter) || ($scope.atPagination.propFilter == '*') || ($scope.atPagination.propFilter == '')) {
@@ -137,7 +135,7 @@ azureTicketsApp
                     return pagesWatcher(newValue, $scope.atPagination.filteringObj,
                         $scope.predicate);
                   };
-                  var searchContentWatcher1 = function(newValue) {
+                  var searchContentWatcher = function(newValue) {
                   	$scope.atPagination.filteringObj[$scope.propName] = newValue;
                   	
                     return pagesWatcher($scope.itemsPerPage, $scope.atPagination.filteringObj,
@@ -147,7 +145,7 @@ azureTicketsApp
                   	pagesWatcher($scope.itemsPerPage, $scope.atPagination.filteringObj);
                   };
                   $scope.$watch('itemsPerPage', itemsPerPageWatcher);
-                  $scope.$watch('atPagination.textFilter', searchContentWatcher1);
+                  $scope.$watch('atPagination.textFilter', searchContentWatcher);
                   
                   // Watch for data length to run the pagination
                   // It does the initial run also

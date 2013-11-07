@@ -150,7 +150,7 @@ azureTicketsApp.factory('orderService', [
                 }
 
                 $rootScope.$apply(function() {
-                  def.resolve(orders);
+                  def.resolve();
                 });
               }, function(err) {
                 $rootScope.$apply(function() {
