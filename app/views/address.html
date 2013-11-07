@@ -1,16 +1,6 @@
 <div ui-if="this[modelName].Address" ng-controller="addressController"
 	class="clearfix">
-	<dl ui-if="modelName == 'Store'" class="clearfix">
-		<dd class="pull-left">{{ this[modelName].Address | address }}</dd>
-		<dd class="pull-left">
-			<a class="btn btn-mini"
-				ng-class="{'btn-info':!addressEditable,'btn-inverse':addressEditable}"
-				ng-click="editAddress()">{{ (!addressEditable &&
-				'Common.Text_Update' || 'Common.Text_DisableUpdate') | t }}</a>
-		</dd>
-	</dl>
-	<dl ng-show="modelName != 'Store' || addressEditable" class="clearfix"
-		ng-init="init(this[modelName].Address)">
+	<dl class="clearfix" ng-init="init(this[modelName].Address)">
 		<dd
 			ui-if="this[modelName].Address.Timezone || this[modelName].Address.City && timezones.length == 0 || false">
 			<atfield at-required class="input-xxlarge"
@@ -80,10 +70,22 @@
 			</select>
 		</dd>
 		<dd
-			ui-if="this[modelName].Address.City && timezones.length > 0 && this[modelName].Address.Timezone || false">
-			<atfield at-required readonly class="input-xlarge"
-				ng-model="this[modelName].Address.Timezone"
+			ui-if="timezones.length > 0 && (isSpecialCountry && this[modelName].Address.City && this[modelName].Address.Timezone) || false">
+			<atfield at-required ng-readonly="isSpecialCountry"
+				class="input-xlarge" ng-model="this[modelName].Address.Timezone"
 				label="'Address.LabelTimezone' | t" />
+		</dd>
+		<dd
+			ui-if="!isSpecialCountry && this[modelName].Address.City && timezones.length > 0 || false">
+			<label>{{'Address.LabelTimezone' | t}}</label> <select
+				data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
+				ui-select2="{containerCssClass:'input-xlarge'}" at-required
+				name="Address_Timezone" ng-model="this[modelName].Address.Timezone"
+				ng-change="a=1">
+				<option></option>
+				<option ng-selected="t.Name == this[modelName].Address.Timezone"
+					ng-repeat="t in timezones" value="{{t.Name}}">{{t.Name}}</option>
+			</select>
 		</dd>
 	</dl>
 </div>

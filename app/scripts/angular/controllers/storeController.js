@@ -47,8 +47,8 @@ function storeController($scope, $cookieStore, $location, $timeout,
     pageItems : function() {
     },
     textFilter : '',
-    propFilter: '*',
-    filteringObj: {},
+    propFilter : '*',
+    filteringObj : {},
     sort : function() {
     },
     currentPageIndex : 0,
@@ -277,7 +277,6 @@ function storeController($scope, $cookieStore, $location, $timeout,
   }
 
   $scope.setStoreKey = function(key, forwardUrl) {
-    // here $watch is not being triggered, so we later call initStore manually
     if ($scope.storeKey !== key) {
       $scope.storeKey = key;
       $scope.storeHasChanged = true;
@@ -288,7 +287,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
     // manually load location & accounting items
     $timeout(function() {
       $scope.$apply(function() {
-        $scope.initStore($scope.storeKey, true);
+        $scope.$emit('initStore', $scope.storeKey, true)
 
         if (angular.isDefined(forwardUrl))
           $location.url(forwardUrl)
@@ -314,16 +313,16 @@ function storeController($scope, $cookieStore, $location, $timeout,
                   $scope.wizard.reset();
                 }
 
-//                if ($scope.Store.Address
-//                    && $scope.Store.Address.Country !== null) {
-//                  // we've got a country, alert address
-//                  // widget. somehow we should delay this
-//                  // a bit in order to properly broadcast
-//                  // msg
-//                  $timeout(function() {
-//                    $scope.$broadcast('loadCountry', $scope.Store.Address);
-//                  }, 500);
-//                }
+                // if ($scope.Store.Address
+                // && $scope.Store.Address.Country !== null) {
+                // // we've got a country, alert address
+                // // widget. somehow we should delay this
+                // // a bit in order to properly broadcast
+                // // msg
+                // $timeout(function() {
+                // $scope.$broadcast('loadCountry', $scope.Store.Address);
+                // }, 500);
+                // }
 
                 // this API call requires DomainProfile
                 if ($scope.Store.Currency && $scope.Store.Currency !== null

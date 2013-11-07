@@ -13,32 +13,34 @@
 			<li class="has_submenu nlightblue open"><a href="#"> <!-- Menu name with icon -->
 					<i class="fa fa-fw fa-th"></i> {{ 'Common.Text_School' | t }} <!-- Icon for dropdown -->
 					<span class="pull-right"><i class="fa fa-fw fa-angle-right"></i></span>
-			  </a>
-			</li>
-				<ul>
-					<li class="submenu" ui-if="auth.isDomainProfileReady() && auth.isAdministrator()"
-						ui-route="#/store" ng-class="{active: $uiRoute}"><a
-						href="#/store" ng-click="createStore()">{{
-							'Common.Text_CreateSchool' | t }}</a></li>
-					<li class="submenu" ui-if="auth.isDomainProfileReady()"
-						ui-route="#/storeList" ng-class="{active: $uiRoute}"><a href="#/storeList">{{
-							'Common.Text_SchoolListMenu' | t }}</a></li>
-					<li class="submenu" ui-if="auth.isDomainProfileReady() && approvals && approvals.length > 0"
-						ui-route="#/approvals" ng-class="{active: $uiRoute}"><a href="#/approvals">{{
-							'Common.Text_Pending_Approvals' | t }}</a></li>
-					<li class="submenu" ui-if="auth.isDomainProfileReady() && !auth.isAdministrator()"
-						ui-route="#/storeRequest" ng-class="{active: $uiRoute}"><a
-						  href="#/storeRequest" ng-click="requestAccess()">{{
-							'Common.Text_RequestAccess' | t }}</a></li>
-				</ul>
-			<li class="nred"
-				ui-route="#/" ng-class="{active: $uiRoute}"><a href="#/"><i class="fa fa-fw fa-desktop"></i>
-				{{ 'Common.Text_DashboardMenu_Dashboard' | t }}</a></li>
+			</a></li>
+			<ul>
+				<li class="submenu"
+					ui-if="auth.isDomainProfileReady() && auth.isAdministrator()"
+					ui-route="#/store" ng-class="{active: $uiRoute}"><a
+					href="#/store" ng-click="createStore()">{{
+						'Common.Text_CreateSchool' | t }}</a></li>
+				<li class="submenu" ui-if="auth.isDomainProfileReady()"
+					ui-route="#/storeList" ng-class="{active: $uiRoute}"><a
+					href="#/storeList">{{ 'Common.Text_SchoolListMenu' | t }}</a></li>
+				<li class="submenu"
+					ui-if="auth.isDomainProfileReady() && approvals && approvals.length > 0"
+					ui-route="#/approvals" ng-class="{active: $uiRoute}"><a
+					href="#/approvals">{{ 'Common.Text_Pending_Approvals' | t }}</a></li>
+				<li class="submenu"
+					ui-if="auth.isDomainProfileReady() && !auth.isAdministrator()"
+					ui-route="#/storeRequest" ng-class="{active: $uiRoute}"><a
+					href="#/storeRequest" ng-click="requestAccess()">{{
+						'Common.Text_RequestAccess' | t }}</a></li>
+			</ul>
+			<li class="nred" ui-route="#/" ng-class="{active: $uiRoute}"><a
+				href="#/"><i class="fa fa-fw fa-desktop"></i> {{
+					'Common.Text_DashboardMenu_Dashboard' | t }}</a></li>
 			<li class="nviolet"
 				ui-if="auth.isDomainProfileReady() && Store && Store.Key != null && Store.IsOwner || false"
-				ui-route="#/store" ng-class="{active: $uiRoute}"><a href="#/store"
-				ng-click="setStoreKey(Store.Key)"><i class="fa fa-fw fa-book"></i> 
-				{{ 'Common.Text_SchoolInfo' | t }}</a></li>
+				ui-route="#/store" ng-class="{active: $uiRoute}"><a
+				href="#/store"><i class="fa fa-fw fa-book"></i> {{
+					'Common.Text_SchoolInfo' | t }}</a></li>
 			<li class="nyellow"
 				ui-if="Store && Store.Key != null && Store.IsOwner || false"
 				ui-route="#/category" ng-class="{active: $uiRoute}"><a

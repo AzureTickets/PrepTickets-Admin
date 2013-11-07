@@ -7,5 +7,6 @@
   Text_OrderId : 'Order ID',
   Text_Total : 'Total Price',
   Text_State : 'Status',
-  Text_LoadMore : 'Load More Orders'
+  Text_LoadMore : 'Load More Orders',
+  Text_OrderFrom: 'Order From:'
 };

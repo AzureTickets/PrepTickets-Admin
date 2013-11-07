@@ -22,8 +22,8 @@ function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
   	{value: 1, label: 'Last 24 Hours'},
   	{value: 2, label: 'Last 7 Days'},
   	{value: 3, label: 'Last 30 Days'},
-  	{value: 4, label: 'Last 60 Days'},
-  	{value: 5, label: 'Custom'}
+  	{value: 4, label: 'Last 60 Days'}
+  //	{value: 5, label: 'Custom'}
   ];
   $scope.dateFrom = $scope.dateRange[2];
   

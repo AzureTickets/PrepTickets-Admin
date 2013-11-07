@@ -63,21 +63,21 @@
 					ng-submit="wizardEvent.next('atEvent2')">
 					<dl>
 						<dd class="pull-left">
-							<atfield at-required class="input-large"
+							<atfield at-required class="input-large" prepend-btn-ico="fa fa-calendar"
 								ng-model="Event.StartTime" label="'Event.Text_EventStartAt' | t" />
 						</dd>
 						<dd class="pull-left">
-							<atfield at-required class="input-large" ng-model="Event.EndTime"
+							<atfield at-required class="input-large" ng-model="Event.EndTime" prepend-btn-ico="fa fa-calendar"
 								label="'Event.Text_EventEndAt' | t" />
 						</dd>
 						<dd class="clear"></dd>
 						<dd class="pull-left">
-							<atfield at-required class="input-large"
+							<atfield at-required class="input-large" prepend-btn-ico="fa fa-calendar"
 								ng-model="Event.OnSaleDateTimeStart"
 								label="'Event.Text_SaleStartAt' | t" />
 						</dd>{{tostring(Event.OnSaleDateTimeStart)}}
 						<dd class="pull-left">
-							<atfield at-required class="input-large"
+							<atfield at-required class="input-large" prepend-btn-ico="fa fa-calendar"
 								ng-model="Event.OnSaleDateTimeEnd"
 								label="'Event.Text_SaleEndAt' | t" />
 						</dd>

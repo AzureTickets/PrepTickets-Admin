@@ -34,7 +34,7 @@ azureTicketsApp
                   var fieldType = copyOf === null
                       && angular.isDefined(BWL.ModelMeta[m]) ? BWL.ModelMeta[m][f]
                       : copyOf[f];
-                  var _el, _label = null, _tip = null, _btn = null;
+                  var _el, _label = null, _tip = null, _append = null, _prepend = null;
                   var _attr = {
                     placeholder : f,
                     name : m.replace(/\./g, '_') + '_' + f,
@@ -115,8 +115,6 @@ azureTicketsApp
                     if (angular.isDefined($attrs.uiDateFormat)) {
                       _el.attr('ui-date-format', $attrs.uiDateFormat)
                     }
-
-                    var calendarIcon = jQuery('<i class="fa fa-calendar datetimeInput"></i>');
                   } else if (/^.*Enum(?=\b).*$/g.test(fieldType)) {
                     _el = jQuery('<select />');
                     var _enum = BWL.ModelEnum[fieldType.replace(
@@ -137,8 +135,8 @@ azureTicketsApp
                     if (angular.isString($attrs[p])
                         && [ 'ngModel', 'ngRequired', 'ngChange', 'ngBlur',
                             'uiEvent', 'appendBtnExp', 'appendBtnIco',
-                            'uiDateFormat', 'atValidate', 'ngPattern', 'uiJq' ]
-                            .indexOf(p) === -1) {
+                            'prependBtnIco', 'uiDateFormat', 'atValidate',
+                            'ngPattern', 'uiJq' ].indexOf(p) === -1) {
                       var pp = p.replace(/([A-Z]+)/g, '-$1').toLowerCase();
                       var v = $scope.$eval($attrs[p]) !== 0 ? $scope
                           .$eval($attrs[p]) : $attrs[p]
@@ -150,14 +148,27 @@ azureTicketsApp
                   // if we should append button
                   if ($attrs.appendBtnExp) {
                     $element.addClass('input-append');
-                    _btn = jQuery('<button type="button" class="btn" />');
-                    _btn.html('<i class="' + $attrs.appendBtnIco + '"></i>');
+                    _append = jQuery('<button type="button" class="btn" />');
+                    _append.html('<i class="' + $attrs.appendBtnIco + '"></i>');
 
-                    _btn.click(function() {
+                    _append.click(function() {
                       $scope.$apply(function() {
                         $scope.atBtnExp();
                       })
                     })
+                  } else if ($attrs.appendBtnIco) {
+                    $element.addClass('input-append');
+                    _append = jQuery('<span class="add-on" />');
+                    _append.html('<i class="' + $attrs.appendBtnIco + '"></i>');
+                    
+                    _el.css('position','inherit') // fix for datetimepicker
+                  } else if ($attrs.prependBtnIco) {
+                    $element.addClass('input-prepend');
+                    _prepend = jQuery('<span class="add-on" />');
+                    _prepend.html('<i class="' + $attrs.prependBtnIco
+                        + '"></i>');
+                    
+                    _el.css('position','inherit') // fix for datetimepicker
                   }
 
                   // make new element available
@@ -193,20 +204,17 @@ azureTicketsApp
                   if (_tip !== null) {
                     $compile(_tip)($scope);
                   }
-                  if (_btn !== null) {
-                    $compile(_btn)($scope);
+                  if (_append !== null) {
+                    $compile(_append)($scope);
                   }
                   if (isBoolean) {
                     jQuery(_el).addClass('btn').addClass('btn-inverse')
                   }
 
-                  $element.append(_label).append(_tip).append(_el).append(_btn);
-
-                  // Append the calendar icon
-                  if (calendarIcon !== null) {
-                    $element.addClass('relative');
-                    $element.append(calendarIcon);
-                  }
+                  $element.append(_label).append(_tip).append(_prepend).append(
+                      _el).append(_append);
+                  $element
+                      .removeClass('input-small input-large input-xlarge input-xxlarge')
 
                   if (dateTimeScript !== null) {
                     $element.after(dateTimeScript);
