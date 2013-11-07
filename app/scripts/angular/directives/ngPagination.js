@@ -75,13 +75,6 @@ azureTicketsApp
                   	$scope.atPagination.pageSize = parseInt($attr.pageSize);
                   }
                   $scope.itemsPerPage = $scope.atPagination.pageSize;
-                  
-                  /* Generate the filter function
-                  $scope.advancedSearchScope = $scope.atPagination.advancedSearchScope;
-                  if ($scope.atPagination.filters.length) {
-                    for (var i = 0; i < $scope.atPagination.filters.length; i++) {
-                    }
-                  }*/
 
                   // Pagination watcher for changes via filters and predicates
                   var pagesWatcher = function(itemsPerPage, filteringObj,
