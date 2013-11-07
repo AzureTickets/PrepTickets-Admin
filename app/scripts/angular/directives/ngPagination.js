@@ -37,6 +37,24 @@ azureTicketsApp
                     $scope.atPagination.propFilter = '';
                   }
                   
+                  /*if (angular.isArray($scope.atPagination.propFilter)) {
+                  	for (var i = 0; i < $scope.atPagination.propFilter.length; i++) {
+                  		$scope.atPagination.filteringObj[$scope.atPagination.propFilter[i]] = '';
+                  	}
+                  	
+                  	for (var i = 0; i < $scope.atPagination.propFilter.length; i++) {
+                  	$scope.$watch(function() { return $scope.atPagination.propFilter[i] }, function searchContentWatcher(newValue) {
+                  		$scope.atPagination.filteringObj[$scope.atPagination.propFilter[i]] = newValue;
+                  		
+                  		return pagesWatcher($scope.itemsPerPage, $scope.atPagination.filteringObj,
+                        $scope.predicate);
+                  	});
+                  }
+                  } else {
+                  	$scope.propName = '$';
+                  	$scope.atPagination.filteringObj[$scope.propName] = '';
+                  }*/
+                  
                   if (!angular.isString($scope.atPagination.propFilter) || ($scope.atPagination.propFilter == '*') || ($scope.atPagination.propFilter == '')) {
                     $scope.propName = '$';
                   } else {
@@ -100,10 +118,10 @@ azureTicketsApp
                           $scope.atPagination.filteringObj), predicate, reverse)).slice(0,
                           $scope.itemsPerPage);
                     };
-
+ 
                     $scope.atPagination.results = $filter('orderBy')(
                         $filter('filter')($scope.data, $scope.atPagination.filteringObj),
-                        predicate, reverse);
+                      predicate, reverse);
 
                     $scope.atPagination.numberOfPages = ($scope.atPagination.results.length % $scope.itemsPerPage) == 0 ? Math
                         .floor($scope.atPagination.results.length / $scope.itemsPerPage)
@@ -120,23 +138,28 @@ azureTicketsApp
                     $scope.displayedNoP = $scope.numberOfPagesArrayForm.slice(
                         $scope.startRange, $scope.startRange + 10);
                   };
-                  // First run of the watcher
-                  pagesWatcher($scope.itemsPerPage, $scope.atPagination.filteringObj);
 
                   // Delegating watchers for filter models
                   var itemsPerPageWatcher = function(newValue) {
                     return pagesWatcher(newValue, $scope.atPagination.filteringObj,
                         $scope.predicate);
                   };
-                  var searchContentWatcher = function(newValue) {
+                  var searchContentWatcher1 = function(newValue) {
                   	$scope.atPagination.filteringObj[$scope.propName] = newValue;
                   	
                     return pagesWatcher($scope.itemsPerPage, $scope.atPagination.filteringObj,
                         $scope.predicate);
                   };
+                  var dataWatcher = function(newDataArrayLength, oldLength) {
+                  	pagesWatcher($scope.itemsPerPage, $scope.atPagination.filteringObj);
+                  };
                   $scope.$watch('itemsPerPage', itemsPerPageWatcher);
-                  $scope.$watch('atPagination.textFilter', searchContentWatcher);
-
+                  $scope.$watch('atPagination.textFilter', searchContentWatcher1);
+                  
+                  // Watch for data length to run the pagination
+                  // It does the initial run also
+                  $scope.$watch('data.length', dataWatcher);
+                  
                   $scope.atPagination.sort = function(predicate) {
                     pagesWatcher($scope.itemsPerPage, $scope.atPagination.filteringObj,
                         predicate);

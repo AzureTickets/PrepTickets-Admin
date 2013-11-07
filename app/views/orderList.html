@@ -9,17 +9,35 @@
 			<form class="form-horizontal">
 				<div class="control-group">
 	  			<label class="control-label" for="filterText">{{'Common.Text_Search'
-		  			| t}}:&nbsp;</label>
+		  			| t}}:</label>
 		  		<div class="controls">
-		  		  <input type="text" id="filterText" class="input-large"
+		  		  <input type="text" id="filterText" class="input-xlarge"
 		  		    ng-model="pagination.textFilter" placeholder="">
 		  		  <button class="btn btn-primary btn-mini"
 				      ng-click="advancedSearch=true">{{'Common.Text_AdvancedSearch'
 				      | t}}</button>
 		  		</div>
 		  	</div>
-				<button class="btn btn-primary btn-mini" ui-if="false" ng-click="">{{'Order.Text_LoadMore'
-					| t}}</button>
+				<div class="control-group">
+	  			<label class="control-label" for="dateRange">Order From:</label>
+		  		<div class="controls">
+		  		  <select
+		  		    ng-model="dateFrom"
+		  		    id=""
+		  		    ng-options="c.label for c in dateRange">
+		  		  </select>
+		  		</div>
+		  	</div>
+		  	<div class="control-group">
+	  			<label class="control-label" for="orderState">Order State:</label>
+		  		<div class="controls">
+		  		  <select
+		  		    ng-model="orderState"
+		  		    id=""
+		  		    ng-options="c.label for c in orderStateRange">
+		  		  </select>
+		  		</div>
+		  	</div>
 				<atfilter
 					ui-if="false"
 					at-model="Order"
@@ -37,6 +55,8 @@
 							  | t}}</a></th>
 						<th><a href="" ng-click="pagination.sort('Placed')">{{'Common.Text_OrderDate'
 								| t}}</a></th>
+						<th><a href="" ng-click="pagination.sort('Contact.FullName')">{{'Common.Text_Contact'
+								| t}}</a></th>
 						<th><a href="" ng-click="pagination.sort('Total.ItemPrice')">{{'Order.Text_Total'
 								| t}}</a></th>
 						<th><a href="" ng-click="pagination.sort('State')">{{'Order.Text_State'
@@ -44,12 +64,13 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="order in pagination.pageItems()" ng-click="viewOrder(order)" mousestyle>
+					<tr ng-repeat="order in pagination.pageItems()" mousestyle>
 						<td>{{$index + 1 +
 							pagination.currentPageIndex*pagination.pageSize}}</td>
 						<td>{{order.OrderId}}</td>
 						<td><span class="label">Placed on {{ order.Placed |
 								date:'MM/dd/yyyy @ h:mma' }}</span></td>
+						<td>{{order.Contact.FullName}}</td>
 						<td>{{order.Total.ItemPrice | currency}}</td>
 						<td>{{order.State | api:'enumReplace':'OrderStateEnum'}}</td>
 					</tr>
@@ -57,7 +78,7 @@
 			</table>
 
 			<div class="paginationDiv" ng-show="pagination.results.length > 20">
-				<ng-pagination ui-if="orders && orders.length > 0"
+				<ng-pagination
 					pagination-data="pagination"
 					data="orders">
           </ng-pagination>

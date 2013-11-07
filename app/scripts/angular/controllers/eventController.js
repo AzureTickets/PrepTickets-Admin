@@ -87,6 +87,10 @@ function eventController($scope, $cookieStore, $filter, $modal) {
     $scope.wizardEvent.open = true;
     $scope.wizardEvent.reset();
   }
+  
+  $scope.tostring = function(date) {
+  	return date.toString();
+  }
 
   $scope.deleteEvent = function(event) {
     if (confirm($filter('t')('Common.Text_RemoveProduct'))) {
@@ -231,7 +235,7 @@ function eventController($scope, $cookieStore, $filter, $modal) {
               Key : v.Key
             }
           }),
-          StartTime : $scope.Event.StartTime,
+          StartTime : ($scope.Event.StartTime).toString(),
           EndTime : $scope.Event.EndTime,
           OnSaleDateTimeStart : $scope.Event.OnSaleDateTimeStart,
           OnSaleDateTimeEnd : $scope.Event.OnSaleDateTimeEnd,
