@@ -8,51 +8,44 @@
 		<div class="widget-content">
 			<form class="form-horizontal">
 				<div class="control-group">
-	  			<label class="control-label" for="filterText">{{'Common.Text_Search'
-		  			| t}}:</label>
-		  		<div class="controls">
-		  		  <input type="text" id="filterText" class="input-xlarge"
-		  		    ng-model="pagination.textFilter" placeholder="">
-		  		  <button class="btn btn-primary btn-mini"
-				      ng-click="advancedSearch=true">{{'Common.Text_AdvancedSearch'
-				      | t}}</button>
-		  		</div>
-		  	</div>
+					<label class="control-label" for="filterText">{{'Common.Text_Search'
+						| t}}:</label>
+					<div class="controls">
+						<input type="{{'text'}}" id="filterText" class="input-xlarge"
+							ng-model="pagination.textFilter" placeholder="">
+					</div>
+				</div>
 				<div class="control-group">
-	  			<label class="control-label" for="dateRange">{{ 'Order.Text_OrderFrom' | t }}</label>
-		  		<div class="controls">
-		  		  <select
-		  		    ng-model="dateFrom"
-		  		    id=""
-		  		    ng-options="c.label for c in dateRange">
-		  		  </select>
-		  		</div>
-		  	</div>
-		  	<div class="control-group">
-	  			<label class="control-label" for="orderState">{{ 'Order.Text_State' | t }}</label>
-		  		<div class="controls">
-		  		  <select
-		  		    ng-model="orderState"
-		  		    id=""
-		  		    ng-options="c.label for c in orderStateRange">
-		  		  </select>
-		  		</div>
-		  	</div>
-				<atfilter
-					ui-if="false"
-					at-model="Order"
-					pagination-data="pagination">
-				</atfilter>
+					<label class="control-label" for="dateRange">{{
+						'Order.Text_OrderFrom' | t }}</label>
+					<div class="controls">
+						<select ng-model="dateFrom" id=""
+							ng-options="c.label for c in dateRange">
+						</select>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="orderState">{{
+						'Order.Text_State' | t }}</label>
+					<div class="controls">
+						<select ng-model="orderState" id=""
+							ng-options="c.label for c in orderStateRange">
+						</select>
+					</div>
+				</div>
+				<atfilter ui-if="false" at-model="Order"
+					pagination-data="pagination"> </atfilter>
 			</form>
-      
+
 			<div ng-show="!pagination.results.length" class="alert alert-info">{{'Order.Text_OrderEmpty'
 				| t}}</div>
-			<table class="table table-bordered ng-table-responsive" ng-show="pagination.results.length">
+			<table class="table table-bordered ng-table-responsive"
+				ng-show="pagination.results.length">
 				<thead>
 					<tr>
 						<th>#</th>
 						<th><a href="" ng-click="pagination.sort('OrderId')">{{'Order.Text_OrderId'
-							  | t}}</a></th>
+								| t}}</a></th>
 						<th><a href="" ng-click="pagination.sort('Placed')">{{'Common.Text_OrderDate'
 								| t}}</a></th>
 						<th><a href="" ng-click="pagination.sort('Contact.FullName')">{{'Common.Text_Contact'
@@ -78,10 +71,8 @@
 			</table>
 
 			<div class="paginationDiv" ng-show="pagination.results.length > 20">
-				<ng-pagination
-					pagination-data="pagination"
-					data="orders">
-          </ng-pagination>
+				<ng-pagination pagination-data="pagination" data="orders">
+				</ng-pagination>
 				<p class="text-center" ng-cloak>{{'Common.Text_CurrentPage' |
 					t}}: {{pagination.currentPageIndex + 1}} -
 					{{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} -
