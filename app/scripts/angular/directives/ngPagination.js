@@ -37,6 +37,22 @@ azureTicketsApp
                     $scope.atPagination.propFilter = '';
                   }
                   
+                  /*if (angular.isArray($scope.atPagination.propFilter)) {
+                  	for (var i = 0; i < $scope.atPagination.propFilter.length; i++) {
+                  		$scope.atPagination.filteringObj[$scope.atPagination.propFilter[i]] = '';
+                  		
+                  		$scope.$watch(function() { return $scope.atPagination.filteringObj[$scope.atPagination.propFilter[i]]; }, function searchContentWatcher(newValue) {
+                    		return pagesWatcher($scope.itemsPerPage, $scope.atPagination.filteringObj,
+                          $scope.predicate);
+                    	});
+                  	}
+                  } else {
+                  	$scope.propName = '$';
+                  	$scope.atPagination.filteringObj[$scope.propName] = '';
+                  	
+                  	$scope.$watch('atPagination.textFilter', searchContentWatcher);
+                  }*/
+                  
                   if (!angular.isString($scope.atPagination.propFilter) || ($scope.atPagination.propFilter == '*') || ($scope.atPagination.propFilter == '')) {
                     $scope.propName = '$';
                   } else {
@@ -57,13 +73,6 @@ azureTicketsApp
                   	$scope.atPagination.pageSize = parseInt($attr.pageSize);
                   }
                   $scope.itemsPerPage = $scope.atPagination.pageSize;
-                  
-                  /* Generate the filter function
-                  $scope.advancedSearchScope = $scope.atPagination.advancedSearchScope;
-                  if ($scope.atPagination.filters.length) {
-                    for (var i = 0; i < $scope.atPagination.filters.length; i++) {
-                    }
-                  }*/
 
                   // Pagination watcher for changes via filters and predicates
                   var pagesWatcher = function(itemsPerPage, filteringObj,
@@ -100,10 +109,10 @@ azureTicketsApp
                           $scope.atPagination.filteringObj), predicate, reverse)).slice(0,
                           $scope.itemsPerPage);
                     };
-
+ 
                     $scope.atPagination.results = $filter('orderBy')(
                         $filter('filter')($scope.data, $scope.atPagination.filteringObj),
-                        predicate, reverse);
+                      predicate, reverse);
 
                     $scope.atPagination.numberOfPages = ($scope.atPagination.results.length % $scope.itemsPerPage) == 0 ? Math
                         .floor($scope.atPagination.results.length / $scope.itemsPerPage)
@@ -120,8 +129,6 @@ azureTicketsApp
                     $scope.displayedNoP = $scope.numberOfPagesArrayForm.slice(
                         $scope.startRange, $scope.startRange + 10);
                   };
-                  // First run of the watcher
-                  pagesWatcher($scope.itemsPerPage, $scope.atPagination.filteringObj);
 
                   // Delegating watchers for filter models
                   var itemsPerPageWatcher = function(newValue) {
@@ -134,9 +141,16 @@ azureTicketsApp
                     return pagesWatcher($scope.itemsPerPage, $scope.atPagination.filteringObj,
                         $scope.predicate);
                   };
+                  var dataWatcher = function(newDataArrayLength, oldLength) {
+                  	pagesWatcher($scope.itemsPerPage, $scope.atPagination.filteringObj);
+                  };
                   $scope.$watch('itemsPerPage', itemsPerPageWatcher);
                   $scope.$watch('atPagination.textFilter', searchContentWatcher);
-
+                  
+                  // Watch for data length to run the pagination
+                  // It does the initial run also
+                  $scope.$watch('data.length', dataWatcher);
+                  
                   $scope.atPagination.sort = function(predicate) {
                     pagesWatcher($scope.itemsPerPage, $scope.atPagination.filteringObj,
                         predicate);

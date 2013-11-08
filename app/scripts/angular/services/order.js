@@ -27,7 +27,7 @@ azureTicketsApp.factory('orderService', [
                 });
               }, function(err) {
                 $rootScope.$apply(function() {
-                  def.reject(err)
+                  def.reject(err);
                 })
               });
 
@@ -138,6 +138,28 @@ azureTicketsApp.factory('orderService', [
 
           return def.promise;
         },
+        findOrdersAsync : function(storeKey, orderState, startDate, endDate) {
+          var def = $q.defer();
+          
+          BWL.Services.OrderService.FindOrdersAsync(storeKey, orderState, startDate, 
+              endDate, function(orders) {
+                if (angular.isDefined(orders) && angular.isArray(orders) && orders.length) {
+                  _orders = orders;
+                } else {
+                  _orders = [];
+                }
+
+                $rootScope.$apply(function() {
+                  def.resolve();
+                });
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err)
+                })
+              });
+
+          return def.promise;
+        },
         /**
          * To be used from any controller, so it updates the $scope.venues array
          * without requiring us to do complex DI.
@@ -146,8 +168,8 @@ azureTicketsApp.factory('orderService', [
          *          Scope to refresh
          * @returns
          */
-        loadOrders : function($scope) {
-          var def = $q.defer()
+        loadOrders : function($scope, orderState, startDate, endDate) {
+          var def = $q.defer();
 
           if (!_isOrdersLoading) {
             _isOrdersLoading = true;
@@ -156,17 +178,15 @@ azureTicketsApp.factory('orderService', [
                 || $cookieStore.get($scope.config.cookies.storeKey),
                 _this = this;
 
-            _this.listOrdersAsync($scope.storeKey, 0).then(
+            _this.findOrdersAsync($scope.storeKey, orderState, startDate, endDate).then(
                 function() {
                   $scope.orders = _this.getOrders();
-                  $scope.ordersPaginated = angular.copy($scope.orders);
 
                   if ($scope.orders.length > 0) {
                     angular.forEach($scope.orders, function(order, i) {
                       _this.initOrder($scope.storeKey, order.Key).then(
                           function(order) {
                             $scope.orders[i] = order;
-                            $scope.ordersPaginated[i] = order;
                           })
                     });
                   }
@@ -177,12 +197,12 @@ azureTicketsApp.factory('orderService', [
 
                   _isOrdersLoading = false;
                   
-                  def.resolve()
+                  def.resolve();
                 }, function(err) {
                   _isOrdersLoading = false;
-                  $scope.error.log(err)
+                  $scope.error.log(err);
                   
-                  def.reject(err)
+                  def.reject(err);
                 });
           }
 

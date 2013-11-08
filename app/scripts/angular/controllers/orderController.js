@@ -1,14 +1,14 @@
-function orderController($scope, $cookieStore, $filter) {
+function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
   $scope.name = 'order';
   
   // pagination setup
   $scope.pagination = {
     pageSize: 20,
-    predicates: ['Placed', 'OrderId', 'Total.ItemPrice', 'State'],
+    predicates: ['OrderId', 'Placed', 'Contact.FullName', 'Total.ItemPrice', 'State'],
     filters: ['OrderId', 'Total.ItemPrice', 'State', 'Placed__Date'],
     pageItems: function() {},
     textFilter: '',
-    propFilter: '*',
+    propFilter: 'OrderId',
     filteringObj: {},
     sort: function() {},
     currentPageIndex: 0,
@@ -16,11 +16,92 @@ function orderController($scope, $cookieStore, $filter) {
     numberOfPages: 0,
     advancedSearchScope: {}
   };
-
-  $scope.init = function() {
-    $scope.order.loadOrders($scope).then(function() {
+  
+  // Order properties for searching
+  $scope.dateRange = [
+  	{value: 1, label: 'Last 24 Hours'},
+  	{value: 2, label: 'Last 7 Days'},
+  	{value: 3, label: 'Last 30 Days'},
+  	{value: 4, label: 'Last 60 Days'}
+  //	{value: 5, label: 'Custom'}
+  ];
+  $scope.dateFrom = $scope.dateRange[2];
+  
+  $scope.orderStateRange = [];
+  angular.forEach(BWL.ModelEnum.OrderStateEnum, function(val, index) {
+  	$scope.orderStateRange.push(
+  	  {value: val, label: index}
+  	);
+  });
+  $scope.orderState = $scope.orderStateRange[0];
+  
+  $scope.orderWatcher = function(orderState, dateFrom) {
+  	var date = new Date(),
+  	    startDate = null,
+  	    endDate = null;
+  	
+  	var toBWLDateTime = function(date) {
+  		return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+  	}
+  	
+  	switch (dateFrom.value) {
+  		case 1:
+  		  startDate = toBWLDateTime(new Date(date.getTime() - 1*86400000));
+  		  endDate = toBWLDateTime(new Date(date.getTime()));
+  		  break;
+  		  
+  		case 2:
+  		  startDate = toBWLDateTime(new Date(date.getTime() - 7*86400000));
+  		  endDate = toBWLDateTime(new Date(date.getTime()));
+  		  break;
+  		  
+  		case 3:
+  		  startDate = toBWLDateTime(new Date(date.getTime() - 30*86400000));
+  		  endDate = toBWLDateTime(new Date(date.getTime()));
+  		  break;
+  		  
+  		case 4:
+  		  startDate = toBWLDateTime(new Date(date.getTime() - 60*86400000));
+  		  endDate = toBWLDateTime(new Date(date.getTime()));
+  		  break;
+  		  
+  		case 5:
+  		  startDate = toBWLDateTime(new Date(date.getTime() - 365*86400000));
+  		  endDate = toBWLDateTime(new Date(date.getTime()));
+  		  break;
+  	}
+  	$scope.startDate = startDate;
+  	$scope.endDate = endDate;
+  	return $scope.order.loadOrders($scope, orderState.value, startDate, endDate).then(function() {
       // Do nothing
     });
+  }
+  
+  var dateFromWatcher = function(newDateFrom) {
+  	return $scope.orderWatcher($scope.orderState, newDateFrom);
+  };
+  var orderStateWatcher = function(newOrderState) {
+  	return $scope.orderWatcher(newOrderState, $scope.dateFrom);
+  };
+  
+  $scope.$watch('dateFrom', dateFromWatcher);
+  $scope.$watch('orderState', orderStateWatcher);
+  
+  $scope.init = $scope.orderWatcher($scope.orderState, $scope.dateFrom);
+  
+  $scope.viewOrder = function(order) {
+  	$window.location.href = '#/order/' + order.Key;
+  }
+  
+  $scope.orderDetailInit = function() {
+  	if (angular.isDefined($routeParams.orderKey)) {
+      $scope.model.read(BWL.Model.Order.Type, $routeParams.orderKey, 5)
+  	    .then(function(returnedOrder) {
+  	  	  $scope.Order = returnedOrder;
+  	    }, function(err) {
+  	  	  $scope.error.log(err)
+  	  });
+    }
   }
 
   $scope.deleteOrder = function(order) {
@@ -36,4 +117,4 @@ function orderController($scope, $cookieStore, $filter) {
   }
 }
 
-orderController.$inject = [ '$scope', '$cookieStore', '$filter' ];
+orderController.$inject = [ '$scope', '$cookieStore', '$filter', '$window', '$routeParams' ];
