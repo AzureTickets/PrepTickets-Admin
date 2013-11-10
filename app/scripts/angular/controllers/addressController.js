@@ -1,10 +1,15 @@
-function addressController($scope, $q, $timeout, $filter) {
+function addressController($rootScope, $scope, $q, $timeout, $filter) {
   $scope.name = 'address', $scope.countries = [], $scope.continents = [],
-      $scope.regions = [], $scope.timezones = [];
+      $scope.regions = [], $scope.timezones = [], $scope.randId = null;
 
   $scope.$on('loadCountry', function(ev, address) {
     $scope.loadCountry(address);
   });
+
+  $scope.mapStyle = {
+    // width is automatically calculated from container
+    height : 400
+  }
 
   // custom validation
   $scope.validation = {
@@ -45,17 +50,55 @@ function addressController($scope, $q, $timeout, $filter) {
   }
 
   $scope.init = function(address) {
-    $scope
-        .loadCountries()
-        .then(
-            function() {
-              $scope.loadCountry(address)
+    $scope.randId = Math.ceil(Math.random() * Date.now())
 
-              // countries with additional behavior
-              $scope.isSpecialCountry = $scope[$scope.modelName].Address.Country !== null
-                  && $scope[$scope.modelName].Address.Country
-                      .match(/^(?:US|UK|CA)$/g) !== null
-            })
+    $scope.loadCountries().then(
+        function() {
+          $scope.loadCountry(address).then(
+              function() {
+                if (angular.isDefined(address.Country)) {
+                  // countries with additional behavior
+                  $scope.isSpecialCountry = address.Country !== null
+                      && address.Country.match(/^(?:US|UK|CA)$/g) !== null
+                }
+              })
+        })
+  }
+
+  $scope.initMap = function(address) {
+    $timeout(function() {
+      jQuery('#' + $scope.randId).gmap({
+        'credentials' : $scope.config.keys.bing,
+        'height' : 400,
+        'width' : jQuery('#' + $scope.randId).parent('div').width()
+      }).bind(
+          'init',
+          function() {
+            jQuery('#' + $scope.randId)
+                .gmap(
+                    'search',
+                    {
+                      'address' : $filter('address')(address)
+                    },
+                    function(result, status) {
+                      if (status === 'OK') {
+                        var item = result[0] && result[0].resources
+                            && result[0].resources[0] ? result[0].resources[0]
+                            : null;
+
+                        if (item !== null) {
+                          var location = new Microsoft.Maps.Location(
+                              item.point.coordinates[0],
+                              item.point.coordinates[1]);
+                          jQuery('#' + $scope.randId).gmap('addMarker', {
+                            'location' : location,
+                            'bounds' : true
+                          });
+                        }
+                      }
+                    });
+          });
+    }, 150)
   }
 
   $scope.loadContinents = function() {
@@ -217,4 +260,5 @@ function addressController($scope, $q, $timeout, $filter) {
   }
 }
 
-addressController.$inject = [ '$scope', '$q', '$timeout', '$filter' ];
+addressController.$inject = [ '$rootScope', '$scope', '$q', '$timeout',
+    '$filter' ];
