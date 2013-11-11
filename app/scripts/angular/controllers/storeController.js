@@ -693,6 +693,8 @@ function storeController($scope, $cookieStore, $location, $timeout,
       $scope.tinyInstance = null;
     }
   }
+  
+  $scope.customTime = {};
 }
 
 storeController.$inject = [ '$scope', '$cookieStore', '$location', '$timeout',
