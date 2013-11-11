@@ -694,6 +694,9 @@ function storeController($scope, $cookieStore, $location, $timeout,
     }
   }
   
+  // customTime for searching orders in orderController.js
+  // Place this here since the atfield directive gets the
+  // parent scope of its nearest form element which is storeController's scope
   $scope.customTime = {};
 }
 

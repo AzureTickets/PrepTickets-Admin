@@ -45,14 +45,17 @@ function addressController($scope, $q, $timeout, $filter) {
   }
 
   $scope.init = function(address) {
-    $scope.loadCountries().then(
-        function() {
-          $scope.loadCountry(address)
+    $scope
+        .loadCountries()
+        .then(
+            function() {
+              $scope.loadCountry(address)
 
-          // countries with additional behavior
-          $scope.isSpecialCountry = $scope[$scope.modelName].Address.Country
-              .match(/^(?:US|UK|CA)$/g) !== null
-        })
+              // countries with additional behavior
+              $scope.isSpecialCountry = $scope[$scope.modelName].Address.Country !== null
+                  && $scope[$scope.modelName].Address.Country
+                      .match(/^(?:US|UK|CA)$/g) !== null
+            })
   }
 
   $scope.loadContinents = function() {

@@ -18,60 +18,61 @@
 				      | t}}</button>
 		  		</div>
 		  	</div>
-		  <div id="orderAdvSearchForm" class="advFormOpened">
-		  	<div class="control-group">
-	  			<label class="control-label" for="totalPrice">{{ 'Order.Text_Total' | t }}:</label>
-		  		<div class="controls">
+  		  <div id="orderAdvSearchForm" class="advFormOpened">
+	  	  	<div class="control-group">
+	    			<label class="control-label" for="totalPrice">{{ 'Order.Text_Total' | t }}:</label>
+		    		<div class="controls">
 		  			<input type="text" id="totalPrice" class="input-large"
-		  		    ng-model="pagination.filteringObj['Total.ItemPrice']" placeholder="">
-		  		</div>
-		  	</div>
-		  	<div class="control-group">
-	  			<label class="control-label" for="orderState">{{ 'Order.Text_State' | t }}:</label>
-		  		<div class="controls">
-		  		  <select
-		  		    ng-model="orderState"
-		  		    id=""
-		  		    ng-options="c.label for c in orderStateRange">
-		  		  </select>
-		  		</div>
-		  	</div>
-		  	<div class="control-group">
-	  			<label class="control-label" for="dateRange">{{ 'Order.Text_OrderFrom' | t }}:</label>
-		  		<div class="controls">
-		  		  <select
-		  		    ng-model="dateFrom"
-		  		    id=""
-		  		    ng-options="c.label for c in dateRange">
-		  		  </select>
-		  		</div>
-		  	</div>
-		  	<div class="control-group form-inline">
-		  		<label class="control-label" for="dateRange">&nbsp;</label>
-		  		<div class="controls">
-		  	    <atfield prepend-btn-ico="fa fa-calendar"
-		  	      ng-model="customTime.StartTime"
-		  	      at-copy="Event"
-		  	      label=""
-		  	      disabled></atfield>
-		  	    <atfield prepend-btn-ico="fa fa-calendar"
-		  	      ng-model="customTime.EndTime"
-		  	      at-copy="Event"
-		  	      label=""
-		  	      disabled></atfield>
+		    		    ng-model="pagination.filteringObj['Total.ItemPrice']" placeholder="">
+	  	  		</div>
+	  	  	</div>
+		    	<div class="control-group">
+	    			<label class="control-label" for="orderState">{{ 'Order.Text_State' | t }}:</label>
+		    		<div class="controls">
+		    		  <select
+		    		    ng-model="orderState"
+		    		    id=""
+		    		    ng-options="c.label for c in orderStateRange">
+		    		  </select>
+		    		</div>
+		    	</div>
+		    	<div class="control-group">
+	  	  		<label class="control-label" for="dateRange">{{ 'Order.Text_OrderFrom' | t }}:</label>
+	  	  		<div class="controls">
+		    		  <select
+		    		    ng-model="dateFrom"
+		    		    id=""
+		    		    ng-options="c.label for c in dateRange">
+		    		  </select>
+	  	  		</div>
+		    	</div>
+		    	<div class="control-group form-inline">
+		    		<label class="control-label" for="dateRange">&nbsp;</label>
+		    		<div class="controls">
+		    	    <atfield prepend-btn-ico="fa fa-calendar"
+		    	      ng-model="customTime.StartTime"
+		  	        at-copy="Event"
+		  	        label=""
+		    	      disabled></atfield>
+		    	    <atfield prepend-btn-ico="fa fa-calendar"
+		  	        ng-model="customTime.EndTime"
+		  	        at-copy="Event"
+		  	        label=""
+		  	        disabled></atfield>
+		  	    </div>
 		  	  </div>
-		  	</div>
-		  </div>
+		    </div>
 			</form>
-      
+
 			<div ng-show="!pagination.results.length" class="alert alert-info">{{'Order.Text_OrderEmpty'
 				| t}}</div>
-			<table class="table table-bordered ng-table-responsive" ng-show="pagination.results.length">
+			<table class="table table-bordered ng-table-responsive"
+				ng-show="pagination.results.length">
 				<thead>
 					<tr>
 						<th>#</th>
 						<th><a href="" ng-click="pagination.sort('OrderId')">{{'Order.Text_OrderId'
-							  | t}}</a></th>
+								| t}}</a></th>
 						<th><a href="" ng-click="pagination.sort('Placed')">{{'Common.Text_OrderDate'
 								| t}}</a></th>
 						<th><a href="" ng-click="pagination.sort('Contact.FullName')">{{'Common.Text_Contact'
@@ -97,10 +98,8 @@
 			</table>
 
 			<div class="paginationDiv" ng-show="pagination.results.length > 20">
-				<ng-pagination
-					pagination-data="pagination"
-					data="orders">
-          </ng-pagination>
+				<ng-pagination pagination-data="pagination" data="orders">
+				</ng-pagination>
 				<p class="text-center" ng-cloak>{{'Common.Text_CurrentPage' |
 					t}}: {{pagination.currentPageIndex + 1}} -
 					{{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} -
