@@ -77,32 +77,36 @@ function addressController($rootScope, $scope, $q, $timeout, $filter) {
   }
 
   $scope.relocateMap = function(address) {
-    $timeout(function() {
-      jQuery('#' + $scope.randId).gmap(
-          'search',
-          {
-            'address' : $filter('address')(address)
-          },
-          function(result, status) {
-            if (status === 'OK') {
-              var item = result[0] && result[0].resources
-                  && result[0].resources[0] ? result[0].resources[0] : null;
+    var addr = $filter('address')(address);
 
-              if (item !== null) {
-                var location = new Microsoft.Maps.Location(
-                    item.point.coordinates[0], item.point.coordinates[1]);
+    if (addr !== null && addr.length > 0) {
+      $timeout(function() {
+        jQuery('#' + $scope.randId).gmap(
+            'search',
+            {
+              'address' : addr
+            },
+            function(result, status) {
+              if (status === 'OK') {
+                var item = result[0] && result[0].resources
+                    && result[0].resources[0] ? result[0].resources[0] : null;
 
-                jQuery('#' + $scope.randId).gmap('clear', 'markers')
-                jQuery('#' + $scope.randId).gmap('set', 'bounds', null);
+                if (item !== null) {
+                  var location = new Microsoft.Maps.Location(
+                      item.point.coordinates[0], item.point.coordinates[1]);
 
-                jQuery('#' + $scope.randId).gmap('addMarker', {
-                  'location' : location,
-                  'bounds' : true
-                });
+                  jQuery('#' + $scope.randId).gmap('clear', 'markers')
+                  jQuery('#' + $scope.randId).gmap('set', 'bounds', null);
+
+                  jQuery('#' + $scope.randId).gmap('addMarker', {
+                    'location' : location,
+                    'bounds' : true
+                  });
+                }
               }
-            }
-          });
-    }, 50)
+            });
+      }, 50)
+    }
   }
 
   $scope.initMap = function(address) {
