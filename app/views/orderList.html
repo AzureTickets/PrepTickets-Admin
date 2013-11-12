@@ -8,33 +8,60 @@
 		<div class="widget-content">
 			<form class="form-horizontal">
 				<div class="control-group">
-					<label class="control-label" for="filterText">{{'Common.Text_Search'
-						| t}}:</label>
-					<div class="controls">
-						<input type="{{'text'}}" id="filterText" class="input-xlarge"
-							ng-model="pagination.textFilter" placeholder="">
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="dateRange">{{
-						'Order.Text_OrderFrom' | t }}</label>
-					<div class="controls">
-						<select ng-model="dateFrom" id=""
-							ng-options="c.label for c in dateRange">
-						</select>
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="orderState">{{
-						'Order.Text_State' | t }}</label>
-					<div class="controls">
-						<select ng-model="orderState" id=""
-							ng-options="c.label for c in orderStateRange">
-						</select>
-					</div>
-				</div>
-				<atfilter ui-if="false" at-model="Order"
-					pagination-data="pagination"> </atfilter>
+	  			<label class="control-label" for="filterText">{{'Order.Text_OrderId'
+		  			| t}}:</label>
+		  		<div class="controls">
+		  		  <input type="text" id="filterText" class="input-xlarge"
+		  		    ng-model="pagination.filteringObj.OrderId" placeholder="{{'Common.Text_Search' | t}}">
+		  		  <button class="btn btn-primary btn-mini"
+				      ng-click="showHideAdvSearch()">{{'Common.Text_AdvancedSearch'
+				      | t}}</button>
+		  		</div>
+		  	</div>
+  		  <div id="orderAdvSearchForm" class="advFormOpened">
+	  	  	<div class="control-group">
+	    			<label class="control-label" for="totalPrice">{{ 'Order.Text_Total' | t }}:</label>
+		    		<div class="controls">
+		  			<input type="text" id="totalPrice" class="input-large"
+		    		    ng-model="pagination.filteringObj['Total.ItemPrice']" placeholder="">
+	  	  		</div>
+	  	  	</div>
+		    	<div class="control-group">
+	    			<label class="control-label" for="orderState">{{ 'Order.Text_State' | t }}:</label>
+		    		<div class="controls">
+		    		  <select
+		    		    ng-model="orderState"
+		    		    id=""
+		    		    ng-options="c.label for c in orderStateRange">
+		    		  </select>
+		    		</div>
+		    	</div>
+		    	<div class="control-group">
+	  	  		<label class="control-label" for="dateRange">{{ 'Order.Text_OrderFrom' | t }}:</label>
+	  	  		<div class="controls">
+		    		  <select
+		    		    ng-model="dateFrom"
+		    		    id=""
+		    		    ng-options="c.label for c in dateRange">
+		    		  </select>
+	  	  		</div>
+		    	</div>
+		    	<div class="control-group form-inline">
+		    		<label class="control-label" for="dateRange">&nbsp;</label>
+		    		<div class="controls">
+		    	    <atfield prepend-btn-ico="fa fa-calendar"
+		    	      ng-model="customTime.StartTime"
+		  	        at-copy="Event"
+		  	        label=""
+		    	      disabled></atfield>
+		    	    <atfield prepend-btn-ico="fa fa-calendar"
+		  	        ng-model="customTime.EndTime"
+		  	        at-copy="Event"
+		  	        label=""
+		  	        disabled></atfield>
+		  	    </div>
+		  	  </div>
+		    </div>
 			</form>
 
 			<div ng-show="!pagination.results.length" class="alert alert-info">{{'Order.Text_OrderEmpty'

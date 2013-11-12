@@ -23,6 +23,9 @@ azureTicketsApp.factory('configService', function() {
     api : {
       stockLimit : 500
     },
+    keys : {
+      bing : '<%= at.keys.bing %>'
+    },
     media : {
       imagePreview : {
         maxW : 1024,

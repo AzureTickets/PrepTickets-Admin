@@ -17,7 +17,7 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams, 
     results: [],
     numberOfPages: 0
   };
-
+  
   $scope.$watch('wizardScanDevice.open', function(v) {
     if (v) {
       $scope.wizardScanDevice.modal = $modal.open({

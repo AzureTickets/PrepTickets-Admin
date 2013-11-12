@@ -168,7 +168,7 @@ azureTicketsApp.factory('eventService', [
           delete tmpEvent.Image;
           delete tmpEvent.$$hashKey;
           delete tmpEvent.Type;
-
+          
           _formatDates(tmpEvent);
 
           BWL.Services.ModelService.UpdateAsync(storeKey, BWL.Model.Event.Type,

@@ -1,91 +1,102 @@
 <div ui-if="this[modelName].Address" ng-controller="addressController"
-	class="clearfix">
-	<dl class="clearfix" ng-init="init(this[modelName].Address)">
-		<dd
-			ui-if="this[modelName].Address.Timezone || this[modelName].Address.City && timezones.length == 0 || false">
-			<atfield at-required class="input-xxlarge"
-				ng-model="this[modelName].Address.AddressLine1"
-				label="'Address.LabelAddress1' | t" />
-		</dd>
-		<dd
-			ui-if="this[modelName].Address.Timezone || this[modelName].Address.City && timezones.length == 0 || false">
-			<atfield class="input-xxlarge"
-				ng-model="this[modelName].Address.AddressLine2"
-				label="'Address.LabelAddress2' | t" />
-		</dd>
-		<dd
-			ui-if="!isSpecialCountry && this[modelName].Address.Region || false"
-			class="clear">
-			<atfield at-required class="input-xlarge"
-				ng-model="this[modelName].Address.City"
-				label="'Address.LabelCity' | t" />
-		</dd>
-		<dd
-			ui-if="isSpecialCountry && this[modelName].Address.Region || false"
-			class="clear">
-			<label>{{'Address.LabelCity' | t}}</label> <input type="{{'text'}}"
-				class="input-xxlarge" autocomplete="off"
-				typeahead="city.Name for city in getCities($viewValue) | limitTo:20"
-				ng-model="this[modelName].Address.City" at-required
-				at-validate="validation.Address.City" name="Address_City" />
-		</dd>
-		<dd class="clear"
-			ui-if="regions.length > 0 && this[modelName].Address.Country || false">
-			<label>{{ (this[modelName].Address.Country == 'CA' &&
-				('Address.LabelProvince' | t)) || (this[modelName].Address.Country
-				== 'US' && ('Address.LabelState' | t)) || ('Address.LabelRegion' |
-				t) }}</label> <select data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-				ui-select2="{containerCssClass:'input-xlarge'}" at-required
-				name="Address_Region" ng-model="this[modelName].Address.Region">
-				<option></option>
-				<option ng-selected="r.ISO == this[modelName].Address.Region"
-					ng-repeat="r in regions" value="{{r.ISO}}">{{r.Name}}</option>
-			</select>
-		</dd>
-		<dd
-			ui-if="this[modelName].Address.Country && Country && Country.HasPostalCodes || false"
-			class="pull-left">
-			<atfield at-required class="input-small"
-				ng-model="this[modelName].Address.PostalCode"
-				label="(this[modelName].Address.Country == 'CA' && ('Address.LabelPostalCode' | t)) || (this[modelName].Address.Country == 'US' && ('Address.LabelZipCode' | t)) || ('Address.LabelPostCode' | t)"
-				append-btn-exp="getCityByPostalCode(this[modelName].Address)"
-				append-btn-ico="fa fa-search"></atfield>
-		</dd>
-		<dd
-			ui-if="this[modelName].Address.Country && Country && !Country.HasPostalCodes || false"
-			class="pull-left">
-			<atfield at-required class="input-small"
-				ng-model="this[modelName].Address.PostalCode"
-				label="(this[modelName].Address.Country == 'CA' && ('Address.LabelPostalCode' | t)) || (this[modelName].Address.Country == 'US' && ('Address.LabelZipCode' | t)) || ('Address.LabelPostCode' | t)"></atfield>
-		</dd>
-		<dd class="clear" ui-if="countries.length > 0">
-			<label>{{'Address.LabelCountry' | t}}</label> <select
-				data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-				ui-select2="{containerCssClass:'input-xlarge'}" at-required
-				name="Address_Country" ng-model="this[modelName].Address.Country"
-				ng-change="loadCountry(this[modelName].Address, true)">
-				<option></option>
-				<option ng-selected="c.ISO == this[modelName].Address.Country"
-					ng-repeat="c in countries" value="{{c.ISO}}">{{c.Name}}</option>
-			</select>
-		</dd>
-		<dd
-			ui-if="timezones.length > 0 && (isSpecialCountry && this[modelName].Address.City && this[modelName].Address.Timezone) || false">
-			<atfield at-required ng-readonly="isSpecialCountry"
-				class="input-xlarge" ng-model="this[modelName].Address.Timezone"
-				label="'Address.LabelTimezone' | t" />
-		</dd>
-		<dd
-			ui-if="!isSpecialCountry && this[modelName].Address.City && timezones.length > 0 || false">
-			<label>{{'Address.LabelTimezone' | t}}</label> <select
-				data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
-				ui-select2="{containerCssClass:'input-xlarge'}" at-required
-				name="Address_Timezone" ng-model="this[modelName].Address.Timezone"
-				ng-change="a=1">
-				<option></option>
-				<option ng-selected="t.Name == this[modelName].Address.Timezone"
-					ng-repeat="t in timezones" value="{{t.Name}}">{{t.Name}}</option>
-			</select>
-		</dd>
-	</dl>
+	class="clearfix row-fluid">
+	<div class="span5">
+		<dl class="clearfix" ng-init="init(this[modelName].Address)">
+			<dd
+				ui-if="this[modelName].Address.Timezone || this[modelName].Address.City && timezones.length == 0 || false">
+				<atfield at-required class="input-xlarge"
+					ng-model="this[modelName].Address.AddressLine1"
+					label="'Address.LabelAddress1' | t" />
+			</dd>
+			<dd
+				ui-if="this[modelName].Address.Timezone || this[modelName].Address.City && timezones.length == 0 || false">
+				<atfield class="input-xlarge"
+					ng-model="this[modelName].Address.AddressLine2"
+					label="'Address.LabelAddress2' | t" />
+			</dd>
+			<dd
+				ui-if="!isSpecialCountry && this[modelName].Address.Region || false"
+				class="clear">
+				<atfield at-required class="input-xlarge"
+					ng-model="this[modelName].Address.City"
+					label="'Address.LabelCity' | t" />
+			</dd>
+			<dd
+				ui-if="isSpecialCountry && this[modelName].Address.Region || false"
+				class="clear">
+				<label>{{'Address.LabelCity' | t}}</label> <input type="{{'text'}}"
+					class="input-xlarge" autocomplete="off"
+					typeahead="city.Name for city in getCities($viewValue) | limitTo:20"
+					typeahead-on-select="this[modelName].Address.AddressLine1 = null; this[modelName].Address.AddressLine2 = null; addressChange()"
+					ng-model="this[modelName].Address.City" at-required
+					at-validate="validation.Address.City" name="Address_City" />
+			</dd>
+			<dd class="clear"
+				ui-if="regions.length > 0 && this[modelName].Address.Country && this[modelName].Address.Country != null || false">
+				<label>{{ (this[modelName].Address.Country == 'CA' &&
+					('Address.LabelProvince' | t)) || (this[modelName].Address.Country
+					== 'US' && ('Address.LabelState' | t)) || ('Address.LabelRegion' |
+					t) }}</label> <select
+					data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
+					ui-select2="{containerCssClass:'input-xlarge'}" at-required
+					name="Address_Region" ng-model="this[modelName].Address.Region"
+					ng-change="addressChange()">
+					<option></option>
+					<option ng-selected="r.ISO == this[modelName].Address.Region"
+						ng-repeat="r in regions" value="{{r.ISO}}">{{r.Name}}</option>
+				</select>
+			</dd>
+			<dd
+				ui-if="this[modelName].Address.Country && Country && Country.HasPostalCodes || false"
+				class="pull-left">
+				<atfield at-required class="input-small"
+					ng-model="this[modelName].Address.PostalCode"
+					label="(this[modelName].Address.Country == 'CA' && ('Address.LabelPostalCode' | t)) || (this[modelName].Address.Country == 'US' && ('Address.LabelZipCode' | t)) || ('Address.LabelPostCode' | t)"
+					append-btn-exp="getCityByPostalCode(this[modelName].Address)"
+					append-btn-ico="fa fa-search"></atfield>
+			</dd>
+			<dd
+				ui-if="this[modelName].Address.Country && Country && !Country.HasPostalCodes || false"
+				class="pull-left">
+				<atfield at-required class="input-small"
+					ng-model="this[modelName].Address.PostalCode"
+					label="(this[modelName].Address.Country == 'CA' && ('Address.LabelPostalCode' | t)) || (this[modelName].Address.Country == 'US' && ('Address.LabelZipCode' | t)) || ('Address.LabelPostCode' | t)"></atfield>
+			</dd>
+			<dd class="clear" ui-if="countries.length > 0">
+				<label>{{'Address.LabelCountry' | t}}</label> <select
+					data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
+					ui-select2="{containerCssClass:'input-xlarge'}" at-required
+					name="Address_Country" ng-model="this[modelName].Address.Country"
+					ng-change="loadCountry(this[modelName].Address, true)">
+					<option></option>
+					<option ng-selected="c.ISO == this[modelName].Address.Country"
+						ng-repeat="c in countries" value="{{c.ISO}}">{{c.Name}}</option>
+				</select>
+			</dd>
+			<dd
+				ui-if="timezones.length > 0 && (isSpecialCountry && this[modelName].Address.City && this[modelName].Address.Timezone) || false">
+				<atfield at-required ng-readonly="isSpecialCountry"
+					class="input-xlarge" ng-model="this[modelName].Address.Timezone"
+					label="'Address.LabelTimezone' | t" />
+			</dd>
+			<dd
+				ui-if="!isSpecialCountry && this[modelName].Address.City && timezones.length > 0 || false">
+				<label>{{'Address.LabelTimezone' | t}}</label> <select
+					data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
+					ui-select2="{containerCssClass:'input-xlarge'}" at-required
+					name="Address_Timezone" ng-model="this[modelName].Address.Timezone"
+					ng-change="a=1">
+					<option></option>
+					<option ng-selected="t.Name == this[modelName].Address.Timezone"
+						ng-repeat="t in timezones" value="{{t.Name}}">{{t.Name}}</option>
+				</select>
+			</dd>
+		</dl>
+		<div>&nbsp;</div>
+	</div>
+	<div class="span7"
+		ui-if="this[modelName].Address && this[modelName].Address != null">
+		<div id="{{randId}}" ng-init="initMap(this[modelName].Address)"
+			class="map" ng-style="mapStyle"></div>
+	</div>
 </div>

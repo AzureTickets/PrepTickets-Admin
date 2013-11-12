@@ -235,7 +235,7 @@ function eventController($scope, $cookieStore, $filter, $modal) {
               Key : v.Key
             }
           }),
-          StartTime : ($scope.Event.StartTime).toString(),
+          StartTime : $scope.Event.StartTime,
           EndTime : $scope.Event.EndTime,
           OnSaleDateTimeStart : $scope.Event.OnSaleDateTimeStart,
           OnSaleDateTimeEnd : $scope.Event.OnSaleDateTimeEnd,

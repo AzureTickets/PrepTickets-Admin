@@ -4,19 +4,21 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
 
   // initialize wizard for Venue
   $scope.wizardVenue = $scope.form.getWizard($scope);
-  
+
   // Pagination setup
   $scope.pagination = {
-    pageSize: 20,
-    predicates: [],
-    pageItems: function() {},
-    textFilter: '',
-    propFilter: '*',
-    filteringObj: {},
-    sort: function() {},
-    currentPageIndex: 0,
-    results: [],
-    numberOfPages: 0
+    pageSize : 20,
+    predicates : [],
+    pageItems : function() {
+    },
+    textFilter : '',
+    propFilter : '*',
+    filteringObj : {},
+    sort : function() {
+    },
+    currentPageIndex : 0,
+    results : [],
+    numberOfPages : 0
   };
 
   $scope.$watch('wizardVenue.open', function(v) {
@@ -45,15 +47,6 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
     $scope.Place = venue;
     $scope.wizardVenue.open = true;
     $scope.wizardVenue.reset();
-
-    // manually load location
-//    $timeout(function() {
-//      $scope.$apply(function() {
-//        if (angular.isDefined($scope.Store)) {
-//          $scope.$broadcast('loadCountry', $scope.Place.Address);
-//        }
-//      })
-//    }, 500);
   }
 
   $scope.create = function() {
@@ -159,7 +152,7 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
       }
     }
   }
-  
+
 }
 
 venueController.$inject = [ '$rootScope', '$scope', '$timeout', '$cookieStore',
