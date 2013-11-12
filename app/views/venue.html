@@ -47,7 +47,7 @@
 						</dd>
 					</dl>
 				</form>
-				<form ng-show="wizardVenue.currentStep == 2" name="atVenue2"
+				<form ui-if="wizardVenue.currentStep == 2" name="atVenue2"
 					ng-submit="wizardVenue.next('atVenue2')">
 					<!-- location info -->
 					<div ui-if="Place.Address || false" ng-include
