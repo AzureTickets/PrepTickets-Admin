@@ -693,6 +693,11 @@ function storeController($scope, $cookieStore, $location, $timeout,
       $scope.tinyInstance = null;
     }
   }
+  
+  // customTime for searching orders in orderController.js
+  // Place this here since the atfield directive gets the
+  // parent scope of its nearest form element which is storeController's scope
+  $scope.customTime = {};
 }
 
 storeController.$inject = [ '$scope', '$cookieStore', '$location', '$timeout',
