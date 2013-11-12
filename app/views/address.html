@@ -4,13 +4,13 @@
 		<dl class="clearfix" ng-init="init(this[modelName].Address)">
 			<dd
 				ui-if="this[modelName].Address.Timezone || this[modelName].Address.City && timezones.length == 0 || false">
-				<atfield at-required class="input-xxlarge"
+				<atfield at-required class="input-xlarge"
 					ng-model="this[modelName].Address.AddressLine1"
 					label="'Address.LabelAddress1' | t" />
 			</dd>
 			<dd
 				ui-if="this[modelName].Address.Timezone || this[modelName].Address.City && timezones.length == 0 || false">
-				<atfield class="input-xxlarge"
+				<atfield class="input-xlarge"
 					ng-model="this[modelName].Address.AddressLine2"
 					label="'Address.LabelAddress2' | t" />
 			</dd>
@@ -25,20 +25,22 @@
 				ui-if="isSpecialCountry && this[modelName].Address.Region || false"
 				class="clear">
 				<label>{{'Address.LabelCity' | t}}</label> <input type="{{'text'}}"
-					class="input-xxlarge" autocomplete="off"
+					class="input-xlarge" autocomplete="off"
 					typeahead="city.Name for city in getCities($viewValue) | limitTo:20"
+					typeahead-on-select="this[modelName].Address.AddressLine1 = null; this[modelName].Address.AddressLine2 = null; addressChange()"
 					ng-model="this[modelName].Address.City" at-required
 					at-validate="validation.Address.City" name="Address_City" />
 			</dd>
 			<dd class="clear"
-				ui-if="regions.length > 0 && this[modelName].Address.Country || false">
+				ui-if="regions.length > 0 && this[modelName].Address.Country && this[modelName].Address.Country != null || false">
 				<label>{{ (this[modelName].Address.Country == 'CA' &&
 					('Address.LabelProvince' | t)) || (this[modelName].Address.Country
 					== 'US' && ('Address.LabelState' | t)) || ('Address.LabelRegion' |
 					t) }}</label> <select
 					data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
 					ui-select2="{containerCssClass:'input-xlarge'}" at-required
-					name="Address_Region" ng-model="this[modelName].Address.Region">
+					name="Address_Region" ng-model="this[modelName].Address.Region"
+					ng-change="addressChange()">
 					<option></option>
 					<option ng-selected="r.ISO == this[modelName].Address.Region"
 						ng-repeat="r in regions" value="{{r.ISO}}">{{r.Name}}</option>
