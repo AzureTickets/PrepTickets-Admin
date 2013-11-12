@@ -1,5 +1,6 @@
 <div ui-if="this[modelName].Address" ng-controller="addressController"
-	class="clearfix row-fluid">
+	class="clearfix row-fluid"
+	ng-style="{'width': (modelName!='Store' && '735px' || 'auto')}">
 	<div class="span5">
 		<dl class="clearfix" ng-init="init(this[modelName].Address)">
 			<dd
