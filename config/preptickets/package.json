@@ -16,6 +16,9 @@
   	"geo" : "https://geo.revvly.com/",
   	"logo" : "https://www.preptickets.com/img/PrepTicketsLogo.png"
   },
+  "keys" : {
+  	"bing" : "Ast5DVGNcX-c1fctQaHRKplNVR4gKEX0w2cttRd6FLl_xyp_6N439Fxrl0Uc5yyB"
+  },
   "version": "1.0.0",
   "dependencies": {},
   "devDependencies": {
