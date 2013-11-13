@@ -17,6 +17,7 @@ azureTicketsApp
                   atTip : '=tip',
                   atChange : '=ngChange',
                   atReadonly : '=ngReadonly',
+                  atDisabled : '=ngDisabled',
                   atBtnExp : '&appendBtnExp',
                   atBlur : '=ngBlur',
                   atValidate : '=atValidate',
@@ -185,6 +186,9 @@ azureTicketsApp
                   }
                   if ($attrs.ngReadonly) {
                     _el.attr('ng-readonly', 'atReadonly');
+                  }
+                  if ($attrs.ngDisabled) {
+                    _el.attr('ng-disabled', 'atDisabled');
                   }
                   if ($attrs.autocomplete) {
                     _el.attr('autocomplete', $attrs.autocomplete);
