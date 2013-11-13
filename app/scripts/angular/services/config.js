@@ -18,7 +18,8 @@ azureTicketsApp.factory('configService', function() {
       lastPath : 'authLastPath',
       loggedStatus : 'auth',
       storeKey : 'storeKey',
-      paymentSessionKey : 'paymentSessionKey'
+      paymentSessionKey : 'paymentSessionKey',
+      initPages : 'initPages'
     },
     api : {
       stockLimit : 500

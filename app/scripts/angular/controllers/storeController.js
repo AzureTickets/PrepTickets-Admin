@@ -117,7 +117,8 @@ function storeController($scope, $cookieStore, $location, $timeout,
 
           // redirect to login if no profile, but allow store visitors
           if (!angular.isDefined($routeParams.storeURI)
-              && !$scope.auth.isDomainProfileReady()) {
+              && !$scope.auth.isDomainProfileReady()
+              && !$cookieStore.get(configService.cookies.initPages)) {
             $location.path('/login');
             return;
           }
@@ -693,7 +694,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
       $scope.tinyInstance = null;
     }
   }
-  
+
   // customTime for searching orders in orderController.js
   // Place this here since the atfield directive gets the
   // parent scope of its nearest form element which is storeController's scope

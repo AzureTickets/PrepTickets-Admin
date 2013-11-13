@@ -26,11 +26,17 @@ var routeFilters = {
 
         // direct access to store, don't redirect
         var isStoreVisitor = /^\/store\/[\w\-\d]+$/g.test($location.$$path);
+        var re = new RegExp(/\/(?:login|register|forgot)/);
 
-        if ((lc === null || !lc)
-            && !/\/(login|register|forgot)/.test($location.$$path)
-            && !isStoreVisitor) {
-          $location.path('/login');
+        if (!angular.isArray($location.$$path.match(re))) {
+          $cookieStore.remove(configService.cookies.initPages)
+
+          if ((lc === null || !lc) && !isStoreVisitor) {
+            $location.path('/login');
+          }
+        } else {
+          $cookieStore.remove(configService.cookies.loggedStatus)
+          $cookieStore.put(configService.cookies.initPages, true)
         }
       } ]
 }
