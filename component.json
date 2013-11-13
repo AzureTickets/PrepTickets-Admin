@@ -13,6 +13,7 @@
         "jquery-ui":"*",
         "jquery-migrate": "*",
         "jquery-timepicker-addon": "git://github.com/trentrichardson/jQuery-Timepicker-Addon.git",
+	"jquery-bing-bower" : "https://github.com/webpolis/jquery-bing-bower.git",
         "responsiveiframe": "*",
         "bootstrap": "~2.3.1",
         "bootstrap-switch" :"*",
