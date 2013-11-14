@@ -25,7 +25,7 @@
 						<td ui-if="Store.IsOwner" ng-click="update(category)" mousestyle>{{category.Name}}</td>
 						<td ui-if="!Store.IsOwner">{{$index + 1 + pagination.currentPageIndex*pagination.pageSize}}</td>
 						<td ui-if="!Store.IsOwner">{{category.Name}}</td>
-						<td>{{generateFrontEndLink()}}{{category.CustomURI.URI}}</td>
+						<td><a ng-href="{{generateFrontEndLink()}}{{category.CustomURI.URI}}" target="_blank">{{generateFrontEndLink()}}{{category.CustomURI.URI}}</a></td>
 						<td>
 							<div class="btn-group pull-left">
 								<button ui-if="Store.IsOwner"

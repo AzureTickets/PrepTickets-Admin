@@ -14,6 +14,7 @@
   "url" : {
   	"api" : "https://api.preptickets.com/",
   	"geo" : "https://geo.revvly.com/",
+  	"stage" : "https://preptickets.azurewebsites.net/",
   	"logo" : "https://www.preptickets.com/img/PrepTicketsLogo.png"
   },
   "keys" : {
