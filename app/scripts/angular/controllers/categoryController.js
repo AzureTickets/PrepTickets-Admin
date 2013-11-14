@@ -176,6 +176,10 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
       }
     }
   }
+  
+  $scope.generateFrontEndLink = function(category) {
+  	return BWL.Stage + $scope.Store.URI + '/';
+  }
 }
 
 categoryController.$inject = [ '$scope', '$cookieStore', '$filter', '$modal' ];

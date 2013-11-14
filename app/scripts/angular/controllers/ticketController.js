@@ -115,8 +115,8 @@ function ticketController($scope, $cookieStore, $filter, $routeParams,
         $scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeEnd = $scope.Event.OnSaleDateTimeEnd;
       } else {
       	var date = new Date();
-      	$scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeStart = new String(new Date(date.getTime()));
-      	$scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeEnd = new String(new Date(date.getTime() + 7*24*60*60*1000)).slice(0, 15) + ' 22:00:00';
+      	$scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeStart = $scope.object.dateToUIPicker(new String(new Date(date.getTime())));
+      	$scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeEnd = $scope.object.dateToUIPicker(new String(new Date(date.getTime() + 7*24*60*60*1000)).slice(0, 15) + ' 22:00:00');
       }
 
       $scope.wizardTicket.open = true;

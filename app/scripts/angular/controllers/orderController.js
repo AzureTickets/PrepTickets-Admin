@@ -48,13 +48,12 @@ function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
   };
   
   // Enable or disable custom time input fields
+  $scope.customTimeDisabled = true;
   var enableCustom = function(enable) {
     if (!angular.isDefined(enable) || enable) {
-      jQuery('#customTime-StartTime').attr('disabled', false);
-      jQuery('#customTime-EndTime').attr('disabled', false);
+      $scope.customTimeDisabled = false;
     } else {
-      jQuery('#customTime-StartTime').attr('disabled', true);
-      jQuery('#customTime-EndTime').attr('disabled', true);
+      $scope.customTimeDisabled = true;
     }
   }
   
