@@ -178,7 +178,7 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
   }
   
   $scope.generateFrontEndLink = function(category) {
-  	return BWL.Stage + $scope.Store.URI + '/';
+  	return $scope.config.appStage + $scope.Store.URI + '/';
   }
 }
 

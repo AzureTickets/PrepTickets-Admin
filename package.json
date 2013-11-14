@@ -13,7 +13,8 @@
   },
   "url" : {
   	"api" : "https://stage.revvly.com",
-  	"geo" : "https://geo.revvly.com"
+  	"geo" : "https://geo.revvly.com",
+  	"stage" : "https://preptickets.azurewebsites.net/"
   },
   "keys" : {
   	"bing" : "Ast5DVGNcX-c1fctQaHRKplNVR4gKEX0w2cttRd6FLl_xyp_6N439Fxrl0Uc5yyB"

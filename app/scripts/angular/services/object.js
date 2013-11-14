@@ -161,13 +161,7 @@ azureTicketsApp
               }
             },
             dateToISO8601 : function(d) {
-            	/*var date = new Date();
-            	
-            	var userOffset = date.getTimezoneOffset()*60*1000;
-            	var serverOffset = -1*60*60*1000;
-            	
-            	return new Date(new Date(d).getTime() + 2*userOffset + serverOffset).toString('yyyy-MM-ddTHH:mm:ss.') + new Date(d).getMilliseconds() + 'Z';*/
-              return new Date(d).toString('s');
+            	return new Date(d).toString('s');
             },
             dateToUIPicker : function(d, hasTime) {
               var _uiDateFormat = !angular.isDefined(hasTime) || hasTime ? 'MM/dd/yyyy hh:mm tt'
