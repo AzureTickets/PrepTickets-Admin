@@ -1,7 +1,9 @@
 azureTicketsApp.directive('ngBlur', function() {
   return function(scope, elem, attrs) {
     elem.bind('blur', function() {
-      scope.$apply(attrs.ngBlur);
+      scope.$apply(function() {
+        scope[attrs.ngBlur]()
+      });
     });
   };
 });
