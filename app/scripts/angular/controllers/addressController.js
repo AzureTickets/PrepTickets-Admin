@@ -107,6 +107,7 @@ function addressController($rootScope, $scope, $q, $timeout, $filter) {
             });
       }, 50)
     }
+
   }
 
   $scope.initMap = function(address) {

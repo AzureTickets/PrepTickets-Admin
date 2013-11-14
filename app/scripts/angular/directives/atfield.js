@@ -19,7 +19,7 @@ azureTicketsApp
                   atReadonly : '=ngReadonly',
                   atDisabled : '=ngDisabled',
                   atBtnExp : '&appendBtnExp',
-                  atBlur : '=ngBlur',
+                  atBlur : '&ngBlur',
                   atValidate : '=atValidate',
                   atTypeahead : '&typeahead'
                 },
@@ -161,15 +161,15 @@ azureTicketsApp
                     $element.addClass('input-append');
                     _append = jQuery('<span class="add-on" />');
                     _append.html('<i class="' + $attrs.appendBtnIco + '"></i>');
-                    
-                    _el.css('position','inherit') // fix for datetimepicker
+
+                    _el.css('position', 'inherit') // fix for datetimepicker
                   } else if ($attrs.prependBtnIco) {
                     $element.addClass('input-prepend');
                     _prepend = jQuery('<span class="add-on" />');
                     _prepend.html('<i class="' + $attrs.prependBtnIco
                         + '"></i>');
-                    
-                    _el.css('position','inherit') // fix for datetimepicker
+
+                    _el.css('position', 'inherit') // fix for datetimepicker
                   }
 
                   // make new element available
