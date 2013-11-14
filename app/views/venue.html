@@ -3,7 +3,7 @@
 	
 	<script type="text/ng-template" id="formVenue.html">
 	    <div class="modal-header">
-				<button type="button" ng-click="wizardVenue.open = false"
+				<button type="button" ng-click="removeTinymceIns(); wizardVenue.open = false"
 					class="close">&times;</button>
 				<h3>
 					<p class="text-info">{{ 'Common.Text_Venue' | t}}</p>
@@ -37,8 +37,8 @@
 								label="'Common.Text_VenueName' | t" />
 						</dd>
 						<dd>
-							<atfield class="input-xxlarge" ng-model="Place.Description"
-								label="'Common.Text_Description' | t" rows="5" />
+						  <label for="descTinymce">{{'Common.Text_Description' | t}}</lable>
+						  <textarea id="descTinymce" ui-tinymce ng-model="Place.Description" ng-cloak></textarea>
 						</dd>
 						<dd>
 							<input type="submit" class="btn btn-primary clear"
@@ -113,7 +113,7 @@
 					</dd>
 					<dd class="pull-left">
 						<a ng-show="wizardVenue.currentStep>1 && wizardVenue.saved"
-							ng-click="wizardVenue.open = false"
+							ng-click="removeTinymceIns(); wizardVenue.open = false"
 							class="btn btn-primary clear">{{ 'Common.Text_Close' | t }}</a>
 					</dd>
 				</dl>

@@ -77,14 +77,6 @@ azureTicketsApp.factory('eventService', [
                 _event._tmpVenues = angular.copy(_event.tmpVenues);
                 _event._tmpCategories = angular.copy(_event.tmpCategories);
 
-                _event.StartTime = objectService
-                    .dateToUIPicker(_event.StartTime);
-                _event.EndTime = objectService.dateToUIPicker(_event.EndTime);
-                _event.OnSaleDateTimeStart = objectService
-                    .dateToUIPicker(_event.OnSaleDateTimeStart);
-                _event.OnSaleDateTimeEnd = objectService
-                    .dateToUIPicker(_event.OnSaleDateTimeEnd);
-
                 $rootScope.$apply(function() {
                   def.resolve(_event)
                 });

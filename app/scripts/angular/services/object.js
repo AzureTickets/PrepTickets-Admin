@@ -161,8 +161,7 @@ azureTicketsApp
               }
             },
             dateToISO8601 : function(d) {
-              return new Date(d).toString('s');
-              //return Date.UTC(2013,11,11);
+            	return new Date(d).toString('s');
             },
             dateToUIPicker : function(d, hasTime) {
               var _uiDateFormat = !angular.isDefined(hasTime) || hasTime ? 'MM/dd/yyyy hh:mm tt'

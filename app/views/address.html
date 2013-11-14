@@ -7,7 +7,7 @@
 				ui-if="this[modelName].Address.Timezone || this[modelName].Address.City && timezones.length == 0 || false">
 				<atfield at-required class="input-xlarge"
 					ng-model="this[modelName].Address.AddressLine1"
-					label="'Address.LabelAddress1' | t" />
+					label="'Address.LabelAddress1' | t" ng-blur="addressChange()" />
 			</dd>
 			<dd
 				ui-if="this[modelName].Address.Timezone || this[modelName].Address.City && timezones.length == 0 || false">
@@ -20,7 +20,7 @@
 				class="clear">
 				<atfield at-required class="input-xlarge"
 					ng-model="this[modelName].Address.City"
-					label="'Address.LabelCity' | t" />
+					label="'Address.LabelCity' | t" ng-blur="addressChange()" />
 			</dd>
 			<dd
 				ui-if="isSpecialCountry && this[modelName].Address.Region || false"
@@ -41,7 +41,7 @@
 					data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
 					ui-select2="{containerCssClass:'input-xlarge'}" at-required
 					name="Address_Region" ng-model="this[modelName].Address.Region"
-					ng-change="addressChange()">
+					ng-change="this[modelName].Address.Region && this[modelName].Address.Region != null && addressChange() || false">
 					<option></option>
 					<option ng-selected="r.ISO == this[modelName].Address.Region"
 						ng-repeat="r in regions" value="{{r.ISO}}">{{r.Name}}</option>
@@ -61,6 +61,7 @@
 				class="pull-left">
 				<atfield at-required class="input-small"
 					ng-model="this[modelName].Address.PostalCode"
+					ng-blur="addressChange()"
 					label="(this[modelName].Address.Country == 'CA' && ('Address.LabelPostalCode' | t)) || (this[modelName].Address.Country == 'US' && ('Address.LabelZipCode' | t)) || ('Address.LabelPostCode' | t)"></atfield>
 			</dd>
 			<dd class="clear" ui-if="countries.length > 0">

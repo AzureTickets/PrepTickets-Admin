@@ -107,6 +107,7 @@ function addressController($rootScope, $scope, $q, $timeout, $filter) {
             });
       }, 50)
     }
+
   }
 
   $scope.initMap = function(address) {
@@ -184,14 +185,22 @@ function addressController($rootScope, $scope, $q, $timeout, $filter) {
   }
 
   $scope.loadTimezonesByCountry = function(address) {
+    var def = $q.defer();
+
     if (angular.isDefined(address.Country)) {
       $scope.geo.getTimezonesByCountry(address.Country).then(
           function(timezones) {
             $scope.timezones = timezones;
+
+            def.resolve()
           }, function(err) {
             $scope.error.log(err)
+
+            def.reject(err)
           });
     }
+
+    return def.promise;
   }
 
   $scope.loadCountry = function(address, triggeredFromCtrl) {
@@ -281,10 +290,11 @@ function addressController($rootScope, $scope, $q, $timeout, $filter) {
                     address.Latitude = city.Latitude
                     address.Longitude = city.Longitude
 
-                    $scope.loadRegionsByCountry(address);
-                    $scope.loadTimezonesByCountry(address);
-
-                    $scope.addressChange();
+                    $scope.loadRegionsByCountry(address).then(function() {
+                      $scope.loadTimezonesByCountry(address).then(function() {
+                        $scope.addressChange();
+                      })
+                    })
                   }
                 }, function(err) {
                   $scope.error.log(err)

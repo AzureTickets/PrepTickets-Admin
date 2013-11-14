@@ -48,15 +48,7 @@ function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
   };
   
   // Enable or disable custom time input fields
-  var enableCustom = function(enable) {
-    if (!angular.isDefined(enable) || enable) {
-      jQuery('#customTime-StartTime').attr('disabled', false);
-      jQuery('#customTime-EndTime').attr('disabled', false);
-    } else {
-      jQuery('#customTime-StartTime').attr('disabled', true);
-      jQuery('#customTime-EndTime').attr('disabled', true);
-    }
-  }
+  $scope.customTimeDisabled = true;
   
   // Watcher for 'State' and fixed 'Order From' properties
   $scope.orderWatcher = function(orderState, dateFrom) {
@@ -68,29 +60,29 @@ function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
   		case 0:
   		  startDate = $scope.object.dateToISO8601(new Date(date.getTime() - 1*86400000));
   		  endDate = $scope.object.dateToISO8601(new Date(date.getTime()));
-  		  enableCustom(false);
+  		  $scope.customTimeDisabled = true;
   		  break;
   		  
   		case 1:
   		  startDate = $scope.object.dateToISO8601(new Date(date.getTime() - 7*86400000));
   		  endDate = $scope.object.dateToISO8601(new Date(date.getTime()));
-  		  enableCustom(false);
+  		  $scope.customTimeDisabled = true;
   		  break;
   		  
   		case 2:
   		  startDate = $scope.object.dateToISO8601(new Date(date.getTime() - 30*86400000));
   		  endDate = $scope.object.dateToISO8601(new Date(date.getTime()));
-  		  enableCustom(false);
+  		  $scope.customTimeDisabled = true;
   		  break;
   		  
   		case 3:
   		  startDate = $scope.object.dateToISO8601(new Date(date.getTime() - 60*86400000));
   		  endDate = $scope.object.dateToISO8601(new Date(date.getTime()));
-  		  enableCustom(false);
+  		  $scope.customTimeDisabled = true;
   		  break;
   		  
   		case 4:
-  		  enableCustom();
+  		  $scope.customTimeDisabled = false;
   		  break;
   	}
   	
