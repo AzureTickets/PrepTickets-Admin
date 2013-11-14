@@ -88,6 +88,11 @@ function eventController($scope, $cookieStore, $filter, $modal) {
     $scope.wizardEvent.reset();
   }
   
+  $scope.xxx = function() {
+    var date = new Date();
+    return date.getTimezoneOffset();
+  }
+  
   $scope.tostring = function(date) {
   	return date.toString();
   }

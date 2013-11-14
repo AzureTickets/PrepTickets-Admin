@@ -21,7 +21,7 @@
 					<tr ng-repeat="venue in pagination.pageItems()">
 						<td>{{$index + 1 + pagination.currentPageIndex*pagination.pageSize}}</td>
 						<td>{{venue.Name}}</td>
-						<td>{{venue.Description}}</td>
+						<td>{{venue.Description | striptags}}</td>
 						<td><span ng-show="venue.Address" class="label">{{
 								venue.Address | address }}</span></td>
 						<td>

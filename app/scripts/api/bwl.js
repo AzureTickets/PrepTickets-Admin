@@ -19,6 +19,7 @@ Date.prototype.getGMTOffset = function() {
 var BWL = {
   // Global variables
   Server : '<%= at.urlApi %>',
+  Stage : 'https://preptickets.azurewebsites.net/#/',
   Store : null,
   StoreKey : null,
   Profile : null,
