@@ -172,7 +172,7 @@ azureTicketsApp
               try {
                 // parse date and make it compatible with select2
                 // widget
-                var ret = Date.parse(d).toString(_uiDateFormat)
+                var ret = new Date(d).toString(_uiDateFormat)
               } catch (e) {
               }
 
