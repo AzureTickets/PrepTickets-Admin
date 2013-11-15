@@ -18,12 +18,15 @@ azureTicketsApp
                  * @param {object}
                  *          $scope We're authenticating on the scope of a
                  *          controller.
+                 * @param {boolean}
+                 *          force If we need to refresh DomainProfile,
+                 *          authenticate
                  * @returns
                  */
-                authenticate : function($scope) {
+                authenticate : function($scope, force) {
                   var _this = this, def = $q.defer();
 
-                  if (!this.isDomainProfileReady()) {
+                  if (!this.isDomainProfileReady() || force) {
                     this.loadProfileAsync(configService.clientKey).then(
                         function() {
                           $scope.DomainProfile = _this.getDomainProfile();
