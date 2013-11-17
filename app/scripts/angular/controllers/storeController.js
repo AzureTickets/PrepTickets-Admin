@@ -491,14 +491,26 @@ function storeController($scope, $cookieStore, $location, $timeout,
                       $scope.Store.Image).then(function() {
                     $scope.wizard.checkStep.image = true;
 
-                    _attachPaymentProviders();
+                    if ($scope.auth.isAdministrator()) {
+                      _attachPaymentProviders();
+                    } else {
+                      $scope.wizard.saved = true;
+
+                      // reload full model
+                      $scope.initStore(storeKey);
+                    }
                   }, function(err) {
                     $scope.wizard.checkStep.image = false;
 
                     $scope.error.log(err)
                   })
-                } else {
+                } else if ($scope.auth.isAdministrator()) {
                   _attachPaymentProviders();
+                } else {
+                  $scope.wizard.saved = true;
+
+                  // reload full model
+                  $scope.initStore(storeKey);
                 }
               }
             },
@@ -546,16 +558,27 @@ function storeController($scope, $cookieStore, $location, $timeout,
                 .then(function() {
                   $scope.wizard.checkStep.image = true;
 
-                  _attachPaymentProviders();
+                  if ($scope.auth.isAdministrator()) {
+                    _attachPaymentProviders();
+                  } else {
+                    $scope.wizard.saved = true;
+
+                    // reload full model
+                    $scope.initStore($scope.Store.Key);
+                  }
                 }, function(err) {
                   $scope.wizard.checkStep.image = false;
 
                   $scope.error.log(err)
                 })
-          } else {
+          } else if ($scope.auth.isAdministrator()) {
             _attachPaymentProviders();
-          }
+          } else {
+            $scope.wizard.saved = true;
 
+            // reload full model
+            $scope.initStore($scope.Store.Key);
+          }
         }
 
         var _updateStoreAddress = function() {
