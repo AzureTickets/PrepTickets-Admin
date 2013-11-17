@@ -32,7 +32,7 @@
 				</thead>
 				<tbody>
 					<tr
-						ng-click="selection.StorePreRegisterKey = spr.Key; wizardPreRegister.next('atStorePreRegister2', true, submitRequest)"
+						ng-click="selection.StorePreRegisterKey = spr.Key; storeAgreement.open = true"
 						ng-repeat="spr in paginationPreRegister.pageItems()" mousestyle>
 						<td>{{$index+1}}</td>
 						<td>{{spr.Name}}</td>
@@ -43,11 +43,12 @@
 					</tr>
 				</tbody>
 			</table>
-			<div class="paginationDiv" ng-show="paginationPreRegister.results.length > 20">
-				<ng-pagination ui-if="storePreRegisters && storePreRegisters.length > 0"
-					pagination-data="paginationPreRegister"
-					data="storePreRegisters">
-          </ng-pagination>
+			<div class="paginationDiv"
+				ng-show="paginationPreRegister.results.length > 20">
+				<ng-pagination
+					ui-if="storePreRegisters && storePreRegisters.length > 0"
+					pagination-data="paginationPreRegister" data="storePreRegisters">
+				</ng-pagination>
 				<p class="text-center"
 					ng-show="paginationPreRegister.results.length" ng-cloak>{{'Common.Text_CurrentPage'
 					| t}}: {{paginationPreRegister.currentPageIndex + 1}} -
