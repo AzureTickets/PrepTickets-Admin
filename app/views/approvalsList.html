@@ -11,7 +11,7 @@
 		<div class="alert alert-info"
 			ng-show="infoMsg && infoMsg != null || false">{{infoMsg}}</div>
 		<div class="widget-content" ng-show="approvals.length > 0">
-			<table class="table table-bordered ">
+			<table class="table table-bordered table-hover">
 				<thead>
 					<tr>
 						<th>#</th>
@@ -57,9 +57,8 @@
 			<div class="paginationDiv"
 				ng-show="paginationApproval.results.length > 20">
 				<ng-pagination ui-if="approvals && approvals.length > 0"
-					pagination-data="paginationApproval"
-					data="approvals">
-          </ng-pagination>
+					pagination-data="paginationApproval" data="approvals">
+				</ng-pagination>
 				<p class="text-center" ng-cloak>{{'Common.Text_CurrentPage' |
 					t}}: {{paginationApproval.currentPageIndex + 1}} -
 					{{'Common.Text_ItemsPerPage' | t}}: {{paginationApproval.pageSize}}

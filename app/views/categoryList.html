@@ -7,30 +7,35 @@
 			<div class="clear"></div>
 		</div>
 		<div class="widget-content">
-			
+
 			<div ng-show="!pagination.results.length" class="alert alert-info">{{
 				'Common.Text_NoCategory_Msg' | t }}</div>
-			<table class="table table-bordered" ng-show="categories.length > 0">
+			<table class="table table-bordered table-hover"
+				ng-show="categories.length > 0">
 				<thead>
 					<tr>
 						<th>#</th>
-						<th><a href="" ng-click="pagination.sort('Name')">{{ 'Common.Text_Name' | t}}</a></th>
+						<th><a href="" ng-click="pagination.sort('Name')">{{
+								'Common.Text_Name' | t}}</a></th>
 						<th>{{ 'Common.Text_CustomURI' | t}}</th>
 						<th>{{ 'Common.Text_Control' | t}}</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr ng-repeat="category in pagination.pageItems()">
-						<td ui-if="Store.IsOwner" ng-click="update(category)" mousestyle>{{$index + 1 + pagination.currentPageIndex*pagination.pageSize}}</td>
+						<td ui-if="Store.IsOwner" ng-click="update(category)" mousestyle>{{$index
+							+ 1 + pagination.currentPageIndex*pagination.pageSize}}</td>
 						<td ui-if="Store.IsOwner" ng-click="update(category)" mousestyle>{{category.Name}}</td>
-						<td ui-if="!Store.IsOwner">{{$index + 1 + pagination.currentPageIndex*pagination.pageSize}}</td>
+						<td ui-if="!Store.IsOwner">{{$index + 1 +
+							pagination.currentPageIndex*pagination.pageSize}}</td>
 						<td ui-if="!Store.IsOwner">{{category.Name}}</td>
-						<td>
-							<a ui-if="Store.URI" ng-href="{{generateFrontEndLink()}}{{category.CustomURI.URI}}" target="_blank">
-								{{generateFrontEndLink()}}{{category.CustomURI.URI}}
-							</a>
-							<p ui-if="!Store.URI"><span tooltip="{{ 'Common.Text_CategoryURLNotAvailable' | t }}">{{category.CustomURI.URI}}</span></p>
-						</td>
+						<td><a ui-if="Store.URI"
+							ng-href="{{generateFrontEndLink()}}{{category.CustomURI.URI}}"
+							target="_blank">
+								{{generateFrontEndLink()}}{{category.CustomURI.URI}} </a>
+							<p ui-if="!Store.URI">
+								<span tooltip="{{ 'Common.Text_CategoryURLNotAvailable' | t }}">{{category.CustomURI.URI}}</span>
+							</p></td>
 						<td>
 							<div class="btn-group pull-left">
 								<button ui-if="Store.IsOwner"
@@ -42,15 +47,17 @@
 					</tr>
 				</tbody>
 			</table>
-			
+
 			<div class="paginationDiv" ng-show="pagination.results.length > 20">
-        <ng-pagination ui-if="categories && categories.length > 0"
-					pagination-data="pagination"
-					data="categories">
-          </ng-pagination>
-        <p class="text-center" ng-cloak>{{'Common.Text_CurrentPage' | t}}: {{pagination.currentPageIndex + 1}} - {{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} - {{'Common.Text_TotalPages' | t}}: {{pagination.numberOfPages}} - {{'Common.Text_TotalItems' | t}}: {{pagination.results.length}}</p>
-      </div>
-			
+				<ng-pagination ui-if="categories && categories.length > 0"
+					pagination-data="pagination" data="categories"> </ng-pagination>
+				<p class="text-center" ng-cloak>{{'Common.Text_CurrentPage' |
+					t}}: {{pagination.currentPageIndex + 1}} -
+					{{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} -
+					{{'Common.Text_TotalPages' | t}}: {{pagination.numberOfPages}} -
+					{{'Common.Text_TotalItems' | t}}: {{pagination.results.length}}</p>
+			</div>
+
 		</div>
 	</div>
 </div>
