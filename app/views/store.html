@@ -63,11 +63,11 @@
 						src="'views/elements/store/mediaSelector.html'"></dd>
 				</dl>
 			</div>
-			<div ui-if="auth.isAdministrator()"
+			<div ng-show="auth.isAdministrator()"
 				class="alert alert-info collapser"
 				ng-click="collapseStep4 = !collapseStep4" mousestyle>{{
 				'Common.Text_CreateSchool_Step4' | t }}</div>
-			<div ui-if="auth.isAdministrator()" ng-init="collapseStep4 = true"
+			<div ng-show="auth.isAdministrator()" ng-init="collapseStep4 = true"
 				collapse="collapseStep4">
 				<dl class="clearfix">
 					<dd>
