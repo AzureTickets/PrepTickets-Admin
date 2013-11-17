@@ -3,7 +3,7 @@
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- store info update -->
 	<div ui-if="DomainProfile && DomainProfile.Key" class="row-fluid"
-		ng-init="loadCurrencies()">
+		ng-init="loadCurrencies(); wizard.saved = false; wizard.finished = false">
 		<span ui-if="Store && Store.isNew || Store && Store.IsOwner">
 			<p ng-show="wizard.currentStep>
 			0" class="lead">{{
@@ -63,10 +63,12 @@
 						src="'views/elements/store/mediaSelector.html'"></dd>
 				</dl>
 			</div>
-			<div class="alert alert-info collapser"
+			<div ng-show="auth.isAdministrator()"
+				class="alert alert-info collapser"
 				ng-click="collapseStep4 = !collapseStep4" mousestyle>{{
 				'Common.Text_CreateSchool_Step4' | t }}</div>
-			<div ng-init="collapseStep4 = true" collapse="collapseStep4">
+			<div ng-show="auth.isAdministrator()" ng-init="collapseStep4 = true"
+				collapse="collapseStep4">
 				<dl class="clearfix">
 					<dd>
 						<label>{{'Common.Text_SchoolCurrency' | t}}</label> <select
@@ -134,7 +136,7 @@
 						ng-class="{'label-success': wizard.checkStep.uri, 'label-important':!wizard.checkStep.uri}"
 						class="label">{{ 'Common.Text_Save' | t }} {{
 							'Common.Text_CustomURI' | t }}</span></li>
-					<li><span
+					<li ui-if="auth.isAdministrator()"><span
 						ng-class="{'label-success': wizard.checkStep.payment, 'label-important':!wizard.checkStep.payment}"
 						class="label">{{ 'Common.Text_Save' | t }} {{
 							'Common.LabelSchoolPaymentProvider' | t }}</span></li>

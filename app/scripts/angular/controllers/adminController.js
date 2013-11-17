@@ -20,8 +20,8 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
     pageItems : function() {
     },
     textFilter : '',
-    propFilter: '*',
-    filteringObj: {},
+    propFilter : '*',
+    filteringObj : {},
     sort : function() {
     },
     currentPageIndex : 0,
@@ -368,6 +368,8 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
   $scope.updateAccount = function() {
     $scope.error.log(null);
 
+    $scope.DomainProfile.Contact.DateOfBirth = $scope.object.dateToISO8601(
+        $scope.DomainProfile.Contact.DateOfBirth, true)
     $scope.DomainProfile.Contact.FullName = $scope.DomainProfile.Contact.FirstName
         + $scope.DomainProfile.Contact.LastName;
     $scope.DomainProfile.Contact.Gender = parseInt($scope.DomainProfile.Contact.Gender);
@@ -377,6 +379,8 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
           $scope.DomainProfile.Contact.Key, $scope.DomainProfile.Contact).then(
           function() {
             $scope.updateAccountdOk = true;
+
+            $scope.auth.authenticate($scope, true);
           }, function(err) {
             $scope.error.log(err);
           });

@@ -223,6 +223,7 @@ var CommonResources = {
   Text_RemoveProduct : 'Are you sure want to remove this item?',
   Text_RemoveImage : 'Are you sure want to remove this image?',
   Text_RemoveCatetory : 'Are you sure want to remove this category?',
+  Text_CategoryURLNotAvailable : 'Please set your school\'s Share Link URL to view category full link.',
   Text_RemoveProfile : 'Are you sure want to remove this profile?',
   Text_PreviewTicketTemplateMsg : 'Set your template options and click preview.',
   Text_PublicItem : 'Are you sure you want to make this item public?',

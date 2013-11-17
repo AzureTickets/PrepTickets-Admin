@@ -160,8 +160,9 @@ azureTicketsApp
                 Type : type
               }
             },
-            dateToISO8601 : function(d) {
-            	return new Date(d).toString('s');
+            dateToISO8601 : function(d, dateOnly) {
+              return !dateOnly ? new Date(d).toISOString() : Date.parse(d)
+                  .toString('yyyy-MM-dd');
             },
             dateToUIPicker : function(d, hasTime) {
               var _uiDateFormat = !angular.isDefined(hasTime) || hasTime ? 'MM/dd/yyyy hh:mm tt'
@@ -171,7 +172,7 @@ azureTicketsApp
               try {
                 // parse date and make it compatible with select2
                 // widget
-                var ret = new Date(d).toString(_uiDateFormat);
+                var ret = new Date(d).toString(_uiDateFormat)
               } catch (e) {
               }
 

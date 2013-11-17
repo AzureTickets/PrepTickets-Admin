@@ -8,7 +8,8 @@
 		<div class="widget-content">
 			<div ng-show="events.length == 0" class="alert alert-info">{{
 				'Event.Text_NoEvent_Msg' | t }}</div>
-			<table class="table  table-bordered " ng-show="events.length > 0">
+			<table class="table table-bordered table-hover"
+				ng-show="events.length > 0">
 				<thead>
 					<tr>
 						<th>#</th>
@@ -23,7 +24,8 @@
 					<tr ng-repeat="event in pagination.pageItems()">
 						<td>{{ $index+1 }}</td>
 						<td>{{event.Name}}</td>
-						<td><p class="text clear">{{event.Description | striptags}}</p></td>
+						<td><p class="text clear">{{event.Description |
+								striptags}}</p></td>
 						<td><span class="label">Starts on {{ event.StartTime |
 								date:'MM/dd/yyyy @ h:mma' }}</span> <span class="label">Ends on
 								{{ event.EndTime | date:'MM/dd/yyyy @ h:mma' }}</span></td>
@@ -50,15 +52,17 @@
 					</tr>
 				</tbody>
 			</table>
-			
+
 			<div class="paginationDiv" ng-show="pagination.results.length > 20">
 				<ng-pagination ui-if="events && events.length > 0"
-					pagination-data="pagination"
-					data="events">
-          </ng-pagination>
-        <p class="text-center" ng-cloak>{{'Common.Text_CurrentPage' | t}}: {{pagination.currentPageIndex + 1}} - {{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} - {{'Common.Text_TotalPages' | t}}: {{pagination.numberOfPages}} - {{'Common.Text_TotalItems' | t}}: {{pagination.results.length}}</p>
-      </div>
-			
+					pagination-data="pagination" data="events"> </ng-pagination>
+				<p class="text-center" ng-cloak>{{'Common.Text_CurrentPage' |
+					t}}: {{pagination.currentPageIndex + 1}} -
+					{{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} -
+					{{'Common.Text_TotalPages' | t}}: {{pagination.numberOfPages}} -
+					{{'Common.Text_TotalItems' | t}}: {{pagination.results.length}}</p>
+			</div>
+
 		</div>
 	</div>
 </div>

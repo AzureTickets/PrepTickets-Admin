@@ -177,8 +177,11 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
     }
   }
   
-  $scope.generateFrontEndLink = function(category) {
-  	return $scope.config.appStage + '/#/' + $scope.Store.URI + '/';
+  // Generate based stage URL for categories
+  $scope.generateFrontEndLink = function() {
+  	if ($scope.Store.URI) {
+      return $scope.config.appStage + '/#/' + $scope.Store.URI + '/';
+    }
   }
 }
 
