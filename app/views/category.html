@@ -3,7 +3,7 @@
 	<script type="text/ng-template" id="formCategory.html">
 			<div class="modal-header">
 				<button type="button" ng-click="wizardCategory.open = false"
-					class="close">&times;</button>
+					class="close"><i class="fa fa-times-circle"></i></button>
 				<h3>
 					<p class="text-info">{{ 'Common.Text_Category' | t}}</p>
 				</h3>
@@ -105,7 +105,11 @@
 				</dl>
 				</ng-form>
 			</div>
-			<div class="modal-footer"></div>
+			<div class="modal-footer">
+				<a ui-if="Category.Key && Category.Key != null" ng-click="deleteCategory(Category)" class="btn btn-danger pull-right">
+					<i class="fa fa-trash-o"></i> {{ 'Common.Text_Remove' | t }}
+				</a>
+			</div>
 	</script>
 	<!-- top menu -->
 	<div ng-include src="'views/elements/error.html'"></div>

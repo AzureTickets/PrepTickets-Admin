@@ -24,9 +24,6 @@
 					<button ui-if="Store.IsOwner" class="btn btn-mini"
 						ng-click="create(true, ticket)">{{
 						'Common.Text_AddPricingTier' | t }}</button>
-					<button ui-if="Store.IsOwner" ng-click="deleteTicket(ticket)"
-						class="btn btn-mini btn-danger">{{ 'Common.Text_Remove' |
-						t }}</button>
 				</div>
 				<p class="text clear">{{ticket.Policy}}</p>
 				<div ng-include src="'views/pricingTierList.html'"

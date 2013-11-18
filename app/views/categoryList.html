@@ -18,14 +18,14 @@
 						<th><a href="" ng-click="pagination.sort('Name')">{{
 								'Common.Text_Name' | t}}</a></th>
 						<th>{{ 'Common.Text_CustomURI' | t}}</th>
-						<th>{{ 'Common.Text_Control' | t}}</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="category in pagination.pageItems()">
-						<td ui-if="Store.IsOwner" ng-click="update(category)" mousestyle>{{$index
-							+ 1 + pagination.currentPageIndex*pagination.pageSize}}</td>
-						<td ui-if="Store.IsOwner" ng-click="update(category)" mousestyle>{{category.Name}}</td>
+					<tr ng-click="update(category)" mousestyle
+						ng-repeat="category in pagination.pageItems()">
+						<td ui-if="Store.IsOwner">{{$index + 1 +
+							pagination.currentPageIndex*pagination.pageSize}}</td>
+						<td ui-if="Store.IsOwner">{{category.Name}}</td>
 						<td ui-if="!Store.IsOwner">{{$index + 1 +
 							pagination.currentPageIndex*pagination.pageSize}}</td>
 						<td ui-if="!Store.IsOwner">{{category.Name}}</td>
@@ -36,14 +36,6 @@
 							<p ui-if="!Store.URI">
 								<span tooltip="{{ 'Common.Text_CategoryURLNotAvailable' | t }}">{{category.CustomURI.URI}}</span>
 							</p></td>
-						<td>
-							<div class="btn-group pull-left">
-								<button ui-if="Store.IsOwner"
-									ng-click="deleteCategory(category)"
-									class="btn btn-mini btn-danger">{{
-									'Common.Text_Remove' | t }}</button>
-							</div>
-						</td>
 					</tr>
 				</tbody>
 			</table>

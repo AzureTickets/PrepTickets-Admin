@@ -17,11 +17,11 @@
 						<th>Description</th>
 						<th>Event Time</th>
 						<th>Sale Time</th>
-						<th>Control</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="event in pagination.pageItems()">
+					<tr ng-repeat="event in pagination.pageItems()"
+						ng-click="update(event)" mousestyle>
 						<td>{{ $index+1 }}</td>
 						<td>{{event.Name}}</td>
 						<td><p class="text clear">{{event.Description |
@@ -33,22 +33,6 @@
 								{{ event.OnSaleDateTimeStart | date:'MM/dd/yyyy @ h:mma' }}</span> <span
 							class="label label-inverse">Sales End on {{
 								event.OnSaleDateTimeEnd | date:'MM/dd/yyyy @ h:mma' }}</span></td>
-						<td>
-							<div class="btn-group pull-left">
-								<button ui-if="Store.IsOwner" class="btn btn-mini btn-success"
-									ng-click="update(event)">{{ 'Common.Text_Update' | t
-									}}</button>
-								<a ng-href="#/scanner/{{event.Key}}"
-									ui-if="events && events.length > 0 || false"
-									class="btn btn-mini btn-primary">{{
-									'Common.Text_ScannerMenu_Scanner' | t }} </a> <a
-									ng-href="#/ticket/{{event.Key}}" class="btn btn-mini btn-info"
-									ng-bind="!Store.IsOwner && ('ShoppingCart.labelBuyTickets' | t) || 'Common.Text_TicketMenu_Tickets' | t"></a>
-								<button ui-if="Store.IsOwner" ng-click="deleteEvent(event)"
-									class="btn btn-mini btn-danger">{{
-									'Common.Text_Remove' | t }}</button>
-							</div>
-						</td>
 					</tr>
 				</tbody>
 			</table>

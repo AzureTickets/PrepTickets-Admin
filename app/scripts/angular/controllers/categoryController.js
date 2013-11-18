@@ -3,19 +3,21 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
 
   // initialize wizard for Category
   $scope.wizardCategory = $scope.form.getWizard($scope);
-  
+
   // Pagination setup
   $scope.pagination = {
-    pageSize: 20,
-    predicates: ['Name', 'Brief'],
-    pageItems: function() {},
-    textFilter: '',
-    propFilter: '*',
-    filteringObj: {},
-    sort: function() {},
-    currentPageIndex: 0,
-    results: [],
-    numberOfPages: 0
+    pageSize : 20,
+    predicates : [ 'Name', 'Brief' ],
+    pageItems : function() {
+    },
+    textFilter : '',
+    propFilter : '*',
+    filteringObj : {},
+    sort : function() {
+    },
+    currentPageIndex : 0,
+    results : [],
+    numberOfPages : 0
   };
 
   $scope.$watch('wizardCategory.open', function(v) {
@@ -58,6 +60,7 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
     if (confirm($filter('t')('Common.Text_RemoveProduct'))) {
       $scope.category.deleteCategory($scope.storeKey, category.Key).then(
           function() {
+            $scope.wizardCategory.open = false;
             $scope.init(true);
           }, function(err) {
             $scope.error.log(err)
@@ -176,10 +179,10 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
       }
     }
   }
-  
+
   // Generate based stage URL for categories
   $scope.generateFrontEndLink = function() {
-  	if ($scope.Store.URI) {
+    if ($scope.Store.URI) {
       return $scope.config.appStage + '/#/' + $scope.Store.URI + '/';
     }
   }

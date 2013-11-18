@@ -12,7 +12,6 @@
 					<tr>
 						<th>#</th>
 						<th>Venue Name</th>
-						<th>Description</th>
 						<th>Location</th>
 					</tr>
 				</thead>
@@ -22,7 +21,6 @@
 						<td>{{$index + 1 +
 							pagination.currentPageIndex*pagination.pageSize}}</td>
 						<td>{{venue.Name}}</td>
-						<td>{{venue.Description | striptags}}</td>
 						<td><span ng-show="venue.Address" class="label">{{
 								venue.Address | address }}</span></td>
 					</tr>
