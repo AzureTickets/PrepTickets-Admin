@@ -5,22 +5,69 @@
   </div>
   
   <!-- Order info -->
-  <div ng-show="Order" class="order-details pull-left">
-  	<div>
-  		<h4>Order Details</h4>
+  <div ng-show="Order">
+  	<!-- Order detail -->
+  	<div class="order-detail pull-left">
+  		<h4>{{'Common.Text_OrderDetail' | t}}</h4>
   		<dl class="dl-horizontal">
-  		  <dt>Order ID</dt><dd>{{Order.OrderId}}</dd>
-  		  <dt>Date of Order</dt><dd>{{Order.DateCreated | date:'MMMM dd yyyy, h:mm a'}}</dd>
-  		  <dt>Number of Items</dt><dd>...</dd>
-  		  <dt>Payment Type</dt><dd>{{Order.Transactions[0].ProviderType}}</dd>
-  		  <dt>Subtotal</dt><dd>{{Order.SubTotal.ItemPrice | currency}}</dd>
-  		  <dt>Fee</dt><dd>{{Order.Fees.ItemPrice | currency}}</dd>
-  		  <dt>Total</dt><dd>{{Order.Total.ItemPrice | currency}}</dd>
+  		  <dt>{{'Order.Text_OrderId' | t}}</dt><dd>{{Order.OrderId}}</dd>
+  		  <dt>{{'Order.Text_DateOfPurChase' | t}}</dt><dd>{{Order.DateCreated | date:'MMMM dd yyyy, h:mm a'}}</dd>
+  		  <dt>{{'Order.Text_NumberofItems' | t}}</dt><dd>{{Order.InventoryItems.length | number}}</dd>
+  		  <dt>{{'Order.Text_PaymentType' | t}}</dt><dd>{{Order.Transactions[0].ProviderType || 'N/a'}}</dd>
+  		  <dt>{{'Order.Text_Subtotal' | t}}</dt><dd>{{Order.SubTotal.ItemPrice | currency}}</dd>
+  		  <dt>{{'Order.Text_Fee' | t}}</dt><dd>{{Order.Fees.ItemPrice | currency}}</dd>
+  		  <dt>{{'Order.Text_Total' | t}}</dt><dd>{{Order.Total.ItemPrice | currency}}</dd>
   		</dl>
   	</div>
+  	<!-- Order ticket list -->
   	<div class="order-tickets pull-left">
-  		
+  		<h4>{{'Common.Text_Tickets' | t}}</h4>
+  		<table class="table">
+  		  <tbody>
+  		  	<tr>
+  		      <td><h6>{{'Event.Text_Event' | t}}</h6></td>
+  		      <td><h6>{{'Event.Text_TicketType' | t}}</h6></td>
+  		      <td>&nbsp;</td>
+  		    </tr>
+  		    <tr ng-repeat="ticket in Order.InventoryItems">
+  		      <td>{{ticket.EventName}}</td>
+  		      <td>{{ticket.ItemInfoName}}</td>
+  		      <td><button class="btn btn-info" ng-click="viewOrderTicket(ticket, $index)" ng-disabled="ticket.Key == OrderTicket.Key">{{'Common.Text_ViewTicket' | t | uppercase}}</button></td>
+  		    </tr>
+  		    <tr>
+  		      <td>&nbsp;</td>
+  		      <td><span class="pull-right"><strong>Total</strong></span></td>
+  		      <td><span class="pull-right"><strong>{{Order.Total.ItemPrice | currency}}</strong></span></td>
+  		    </tr>
+  		    <tr>
+  		      <td colspan="3"><span class="pull-right"><button class="btn btn-warning">{{'Common.Text_PrintAllTickets' | t | uppercase}}</button> - {{'Common.Text_Or' | t}} - <button class="btn btn-warning">{{'Order.Text_PrintReceipt' | t | uppercase}}</button></span></td>
+  		    </tr>
+  		  </tbody>
+  		</table>
   	</div>
-  	{{Order}}
+  	<div class="clear"></div>
+  	<!-- Ticket detail -->
+  	<div class="order-ticket-detail" ng-show="OrderTicket">
+  		<table>
+  		  <tbody>
+  		    <tr>
+  		      <td><img ng-src="{{OrderEvent.SmallImage.BaseURL}}{{OrderEvent.SmallImage.ImageFile}}" /></td>
+  		      <td>
+  		      	<div>{{'Common.Text_Ticket' | t}} #{{OrderTicket.order + 1}}</div>
+  		      	<div><h5><strong>{{OrderTicket.EventName}}</strong></h5></div>
+  		      	<div><h6><strong>{{OrderTicket.ItemInfoName}} - {{OrderTicket.ItemInfoPrice.ItemPrice | currency}}</strong></h6></div>
+  		      	<div>{{OrderEvent.StartTime | date:'MMMM dd yyyy, h:mm a'}} - {{OrderEvent.EndTime  | date:'h:mm a'}}</div>
+  		      	<div>{{OrderEvent.Places[0].Name}}</div>
+  		      	<div>{{OrderEvent.Places[0].Address.AddressLine1}}, {{OrderEvent.Places[0].Address.City}}, {{OrderEvent.Places[0].Address.PostalCode}} - {{OrderEvent.Places[0].Address.Region}}, {{OrderEvent.Places[0].Address.Country}}</div>
+  		      </td>
+  		      <td>
+  		      	<img ng-src="{{getTicketQR(OrderTicket)}}" />
+  		      	<p>{{OrderTicket.UIID}}</p>
+  		      	<div><a class="btn btn-primary" ng-href="{{OrderTicket.DownloadLink}}">{{'Common.Text_DownloadTicket' | t}}</a></div>
+  		      </td>
+  		    </tr>
+  		  </tbody>
+  		</table>
+  	</div>
   </div>
 </div>

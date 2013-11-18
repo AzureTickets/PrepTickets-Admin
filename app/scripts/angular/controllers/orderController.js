@@ -120,30 +120,30 @@ function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
     }
   }
   
-  var dateFromWatcher = function(newDateFrom) {
+  $scope.dateFromWatcher = function(newDateFrom) {
   	$scope.reloadWithChangedState = null;
   	
   	return $scope.orderWatcher($scope.orderState, newDateFrom);
   };
-  var orderStateWatcher = function(newOrderState) {
+  $scope.orderStateWatcher = function(newOrderState) {
   	$scope.reloadWithChangedState = newOrderState;
   	
   	return $scope.orderWatcher(newOrderState, $scope.dateFrom);
   };
   
-  $scope.$watch('dateFrom', dateFromWatcher);
-  $scope.$watch('orderState', orderStateWatcher);
+  $scope.$watch('dateFrom', $scope.dateFromWatcher);
+  $scope.$watch('orderState', $scope.orderStateWatcher);
   
   // Watcher for custom time input fields
-  var customTimeFromWatcher = function(newCustomFrom) {
+  $scope.customTimeFromWatcher = function(newCustomFrom) {
   	return $scope.customTimeWatcher(newCustomFrom, $scope.customTime.EndTime);
   }
-  var customTimeToWatcher = function(newCustomTo) {
+  $scope.customTimeToWatcher = function(newCustomTo) {
   	return $scope.customTimeWatcher($scope.customTime.StartTime, newCustomTo);
   }
   
-  $scope.$watch('customTime.StartTime', customTimeFromWatcher);
-  $scope.$watch('customTime.EndTime', customTimeToWatcher);
+  $scope.$watch('customTime.StartTime', $scope.customTimeFromWatcher);
+  $scope.$watch('customTime.EndTime', $scope.customTimeToWatcher);
   
   // Show/hide advanced search form block
   $scope.showHideAdvSearch = function() {
@@ -167,15 +167,33 @@ function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
   
   $scope.orderDetailInit = function() {
   	if (angular.isDefined($routeParams.orderKey)) {
-      $scope.model.read(BWL.Model.Order.Type, $routeParams.orderKey, 5)
+      $scope.model.read($scope.storeKey, BWL.Model.Order.Type, $routeParams.orderKey, 4)
   	    .then(function(returnedOrder) {
   	  	  $scope.Order = returnedOrder;
   	    }, function(err) {
-  	  	  $scope.error.log(err)
+  	  	  $scope.error.log(err);
   	  });
     }
   }
-
+  
+  $scope.viewOrderTicket = function(ticket, $index) {
+  	$scope.model.read($scope.storeKey, BWL.Model.Event.Type, ticket.EventKey, 4)
+  	  .then(function(returnedEvent) {
+  	    $scope.OrderEvent = returnedEvent;
+  	    
+  	    $scope.OrderTicket = $scope.Order.InventoryItems[$index];
+  	    $scope.OrderTicket.order = $index;
+  	  }, function(err) {
+  	    $scope.error.log(err);
+  	});
+  }
+  
+  $scope.getTicketQR = function(ticket) {
+  	if (angular.isDefined(ticket)) {
+  		return BWL.Server + '/ticket.svc/' + ticket.StoreKey + '/config/' + ticket.Key;
+  	}
+  }
+  
   $scope.deleteOrder = function(order) {
     if (confirm($filter('t')('Common.Text_RemoveProduct'))) {
     	var orderKey = order.Key;
@@ -183,7 +201,7 @@ function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
         // Maybe re-load 100 items or update the $scope.orders array so it will reflect the change (reduce 1) in ngPagination too
         $scope.init();
       }, function(err) {
-        $scope.error.log(err)
+        $scope.error.log(err);
       });
     }
   }
