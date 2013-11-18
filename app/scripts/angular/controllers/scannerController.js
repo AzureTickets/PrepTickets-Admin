@@ -73,6 +73,7 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams, 
     if (confirm($filter('t')('Common.Text_RemoveProduct'))) {
       $scope.scanner.deleteScanDevice($scope.storeKey, scanner.Key).then(
           function() {
+            $scope.wizardScanDevice.open = false;
             $scope.init(true);
           }, function(err) {
             $scope.error.log(err)

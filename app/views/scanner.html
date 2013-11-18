@@ -4,7 +4,7 @@
 	<script type="text/ng-template" id="formScanDevice.html">
 			<div class="modal-header">
 				<button type="button" ng-click="wizardScanDevice.open = false"
-					class="close">&times;</button>
+					class="close"><i class="fa fa-times-circle"></i></button>
 				<h3>
 					<p class="text-info">{{ 'Scanner.Text_CodeDevicePopup' | t}}</p>
 				</h3>
@@ -132,7 +132,11 @@
 				</dl>
 				</ng-form>
 			</div>
-			<div class="modal-footer"></div>
+			<div class="modal-footer">
+				<a ui-if="ScanDevice.Key && ScanDevice.Key != null" ng-click="deleteScanDevice(ScanDevice)" class="btn btn-danger pull-right">
+					<i class="fa fa-trash-o"></i> {{ 'Common.Text_Remove' | t }}
+				</a>
+			</div>
 	</script>
 	<!-- top menu -->
 	<div ng-include src="'views/elements/error.html'"></div>
@@ -141,8 +145,8 @@
 		<!--<p class="lead pull-left">{{ 'Common.Text_ScanDeviceMenu_ScanDevices' | t}}</p>-->
 		<h3 class="pull-left">{{ 'Scanner.Text_Scanners' | t}}</h3>
 		<div class="btn-group pull-right">
-			<a class="btn btn-info" ng-click="create()"> <i class="fa fa-plus"></i>&nbsp;{{
-				'Scanner.Text_Create' | t }}
+			<a class="btn btn-info" ng-click="create()"> <i
+				class="fa fa-plus"></i>&nbsp;{{ 'Scanner.Text_Create' | t }}
 			</a>
 		</div>
 		<div class="clear"></div>

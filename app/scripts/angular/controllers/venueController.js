@@ -67,6 +67,7 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
                     && venue.Address.Key !== null) {
                   $scope.geo.deleteAddress($scope.storeKey, venue.Address.Key)
                       .then(function() {
+                        $scope.wizardVenue.open = false;
                         $scope.init();
                       }, function(err) {
                         $scope.error.log(err)

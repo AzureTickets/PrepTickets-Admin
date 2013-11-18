@@ -108,15 +108,19 @@ function ticketController($scope, $cookieStore, $filter, $routeParams,
        * atmodel display.
        */
       $scope.GeneralAdmissionTicketItemInfo.Stock = 0;
-      
+
       // Default ticket's date to event's date
       if ($scope.Event != null) {
-      	$scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeStart = $scope.Event.OnSaleDateTimeStart;
+        $scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeStart = $scope.Event.OnSaleDateTimeStart;
         $scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeEnd = $scope.Event.OnSaleDateTimeEnd;
       } else {
-      	var date = new Date();
-      	$scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeStart = $scope.object.dateToUIPicker(new String(new Date(date.getTime())));
-      	$scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeEnd = $scope.object.dateToUIPicker(new String(new Date(date.getTime() + 7*24*60*60*1000)).slice(0, 15) + ' 22:00:00');
+        var date = new Date();
+        $scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeStart = $scope.object
+            .dateToUIPicker(new String(new Date(date.getTime())));
+        $scope.GeneralAdmissionTicketItemInfo.OnSaleDateTimeEnd = $scope.object
+            .dateToUIPicker(new String(new Date(date.getTime() + 7 * 24 * 60
+                * 60 * 1000)).slice(0, 15)
+                + ' 22:00:00');
       }
 
       $scope.wizardTicket.open = true;
@@ -143,6 +147,7 @@ function ticketController($scope, $cookieStore, $filter, $routeParams,
   $scope.deleteTicket = function(ticket) {
     if (confirm($filter('t')('Common.Text_RemoveProduct'))) {
       $scope.ticket.deleteTicket($scope.storeKey, ticket.Key).then(function() {
+        $scope.wizardTicket.open = false;
         $scope.init(true);
       }, function(err) {
         $scope.error.log(err)
