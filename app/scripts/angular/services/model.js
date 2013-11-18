@@ -52,10 +52,10 @@ azureTicketsApp.factory('modelService', [
 
           return def.promise;
         },
-        read : function(storeKey, type, key, level) {
+        read : function(type, key, level) {
           var def = $q.defer();
 
-          BWL.Services.ModelService.ReadAsync(storeKey, type, key, level,
+          BWL.Services.ModelService.ReadAsync('BWL', type, key, level,
               function(ret) {
                 $rootScope.$apply(function() {
                   def.resolve(ret)

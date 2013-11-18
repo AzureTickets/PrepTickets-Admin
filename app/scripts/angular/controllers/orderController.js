@@ -167,8 +167,8 @@ function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
   
   $scope.orderDetailInit = function() {
   	if (angular.isDefined($routeParams.orderKey)) {
-      $scope.model.read($scope.storeKey, BWL.Model.Order.Type, $routeParams.orderKey, 4)
-  	    .then(function(returnedOrder) {
+  	  $scope.order.initOrder($scope.storeKey, $routeParams.orderKey).
+  	    then(function(returnedOrder) {
   	  	  $scope.Order = returnedOrder;
   	    }, function(err) {
   	  	  $scope.error.log(err);
@@ -176,8 +176,8 @@ function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
     }
   }
   
-  $scope.viewOrderTicket = function(ticket, $index) {
-  	$scope.model.read($scope.storeKey, BWL.Model.Event.Type, ticket.EventKey, 4)
+  $scope.loadTicketandEvent = function(ticket, $index) {
+  	$scope.order.loadEventFromTicket($scope.storeKey, ticket.EventKey)
   	  .then(function(returnedEvent) {
   	    $scope.OrderEvent = returnedEvent;
   	    

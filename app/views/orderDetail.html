@@ -32,11 +32,11 @@
   		    <tr ng-repeat="ticket in Order.InventoryItems">
   		      <td>{{ticket.EventName}}</td>
   		      <td>{{ticket.ItemInfoName}}</td>
-  		      <td><button class="btn btn-info" ng-click="viewOrderTicket(ticket, $index)" ng-disabled="ticket.Key == OrderTicket.Key">{{'Common.Text_ViewTicket' | t | uppercase}}</button></td>
+  		      <td><button class="btn btn-info" ng-click="loadTicketandEvent(ticket, $index)" ng-disabled="ticket.Key == OrderTicket.Key">{{'Common.Text_ViewTicket' | t | uppercase}}</button></td>
   		    </tr>
   		    <tr>
   		      <td>&nbsp;</td>
-  		      <td><span class="pull-right"><strong>Total</strong></span></td>
+  		      <td><span class="pull-right"><strong>{{'Common.Text_Total' | t}}</strong></span></td>
   		      <td><span class="pull-right"><strong>{{Order.Total.ItemPrice | currency}}</strong></span></td>
   		    </tr>
   		    <tr>

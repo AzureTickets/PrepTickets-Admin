@@ -207,6 +207,22 @@ azureTicketsApp.factory('orderService', [
           }
 
           return def.promise;
+        },
+        loadEventFromTicket : function(storeKey, eventKey) {
+          var def = $q.defer();
+
+          BWL.Services.ModelService.ReadAsync(storeKey, BWL.Model.Event.Type, eventKey,
+              10, function(returnedEvent) {
+                $rootScope.$apply(function() {
+                  def.resolve(returnedEvent)
+                });
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err);
+                })
+              });
+
+          return def.promise;
         }
       }
     } ]);
