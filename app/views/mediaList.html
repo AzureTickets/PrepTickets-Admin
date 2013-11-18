@@ -9,19 +9,18 @@
 
 			<form class="form-horizontal">
 				<div class="control-group">
-	  			<label class="control-label" for="filterText">{{'Common.Text_Search'
-		  			| t}}:&nbsp;</label>
-		  		<div class="controls">
-		  		  <input type="text" id="filterText" class="input-large"
-		  		    ng-model="pagination.textFilter" placeholder="">
-		  		</div>
-		  	</div>
+					<label class="control-label" for="filterText">{{'Common.Text_Search'
+						| t}}:&nbsp;</label>
+					<div class="controls">
+						<input type="text" id="filterText" class="input-large"
+							ng-model="pagination.textFilter" placeholder="">
+					</div>
+				</div>
 			</form>
-
 			<div ng-show="images.length == 0" class="alert alert-info">{{
 				'Common.Text_NoImages_Msg' | t }}</div>
-				
-			<table class="table  table-bordered " ng-show="images.length > 0">
+			<table class="table table-bordered table-hover"
+				ng-show="images.length > 0">
 				<thead>
 					<tr>
 						<th>#</th>
@@ -30,21 +29,19 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="image in pagination.pageItems()" ng-click="update(image)" mousestyle>
+					<tr ng-repeat="image in pagination.pageItems()"
+						ng-click="update(image)" mousestyle>
 						<td>{{$index + 1 +
 							pagination.currentPageIndex*pagination.pageSize}}</td>
 						<td>{{image.Name}}</td>
-						<td><img
-							ng-src="{{image.BaseURL}}{{image.ThumbFile}}" /></td>
+						<td><img ng-src="{{image.BaseURL}}{{image.ThumbFile}}" /></td>
 					</tr>
 				</tbody>
 			</table>
 
 			<div class="paginationDiv" ng-show="pagination.results.length > 20">
 				<ng-pagination ui-if="images && images.length > 0"
-					pagination-data="pagination"
-					data="images">
-          </ng-pagination>
+					pagination-data="pagination" data="images"> </ng-pagination>
 				<p class="text-center" ng-cloak>{{'Common.Text_CurrentPage' |
 					t}}: {{pagination.currentPageIndex + 1}} -
 					{{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} -

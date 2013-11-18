@@ -7,45 +7,36 @@
 		<div ng-show="venues.length == 0" class="alert alert-info">{{
 			'Common.Text_VenueEmpty' | t }}</div>
 		<div class="widget-content" ng-show="venues.length > 0">
-			<table class="table  table-bordered ">
+			<table class="table table-bordered table-hover">
 				<thead>
 					<tr>
 						<th>#</th>
 						<th>Venue Name</th>
-						<th>Description</th>
 						<th>Location</th>
-						<th>Control</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="venue in pagination.pageItems()">
-						<td>{{$index + 1 + pagination.currentPageIndex*pagination.pageSize}}</td>
+					<tr ng-click="update(venue)"
+						ng-repeat="venue in pagination.pageItems()" mousestyle>
+						<td>{{$index + 1 +
+							pagination.currentPageIndex*pagination.pageSize}}</td>
 						<td>{{venue.Name}}</td>
-						<td>{{venue.Description | striptags}}</td>
 						<td><span ng-show="venue.Address" class="label">{{
 								venue.Address | address }}</span></td>
-						<td>
-							<div class="btn-group pull-left">
-								<button class="btn btn-mini btn-success"
-									ng-click="update(venue)">{{ 'Common.Text_Update' | t
-									}}</button>
-								<button ng-click="deleteVenue(venue)"
-									class="btn btn-mini btn-danger">{{
-									'Common.Text_Remove' | t }}</button>
-							</div>
-						</td>
 					</tr>
 				</tbody>
 			</table>
-			
+
 			<div class="paginationDiv" ng-show="pagination.results.length > 20">
 				<ng-pagination ui-if="venues && venues.length > 0"
-					pagination-data="pagination"
-					data="venues">
-          </ng-pagination>
-        <p class="text-center" ng-cloak>{{'Common.Text_CurrentPage' | t}}: {{pagination.currentPageIndex + 1}} - {{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} - {{'Common.Text_TotalPages' | t}}: {{pagination.numberOfPages}} - {{'Common.Text_TotalItems' | t}}: {{pagination.results.length}}</p>
-      </div>
-			
+					pagination-data="pagination" data="venues"> </ng-pagination>
+				<p class="text-center" ng-cloak>{{'Common.Text_CurrentPage' |
+					t}}: {{pagination.currentPageIndex + 1}} -
+					{{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} -
+					{{'Common.Text_TotalPages' | t}}: {{pagination.numberOfPages}} -
+					{{'Common.Text_TotalItems' | t}}: {{pagination.results.length}}</p>
+			</div>
+
 		</div>
 	</div>
 </div>

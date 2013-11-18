@@ -104,7 +104,7 @@
 	<script ui-if="!auth.isAdministrator()" type="text/ng-template"
 		id="agreement.html">
 			<div class="modal-header">
-				<button type="button" ng-click="storeAgreement.open = false"
+				<button type="button" ng-click="storeAgreement.open = false; storeAgreement.agreed = false"
 					class="close">&times;</button>
 				<h3>
 					<p class="text-info">{{ 'Common.Text_Agreement' | t}}</p>
@@ -114,21 +114,21 @@
 				<div ng-include src="'views/elements/agreement.html'"></div>
 			</div>
 			<div class="modal-footer">
-								<a href="#" class="btn" ng-click="storeAgreement.open = false">{{
-					'Common.Text_Cancel' | t }}</a> <a href="#" class="btn btn-info"
-					ng-click="storeAgreement.open = false">{{
+								<a href="" class="btn" ng-click="storeAgreement.open = false; storeAgreement.agreed = false">{{
+					'Common.Text_Cancel' | t }}</a> <a href="" class="btn btn-info"
+					ng-click="storeAgreement.open = false; storeAgreement.agreed = true">{{
 					'Common.Text_IAccept' | t }}</a>
 			</div>
 	</script>
 	<!-- Login, Register and Reset Password Pages -->
-	<div ui-if="!DomainProfile.Key" ng-cloak ng-view></div>
+	<div ui-if="!auth.isDomainProfileReady()" ng-cloak ng-view></div>
 
 	<!-- Other Pages -->
 	<div ng-include src="'views/elements/top_menu.html'"
-		ui-if="DomainProfile.Key"></div>
+		ui-if="auth.isDomainProfileReady()"></div>
 	<div class="content content-main"
 		ng-class="{'content-has-logo':config.appLogo}" ng-cloak
-		ui-if="DomainProfile.Key">
+		ui-if="auth.isDomainProfileReady()">
 		<div ng-include src="'views/elements/side_menu.html'"></div>
 		<!-- Main bar -->
 		<div class="mainbar">

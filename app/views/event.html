@@ -4,7 +4,7 @@
 	<script type="text/ng-template" id="formEvent.html">
 			<div class="modal-header">
 				<button type="button" ng-click="removeTinymceIns(); wizardEvent.open = false"
-					class="close">&times;</button>
+					class="close"><i class="fa fa-times-circle"></i></button>
 				<h3>
 					<p class="text-info">{{ 'Common.Text_Event' | t}}</p>
 				</h3>
@@ -131,7 +131,7 @@
 						</dd>
 					</dl>
 				</form>
-				<form ui-if="images && images.length > 0 || false" ng-show="wizardEvent.currentStep == 4" name="atEvent4"
+				<form ng-show="wizardEvent.currentStep == 4" name="atEvent4"
 					ng-submit="wizardEvent.next('atEvent4')">
 					
 					<dl class="clearfix">
@@ -184,7 +184,21 @@
 				</dl>
 				</ng-form>
 			</div>
-			<div class="modal-footer"></div>
+			<div class="modal-footer">
+				<div class="btn-toolbar pull-right">
+					<div class="btn-group">
+						<a ng-href="#/scanner/{{Event.Key}}" ng-click="wizardEvent.open = false" ui-if="Event.Key && Event.Key != null"
+							class="btn btn-primary"><i class="fa fa-mobile-phone"></i> {{'Common.Text_ScannerMenu_Scanner' | t }}
+						</a> 
+						<a ng-href="#/ticket/{{Event.Key}}" ng-click="wizardEvent.open = false" ui-if="Event.Key && Event.Key != null" class="btn btn-info">
+							<i class="fa fa-ticket"></i> {{ 'Common.Text_TicketMenu_Tickets' | t }}
+						</a>
+						<a ui-if="Event.Key && Event.Key != null" ng-click="deleteEvent(Event)" class="btn btn-danger">
+							<i class="fa fa-trash-o"></i> {{ 'Common.Text_Remove' | t }}
+						</a>
+					</div>
+				</div>
+			</div>
 	</script>
 	<!-- top menu -->
 	<div ng-include src="'views/elements/error.html'"></div>

@@ -2,7 +2,8 @@ function storeController($scope, $cookieStore, $location, $timeout,
     $routeParams, configService, authService, permService, storeService,
     modelService, errorService, geoService, formService, objectService,
     placeService, orderService, eventService, ticketService, cartService,
-    accountService, mediaService, categoryService, scannerService, $q, $filter) {
+    accountService, mediaService, categoryService, scannerService, $q, $filter,
+    $modal) {
   /**
    * The following vars are shared across controllers and accessible via $scope
    */
@@ -22,7 +23,8 @@ function storeController($scope, $cookieStore, $location, $timeout,
       $scope.enums = BWL.ModelEnum, $scope.storeHasChanged = false;
 
   $scope.storeAgreement = {
-    open : false
+    open : false,
+    agreed : false
   }
   $scope.$watch('storeAgreement.open', function(v) {
     if (v) {
@@ -33,6 +35,13 @@ function storeController($scope, $cookieStore, $location, $timeout,
       });
     } else if (angular.isDefined($scope.storeAgreement.modal)) {
       $scope.storeAgreement.modal.close();
+    }
+  })
+  $scope.$watch('storeAgreement.agreed', function(v) {
+    if (v) {
+      $scope.wizardPreRegister.next('atStorePreRegister2', true,
+          $scope.submitRequest)
+      $scope.storeAgreement.agreed = false;
     }
   })
 
@@ -314,17 +323,6 @@ function storeController($scope, $cookieStore, $location, $timeout,
                   $scope.wizard.reset();
                 }
 
-                // if ($scope.Store.Address
-                // && $scope.Store.Address.Country !== null) {
-                // // we've got a country, alert address
-                // // widget. somehow we should delay this
-                // // a bit in order to properly broadcast
-                // // msg
-                // $timeout(function() {
-                // $scope.$broadcast('loadCountry', $scope.Store.Address);
-                // }, 500);
-                // }
-
                 // this API call requires DomainProfile
                 if ($scope.Store.Currency && $scope.Store.Currency !== null
                     && $scope.auth.isDomainProfileReady()) {
@@ -491,14 +489,26 @@ function storeController($scope, $cookieStore, $location, $timeout,
                       $scope.Store.Image).then(function() {
                     $scope.wizard.checkStep.image = true;
 
-                    _attachPaymentProviders();
+                    if ($scope.auth.isAdministrator()) {
+                      _attachPaymentProviders();
+                    } else {
+                      $scope.wizard.saved = true;
+
+                      // reload full model
+                      $scope.initStore(storeKey);
+                    }
                   }, function(err) {
                     $scope.wizard.checkStep.image = false;
 
                     $scope.error.log(err)
                   })
-                } else {
+                } else if ($scope.auth.isAdministrator()) {
                   _attachPaymentProviders();
+                } else {
+                  $scope.wizard.saved = true;
+
+                  // reload full model
+                  $scope.initStore(storeKey);
                 }
               }
             },
@@ -546,16 +556,27 @@ function storeController($scope, $cookieStore, $location, $timeout,
                 .then(function() {
                   $scope.wizard.checkStep.image = true;
 
-                  _attachPaymentProviders();
+                  if ($scope.auth.isAdministrator()) {
+                    _attachPaymentProviders();
+                  } else {
+                    $scope.wizard.saved = true;
+
+                    // reload full model
+                    $scope.initStore($scope.Store.Key);
+                  }
                 }, function(err) {
                   $scope.wizard.checkStep.image = false;
 
                   $scope.error.log(err)
                 })
-          } else {
+          } else if ($scope.auth.isAdministrator()) {
             _attachPaymentProviders();
-          }
+          } else {
+            $scope.wizard.saved = true;
 
+            // reload full model
+            $scope.initStore($scope.Store.Key);
+          }
         }
 
         var _updateStoreAddress = function() {
@@ -706,4 +727,5 @@ storeController.$inject = [ '$scope', '$cookieStore', '$location', '$timeout',
     'storeService', 'modelService', 'errorService', 'geoService',
     'formService', 'objectService', 'placeService', 'orderService',
     'eventService', 'ticketService', 'cartService', 'accountService',
-    'mediaService', 'categoryService', 'scannerService', '$q', '$filter' ];
+    'mediaService', 'categoryService', 'scannerService', '$q', '$filter',
+    '$modal' ];

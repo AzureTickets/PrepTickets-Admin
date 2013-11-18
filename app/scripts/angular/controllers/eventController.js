@@ -25,8 +25,8 @@ function eventController($scope, $cookieStore, $filter, $modal) {
     pageItems : function() {
     },
     textFilter : '',
-    propFilter: '*',
-    filteringObj: {},
+    propFilter : '*',
+    filteringObj : {},
     sort : function() {
     },
     currentPageIndex : 0,
@@ -87,14 +87,15 @@ function eventController($scope, $cookieStore, $filter, $modal) {
     $scope.wizardEvent.open = true;
     $scope.wizardEvent.reset();
   }
-  
+
   $scope.tostring = function(date) {
-  	return date.toString();
+    return date.toString();
   }
 
   $scope.deleteEvent = function(event) {
     if (confirm($filter('t')('Common.Text_RemoveProduct'))) {
       $scope.event.deleteEvent($scope.storeKey, event.Key).then(function() {
+        $scope.wizardEvent.open = false;
         $scope.init(true);
       }, function(err) {
         $scope.error.log(err)
