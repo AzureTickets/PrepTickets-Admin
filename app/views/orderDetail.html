@@ -10,13 +10,13 @@
   	<div class="order-detail pull-left">
   		<h4>{{'Common.Text_OrderDetail' | t}}</h4>
   		<dl class="dl-horizontal">
-  		  <dt>{{'Order.Text_OrderId' | t}}</dt><dd>{{Order.OrderId}}</dd>
+  		  <dt class="pull-left">{{'Order.Text_OrderId' | t}}</dt><dd>{{Order.OrderId}}</dd>
   		  <dt>{{'Order.Text_DateOfPurChase' | t}}</dt><dd>{{Order.DateCreated | date:'MMMM dd yyyy, h:mm a'}}</dd>
   		  <dt>{{'Order.Text_NumberofItems' | t}}</dt><dd>{{Order.InventoryItems.length | number}}</dd>
   		  <dt>{{'Order.Text_PaymentType' | t}}</dt><dd>{{Order.Transactions[0].ProviderType || 'N/a'}}</dd>
   		  <dt>{{'Order.Text_Subtotal' | t}}</dt><dd>{{Order.SubTotal.ItemPrice | currency}}</dd>
   		  <dt>{{'Order.Text_Fee' | t}}</dt><dd>{{Order.Fees.ItemPrice | currency}}</dd>
-  		  <dt>{{'Order.Text_Total' | t}}</dt><dd>{{Order.Total.ItemPrice | currency}}</dd>
+  		  <dt>{{'Common.Text_Total' | t}}</dt><dd><strong>{{Order.Total.ItemPrice | currency}}</strong></dd>
   		</dl>
   	</div>
   	<!-- Order ticket list -->
@@ -25,8 +25,8 @@
   		<table class="table">
   		  <tbody>
   		  	<tr>
-  		      <td><h6>{{'Event.Text_Event' | t}}</h6></td>
-  		      <td><h6>{{'Event.Text_TicketType' | t}}</h6></td>
+  		      <td><h6><strong>{{'Event.Text_Event' | t}}</strong></h6></td>
+  		      <td><h6><strong>{{'Event.Text_TicketType' | t}}</strong></h6></td>
   		      <td>&nbsp;</td>
   		    </tr>
   		    <tr ng-repeat="ticket in Order.InventoryItems">
@@ -36,14 +36,12 @@
   		    </tr>
   		    <tr>
   		      <td>&nbsp;</td>
-  		      <td><span class="pull-right"><strong>{{'Common.Text_Total' | t}}</strong></span></td>
-  		      <td><span class="pull-right"><strong>{{Order.Total.ItemPrice | currency}}</strong></span></td>
-  		    </tr>
-  		    <tr>
-  		      <td colspan="3"><span class="pull-right"><button class="btn btn-warning">{{'Common.Text_PrintAllTickets' | t | uppercase}}</button> - {{'Common.Text_Or' | t}} - <button class="btn btn-warning">{{'Order.Text_PrintReceipt' | t | uppercase}}</button></span></td>
+  		      <td><span class="pull-right"><h6><strong>{{'Common.Text_Total' | t}}</strong></h6></span></td>
+  		      <td><span class="pull-right"><h6><strong>{{Order.Total.ItemPrice | currency}}</strong></h6></span></td>
   		    </tr>
   		  </tbody>
   		</table>
+  		<div><span class="pull-right"><button class="btn btn-warning">{{'Common.Text_PrintAllTickets' | t | uppercase}}</button> - {{'Common.Text_Or' | t}} - <button class="btn btn-warning">{{'Order.Text_PrintReceipt' | t | uppercase}}</button></span></div>
   	</div>
   	<div class="clear"></div>
   	<!-- Ticket detail -->

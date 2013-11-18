@@ -170,6 +170,8 @@ function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
   	  $scope.order.initOrder($scope.storeKey, $routeParams.orderKey).
   	    then(function(returnedOrder) {
   	  	  $scope.Order = returnedOrder;
+  	  	  
+  	  	  $scope.loadTicketandEvent($scope.Order.InventoryItems[0], 0);
   	    }, function(err) {
   	  	  $scope.error.log(err);
   	  });
