@@ -146,15 +146,18 @@ function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
   $scope.$watch('customTime.EndTime', $scope.customTimeToWatcher);
   
   // Show/hide advanced search form block
+  $scope.advFormOpened = true;
   $scope.showHideAdvSearch = function() {
   	var orderAdvSearchForm = $('#orderAdvSearchForm');
   	
   	if (orderAdvSearchForm.hasClass('advFormOpened')) {
   		orderAdvSearchForm.slideUp(350);
   		orderAdvSearchForm.removeClass('advFormOpened');
+  		$scope.advFormOpened = false;
   	} else {
   		orderAdvSearchForm.slideDown(350);
   		orderAdvSearchForm.addClass('advFormOpened');
+  		$scope.advFormOpened = true;
   	}
   }
   
@@ -170,8 +173,11 @@ function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
   	  $scope.order.initOrder($scope.storeKey, $routeParams.orderKey).
   	    then(function(returnedOrder) {
   	  	  $scope.Order = returnedOrder;
+  	  	  $scope.Order.orderState = $scope.orderStateRange[$scope.Order.State].label;
   	  	  
-  	  	  $scope.loadTicketandEvent($scope.Order.InventoryItems[0], 0);
+  	  	  if (angular.isDefined($scope.Order.InventoryItems)) {
+  	  	    $scope.loadTicketandEvent($scope.Order.InventoryItems[0], 0);
+  	  	  }
   	    }, function(err) {
   	  	  $scope.error.log(err);
   	  });
@@ -185,6 +191,15 @@ function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
   	    
   	    $scope.OrderTicket = $scope.Order.InventoryItems[$index];
   	    $scope.OrderTicket.order = $index;
+  	  }, function(err) {
+  	    $scope.error.log(err);
+  	});
+  }
+  
+  $scope.loadTicketItemInfoDO = function(ticket) {
+  	$scope.order.loadGeneralAdmissionTicketItemInfoDO($scope.storeKey, ticket.ItemInfoKey)
+  	  .then(function(returnedItem) {
+  	    $scope.Item = returnedItem;
   	  }, function(err) {
   	    $scope.error.log(err);
   	});

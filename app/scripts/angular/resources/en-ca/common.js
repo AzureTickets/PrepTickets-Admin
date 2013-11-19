@@ -10,6 +10,8 @@
 
 var CommonResources = {
   Text_AdvancedSearch : 'Advanced Search',
+  Text_ShowAdvancedSearch : 'Show Advanced Search',
+  Text_HideAdvancedSearch : 'Hide Advanced Search',
   Text_ValidationErrors : 'Some errors were found while processing your request. Please review and resend.',
   Text_RequiredField : 'The field {0} is required',
   Text_AddRecipient : 'Add Recipient',

@@ -1,4 +1,5 @@
 ﻿var OrderResources = {
+	Text_CustomerName : "Customer Name",
   Text_DateOfPurChase : "Date of Purchase",
   Text_PurchaseHistory : "Purchase History",
   Text_TicketsPurchase : "Tickets Purchase",

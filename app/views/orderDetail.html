@@ -1,7 +1,7 @@
 <div ng-init="orderDetailInit()">
 	<!-- Loading message -->
   <div ng-show="!Order" class="alert alert-info">
-	  <i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Please wait, loading...
+	  <i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;{{'Common.Text_WaitLoading' | t}}
   </div>
   
   <!-- Order info -->
@@ -10,10 +10,15 @@
   	<div class="order-detail pull-left">
   		<h4>{{'Common.Text_OrderDetail' | t}}</h4>
   		<dl class="dl-horizontal">
-  		  <dt class="pull-left">{{'Order.Text_OrderId' | t}}</dt><dd>{{Order.OrderId}}</dd>
+  		  <dt>{{'Order.Text_OrderId' | t}}</dt><dd>{{Order.OrderId}}</dd>
+  		  <dt>{{'Order.Text_State' | t}}</dt><dd>{{Order.orderState}}</dd>
   		  <dt>{{'Order.Text_DateOfPurChase' | t}}</dt><dd>{{Order.DateCreated | date:'MMMM dd yyyy, h:mm a'}}</dd>
-  		  <dt>{{'Order.Text_NumberofItems' | t}}</dt><dd>{{Order.InventoryItems.length | number}}</dd>
-  		  <dt>{{'Order.Text_PaymentType' | t}}</dt><dd>{{Order.Transactions[0].ProviderType || 'N/a'}}</dd>
+  		  <dt>{{'Order.Text_NumberofItems' | t}}</dt><dd>{{Order.InventoryItems.length | number}}<span ng-show="!Order.InventoryItems">...</span></dd>
+  		  <dt>{{'Order.Text_PaymentType' | t}}</dt><dd>{{Order.Transactions[0].ProviderType || '...'}}</dd>
+  		  <dt class="clear">&nbsp;</dt><dd class="clear">&nbsp;</dd>
+  		  <dt>{{'Order.Text_CustomerName' | t}}</dt><dd>{{Order.Contact.FullName}}</dd>
+  		  <dt>{{'Common.Text_Email' | t}}</dt><dd><a ng-href="mailto:{{Order.Contact.EmailAddress}}" target="_top">{{Order.Contact.EmailAddress || '...'}}</a></dd>
+  		  <dt class="clear">&nbsp;</dt><dd class="clear">&nbsp;</dd>
   		  <dt>{{'Order.Text_Subtotal' | t}}</dt><dd>{{Order.SubTotal.ItemPrice | currency}}</dd>
   		  <dt>{{'Order.Text_Fee' | t}}</dt><dd>{{Order.Fees.ItemPrice | currency}}</dd>
   		  <dt>{{'Common.Text_Total' | t}}</dt><dd><strong>{{Order.Total.ItemPrice | currency}}</strong></dd>
