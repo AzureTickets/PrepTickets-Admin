@@ -120,41 +120,44 @@ function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
     }
   }
   
-  var dateFromWatcher = function(newDateFrom) {
+  $scope.dateFromWatcher = function(newDateFrom) {
   	$scope.reloadWithChangedState = null;
   	
   	return $scope.orderWatcher($scope.orderState, newDateFrom);
   };
-  var orderStateWatcher = function(newOrderState) {
+  $scope.orderStateWatcher = function(newOrderState) {
   	$scope.reloadWithChangedState = newOrderState;
   	
   	return $scope.orderWatcher(newOrderState, $scope.dateFrom);
   };
   
-  $scope.$watch('dateFrom', dateFromWatcher);
-  $scope.$watch('orderState', orderStateWatcher);
+  $scope.$watch('dateFrom', $scope.dateFromWatcher);
+  $scope.$watch('orderState', $scope.orderStateWatcher);
   
   // Watcher for custom time input fields
-  var customTimeFromWatcher = function(newCustomFrom) {
+  $scope.customTimeFromWatcher = function(newCustomFrom) {
   	return $scope.customTimeWatcher(newCustomFrom, $scope.customTime.EndTime);
   }
-  var customTimeToWatcher = function(newCustomTo) {
+  $scope.customTimeToWatcher = function(newCustomTo) {
   	return $scope.customTimeWatcher($scope.customTime.StartTime, newCustomTo);
   }
   
-  $scope.$watch('customTime.StartTime', customTimeFromWatcher);
-  $scope.$watch('customTime.EndTime', customTimeToWatcher);
+  $scope.$watch('customTime.StartTime', $scope.customTimeFromWatcher);
+  $scope.$watch('customTime.EndTime', $scope.customTimeToWatcher);
   
   // Show/hide advanced search form block
+  $scope.advFormOpened = true;
   $scope.showHideAdvSearch = function() {
   	var orderAdvSearchForm = $('#orderAdvSearchForm');
   	
   	if (orderAdvSearchForm.hasClass('advFormOpened')) {
   		orderAdvSearchForm.slideUp(350);
   		orderAdvSearchForm.removeClass('advFormOpened');
+  		$scope.advFormOpened = false;
   	} else {
   		orderAdvSearchForm.slideDown(350);
   		orderAdvSearchForm.addClass('advFormOpened');
+  		$scope.advFormOpened = true;
   	}
   }
   
@@ -167,15 +170,47 @@ function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
   
   $scope.orderDetailInit = function() {
   	if (angular.isDefined($routeParams.orderKey)) {
-      $scope.model.read(BWL.Model.Order.Type, $routeParams.orderKey, 5)
-  	    .then(function(returnedOrder) {
+  	  $scope.order.initOrder($scope.storeKey, $routeParams.orderKey).
+  	    then(function(returnedOrder) {
   	  	  $scope.Order = returnedOrder;
+  	  	  $scope.Order.orderState = $scope.orderStateRange[$scope.Order.State].label;
+  	  	  
+  	  	  if (angular.isDefined($scope.Order.InventoryItems)) {
+  	  	    $scope.loadTicketandEvent($scope.Order.InventoryItems[0], 0);
+  	  	  }
   	    }, function(err) {
-  	  	  $scope.error.log(err)
+  	  	  $scope.error.log(err);
   	  });
     }
   }
-
+  
+  $scope.loadTicketandEvent = function(ticket, $index) {
+  	$scope.order.loadEventFromTicket($scope.storeKey, ticket.EventKey)
+  	  .then(function(returnedEvent) {
+  	    $scope.OrderEvent = returnedEvent;
+  	    
+  	    $scope.OrderTicket = $scope.Order.InventoryItems[$index];
+  	    $scope.OrderTicket.order = $index;
+  	  }, function(err) {
+  	    $scope.error.log(err);
+  	});
+  }
+  
+  $scope.loadTicketItemInfoDO = function(ticket) {
+  	$scope.order.loadGeneralAdmissionTicketItemInfoDO($scope.storeKey, ticket.ItemInfoKey)
+  	  .then(function(returnedItem) {
+  	    $scope.Item = returnedItem;
+  	  }, function(err) {
+  	    $scope.error.log(err);
+  	});
+  }
+  
+  $scope.getTicketQR = function(ticket) {
+  	if (angular.isDefined(ticket)) {
+  		return BWL.Server + '/ticket.svc/' + ticket.StoreKey + '/config/' + ticket.Key;
+  	}
+  }
+  
   $scope.deleteOrder = function(order) {
     if (confirm($filter('t')('Common.Text_RemoveProduct'))) {
     	var orderKey = order.Key;
@@ -183,7 +218,7 @@ function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
         // Maybe re-load 100 items or update the $scope.orders array so it will reflect the change (reduce 1) in ngPagination too
         $scope.init();
       }, function(err) {
-        $scope.error.log(err)
+        $scope.error.log(err);
       });
     }
   }

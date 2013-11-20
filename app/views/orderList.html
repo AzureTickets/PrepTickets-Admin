@@ -15,8 +15,10 @@
 							ng-model="pagination.filteringObj.OrderId"
 							placeholder="{{'Common.Text_Search' | t}}">
 						<button class="btn btn-primary btn-mini"
-							ng-click="showHideAdvSearch()">{{'Common.Text_AdvancedSearch'
-							| t}}</button>
+							ng-click="showHideAdvSearch()">
+							<span ng-show="!advFormOpened">{{'Common.Text_ShowAdvancedSearch' | t}}</span>
+							<span ng-show="advFormOpened">{{'Common.Text_HideAdvancedSearch' | t}}</span>
+						</button>
 					</div>
 				</div>
 				<div id="orderAdvSearchForm" class="advFormOpened">
@@ -81,7 +83,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="order in pagination.pageItems()" mousestyle>
+					<tr ng-repeat="order in pagination.pageItems()" ng-click="viewOrder(order)" mousestyle>
 						<td>{{$index + 1 +
 							pagination.currentPageIndex*pagination.pageSize}}</td>
 						<td>{{order.OrderId}}</td>

@@ -10,6 +10,8 @@
 
 var CommonResources = {
   Text_AdvancedSearch : 'Advanced Search',
+  Text_ShowAdvancedSearch : 'Show Advanced Search',
+  Text_HideAdvancedSearch : 'Hide Advanced Search',
   Text_ValidationErrors : 'Some errors were found while processing your request. Please review and resend.',
   Text_RequiredField : 'The field {0} is required',
   Text_AddRecipient : 'Add Recipient',
@@ -305,9 +307,11 @@ var CommonResources = {
   Text_EventStartAt : 'Event Starts at',
   Text_EnjoyEvent : "Enjoy the event.",
   Text_PrintTicket : "Print Ticket",
+  Text_PrintAllTickets : "Print All Tickets",
   Text_CreateTicket : "Create Ticket",
   Text_TicketName : "Ticket Name",
-  Text_TicketStatus : "Ticket Status",
+  Text_DownloadTicket : "Download Ticket",
+  Text_ViewTicket : "View Ticket",
   Text_TicketStatus : "Ticket Status",
   Text_Tickets : "Tickets",
   Text_Inventory : "Inventory",
@@ -401,6 +405,7 @@ var CommonResources = {
   Text_RegistrationStep4 : "Completed",
   Text_Reset : 'Reset',
   Text_Refresh : 'Refresh',
+  Text_Or : 'or',
 
   Text_AdminContact_Description : "Please ensure that the following information is correct, we will only contact you when necessary and we will not share your information with any 3rd party for any reason.",
   Text_Payment_Description : "In order to collect payments you must add and configure payment gateway.",

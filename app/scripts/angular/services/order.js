@@ -207,6 +207,38 @@ azureTicketsApp.factory('orderService', [
           }
 
           return def.promise;
+        },
+        loadEventFromTicket : function(storeKey, eventKey) {
+          var def = $q.defer();
+
+          BWL.Services.ModelService.ReadAsync(storeKey, BWL.Model.Event.Type, eventKey,
+              10, function(returnedEvent) {
+                $rootScope.$apply(function() {
+                  def.resolve(returnedEvent);
+                });
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err);
+                })
+              });
+
+          return def.promise;
+        },
+        loadGeneralAdmissionTicketItemInfoDO : function(storeKey, itemKey) {
+          var def = $q.defer();
+
+          BWL.Services.ModelService.ReadAsync(storeKey, 'GeneralAdmissionTicketItemInfoDO', itemKey,
+              10, function(returnedItem) {
+                $rootScope.$apply(function() {
+                  def.resolve(returnedItem);
+                });
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err);
+                })
+              });
+
+          return def.promise;
         }
       }
     } ]);
