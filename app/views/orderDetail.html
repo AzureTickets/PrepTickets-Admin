@@ -32,15 +32,20 @@
   		  	<tr>
   		      <td><h6><strong>{{'Event.Text_Event' | t}}</strong></h6></td>
   		      <td><h6><strong>{{'Event.Text_TicketType' | t}}</strong></h6></td>
-  		      <td>&nbsp;</td>
+  		      <td><h6><strong>{{'Event.Text_TicketNumber' | t}}</strong></h6></td>
+  		      <td><h6><strong>{{'Common.Text_Price' | t}}</strong></h6></td>
   		    </tr>
-  		    <tr ng-repeat="ticket in Order.InventoryItems">
+  		    <tr ng-repeat="ticket in Order.InventoryItems"
+  		    	  class="ticket-row"
+  		    	  ng-click="loadTicketandEvent(ticket, $index)"
+  		    	  ng-disabled="ticket.Key == OrderTicket.Key" mousestyle>
   		      <td>{{ticket.EventName}}</td>
   		      <td>{{ticket.ItemInfoName}}</td>
-  		      <td><button class="btn btn-info" ng-click="loadTicketandEvent(ticket, $index)" ng-disabled="ticket.Key == OrderTicket.Key">{{'Common.Text_ViewTicket' | t | uppercase}}</button></td>
+  		      <td>{{ticket.UIID}}</td>
+  		      <td>{{ticket.ItemInfoPrice.ItemPrice | currency}}</td>
   		    </tr>
   		    <tr>
-  		      <td>&nbsp;</td>
+  		      <td colspan="2"><span ng-show="Order.InventoryItems && Order.InventoryItems.length > 1">* {{'Common.Text_ViewTicket' | t}}</span></td>
   		      <td><span class="pull-right"><h6><strong>{{'Common.Text_Total' | t}}</strong></h6></span></td>
   		      <td><span class="pull-right"><h6><strong>{{Order.Total.ItemPrice | currency}}</strong></h6></span></td>
   		    </tr>

@@ -311,7 +311,7 @@ var CommonResources = {
   Text_CreateTicket : "Create Ticket",
   Text_TicketName : "Ticket Name",
   Text_DownloadTicket : "Download Ticket",
-  Text_ViewTicket : "View Ticket",
+  Text_ViewTicket : "Click to view ticket",
   Text_TicketStatus : "Ticket Status",
   Text_Tickets : "Tickets",
   Text_Inventory : "Inventory",
