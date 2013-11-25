@@ -135,8 +135,38 @@
 					ng-submit="wizardEvent.next('atEvent4')">
 					
 					<dl class="clearfix">
-					  <!-- Media selector -->
-				    <dd class="media-selector" ng-class="{'atStoreImgSel': images.length > 0}" ng-controller="mediaController" ng-init="init(); modelName='Event'" ng-include src="'views/elements/store/mediaSelector.html'"></dd>
+						<dd class="model-image-property">
+						  <div class="single-image pull-left">
+						    <span ng-show="!Event.Icon" class="upload-icon"><a href="" ng-click="openMediaLibrary('Event', 'Icon')"><i class="fa fa-plus fa-4x"></i></a><br />{{'Common.Text_Add' | t}} {{'Common.Text_Icon' | t}}</span>
+  				      <img ng-show="Event.Icon" ng-src="{{Event.Icon.BaseURL}}{{Event.Icon.ThumbFile}}" />
+						    <a href="" ng-click="openMediaLibrary('Event', 'Icon')"><span ng-show="Event.Icon" class="label label-warning">{{'Common.Text_Change' | t}}</span></a>
+						    <p class="label label-info">{{'Common.Text_Icon' | t}} (128x128)</p>
+						  </div>
+						  <div class="single-image pull-left">
+						    <span ng-show="!Event.SmallImage" class="upload-icon"><a href="" ng-click="openMediaLibrary('Event', 'SmallImage')"><i class="fa fa-plus fa-4x"></i></a><br />{{'Common.Text_Add' | t}} {{'Common.Text_SmallImage' | t}}</span>
+						    <img ng-show="Event.SmallImage" ng-src="{{Event.SmallImage.BaseURL}}{{Event.SmallImage.ThumbFile}}" />
+						    <a href="" ng-click="openMediaLibrary('Event', 'SmallImage')"><span ng-show="Event.SmallImage" class="label label-warning">{{'Common.Text_Change' | t}}</span></a>
+						    <p class="label label-info">{{'Common.Text_SmallImage' | t}} (150x150)</p>
+						  </div>
+						  <div class="single-image pull-left">
+						    <span ng-show="!Event.Image" class="upload-icon"><a href="" ng-click="openMediaLibrary('Event', 'Image')"><i class="fa fa-plus fa-4x"></i></a><br />{{'Common.Text_Add' | t}} {{'Common.Text_Image' | t}}</span>
+						    <img ng-show="Event.Image" ng-src="{{Event.Image.BaseURL}}{{Event.Image.ThumbFile}}" />
+						    <a href="" ng-click="openMediaLibrary('Event', 'Image')"><span ng-show="Event.Image" class="label label-warning">{{'Common.Text_Change' | t}}</span></a>
+						    <p class="label label-info">{{'Common.Text_Image' | t}} (320x320)</p>
+						  </div>
+						  <div class="clear"></div>
+						  <div class="list-image">
+						    <ul class="unstyled inline">
+						      <li class="upload-icon"><a href="" ng-click="openMediaLibrary('Event', 'LargeImages')"><i class="fa fa-plus fa-4x"></i></a><br />{{'Common.Text_Add' | t}} {{'Common.Text_LargeImages' | t}}</li>
+		              <li ng-repeat="image in Event.LargeImages" class="image-list"><img
+		                ng-src="{{image.BaseURL}}{{image.ThumbFile}}" /> <a
+		                class="delete-icon" href="" ng-click=""><i
+		                class="fa fa-times red"></i></a></li>
+		            </ul>
+		            <div class="clear"></div>
+						    <p class="label label-info">{{'Common.Text_LargeImages' | t}} (500x500)</p>
+						  </div>
+						</dd>
 						
 						<dd class="pull-left">
 							<a ng-show="wizardEvent.currentStep>1"

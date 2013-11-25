@@ -106,18 +106,19 @@ body {
 			}
 		}
 	}
-
-	.media-selector {
-		width: 510px;
-		.transition (@property: all;
+  
+  .transition (@property: all;
 		@duration: 1s;
 		@ease: ease) {
 			-webkit-transition: @arguments;
 			-moz-transition: @arguments;
 			-o-transition: @arguments;
 			transition: @arguments;
-		}
-
+  }
+  
+	.media-selector {
+		width: 510px;
+    
 		ul li {
 			margin: 0 2px 12px;
 			max-height: 110px;
@@ -166,8 +167,91 @@ body {
 		}
 
 		ul + .pagination {
-			margin: 0 -20px 0 0;
+			margin: 0 -16px 0 0;
 		}
+	}
+	
+	.model-image-property {
+	  width: 525px;
+	  
+	  div.single-image {
+	    width: 170px;
+	    height: 170px;
+	    margin-right: 5px;
+	    text-align: center;
+	    position: relative;
+	    
+	    .label.label-warning {
+	      position: absolute;
+	      top: 0;
+	      right: 0;
+	      opacity: 0.3;
+	      .transition (opacity; 0.3s);
+	    }
+	    
+	    &:hover {
+	      .label.label-warning {
+	        opacity: 1;
+	      }
+	    }
+	    
+	    .label.label-info {
+	      position: absolute;
+	      bottom: 0;
+	      left: 0;
+	      width: 93%;
+	      text-align: center;
+	    }
+	  }
+	  
+	  div.list-image {
+	    width: 520px;
+	    position: relative;
+	    margin-top: 10px;
+	    margin-bottom: 32px;
+	    
+	    .upload-icon {
+	      width: 156px;
+	      min-height: 100px;
+	      margin: 0 5px 5px 0;
+	      text-align: center;
+	      vertical-align: middle;
+	    }
+	    
+	    .image-list {
+	      position: relative;
+	      width: 156px;
+	      max-height: 156px;
+	      margin: 0 5px 5px 0;
+	      vertical-align: middle;
+	      
+	      img {
+	        max-height: 156px;
+	      }
+	      
+	      .delete-icon {
+	        position: absolute;
+	        top: 0;
+	        left: 0;
+	        opacity: 0;
+	        .transition (opacity; 0.3s);
+	      }
+	      
+	      &:hover {
+	        .delete-icon {
+	          opacity: 1;
+	        }
+	      }
+	    }
+	    
+	    .label.label-info {
+	      position: absolute;
+	      bottom: -24px;
+	      left: 0;
+	      width: 97.8%;
+	      text-align: center;
+	    }
+	  }
 	}
 	
 	.order-detail {

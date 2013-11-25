@@ -104,6 +104,17 @@ azureTicketsApp.factory('modelService', [
               });
 
           return def.promise;
+        },
+        associateList : function(model, modelPropList, relModel) {
+          var promise = null,
+              promiseArr = [];
+          
+          for (var i = 0; i < modelPropList.length; i++) {
+          	promise = modelService.associate(model, modelPropList[i], relModel[modelPropList[i]]);
+          	promiseArr.push(promise);
+          }
+
+          return $q.all(promiseArr);
         }
       }
     } ]);

@@ -1,0 +1,58 @@
+<div class="modal-header">
+  <button type="button" ng-click="wizardMediaLibrary.open = false"
+    class="close"><i class="fa fa-times-circle"></i></button>
+  <h3>
+    <p class="text-info">{{ 'Common.Text_Media' | t}}</p>
+  </h3>
+</div>
+<div class="modal-body" ng-init="init()" ng-controller="mediaController">
+  <!-- messages -->
+  <div ng-switch="wizardMediaLibrary.currentStep">
+    <div class="alert alert-info" ng-switch-when="1">
+      <strong>{{ 'Common.Text_Upload' | t }}</strong>
+    </div>
+  </div>
+  <!-- form -->
+  <ng-form name="atMedia" ng-submit="save()">
+    <form ui-if="wizardMediaLibrary.currentStep == 1" name="atEvent1"
+      ng-submit="wizardMediaLibrary.next('atMedia1')">
+      <dl class="clearfix">
+        <dd class="media-selector">
+          <ul class="inline">
+            <li><span class="upload-icon"> <a href=""
+              ng-click="create()"><i class="fa fa-plus fa-4x"></i></a><br />
+              {{'Common.Text_Upload' | t}}
+            </span></li>
+            <li ng-repeat="image in pagination.pageItems()"><a href=""
+              ng-click="selectImages($index + pagination.currentPageIndex*7)"><img
+              ng-src="{{image.BaseURL}}{{image.ThumbFile}}" /></a> <a
+              class="delete-icon" href="" ng-click="deleteImage(image)"><i
+              class="fa fa-times red"></i></a> <span class="selected-icon"
+              ng-show="this[mediaLibModelName][mediaLibModelProperty].Key == image.Key"><i
+              class="fa fa-check green"></i></span></li>
+          </ul>
+          <ng-pagination ui-if="images && images.length > 0"
+          	class="pull-right"
+            pagination-data="pagination"
+            page-size="7"
+            data="images">
+          </ng-pagination>
+          <p>
+            {{'Common.Text_YourSelect' | t}}: {{this[mediaLibModelName][mediaLibModelProperty].Name}}&nbsp;<i
+              ng-show="!this[mediaLibModelName][mediaLibModelProperty].Name" class="fa fa-spinner fa fa-spin"></i>
+          </p>
+          <p class="clear"></p>
+          <p class="pull-right">{{'Common.Text_TotalPages' | t}}:
+            {{pagination.numberOfPages}}</p>
+        </dd>
+      </dl>
+      <dl class="clearfix">
+        <dd class="pull-right">
+          <a ng-click="wizardMediaLibrary.open = false"
+            class="btn btn-primary clear">{{ 'Common.Text_Close' | t }}</a>
+        </dd>
+			</dl>
+    </form>
+  </ng-form>
+</div>
+<div class="modal-footer"></div>

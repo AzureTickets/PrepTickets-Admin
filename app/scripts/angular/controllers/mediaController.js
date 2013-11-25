@@ -27,7 +27,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   	  $scope[$scope.modelName].Image = $scope.images[$index];
     };
   };
-
+  
   $scope.$watch('mediaPreview.open', function(v) {
     if (v) {
       $scope.mediaPreview.modal = $modal.open({
