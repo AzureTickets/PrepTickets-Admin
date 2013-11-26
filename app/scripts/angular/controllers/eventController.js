@@ -334,44 +334,6 @@ function eventController($scope, $cookieStore, $filter, $modal) {
       }
     }
   }
-  
-  // Open media selector function
-  $scope.wizardMediaLibrary = $scope.form.getWizard($scope);
-  
-  $scope.$watch('wizardMediaLibrary.open', function(v) {
-    if (v) {
-      $scope.wizardMediaLibrary.modal = $modal.open({
-        templateUrl : '/views/elements/store/mediaLibrary.html',
-        scope : $scope,
-        backdrop : 'static'
-      });
-    } else if (angular.isDefined($scope.wizardMediaLibrary.modal)) {
-      $scope.wizardMediaLibrary.modal.close();
-    }
-  });
-  
-  $scope.openMediaLibrary = function(modelName, modelProperty) {
-  	$scope.mediaLibModelName = modelName;
-  	$scope.mediaLibModelProperty = modelProperty;
-  	
-    $scope.wizardMediaLibrary.open = true;
-    $scope.wizardMediaLibrary.reset();
-  };
-  
-  $scope.selectImages = function($index) {
-  	if (angular.isDefined($index)) {
-  		if (BWL.ModelMeta[$scope.mediaLibModelName] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty].indexOf('List') > -1) {
-  	    if (angular.isDefined($scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty])) {
-  	    	$scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty].push($scope.images[$index]);
-  	    } else {
-  	    	$scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty] = [];
-  	    	$scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty].push($scope.images[$index]);
-  	    }
-  	  } else if (BWL.ModelMeta[$scope.mediaLibModelName] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty]) {
-  	  	$scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty] = $scope.images[$index];
-  	  }
-    };
-  };
 }
 
 eventController.$inject = [ '$scope', '$cookieStore', '$filter', '$modal' ];

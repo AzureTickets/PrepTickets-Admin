@@ -5,7 +5,7 @@
     <p class="text-info">{{ 'Common.Text_Media' | t}}</p>
   </h3>
 </div>
-<div class="modal-body" ng-init="init()" ng-controller="mediaController">
+<div class="modal-body" ng-init="init()">
   <!-- messages -->
   <div ng-switch="wizardMediaLibrary.currentStep">
     <div class="alert alert-info" ng-switch-when="1">
@@ -13,9 +13,8 @@
     </div>
   </div>
   <!-- form -->
-  <ng-form name="atMedia" ng-submit="save()">
-    <form ui-if="wizardMediaLibrary.currentStep == 1" name="atEvent1"
-      ng-submit="wizardMediaLibrary.next('atMedia1')">
+  <ng-form name="atMedia">
+    <form ui-if="wizardMediaLibrary.currentStep == 1" name="mediaLib1">
       <dl class="clearfix">
         <dd class="media-selector">
           <ul class="inline">
@@ -28,7 +27,7 @@
               ng-src="{{image.BaseURL}}{{image.ThumbFile}}" /></a> <a
               class="delete-icon" href="" ng-click="deleteImage(image)"><i
               class="fa fa-times red"></i></a> <span class="selected-icon"
-              ng-show="this[mediaLibModelName][mediaLibModelProperty].Key == image.Key"><i
+              ng-show="checkSelected(image)"><i
               class="fa fa-check green"></i></span></li>
           </ul>
           <ng-pagination ui-if="images && images.length > 0"
@@ -38,8 +37,8 @@
             data="images">
           </ng-pagination>
           <p>
-            {{'Common.Text_YourSelect' | t}}: {{this[mediaLibModelName][mediaLibModelProperty].Name}}&nbsp;<i
-              ng-show="!this[mediaLibModelName][mediaLibModelProperty].Name" class="fa fa-spinner fa fa-spin"></i>
+            {{'Common.Text_YourSelect' | t}}: {{getSelectedImageName()}}&nbsp;<i
+              ng-show="!this[mediaLibModelName][mediaLibModelProperty]" class="fa fa-spinner fa fa-spin"></i>
           </p>
           <p class="clear"></p>
           <p class="pull-right">{{'Common.Text_TotalPages' | t}}:
