@@ -49,16 +49,7 @@ azureTicketsApp
                   } else {
                   	$scope.propName = '$';
                   	$scope.atPagination.filteringObj[$scope.propName] = '';
-                  	
-                  	$scope.$watch('atPagination.textFilter', searchContentWatcher);
                   }
-                  
-                  /*if (!angular.isString($scope.atPagination.propFilter) || ($scope.atPagination.propFilter == '*') || ($scope.atPagination.propFilter == '')) {
-                    $scope.propName = '$';
-                  } else {
-                    $scope.propName = $scope.atPagination.propFilter;
-                  }
-                  $scope.atPagination.filteringObj[$scope.propName] = '';*/
                   
                   // Initialize sort predicate
                   $scope.predicate = '';
@@ -145,7 +136,9 @@ azureTicketsApp
                   	pagesWatcher($scope.itemsPerPage, $scope.atPagination.filteringObj);
                   };
                   $scope.$watch('itemsPerPage', itemsPerPageWatcher);
-                  //$scope.$watch('atPagination.textFilter', searchContentWatcher);
+                  if (!angular.isArray($scope.atPagination.propFilter)) {
+                    $scope.$watch('atPagination.textFilter', searchContentWatcher);
+                  }
                   
                   // Watch for data length to run the pagination
                   // It does the initial run also

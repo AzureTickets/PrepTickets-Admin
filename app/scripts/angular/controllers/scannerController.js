@@ -138,8 +138,7 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams, 
           Name : $scope.ScanDevice.Name,
           Brief : $scope.ScanDevice.Brief,
           // Active = true to allow the QR to work
-          Active : true,
-          Description : $scope.ScanDevice.Description
+          Active : true
         }).then(
           function(scanDeviceKey) {
             $scope.ScanDevice.Key = scanDeviceKey;

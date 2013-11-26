@@ -13,14 +13,14 @@
 						| t}}:&nbsp;</label>
 					<div class="controls">
 						<input type="text" id="filterText" class="input-large"
-							ng-model="pagination.textFilter" placeholder="">
+							ng-model="pagination.filteringObj.Name" placeholder="">
 					</div>
 				</div>
 			</form>
-			<div ng-show="images.length == 0" class="alert alert-info">{{
+			<div ng-show="!pagination.results.length" class="alert alert-info">{{
 				'Common.Text_NoImages_Msg' | t }}</div>
 			<table class="table table-bordered table-hover"
-				ng-show="images.length > 0">
+				ng-show="pagination.results.length">
 				<thead>
 					<tr>
 						<th>#</th>
@@ -40,8 +40,7 @@
 			</table>
 
 			<div class="paginationDiv" ng-show="pagination.results.length > 20">
-				<ng-pagination ui-if="images && images.length > 0"
-					pagination-data="pagination" data="images"> </ng-pagination>
+				<ng-pagination pagination-data="pagination" data="images"> </ng-pagination>
 				<p class="text-center" ng-cloak>{{'Common.Text_CurrentPage' |
 					t}}: {{pagination.currentPageIndex + 1}} -
 					{{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} -

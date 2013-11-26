@@ -11,6 +11,7 @@
 var EventResources = {
   Text_TicketInformation : 'Tickets Information',
   Text_TicketType : 'Ticket Type',
+  Text_TicketNumber : 'Ticket Number',
   Text_Price : 'Price',
   Text_Quantity : 'Quantity',
   Text_DateInformation : 'Dates Information',

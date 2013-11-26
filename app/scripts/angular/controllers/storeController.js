@@ -699,7 +699,7 @@ function storeController($scope, $cookieStore, $location, $timeout,
 
     return def.promise;
   }
-
+  
   // Remove TinyMCE instance on closing the popup window
   // This is to avoid bug #6013:
   // http://www.tinymce.com/develop/bugtracker_view.php?id=6013

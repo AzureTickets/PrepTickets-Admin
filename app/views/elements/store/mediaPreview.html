@@ -1,0 +1,10 @@
+<div class="modal-header">
+  <button type="button" ng-click="mediaPreview.open = false"
+    class="close"><i class="fa fa-times-circle"></i></button>
+</div>
+<div class="modal-body">
+  <img ui-if="previewedMedia || false"
+    ng-src="{{previewedMedia.BaseURL}}{{previewedMedia.ImageFile}}"
+    ng-style="{'max-width': (config.media.imagePreview.maxW+'px')}" />
+</div>
+<div class="modal-footer"></div>
