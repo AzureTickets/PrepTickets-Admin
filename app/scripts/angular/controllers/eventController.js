@@ -246,26 +246,40 @@ function eventController($scope, $cookieStore, $filter, $modal) {
         }).then(
             function(eventKey) {
               $scope.Event.Key = eventKey;
-
+              
               // attach event to store
               $scope.store.addEvent($scope.storeKey, eventKey).then(
                   function() {
-                    if ($scope.Event.Image && $scope.Event.Image.Key) {
-                      $scope.model.associate($scope.Event, 'Image',
-                          $scope.Event.Image).then(function() {
-                        $scope.wizardEvent.saved = true;
+                  	if ($scope.Event.Icon || $scope.Event.SmallImage || $scope.Event.Image) {
+                  	  var imagePropNameList = [];
+                  	  if ($scope.Event.Icon && $scope.Event.Icon.Key) {
+                  	    imagePropNameList.push('Icon');
+                  	  }
+                  	  if ($scope.Event.SmallImage && $scope.Event.SmallImage.Key) {
+                  	    imagePropNameList.push('SmallImage');
+                  	  }
+                  	  if ($scope.Event.Image && $scope.Event.Image.Key) {
+                  	    imagePropNameList.push('Image');
+                  	  }
+                	
+                  	  if (imagePropNameList.length) {
+                  	    $scope.model.associateList($scope.storeKey, $scope.Event, imagePropNameList).then(
+                  	      function() {
+                  	      	$scope.wizardEvent.saved = true;
+                  	      	
+                  	      	// Reload list
+                  	      	$scope.init();
+                  	      }, function(err) {
+                  	        $scope.error.log(err);
+                  	      }
+                  	    )
+                  	  }
+                  	} else {
+                  	  $scope.wizardEvent.saved = true;
 
-                        // reload list
-                        $scope.init();
-                      }, function(err) {
-                        $scope.error.log(err)
-                      })
-                    } else {
-                      $scope.wizardEvent.saved = true;
-
-                      // reload list
+                      // Reload list
                       $scope.init();
-                    }
+                  	}
                   }, function(err) {
                     $scope.error.log(err)
                   });
@@ -301,15 +315,30 @@ function eventController($scope, $cookieStore, $filter, $modal) {
                 $scope.error.log(err)
               });
         }
-
+        
         if (angular.isArray($scope.Event.Items)) {
           $scope.event.updateEvent($scope.storeKey, $scope.Event).then(
               function() {
-                if ($scope.Event.Image && $scope.Event.Image.Key) {
-                  $scope.model.associate($scope.Event, 'Image',
-                      $scope.Event.Image).then(_finishes, function(err) {
-                    $scope.error.log(err)
-                  })
+                if ($scope.Event.Icon || $scope.Event.SmallImage || $scope.Event.Image) {
+                	var imagePropNameList = [];
+                	if ($scope.Event.Icon && $scope.Event.Icon.Key) {
+                		imagePropNameList.push('Icon');
+                	}
+                	if ($scope.Event.SmallImage && $scope.Event.SmallImage.Key) {
+                		imagePropNameList.push('SmallImage');
+                	}
+                	if ($scope.Event.Image && $scope.Event.Image.Key) {
+                		imagePropNameList.push('Image');
+                	}
+                	
+                	if (imagePropNameList.length) {
+                	  $scope.model.associateList($scope.storeKey, $scope.Event, imagePropNameList).then(
+                	    _finishes,
+                	    function(err) {
+                	      $scope.error.log(err);
+                	    }
+                	  )
+                  }
                 } else {
                   _finishes();
                 }
@@ -319,11 +348,26 @@ function eventController($scope, $cookieStore, $filter, $modal) {
         } else {
           $scope.event.updateEvent($scope.storeKey, $scope.Event).then(
               function() {
-                if ($scope.Event.Image && $scope.Event.Image.Key) {
-                  $scope.model.associate($scope.Event, 'Image',
-                      $scope.Event.Image).then(_finishes, function(err) {
-                    $scope.error.log(err)
-                  })
+                if ($scope.Event.Icon || $scope.Event.SmallImage || $scope.Event.Image) {
+                	var imagePropNameList = [];
+                	if ($scope.Event.Icon && $scope.Event.Icon.Key) {
+                		imagePropNameList.push('Icon');
+                	}
+                	if ($scope.Event.SmallImage && $scope.Event.SmallImage.Key) {
+                		imagePropNameList.push('SmallImage');
+                	}
+                	if ($scope.Event.Image && $scope.Event.Image.Key) {
+                		imagePropNameList.push('Image');
+                	}
+                	
+                	if (imagePropNameList.length) {
+                	  $scope.model.associateList($scope.storeKey, $scope.Event, imagePropNameList).then(
+                	    _finishes,
+                	    function(err) {
+                	      $scope.error.log(err);
+                	    }
+                	  )
+                  }
                 } else {
                   _finishes();
                 }

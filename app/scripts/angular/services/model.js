@@ -2,7 +2,8 @@
 azureTicketsApp.factory('modelService', [
     '$q',
     '$rootScope',
-    function($q, $rootScope) {
+    '$timeout',
+    function($q, $rootScope, $timeout) {
       return {
         /**
          * Returns a new instance of the specified model.
@@ -102,19 +103,52 @@ azureTicketsApp.factory('modelService', [
                   def.reject(err)
                 })
               });
-
+          
           return def.promise;
         },
-        associateList : function(model, modelPropList, relModel) {
-          var promise = null,
-              promiseArr = [];
-          
-          for (var i = 0; i < modelPropList.length; i++) {
-          	promise = modelService.associate(model, modelPropList[i], relModel[modelPropList[i]]);
-          	promiseArr.push(promise);
-          }
+        associateObjectProp : function(storeKey, model, modelProp, relModel) {
+          var def = $q.defer();
 
-          return $q.all(promiseArr);
+          BWL.Services.ModelService.AddAsync(storeKey, model.Type, model.Key,
+              modelProp, relModel.Type, relModel.Key, function() {
+                $rootScope.$apply(def.resolve);
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err);
+                })
+              });
+          
+          return def.promise;
+        },
+        associateList : function(storeKey, model, modelPropNameList) {
+          var def = $q.defer(),
+              _this = this;
+          
+          if (angular.isArray(modelPropNameList) && modelPropNameList.length) {
+          	// BWL API seems to have problem with $q.all(promiseArr)
+          	// when promiseArr.length > 2
+          	// so use this as an alternative method
+          	// to addAsync data of a list of properties of the same object
+            var addAsyncPropertiesData = function(i, modelPropNameListLength) {
+              _this.associateObjectProp(storeKey, model, modelPropNameList[i], model[modelPropNameList[i]]).then(
+                function() {
+                  if (i + 1 < modelPropNameListLength) {
+                    addAsyncPropertiesData(i + 1, modelPropNameListLength);
+                  }
+            	  	
+                  if (i + 1 == modelPropNameListLength) {
+                    def.resolve();
+                  }
+                }, function(err) {
+                  def.reject(err);
+                }
+              )
+            }
+            
+            addAsyncPropertiesData(0, modelPropNameList.length);
+          }
+          
+          return def.promise;
         }
       }
     } ]);

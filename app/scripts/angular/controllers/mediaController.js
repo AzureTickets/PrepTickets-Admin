@@ -107,7 +107,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   	  } else if (BWL.ModelMeta[$scope.mediaLibModelName] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty]) {
   	  	$scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty] = $scope.images[$index];
   	  }
-    };
+    }
   }
   
   $scope.unselectImageinList = function(image, imageList) {
@@ -118,7 +118,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   
   $scope.checkSelected = function(image) {
   	if (BWL.ModelMeta[$scope.mediaLibModelName] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty].indexOf('List') > -1) {
-  		if ($scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty] && angular.isArray($scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty]) && $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty].length) {
+  		if ($scope[$scope.mediaLibModelName] && $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty] && angular.isArray($scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty]) && $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty].length) {
   			for (var i = 0; i < $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty].length; i++) {
   				if (image.Key == $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty][i].Key) {
   					return true;
@@ -129,7 +129,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   			return false;
   		}
   	} else if (BWL.ModelMeta[$scope.mediaLibModelName] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty]) {
-  		if (angular.isDefined($scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty]) && $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty].Key == image.Key) {
+  		if ($scope[$scope.mediaLibModelName] && $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty] && $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty].Key == image.Key) {
   			return true;
   		} else {
   			return false;
@@ -141,7 +141,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   
   $scope.getSelectedImageName = function() {
   	if (BWL.ModelMeta[$scope.mediaLibModelName] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty].indexOf('List') > -1) {
-  		if ($scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty] && angular.isArray($scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty]) && $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty].length) {
+  		if ($scope[$scope.mediaLibModelName] && $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty] && angular.isArray($scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty]) && $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty].length) {
   			var imageNames = '';
   			
   			for (var i = 0; i < $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty].length; i++) {
@@ -156,7 +156,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   			return '';
   		}
   	} else if (BWL.ModelMeta[$scope.mediaLibModelName] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty]) {
-  		if (angular.isDefined($scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty])) {
+  		if ($scope[$scope.mediaLibModelName] && $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty]) {
   			return $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty].Name;
   		} else {
   			return '';

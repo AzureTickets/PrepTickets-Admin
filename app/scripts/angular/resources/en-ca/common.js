@@ -152,6 +152,7 @@ var CommonResources = {
   LabelScanDeviceName : 'Device Name',
   LabelPlaceDescription : 'Description of this Venue',
   LabelEventOnSaleDateTimeStart : 'Tickets Sales Starts On',
+  LabelEventBrief : 'Brief Description',
   LabelEventDescription : 'Description of this Event',
   LabelEventOnSaleDateTimeEnd : 'Tickets Sales Ends On',
   LabelEventStartTime : 'This Event Starts On',
