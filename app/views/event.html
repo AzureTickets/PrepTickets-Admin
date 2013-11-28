@@ -162,7 +162,7 @@
 						  <div class="list-image">
 						    <ul class="unstyled inline">
 						      <li class="upload-icon"><a href="" ng-click="openMediaLibrary('Event', 'LargeImages')"><i class="fa fa-plus fa-4x"></i></a><br />{{'Common.Text_Add' | t}} {{'Common.Text_LargeImages' | t}}</li>
-		              <li ng-repeat="image in Event.LargeImages" class="image-list">
+		              <li ng-repeat="image in paginationLI.pageItems()" class="image-list">
 		                <a href="" ng-click="previewMedia(image)"><img ng-src="{{image.BaseURL}}{{image.ThumbFile}}" /></a>
 		                <a class="delete-icon" href="" ng-click="unselectImageinList(image, Event.LargeImages)">
 		                <i class="fa fa-times red"></i></a>
@@ -170,6 +170,13 @@
 		            </ul>
 		            <div class="clear"></div>
 						    <p class="label label-info">{{'Common.Text_LargeImages' | t}} (500x500)</p>
+						    <div ng-show="paginationLI.results.length > 5">
+						      <ng-pagination class="pull-right"
+						        pagination-data="paginationLI"
+						        page-size="5"
+						        data="Event.LargeImages">
+						      </ng-pagination>
+						    </div>
 						  </div>
 						</dd>
 						

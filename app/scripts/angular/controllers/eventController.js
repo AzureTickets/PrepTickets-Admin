@@ -32,8 +32,11 @@ function eventController($scope, $cookieStore, $filter, $modal) {
     currentPageIndex : 0,
     results : [],
     numberOfPages : 0
-  };
-
+  }
+  
+  // Largeimages property pagination
+  $scope.paginationLI = angular.copy($scope.pagination);
+  
   $scope.$watch('wizardEvent.open', function(v) {
     if (v) {
       $scope.wizardEvent.modal = $modal.open({
@@ -62,6 +65,7 @@ function eventController($scope, $cookieStore, $filter, $modal) {
     // Temporary event to track image changes
     // This will be used as "old data" to compare
     $scope._tempEvent = angular.copy(_event);
+    
     $scope.wizardEvent.open = true;
     $scope.wizardEvent.reset();
   }
