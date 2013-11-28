@@ -10,6 +10,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   // Pagination setup
   $scope.pagination = {
     pageSize: 20,
+    startRange : 0,
     predicates: [],
     pageItems: function() {},
     textFilter: '',
@@ -110,10 +111,8 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
     }
   }
   
-  $scope.unselectImageinList = function(image, imageList) {
-  	if (imageList.indexOf(image) > -1) {
-  		imageList.splice(imageList.indexOf(image), 1);
-  	}
+  $scope.unselectImageinList = function(imageIndex, imageList) {
+  	imageList.splice(imageIndex, 1);
   }
   
   $scope.checkSelected = function(image) {

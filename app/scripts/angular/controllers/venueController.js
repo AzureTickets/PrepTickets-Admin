@@ -1,13 +1,14 @@
 function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
     $q, $modal) {
   $scope.name = 'venue';
-
+  
   // initialize wizard for Venue
   $scope.wizardVenue = $scope.form.getWizard($scope);
-
+  
   // Pagination setup
   $scope.pagination = {
     pageSize : 20,
+    startRange : 0,
     predicates : [],
     pageItems : function() {
     },
@@ -20,7 +21,7 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
     results : [],
     numberOfPages : 0
   };
-
+  
   $scope.$watch('wizardVenue.open', function(v) {
     if (v) {
       $scope.wizardVenue.modal = $modal.open({
@@ -32,23 +33,26 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
       $scope.wizardVenue.modal.close();
     }
   })
-
+  
   $scope.$watch('wizardVenue.saved', function(v) {
     if (v) {
       $scope.wizardVenue.checkStep = {}
     }
   })
-
+  
   $scope.init = function() {
     $rootScope.$broadcast('initStore', $scope.Store.Key)
   }
-
+  
   $scope.update = function(venue) {
     $scope.Place = venue;
+    // Temporary Place to track image changes
+    $scope._tempPlace = angular.copy(venue);
+    
     $scope.wizardVenue.open = true;
     $scope.wizardVenue.reset();
   }
-
+  
   $scope.create = function() {
     // initialize props
     $scope.Place = $scope.model.getInstanceOf('Place');
@@ -56,7 +60,7 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
     $scope.wizardVenue.open = true;
     $scope.wizardVenue.reset();
   }
-
+  
   $scope.deleteVenue = function(venue) {
     if (confirm($filter('t')('Common.Text_RemoveProduct'))) {
       $scope.place.deletePlace($scope.storeKey, venue)
@@ -80,7 +84,7 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
               });
     }
   }
-
+  
   $scope.save = function() {
     if ($scope.wizardVenue.finished) {
       $scope.wizardVenue.saved = false;
@@ -153,7 +157,6 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
       }
     }
   }
-
 }
 
 venueController.$inject = [ '$rootScope', '$scope', '$timeout', '$cookieStore',

@@ -7,6 +7,7 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams, 
   // Pagination setup
   $scope.pagination = {
     pageSize: 20,
+    startRange : 0,
     predicates: [],
     pageItems: function() {},
     textFilter: '',

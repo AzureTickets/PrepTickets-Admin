@@ -87,38 +87,47 @@ azureTicketsApp
                       reverse = !$scope.reverse[$scope.predicate];
                     }
 
-                    // Current page index
-                    $scope.atPagination.currentPageIndex = 0;
-                    // Initialize the start index of the pagination
-                    $scope.startRange = 0;
+                    $scope.atPagination.results = $filter('orderBy')(
+                        $filter('filter')($scope.data, $scope.atPagination.filteringObj),
+                      predicate, reverse);
+                      
+                    $scope.atPagination.numberOfPages = ($scope.atPagination.results.length % $scope.itemsPerPage) == 0 ? Math
+                        .floor($scope.atPagination.results.length / $scope.itemsPerPage)
+                        : Math.floor($scope.atPagination.results.length
+                            / $scope.itemsPerPage) + 1;
+                      
+                    // Calculate current page index
+                    if (!$scope.atPagination.numberOfPages) {
+                      $scope.atPagination.currentPageIndex = 0;
+                    } else if ($scope.atPagination.currentPageIndex + 1 > $scope.atPagination.numberOfPages) {
+                    	$scope.atPagination.currentPageIndex = $scope.atPagination.numberOfPages - 1;
+                    }
 
                     // First page items
                     // Filter $scope.data directly to get the Angular way of
                     // binding, not attach to any other variables
                     $scope.atPagination.pageItems = function() {
                       return ($filter('orderBy')($filter('filter')($scope.data,
-                          $scope.atPagination.filteringObj), predicate, reverse)).slice(0,
-                          $scope.itemsPerPage);
+                        $scope.atPagination.filteringObj), predicate, reverse)).slice(
+                          $scope.itemsPerPage * $scope.atPagination.currentPageIndex,
+                          $scope.itemsPerPage * ($scope.atPagination.currentPageIndex + 1));
                     };
- 
-                    $scope.atPagination.results = $filter('orderBy')(
-                        $filter('filter')($scope.data, $scope.atPagination.filteringObj),
-                      predicate, reverse);
 
-                    $scope.atPagination.numberOfPages = ($scope.atPagination.results.length % $scope.itemsPerPage) == 0 ? Math
-                        .floor($scope.atPagination.results.length / $scope.itemsPerPage)
-                        : Math.floor($scope.atPagination.results.length
-                            / $scope.itemsPerPage) + 1;
                     $scope.numberOfPagesArrayForm = [];
                     for ( var i = 0; i < $scope.atPagination.numberOfPages; i++) {
                       $scope.numberOfPagesArrayForm.push({
                         index : i
                       });
                     };
+                    
+                    // Calculate the startRange index of the pagination
+                    if ($scope.atPagination.startRange*10*$scope.itemsPerPage > $scope.atPagination.results.length) {
+                    	$scope.atPagination.startRange = Math.ceil($scope.atPagination.results.length / (10*$scope.itemsPerPage)) - 1;
+                    }
 
                     // Displayed pagination
                     $scope.displayedNoP = $scope.numberOfPagesArrayForm.slice(
-                        $scope.startRange, $scope.startRange + 10);
+                        $scope.atPagination.startRange, $scope.atPagination.startRange + 10);
                   };
 
                   // Delegating watchers for filter models
@@ -181,17 +190,17 @@ azureTicketsApp
                   $scope.loadNextPage = function() {
                     // When current page index is not the last one on the
                     // pagination
-                    if ((parseInt($scope.atPagination.currentPageIndex) < $scope.startRange + 10 - 1)
+                    if ((parseInt($scope.atPagination.currentPageIndex) < $scope.atPagination.startRange + 10 - 1)
                         && (parseInt($scope.atPagination.currentPageIndex) < $scope.atPagination.numberOfPages - 1)) {
                       $scope.loadPageContent($scope.atPagination.currentPageIndex + 1 + 1);
                       // When current page index is the last one on the
                       // pagination
-                    } else if ((parseInt($scope.atPagination.currentPageIndex) == $scope.startRange + 10 - 1)
+                    } else if ((parseInt($scope.atPagination.currentPageIndex) == $scope.atPagination.startRange + 10 - 1)
                         && (parseInt($scope.atPagination.currentPageIndex) < $scope.atPagination.numberOfPages - 1)) {
                       $scope.loadPageContent($scope.atPagination.currentPageIndex + 1 + 1);
-                      $scope.startRange += 10;
+                      $scope.atPagination.startRange += 10;
                       $scope.displayedNoP = $scope.numberOfPagesArrayForm
-                          .slice($scope.startRange, $scope.startRange + 10);
+                          .slice($scope.atPagination.startRange, $scope.atPagination.startRange + 10);
                     }
                   };
 
@@ -199,16 +208,16 @@ azureTicketsApp
                   $scope.loadPrePage = function() {
                     // When current page index is not the first one on the
                     // pagination
-                    if (parseInt($scope.atPagination.currentPageIndex) > $scope.startRange) {
+                    if (parseInt($scope.atPagination.currentPageIndex) > $scope.atPagination.startRange) {
                       $scope.loadPageContent($scope.atPagination.currentPageIndex);
                       // When current page index is the first one on the
                       // pagination
-                    } else if (($scope.startRange > 10 - 1)
-                        && (parseInt($scope.atPagination.currentPageIndex) == $scope.startRange)) {
+                    } else if (($scope.atPagination.startRange > 10 - 1)
+                        && (parseInt($scope.atPagination.currentPageIndex) == $scope.atPagination.startRange)) {
                       $scope.loadPageContent($scope.atPagination.currentPageIndex);
-                      $scope.startRange -= 10;
+                      $scope.atPagination.startRange -= 10;
                       $scope.displayedNoP = $scope.numberOfPagesArrayForm
-                          .slice($scope.startRange, $scope.startRange + 10);
+                          .slice($scope.atPagination.startRange, $scope.atPagination.startRange + 10);
                     }
                   };
 

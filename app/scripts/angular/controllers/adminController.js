@@ -16,6 +16,7 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
   // Pagination setup
   $scope.paginationPreRegister = {
     pageSize : 20,
+    startRange : 0,
     predicates : [],
     pageItems : function() {
     },

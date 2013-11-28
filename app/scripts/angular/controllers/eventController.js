@@ -21,6 +21,7 @@ function eventController($scope, $cookieStore, $filter, $modal) {
   // Pagination setup
   $scope.pagination = {
     pageSize : 20,
+    startRange : 0,
     predicates : [],
     pageItems : function() {
     },

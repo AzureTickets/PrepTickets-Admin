@@ -4,8 +4,8 @@ function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
   // pagination setup
   $scope.pagination = {
     pageSize: 20,
+    startRange : 0,
     predicates: ['OrderId', 'Placed', 'Contact.FullName', 'Total.ItemPrice', 'State'],
-    filters: ['OrderId', 'Total.ItemPrice', 'State', 'Placed__Date'],
     pageItems: function() {},
     textFilter: '',
     propFilter: ['OrderId', 'Total.ItemPrice'],
@@ -13,8 +13,7 @@ function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
     sort: function() {},
     currentPageIndex: 0,
     results: [],
-    numberOfPages: 0,
-    advancedSearchScope: {}
+    numberOfPages: 0
   };
   
   // Date range property for searching

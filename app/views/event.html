@@ -164,7 +164,7 @@
 						      <li class="upload-icon"><a href="" ng-click="openMediaLibrary('Event', 'LargeImages')"><i class="fa fa-plus fa-4x"></i></a><br />{{'Common.Text_Add' | t}} {{'Common.Text_LargeImages' | t}}</li>
 		              <li ng-repeat="image in paginationLI.pageItems()" class="image-list">
 		                <a href="" ng-click="previewMedia(image)"><img ng-src="{{image.BaseURL}}{{image.ThumbFile}}" /></a>
-		                <a class="delete-icon" href="" ng-click="unselectImageinList(image, Event.LargeImages)">
+		                <a class="delete-icon" href="" ng-click="unselectImageinList($index + paginationLI.currentPageIndex*paginationLI.pageSize, Event.LargeImages)">
 		                <i class="fa fa-times red"></i></a>
 		              </li>
 		            </ul>
