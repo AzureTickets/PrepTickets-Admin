@@ -106,37 +106,48 @@ azureTicketsApp.factory('modelService', [
           
           return def.promise;
         },
-        associateObjectProp : function(storeKey, model, modelProp, relModel) {
+        updateObjectProp : function(storeKey, model, propName, relModel, remove) {
           var def = $q.defer();
-
-          BWL.Services.ModelService.AddAsync(storeKey, model.Type, model.Key,
-              modelProp, relModel.Type, relModel.Key, function() {
+          
+          if (!angular.isDefined(remove) || !remove) {
+            BWL.Services.ModelService.AddAsync(storeKey, model.Type, model.Key,
+              propName, relModel.Type, relModel.Key, function() {
                 $rootScope.$apply(def.resolve);
               }, function(err) {
                 $rootScope.$apply(function() {
                   def.reject(err);
                 })
               });
+          } else {
+          	BWL.Services.ModelService.RemoveAsync(storeKey, model.Type, model.Key,
+              propName, relModel.Type, relModel.Key, function() {
+                $rootScope.$apply(def.resolve);
+              }, function(err) {
+                $rootScope.$apply(function() {
+                  def.reject(err);
+                })
+              });
+          }
           
           return def.promise;
         },
-        associateList : function(storeKey, model, modelPropNameList) {
+        associateSingleDatatypePropList : function(storeKey, model, propNameList) {
           var def = $q.defer(),
               _this = this;
           
-          if (angular.isArray(modelPropNameList) && modelPropNameList.length) {
+          if (angular.isArray(propNameList) && propNameList.length) {
           	// BWL API seems to have problem with $q.all(promiseArr)
           	// when promiseArr.length > 2
           	// so use this as an alternative method
           	// to addAsync data of a list of properties of the same object
-            var addAsyncPropertiesData = function(i, modelPropNameListLength) {
-              _this.associateObjectProp(storeKey, model, modelPropNameList[i], model[modelPropNameList[i]]).then(
+            var addAsyncPropertiesData = function(i, propNameListLength) {
+              _this.updateObjectProp(storeKey, model, propNameList[i], model[propNameList[i]]).then(
                 function() {
-                  if (i + 1 < modelPropNameListLength) {
-                    addAsyncPropertiesData(i + 1, modelPropNameListLength);
+                  if (i + 1 < propNameListLength) {
+                    addAsyncPropertiesData(i + 1, propNameListLength);
                   }
             	  	
-                  if (i + 1 == modelPropNameListLength) {
+                  if (i + 1 == propNameListLength) {
                     def.resolve();
                   }
                 }, function(err) {
@@ -145,7 +156,85 @@ azureTicketsApp.factory('modelService', [
               )
             }
             
-            addAsyncPropertiesData(0, modelPropNameList.length);
+            addAsyncPropertiesData(0, propNameList.length);
+          }
+          
+          return def.promise;
+        },
+        associateListDataTypeProp : function(storeKey, model, propName) {
+        	var def = $q.defer(),
+              _this = this;
+          
+          if (model[propName] && angular.isArray(model[propName]) && model[propName].length) {
+            var addAsyncPropertyData = function(i, propDataLength) {
+              _this.updateObjectProp(storeKey, model, propName, model[propName][i]).then(
+                function() {
+                  if (i + 1 < propDataLength) {
+                    addAsyncPropertyData(i + 1, propDataLength);
+                  }
+            	  	
+                  if (i + 1 == propDataLength) {
+                    def.resolve();
+                  }
+                }, function(err) {
+                  def.reject(err);
+                }
+              )
+            }
+            
+            addAsyncPropertyData(0, model[propName].length);
+          }
+          
+          return def.promise;
+        },
+        updateListDataTypeProp : function(storeKey, oldModel, newModel, propName) {
+        	var def = $q.defer(),
+              _this = this;
+          
+          var addAsyncPropertyData = function(i, propDataLength) {
+            _this.updateObjectProp(storeKey, newModel, propName, newModel[propName][i]).then(
+              function() {
+                if (i + 1 < propDataLength) {
+                  addAsyncPropertyData(i + 1, propDataLength);
+                }
+            	  
+                if (i + 1 == propDataLength) {
+                  def.resolve();
+                }
+              }, function(err) {
+                def.reject(err);
+              }
+            )
+          }
+          
+          var removeAsyncPropertyData = function(i, propDataLength) {
+            _this.updateObjectProp(storeKey, oldModel, propName, oldModel[propName][i], true).then(
+              function() {
+                if (i + 1 < propDataLength) {
+                  removeAsyncPropertyData(i + 1, propDataLength);
+                }
+            	  
+                if (i + 1 == propDataLength) {
+                  if (angular.isArray(newModel[propName]) && newModel[propName].length) {
+                    addAsyncPropertyData(0, newModel[propName].length);
+                  } else {
+                  	def.resolve();
+                  }
+                }
+              }, function(err) {
+                def.reject(err);
+              }
+            )
+          }
+          
+          if (oldModel[propName] && angular.isArray(oldModel[propName]) && oldModel[propName].length) {
+            removeAsyncPropertyData(0, oldModel[propName].length);
+          } else {
+          	if (newModel[propName] && angular.isArray(newModel[propName]) && newModel[propName].length) {
+          	  addAsyncPropertyData(0, newModel[propName].length);
+          	} else {
+          		def.resolve();
+          	}
           }
           
           return def.promise;

@@ -305,6 +305,7 @@ var CommonResources = {
   Text_Loading : 'Loading...',
   Text_Waiting : 'Please Wait...',
   Text_WaitLoading : 'Please wait, loading...',
+  Text_WaitSaving : 'Please wait, saving...',
   Text_OnlyOutOfStockAccept : 'Only products in stock have been added to your shopping cart',
   Text_EventStartAt : 'Event Starts at',
   Text_EnjoyEvent : "Enjoy the event.",

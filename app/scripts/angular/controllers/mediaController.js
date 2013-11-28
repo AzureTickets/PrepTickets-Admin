@@ -98,7 +98,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   $scope.selectImages = function($index) {
   	if (angular.isDefined($index)) {
   		if (BWL.ModelMeta[$scope.mediaLibModelName] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty].indexOf('List') > -1) {
-  	    if (angular.isDefined($scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty])) {
+  	    if ($scope[$scope.mediaLibModelName] && $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty]) {
   	    	$scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty].push($scope.images[$index]);
   	    } else {
   	    	$scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty] = [];

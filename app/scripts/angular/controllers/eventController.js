@@ -56,13 +56,16 @@ function eventController($scope, $cookieStore, $filter, $modal) {
     $scope.Event.URI = $scope.Event.Name !== null ? angular
         .lowercase($scope.Event.Name.replace(/[^a-z0-9\-]{1,}/gi, '-')) : '';
   }
-
+  
   $scope.update = function(_event) {
     $scope.Event = angular.copy(_event);
+    // Temporary event to track image changes
+    // This will be used as "old data" to compare
+    $scope._tempEvent = angular.copy(_event);
     $scope.wizardEvent.open = true;
     $scope.wizardEvent.reset();
   }
-
+  
   $scope.create = function() {
     $scope.Event = $scope.model.getInstanceOf('Event');
     $scope.Event.tmpCategories = [];
@@ -261,24 +264,50 @@ function eventController($scope, $cookieStore, $filter, $modal) {
                   	  if ($scope.Event.Image && $scope.Event.Image.Key) {
                   	    imagePropNameList.push('Image');
                   	  }
-                	
+                	    
                   	  if (imagePropNameList.length) {
-                  	    $scope.model.associateList($scope.storeKey, $scope.Event, imagePropNameList).then(
+                  	    $scope.model.associateSingleDatatypePropList($scope.storeKey, $scope.Event, imagePropNameList).then(
                   	      function() {
-                  	      	$scope.wizardEvent.saved = true;
-                  	      	
-                  	      	// Reload list
-                  	      	$scope.init();
+                  	      	if ($scope.Event.LargeImages && angular.isArray($scope.Event.LargeImages) && $scope.Event.LargeImages.length) {
+                  	      		$scope.model.updateListDataTypeProp($scope.storeKey, {}, $scope.Event, 'LargeImages').then(
+                	    	        function() {
+                	    	        	$scope.wizardEvent.saved = true;
+                  	      	      
+                  	          	  // Reload list
+                  	      	      $scope.init();
+                	    	        }, function(err) {
+                	                $scope.error.log(err);
+                	              }
+                	    	      )
+                  	      	} else {
+                  	      	  $scope.wizardEvent.saved = true;
+                  	      	  
+                  	      	  // Reload list
+                  	      	  $scope.init();
+                  	        }
                   	      }, function(err) {
                   	        $scope.error.log(err);
                   	      }
                   	    )
                   	  }
                   	} else {
-                  	  $scope.wizardEvent.saved = true;
-
-                      // Reload list
-                      $scope.init();
+                  	  if ($scope.Event.LargeImages && angular.isArray($scope.Event.LargeImages) && $scope.Event.LargeImages.length) {
+                  	    $scope.model.updateListDataTypeProp($scope.storeKey, {}, $scope.Event, 'LargeImages').then(
+                  	      function() {
+                  	        $scope.wizardEvent.saved = true;
+                  	        
+                  	        // Reload list
+                  	        $scope.init();
+                  	      }, function(err) {
+                  	        $scope.error.log(err);
+                  	      }
+                  	    )
+                  	  } else {
+                  	    $scope.wizardEvent.saved = true;
+                  	    
+                  	    // Reload list
+                  	    $scope.init();
+                  	  }
                   	}
                   }, function(err) {
                     $scope.error.log(err)
@@ -322,25 +351,49 @@ function eventController($scope, $cookieStore, $filter, $modal) {
                 if ($scope.Event.Icon || $scope.Event.SmallImage || $scope.Event.Image) {
                 	var imagePropNameList = [];
                 	if ($scope.Event.Icon && $scope.Event.Icon.Key) {
-                		imagePropNameList.push('Icon');
+                		if (!angular.isDefined($scope._tempEvent.Icon) || $scope.Event.Icon.Key != $scope._tempEvent.Icon.Key) {
+                		  imagePropNameList.push('Icon');
+                	  }
                 	}
                 	if ($scope.Event.SmallImage && $scope.Event.SmallImage.Key) {
-                		imagePropNameList.push('SmallImage');
+                		if (!angular.isDefined($scope._tempEvent.SmallImage) || $scope.Event.SmallImage.Key != $scope._tempEvent.SmallImage.Key) {
+                		  imagePropNameList.push('SmallImage');
+                	  }
                 	}
                 	if ($scope.Event.Image && $scope.Event.Image.Key) {
-                		imagePropNameList.push('Image');
+                		if (!angular.isDefined($scope._tempEvent.Image) || $scope.Event.Image.Key != $scope._tempEvent.Image.Key) {
+                		  imagePropNameList.push('Image');
+                	  }
                 	}
                 	
                 	if (imagePropNameList.length) {
-                	  $scope.model.associateList($scope.storeKey, $scope.Event, imagePropNameList).then(
-                	    _finishes,
-                	    function(err) {
+                	  $scope.model.associateSingleDatatypePropList($scope.storeKey, $scope.Event, imagePropNameList).then(
+                	    function() {
+                	      $scope.model.updateListDataTypeProp($scope.storeKey, $scope._tempEvent, $scope.Event, 'LargeImages').then(
+                	        _finishes,
+                	        function(err) {
+                	          $scope.error.log(err);
+                	        }
+                	      )
+                	    }, function(err) {
                 	      $scope.error.log(err);
                 	    }
                 	  )
+                  } else {
+                  	$scope.model.updateListDataTypeProp($scope.storeKey, $scope._tempEvent, $scope.Event, 'LargeImages').then(
+                  	  _finishes,
+                  	  function(err) {
+                  	    $scope.error.log(err);
+                  	  }
+                  	)
                   }
                 } else {
-                  _finishes();
+                  $scope.model.updateListDataTypeProp($scope.storeKey, $scope._tempEvent, $scope.Event, 'LargeImages').then(
+                    _finishes,
+                    function(err) {
+                      $scope.error.log(err);
+                    }
+                  )
                 }
               }, function(err) {
                 $scope.error.log(err)
@@ -351,25 +404,49 @@ function eventController($scope, $cookieStore, $filter, $modal) {
                 if ($scope.Event.Icon || $scope.Event.SmallImage || $scope.Event.Image) {
                 	var imagePropNameList = [];
                 	if ($scope.Event.Icon && $scope.Event.Icon.Key) {
-                		imagePropNameList.push('Icon');
+                		if (!angular.isDefined($scope._tempEvent.Icon) || $scope.Event.Icon.Key != $scope._tempEvent.Icon.Key) {
+                		  imagePropNameList.push('Icon');
+                	  }
                 	}
                 	if ($scope.Event.SmallImage && $scope.Event.SmallImage.Key) {
-                		imagePropNameList.push('SmallImage');
+                		if (!angular.isDefined($scope._tempEvent.SmallImage) || $scope.Event.SmallImage.Key != $scope._tempEvent.SmallImage.Key) {
+                		  imagePropNameList.push('SmallImage');
+                	  }
                 	}
                 	if ($scope.Event.Image && $scope.Event.Image.Key) {
-                		imagePropNameList.push('Image');
+                		if (!angular.isDefined($scope._tempEvent.Image) || $scope.Event.Image.Key != $scope._tempEvent.Image.Key) {
+                		  imagePropNameList.push('Image');
+                	  }
                 	}
                 	
                 	if (imagePropNameList.length) {
-                	  $scope.model.associateList($scope.storeKey, $scope.Event, imagePropNameList).then(
-                	    _finishes,
-                	    function(err) {
+                	  $scope.model.associateSingleDatatypePropList($scope.storeKey, $scope.Event, imagePropNameList).then(
+                	    function() {
+                	      $scope.model.updateListDataTypeProp($scope.storeKey, $scope._tempEvent, $scope.Event, 'LargeImages').then(
+                	        _finishes,
+                	        function(err) {
+                	          $scope.error.log(err);
+                	        }
+                	      )
+                	    }, function(err) {
                 	      $scope.error.log(err);
                 	    }
                 	  )
+                  } else {
+                  	$scope.model.updateListDataTypeProp($scope.storeKey, $scope._tempEvent, $scope.Event, 'LargeImages').then(
+                  	  _finishes,
+                  	  function(err) {
+                  	    $scope.error.log(err);
+                  	  }
+                  	)
                   }
                 } else {
-                  _finishes();
+                  $scope.model.updateListDataTypeProp($scope.storeKey, $scope._tempEvent, $scope.Event, 'LargeImages').then(
+                    _finishes,
+                    function(err) {
+                      $scope.error.log(err);
+                    }
+                  )
                 }
               }, function(err) {
                 $scope.error.log(err)
