@@ -39,7 +39,9 @@ azureTicketsApp
                   
                   // If $scope.data is undefined
                   // means there's no data
-                  if (!angular.isDefined($scope.data)) {
+                  // For some reason !angular.isDefined($scope.data)
+                  // doesn't work here so use the original comparing methods
+                  if ($scope.data == null || $scope.data == undefined) {
                   	$scope.data = [];
                   }
                   
