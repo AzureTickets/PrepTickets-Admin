@@ -22,6 +22,10 @@
 						<strong>{{ 'Common.Text_Confirm' | t }}</strong>
 					</div>
 				</div>
+				<div class="alert alert-info"
+					ui-if="wizardVenue.finished && !wizardVenue.saved">
+					<i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;{{'Common.Text_WaitSaving' | t}}
+				</div>
 				<div class="alert alert-success"
 					ui-if="wizardVenue.saved && wizardVenue.finished">
 					<strong>{{ 'Common.Text_Congrats' | t }}</strong> {{
@@ -70,7 +74,46 @@
 					
 					<dl class="clearfix">
 					  <!-- Media selector -->
-						<dd class="media-selector" ng-controller="mediaController" ng-init="init(); modelName='Place'" ng-include src="'views/elements/store/mediaSelector.html'"></dd>
+					  <dd class="model-image-property" ng-controller="mediaController">
+						  <div class="single-image pull-left">
+						    <span ng-show="!Place.Icon" class="upload-icon"><a href="" ng-click="openMediaLibrary('Place', 'Icon')"><i class="fa fa-plus fa-4x"></i></a><br />{{'Common.Text_Add' | t}} {{'Common.Text_Icon' | t}}</span>
+  				      <a href="" ng-click="previewMedia(Place.Icon)"><img ng-show="Place.Icon" ng-src="{{Place.Icon.BaseURL}}{{Place.Icon.ThumbFile}}" /></a>
+						    <a href="" ng-click="openMediaLibrary('Place', 'Icon')"><span ng-show="Place.Icon" class="label label-warning">{{'Common.Text_Change' | t}}</span></a>
+						    <p class="label label-info">{{'Common.Text_Icon' | t}} (128x128)</p>
+						  </div>
+						  <div class="single-image pull-left">
+						    <span ng-show="!Place.SmallImage" class="upload-icon"><a href="" ng-click="openMediaLibrary('Place', 'SmallImage')"><i class="fa fa-plus fa-4x"></i></a><br />{{'Common.Text_Add' | t}} {{'Common.Text_SmallImage' | t}}</span>
+						    <a href="" ng-click="previewMedia(Place.SmallImage)"><img ng-show="Place.SmallImage" ng-src="{{Place.SmallImage.BaseURL}}{{Place.SmallImage.ThumbFile}}" /></a>
+						    <a href="" ng-click="openMediaLibrary('Place', 'SmallImage')"><span ng-show="Place.SmallImage" class="label label-warning">{{'Common.Text_Change' | t}}</span></a>
+						    <p class="label label-info">{{'Common.Text_SmallImage' | t}} (150x150)</p>
+						  </div>
+						  <div class="single-image pull-left">
+						    <span ng-show="!Place.Image" class="upload-icon"><a href="" ng-click="openMediaLibrary('Place', 'Image')"><i class="fa fa-plus fa-4x"></i></a><br />{{'Common.Text_Add' | t}} {{'Common.Text_Image' | t}}</span>
+						    <a href="" ng-click="previewMedia(Place.Image)"><img ng-show="Place.Image" ng-src="{{Place.Image.BaseURL}}{{Place.Image.ThumbFile}}" /></a>
+						    <a href="" ng-click="openMediaLibrary('Place', 'Image')"><span ng-show="Place.Image" class="label label-warning">{{'Common.Text_Change' | t}}</span></a>
+						    <p class="label label-info">{{'Common.Text_Image' | t}} (320x320)</p>
+						  </div>
+						  <div class="clear"></div>
+						  <div class="list-image">
+						    <ul class="unstyled inline">
+						      <li class="upload-icon"><a href="" ng-click="openMediaLibrary('Place', 'LargeImages')"><i class="fa fa-plus fa-4x"></i></a><br />{{'Common.Text_Add' | t}} {{'Common.Text_LargeImages' | t}}</li>
+		              <li ng-repeat="image in paginationLI.pageItems()" class="image-list">
+		                <a href="" ng-click="previewMedia(image)"><img ng-src="{{image.BaseURL}}{{image.ThumbFile}}" /></a>
+		                <a class="delete-icon" href="" ng-click="unselectImageinList($index + paginationLI.currentPageIndex*paginationLI.pageSize, Place.LargeImages)">
+		                <i class="fa fa-times red"></i></a>
+		              </li>
+		            </ul>
+		            <div class="clear"></div>
+						    <p class="label label-info">{{'Common.Text_LargeImages' | t}} (500x500)</p>
+						    <div ng-show="paginationLI.results.length > 5">
+						      <ng-pagination class="pull-right"
+						        pagination-data="paginationLI"
+						        page-size="5"
+						        data="Place.LargeImages">
+						      </ng-pagination>
+						    </div>
+						  </div>
+						</dd>
 					  
 						<dd class="pull-left">
 							<a ng-show="wizardVenue.currentStep>1"
