@@ -37,6 +37,12 @@ azureTicketsApp
                     $scope.atPagination.propFilter = '';
                   }
                   
+                  // If $scope.data is undefined
+                  // means there's no data
+                  if (!angular.isDefined($scope.data)) {
+                  	$scope.data = [];
+                  }
+                  
                   if (angular.isArray($scope.atPagination.propFilter)) {
                   	for (var i = 0; i < $scope.atPagination.propFilter.length; i++) {
                   		$scope.atPagination.filteringObj[$scope.atPagination.propFilter[i]] = '';
@@ -90,7 +96,7 @@ azureTicketsApp
                     $scope.atPagination.results = $filter('orderBy')(
                         $filter('filter')($scope.data, $scope.atPagination.filteringObj),
                       predicate, reverse);
-                      
+                    
                     $scope.atPagination.numberOfPages = ($scope.atPagination.results.length % $scope.itemsPerPage) == 0 ? Math
                         .floor($scope.atPagination.results.length / $scope.itemsPerPage)
                         : Math.floor($scope.atPagination.results.length
@@ -121,8 +127,10 @@ azureTicketsApp
                     };
                     
                     // Calculate the startRange index of the pagination
-                    if ($scope.atPagination.startRange*10*$scope.itemsPerPage > $scope.atPagination.results.length) {
+                    if (angular.isDefined($scope.atPagination.results) && $scope.atPagination.startRange*10*$scope.itemsPerPage > $scope.atPagination.results.length) {
                     	$scope.atPagination.startRange = Math.ceil($scope.atPagination.results.length / (10*$scope.itemsPerPage)) - 1;
+                    } else {
+                    	$scope.atPagination.startRange = 0;
                     }
 
                     // Displayed pagination
