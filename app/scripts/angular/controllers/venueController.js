@@ -171,7 +171,7 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
             })
       } else {
         var _updateAddress = function(place) {
-          $scope.geo.updateAddress02($scope.storeKey, place.Address).then(function(ret) {
+          $scope.geo.updateAddress(place.Address).then(function(ret) {
             $scope.wizardVenue.saved = true;
 
             // reload list
