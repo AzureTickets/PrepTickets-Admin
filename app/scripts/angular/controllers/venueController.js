@@ -21,6 +21,8 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
     results : [],
     numberOfPages : 0
   };
+  // Largeimages property pagination
+  $scope.paginationLI = angular.copy($scope.pagination);
   
   $scope.$watch('wizardVenue.open', function(v) {
     if (v) {
@@ -100,60 +102,139 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
           Name : $scope.Place.Name,
           Description : $scope.Place.Description,
           Address : $scope.Place.Address
-        };
-
+        }
+        
         $scope.place.createPlace($scope.storeKey, newPlace).then(
             function(placeKey) {
               if (angular.isString(placeKey)) {
                 $scope.Place.Key = placeKey;
-
-                if ($scope.Place.Image && $scope.Place.Image.Key) {
-                  $scope.model.associate($scope.Place, 'Image',
-                      $scope.Place.Image).then(function() {
-                    $scope.wizardVenue.saved = true;
-
-                    // reload list
-                    $scope.init();
-                  }, function(err) {
-                    $scope.error.log(err)
-                  })
+                
+                if ($scope.Place.Icon || $scope.Place.SmallImage || $scope.Place.Image) {
+                  var imagePropNameList = [];
+                  if ($scope.Place.Icon && $scope.Place.Icon.Key) {
+                    imagePropNameList.push('Icon');
+                  }
+                  if ($scope.Place.SmallImage && $scope.Place.SmallImage.Key) {
+                    imagePropNameList.push('SmallImage');
+                  }
+                  if ($scope.Place.Image && $scope.Place.Image.Key) {
+                    imagePropNameList.push('Image');
+                  }
+                	    
+                  if (imagePropNameList.length) {
+                    $scope.model.associateSingleDatatypePropList($scope.storeKey, $scope.Place, imagePropNameList).then(
+                      function() {
+                        if ($scope.Place.LargeImages && angular.isArray($scope.Place.LargeImages) && $scope.Place.LargeImages.length) {
+                          $scope.model.updateListDataTypeProp($scope.storeKey, {}, $scope.Place, 'LargeImages').then(
+                            function() {
+                              $scope.wizardVenue.saved = true;
+                              
+                              // Reload list
+                              $scope.init();
+                            }, function(err) {
+                              $scope.error.log(err);
+                            }
+                          )
+                        } else {
+                          $scope.wizardVenue.saved = true;
+                          
+                          // Reload list
+                          $scope.init();
+                        }
+                      }, function(err) {
+                        $scope.error.log(err);
+                      }
+                    )
+                  }
                 } else {
-                  $scope.wizardVenue.saved = true;
-
-                  // reload list
-                  $scope.init();
+                  if ($scope.Place.LargeImages && angular.isArray($scope.Place.LargeImages) && $scope.Place.LargeImages.length) {
+                    $scope.model.updateListDataTypeProp($scope.storeKey, {}, $scope.Place, 'LargeImages').then(
+                      function() {
+                        $scope.wizardVenue.saved = true;
+                        
+                        // Reload list
+                        $scope.init();
+                      }, function(err) {
+                        $scope.error.log(err);
+                      }
+                    )
+                  } else {
+                    $scope.wizardVenue.saved = true;
+                    
+                    // Reload list
+                    $scope.init();
+                  }
                 }
               }
             }, function(err) {
               $scope.error.log(err)
-            });
+            })
       } else {
         var _updateAddress = function(place) {
-          $scope.geo.updateAddress(place.Address).then(function(ret) {
+          $scope.geo.updateAddress02($scope.storeKey, place.Address).then(function(ret) {
             $scope.wizardVenue.saved = true;
 
             // reload list
             $scope.init();
           }, function(err) {
-            $scope.error.log(err)
+            $scope.error.log(err);
           });
         }
 
         // update place
         $scope.place.updatePlace($scope.storeKey, $scope.Place).then(
-            function(place) {
-              if ($scope.Place.Image && $scope.Place.Image.Key) {
-                $scope.model.associate($scope.Place, 'Image',
-                    $scope.Place.Image).then(function() {
-                  _updateAddress(place);
-                }, function(err) {
-                  $scope.error.log(err)
-                })
-              } else {
-                _updateAddress(place);
+          function(place) {
+            if ($scope.Place.Icon || $scope.Place.SmallImage || $scope.Place.Image) {
+              var imagePropNameList = [];
+              if ($scope.Place.Icon && $scope.Place.Icon.Key) {
+                if (!angular.isDefined($scope._tempPlace.Icon) || $scope.Place.Icon.Key != $scope._tempPlace.Icon.Key) {
+                  imagePropNameList.push('Icon');
+                }
               }
-
-            });
+              if ($scope.Place.SmallImage && $scope.Place.SmallImage.Key) {
+                if (!angular.isDefined($scope._tempPlace.SmallImage) || $scope.Place.SmallImage.Key != $scope._tempPlace.SmallImage.Key) {
+                  imagePropNameList.push('SmallImage');
+                }
+              }
+              if ($scope.Place.Image && $scope.Place.Image.Key) {
+                if (!angular.isDefined($scope._tempPlace.Image) || $scope.Place.Image.Key != $scope._tempPlace.Image.Key) {
+                  imagePropNameList.push('Image');
+                }
+              }
+              
+              if (imagePropNameList.length) {
+                $scope.model.associateSingleDatatypePropList($scope.storeKey, $scope.Place, imagePropNameList).then(
+                  function() {
+                    $scope.model.updateListDataTypeProp($scope.storeKey, $scope._tempPlace, $scope.Place, 'LargeImages').then(
+                      _updateAddress(place),
+                      function(err) {
+                        $scope.error.log(err);
+                      }
+                    )
+                  }, function(err) {
+                    $scope.error.log(err);
+                  }
+                )
+              } else {
+                $scope.model.updateListDataTypeProp($scope.storeKey, $scope._tempPlace, $scope.Place, 'LargeImages').then(
+                  _updateAddress(place),
+                  function(err) {
+                    $scope.error.log(err);
+                  }
+                )
+              }
+            } else {
+              $scope.model.updateListDataTypeProp($scope.storeKey, $scope._tempPlace, $scope.Place, 'LargeImages').then(
+                _updateAddress(place),
+                function(err) {
+                  $scope.error.log(err);
+                }
+              )
+            }
+          }, function(err) {
+            $scope.error.log(err);
+          }
+        );
       }
     }
   }
