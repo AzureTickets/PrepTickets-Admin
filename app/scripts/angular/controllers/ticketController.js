@@ -5,6 +5,23 @@ function ticketController($scope, $cookieStore, $filter, $routeParams,
   // initialize wizard for GeneralAdmissionTicketItemInfo
   $scope.wizardTicket = $scope.form.getWizard($scope);
   $scope.wizardPricingTier = $scope.form.getWizard($scope);
+  
+  // Largeimages property pagination setup
+  $scope.paginationLI = {
+    pageSize : 5,
+    startRange : 0,
+    predicates : [],
+    pageItems : function() {
+    },
+    textFilter : '',
+    propFilter : '*',
+    filteringObj : {},
+    sort : function() {
+    },
+    currentPageIndex : 0,
+    results : [],
+    numberOfPages : 0
+  }
 
   $scope.$watch('wizardTicket.open', function(v) {
     if (v) {
@@ -76,10 +93,16 @@ function ticketController($scope, $cookieStore, $filter, $routeParams,
   $scope.update = function(isPricingTier, ticket) {
     if (!isPricingTier) {
       $scope.GeneralAdmissionTicketItemInfo = angular.copy(ticket);
+      // Temporary Ticket to track image changes
+      $scope._tempGeneralAdmissionTicketItemInfo = angular.copy(ticket);
+      
       $scope.wizardTicket.open = true;
       $scope.wizardTicket.reset();
     } else {
       $scope.PricingTier = angular.copy(ticket);
+      // Temporary PricingTier to track image changes
+      $scope._tempPricingTier = angular.copy(ticket);
+      
       $scope.wizardPricingTier.open = true;
       $scope.wizardPricingTier.reset();
     }
@@ -136,6 +159,11 @@ function ticketController($scope, $cookieStore, $filter, $routeParams,
       delete $scope.PricingTier.Price.Display;
       delete $scope.PricingTier.Price.Type;
       delete $scope.PricingTier.PricingTiers;
+      // Remove inherited images
+      delete $scope.PricingTier.Icon;
+      delete $scope.PricingTier.SmallImage;
+      delete $scope.PricingTier.Image;
+      delete $scope.PricingTier.LargeImages;
 
       $scope.GeneralAdmissionTicketItemInfo.Stock = 0;
 
@@ -175,12 +203,16 @@ function ticketController($scope, $cookieStore, $filter, $routeParams,
 
       var ticketType = isPricingTier ? 'PricingTier'
           : BWL.Model.GeneralAdmissionTicketItemInfo.Type;
+      var _tempTicket = isPricingTier ? '_tempPricingTier'
+          : '_tempGeneralAdmissionTicketItemInfo';
+      var wizardType = isPricingTier ? 'wizardPricingTier'
+          : 'wizardTicket';
 
-      // format price
+      // Format price
       $scope[ticketType].Price.ItemPrice = parseFloat($scope[ticketType].Price.ItemPrice);
 
       if ($scope[ticketType].Key === null) {
-        // go on and create
+        // Go on and create
         $scope.ticket.createTicket($scope.storeKey, {
           Public : true,
           Name : $scope[ticketType].Name,
@@ -192,76 +224,334 @@ function ticketController($scope, $cookieStore, $filter, $routeParams,
           OnSaleDateTimeEnd : $scope[ticketType].OnSaleDateTimeEnd,
           CustomURI : {
             URI : $scope[ticketType].URI
-          },
+          }
         }).then(
-            function(ticketKey) {
-              if (!isPricingTier) {
-                // attach ticket to current event
-                $scope.event
-                    .addTicket($scope.storeKey, $scope.Event, ticketKey).then(
+          function(ticketKey) {
+          	// Add Key to addAsync images to ticket or pricingTier
+          	$scope[ticketType].Key = ticketKey;
+          	
+            if (!isPricingTier) {
+              // Attach ticket to current event
+              $scope.event.addTicket($scope.storeKey, $scope.Event, ticketKey).then(
+                function() {
+                  if ($scope[ticketType].Icon || $scope[ticketType].SmallImage || $scope[ticketType].Image) {
+                    var imagePropNameList = [];
+                    if ($scope[ticketType].Icon && $scope[ticketType].Icon.Key) {
+                      imagePropNameList.push('Icon');
+                    }
+                    if ($scope[ticketType].SmallImage && $scope[ticketType].SmallImage.Key) {
+                      imagePropNameList.push('SmallImage');
+                    }
+                    if ($scope[ticketType].Image && $scope[ticketType].Image.Key) {
+                      imagePropNameList.push('Image');
+                    }
+                	    
+                    if (imagePropNameList.length) {
+                      $scope.model.associateSingleDatatypePropList($scope.storeKey, $scope[ticketType], imagePropNameList).then(
                         function() {
-                          $scope[ticketType].Key = ticketKey;
-
-                          // update stock (inventory)
-                          $scope.ticket.updateStock($scope.storeKey,
-                              $scope[ticketType]).then(
+                          if ($scope[ticketType].LargeImages && angular.isArray($scope[ticketType].LargeImages) && $scope[ticketType].LargeImages.length) {
+                            $scope.model.updateListDataTypeProp($scope.storeKey, {}, $scope[ticketType], 'LargeImages').then(
+                              function() {
+                                // Update stock (inventory)
+                                $scope.ticket.updateStock($scope.storeKey, $scope[ticketType]).then(
+                                  function() {
+                                    $scope.wizardTicket.saved = true;
+                                    
+                                    // Refresh Event.Items
+                                    $scope.event.initEvent($scope.storeKey, $scope.Event.Key).then(
+                                      function(event) {
+                                        $scope.Event = event;
+                                        
+                                        // Reload list
+                                        $scope.init(false);
+                                      }, function(err) {
+                                        $scope.error.log(err);
+                                      }
+                                    )
+                                  }, function(err) {
+                                    $scope.error.log(err);
+                                  }
+                                )
+                              }, function(err) {
+                                $scope.error.log(err);
+                              }
+                            )
+                          } else {
+                            // Update stock (inventory)
+                            $scope.ticket.updateStock($scope.storeKey, $scope[ticketType]).then(
                               function() {
                                 $scope.wizardTicket.saved = true;
-
-                                // refresh Event.Items
-                                $scope.event.initEvent($scope.storeKey,
-                                    $scope.Event.Key).then(function(event) {
+                                
+                                // Refresh Event.Items
+                                $scope.event.initEvent($scope.storeKey, $scope.Event.Key).then(
+                                  function(event) {
+                                    $scope.Event = event;
+                                    
+                                    // Reload list
+                                    $scope.init(false);
+                                  }, function(err) {
+                                    $scope.error.log(err);
+                                  }
+                                )
+                              }, function(err) {
+                                $scope.error.log(err);
+                              }
+                            )
+                          }
+                        }, function(err) {
+                          $scope.error.log(err);
+                        }
+                      )
+                    }
+                  } else {
+                    if ($scope[ticketType].LargeImages && angular.isArray($scope[ticketType].LargeImages) && $scope[ticketType].LargeImages.length) {
+                      $scope.model.updateListDataTypeProp($scope.storeKey, {}, $scope[ticketType], 'LargeImages').then(
+                        function() {
+                          // Update stock (inventory)
+                          $scope.ticket.updateStock($scope.storeKey, $scope[ticketType]).then(
+                            function() {
+                              $scope.wizardTicket.saved = true;
+                              
+                              // Refresh Event.Items
+                              $scope.event.initEvent($scope.storeKey, $scope.Event.Key).then(
+                                function(event) {
                                   $scope.Event = event;
-                                  // reload list
+                                  
+                                  // Reload list
                                   $scope.init(false);
                                 }, function(err) {
-                                  $scope.error.log(err)
-                                })
-                              }, function(err) {
-                                $scope.error.log(err)
-                              });
+                                  $scope.error.log(err);
+                                }
+                              )
+                            }, function(err) {
+                              $scope.error.log(err);
+                            }
+                          )
                         }, function(err) {
-                          $scope.error.log(err)
-                        });
-              } else {
-                // add PricingTier to parent ticket
-                BWL.Services.ModelService.AddAsync($scope.Store.Key,
-                    BWL.Model.GeneralAdmissionTicketItemInfo.Type,
-                    $scope.GeneralAdmissionTicketItemInfo.Key, 'PricingTiers',
-                    BWL.Model.GeneralAdmissionTicketItemInfo.Type, {
-                      Key : ticketKey
-                    }, function(ret) {
-                      $scope.wizardPricingTier.saved = true;
-
-                      // reload list
-                      $scope.init(false);
-                    }, function(err) {
-                      $scope.error.log(err)
-                    });
-              }
-            }, function(err) {
-              $scope.error.log(err)
-            });
+                          $scope.error.log(err);
+                        }
+                      )
+                    } else {
+                      // Update stock (inventory)
+                      $scope.ticket.updateStock($scope.storeKey, $scope[ticketType]).then(
+                        function() {
+                          $scope.wizardTicket.saved = true;
+                          
+                          // Refresh Event.Items
+                          $scope.event.initEvent($scope.storeKey, $scope.Event.Key).then(
+                            function(event) {
+                              $scope.Event = event;
+                              
+                              // Reload list
+                              $scope.init(false);
+                            }, function(err) {
+                              $scope.error.log(err);
+                            }
+                          )
+                        }, function(err) {
+                          $scope.error.log(err);
+                        }
+                      )
+                    }
+                  }
+                }, function(err) {
+                  $scope.error.log(err);
+                }
+              )
+            } else {
+            	if ($scope[ticketType].Icon || $scope[ticketType].SmallImage || $scope[ticketType].Image) {
+            	  var imagePropNameList = [];
+            	  if ($scope[ticketType].Icon && $scope[ticketType].Icon.Key) {
+            	    imagePropNameList.push('Icon');
+            	  }
+            	  if ($scope[ticketType].SmallImage && $scope[ticketType].SmallImage.Key) {
+            	    imagePropNameList.push('SmallImage');
+            	  }
+            	  if ($scope[ticketType].Image && $scope[ticketType].Image.Key) {
+            	    imagePropNameList.push('Image');
+            	  }
+            	  
+            	  if (imagePropNameList.length) {
+            	    $scope.model.associateSingleDatatypePropList($scope.storeKey, $scope[ticketType], imagePropNameList).then(
+            	      function() {
+            	        if ($scope[ticketType].LargeImages && angular.isArray($scope[ticketType].LargeImages) && $scope[ticketType].LargeImages.length) {
+            	          $scope.model.updateListDataTypeProp($scope.storeKey, {}, $scope[ticketType], 'LargeImages').then(
+            	            function() {
+            	              // Add PricingTier to parent ticket
+            	              BWL.Services.ModelService.AddAsync($scope.Store.Key,
+            	                BWL.Model.GeneralAdmissionTicketItemInfo.Type,
+            	                $scope.GeneralAdmissionTicketItemInfo.Key, 'PricingTiers',
+            	                BWL.Model.GeneralAdmissionTicketItemInfo.Type, {
+            	                  Key : ticketKey
+            	                }, function(ret) {
+            	                  $scope.wizardPricingTier.saved = true;
+            	                  
+            	                  // Reload list
+            	                  $scope.init(false);
+            	                }, function(err) {
+            	                  $scope.error.log(err);
+            	                }
+            	              )
+            	            }, function(err) {
+            	              $scope.error.log(err);
+            	            }
+            	          )
+            	        } else {
+            	          // Add PricingTier to parent ticket
+            	          BWL.Services.ModelService.AddAsync($scope.Store.Key,
+            	            BWL.Model.GeneralAdmissionTicketItemInfo.Type,
+            	            $scope.GeneralAdmissionTicketItemInfo.Key, 'PricingTiers',
+            	            BWL.Model.GeneralAdmissionTicketItemInfo.Type, {
+            	              Key : ticketKey
+            	            }, function(ret) {
+            	              $scope.wizardPricingTier.saved = true;
+            	              
+            	              // Reload list
+            	              $scope.init(false);
+            	            }, function(err) {
+            	              $scope.error.log(err);
+            	            }
+            	          )
+            	        }
+            	      }, function(err) {
+            	        $scope.error.log(err);
+            	      }
+            	    )
+            	  }
+            	} else {
+            	  if ($scope[ticketType].LargeImages && angular.isArray($scope[ticketType].LargeImages) && $scope[ticketType].LargeImages.length) {
+            	    $scope.model.updateListDataTypeProp($scope.storeKey, {}, $scope[ticketType], 'LargeImages').then(
+            	      function() {
+            	        // Add PricingTier to parent ticket
+            	        BWL.Services.ModelService.AddAsync($scope.Store.Key,
+            	          BWL.Model.GeneralAdmissionTicketItemInfo.Type,
+            	          $scope.GeneralAdmissionTicketItemInfo.Key, 'PricingTiers',
+            	          BWL.Model.GeneralAdmissionTicketItemInfo.Type, {
+            	            Key : ticketKey
+            	          }, function(ret) {
+            	            $scope.wizardPricingTier.saved = true;
+            	            
+            	            // Reload list
+            	            $scope.init(false);
+            	          }, function(err) {
+            	            $scope.error.log(err);
+            	          }
+            	        )
+            	      }, function(err) {
+            	        $scope.error.log(err);
+            	      }
+            	    )
+            	  } else {
+            	    // Add PricingTier to parent ticket
+            	    BWL.Services.ModelService.AddAsync($scope.Store.Key,
+            	      BWL.Model.GeneralAdmissionTicketItemInfo.Type,
+            	      $scope.GeneralAdmissionTicketItemInfo.Key, 'PricingTiers',
+            	      BWL.Model.GeneralAdmissionTicketItemInfo.Type, {
+            	        Key : ticketKey
+            	      }, function(ret) {
+            	        $scope.wizardPricingTier.saved = true;
+            	        
+            	        // Reload list
+            	        $scope.init(false);
+            	      }, function(err) {
+            	        $scope.error.log(err);
+            	      }
+            	    )
+            	  }
+            	}
+            }
+          }, function(err) {
+            $scope.error.log(err)
+          }
+        )
       } else {
-        // update ticket
+        // Update ticket
         $scope.ticket.updateTicket($scope.storeKey, $scope[ticketType]).then(
-            function() {
-              // update stock (inventory)
-              $scope.ticket.updateStock($scope.storeKey, $scope[ticketType])
-                  .then(
-                      function() {
-                        var wizardType = isPricingTier ? 'wizardPricingTier'
-                            : 'wizardTicket';
-                        $scope[wizardType].saved = true;
-
-                        // reload list
-                        $scope.init(false);
-                      }, function(err) {
-                        $scope.error.log(err)
-                      });
-            }, function(err) {
-              $scope.error.log(err)
-            });
+          function() {
+          	if ($scope[ticketType].Icon || $scope[ticketType].SmallImage || $scope[ticketType].Image) {
+          	  var imagePropNameList = [];
+          	  if ($scope[ticketType].Icon && $scope[ticketType].Icon.Key) {
+          	    if (!angular.isDefined($scope[_tempTicket].Icon) || $scope[ticketType].Icon.Key != $scope[_tempTicket].Icon.Key) {
+          	      imagePropNameList.push('Icon');
+          	    }
+          	  }
+          	  if ($scope[ticketType].SmallImage && $scope[ticketType].SmallImage.Key) {
+          	    if (!angular.isDefined($scope[_tempTicket].SmallImage) || $scope[ticketType].SmallImage.Key != $scope[_tempTicket].SmallImage.Key) {
+          	      imagePropNameList.push('SmallImage');
+          	    }
+          	  }
+          	  if ($scope[ticketType].Image && $scope[ticketType].Image.Key) {
+          	    if (!angular.isDefined($scope[_tempTicket].Image) || $scope[ticketType].Image.Key != $scope[_tempTicket].Image.Key) {
+          	      imagePropNameList.push('Image');
+          	    }
+          	  }
+          	  
+          	  if (imagePropNameList.length) {
+          	    $scope.model.associateSingleDatatypePropList($scope.storeKey, $scope[ticketType], imagePropNameList).then(
+          	      function() {
+          	        $scope.model.updateListDataTypeProp($scope.storeKey, $scope[_tempTicket], $scope[ticketType], 'LargeImages').then(
+          	          function() {
+          	            // Update stock (inventory)
+          	            $scope.ticket.updateStock($scope.storeKey, $scope[ticketType]).then(
+          	              function() {
+          	                $scope[wizardType].saved = true;
+          	                
+          	                // Reload list
+          	                $scope.init(false);
+          	              }, function(err) {
+          	                $scope.error.log(err);
+          	              }
+          	            )
+          	          }, function(err) {
+          	            $scope.error.log(err);
+          	          }
+          	        )
+          	      }, function(err) {
+          	        $scope.error.log(err);
+          	      }
+          	    )
+          	  } else {
+          	    $scope.model.updateListDataTypeProp($scope.storeKey, $scope[_tempTicket], $scope[ticketType], 'LargeImages').then(
+          	      function() {
+          	        // Update stock (inventory)
+          	        $scope.ticket.updateStock($scope.storeKey, $scope[ticketType]).then(
+          	          function() {
+          	            $scope[wizardType].saved = true;
+          	            
+          	            // Reload list
+          	            $scope.init(false);
+          	          }, function(err) {
+          	            $scope.error.log(err);
+          	          }
+          	        )
+          	      }, function(err) {
+          	        $scope.error.log(err);
+          	      }
+          	    )
+          	  }
+          	} else {
+          	  $scope.model.updateListDataTypeProp($scope.storeKey, $scope[_tempTicket], $scope[ticketType], 'LargeImages').then(
+          	    function() {
+          	      // Update stock (inventory)
+          	      $scope.ticket.updateStock($scope.storeKey, $scope[ticketType]).then(
+          	        function() {
+          	          $scope[wizardType].saved = true;
+          	          
+          	          // Reload list
+          	          $scope.init(false);
+          	        }, function(err) {
+          	          $scope.error.log(err);
+          	        }
+          	      )
+          	    }, function(err) {
+          	      $scope.error.log(err);
+          	    }
+          	  )
+          	}
+          }, function(err) {
+            $scope.error.log(err);
+          }
+        )
       }
     }
   }

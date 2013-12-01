@@ -34,7 +34,6 @@ function eventController($scope, $cookieStore, $filter, $modal) {
     results : [],
     numberOfPages : 0
   }
-  
   // Largeimages property pagination
   $scope.paginationLI = angular.copy($scope.pagination);
   

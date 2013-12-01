@@ -17,6 +17,10 @@
 				<strong>{{ 'Common.Text_Confirm' | t }}</strong>
 			</div>
 		</div>
+		<div class="alert alert-info"
+		  ui-if="wizardPricingTier.finished && !wizardPricingTier.saved">
+		  <i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;{{'Common.Text_WaitSaving' | t}}
+		</div>
 		<div class="alert alert-success"
 			ui-if="wizardPricingTier.saved && wizardPricingTier.finished">
 			<strong>{{ 'Common.Text_Congrats' | t }}</strong> {{
@@ -118,10 +122,69 @@
 				</dd>
 			</dl>
 		</form>
+		<form ng-show="wizardPricingTier.currentStep == 4" name="atPricingTier4"
+					ng-submit="wizardPricingTier.next('atPricingTier4')">
+					
+					<dl class="clearfix">
+					  <!-- Media selector -->
+					  <dd class="model-image-property" ng-controller="mediaController">
+						  <div class="single-image pull-left">
+						    <span ng-show="!PricingTier.Icon" class="upload-icon"><a href="" ng-click="openMediaLibrary('PricingTier', 'Icon', 'GeneralAdmissionTicketItemInfo')"><i class="fa fa-plus fa-4x"></i></a><br />{{'Common.Text_Add' | t}} {{'Common.Text_Icon' | t}}</span>
+  				      <a href="" ng-click="previewMedia(PricingTier.Icon)"><img ng-show="PricingTier.Icon" ng-src="{{PricingTier.Icon.BaseURL}}{{PricingTier.Icon.ThumbFile}}" /></a>
+						    <a href="" ng-click="openMediaLibrary('PricingTier', 'Icon', 'GeneralAdmissionTicketItemInfo')"><span ng-show="PricingTier.Icon" class="label label-warning">{{'Common.Text_Change' | t}}</span></a>
+						    <p class="label label-info">{{'Common.Text_Icon' | t}} (128x128)</p>
+						  </div>
+						  <div class="single-image pull-left">
+						    <span ng-show="!PricingTier.SmallImage" class="upload-icon"><a href="" ng-click="openMediaLibrary('PricingTier', 'SmallImage', 'GeneralAdmissionTicketItemInfo')"><i class="fa fa-plus fa-4x"></i></a><br />{{'Common.Text_Add' | t}} {{'Common.Text_SmallImage' | t}}</span>
+						    <a href="" ng-click="previewMedia(PricingTier.SmallImage)"><img ng-show="PricingTier.SmallImage" ng-src="{{PricingTier.SmallImage.BaseURL}}{{PricingTier.SmallImage.ThumbFile}}" /></a>
+						    <a href="" ng-click="openMediaLibrary('PricingTier', 'SmallImage', 'GeneralAdmissionTicketItemInfo')"><span ng-show="PricingTier.SmallImage" class="label label-warning">{{'Common.Text_Change' | t}}</span></a>
+						    <p class="label label-info">{{'Common.Text_SmallImage' | t}} (150x150)</p>
+						  </div>
+						  <div class="single-image pull-left">
+						    <span ng-show="!PricingTier.Image" class="upload-icon"><a href="" ng-click="openMediaLibrary('PricingTier', 'Image', 'GeneralAdmissionTicketItemInfo')"><i class="fa fa-plus fa-4x"></i></a><br />{{'Common.Text_Add' | t}} {{'Common.Text_Image' | t}}</span>
+						    <a href="" ng-click="previewMedia(PricingTier.Image)"><img ng-show="PricingTier.Image" ng-src="{{PricingTier.Image.BaseURL}}{{PricingTier.Image.ThumbFile}}" /></a>
+						    <a href="" ng-click="openMediaLibrary('PricingTier', 'Image', 'GeneralAdmissionTicketItemInfo')"><span ng-show="PricingTier.Image" class="label label-warning">{{'Common.Text_Change' | t}}</span></a>
+						    <p class="label label-info">{{'Common.Text_Image' | t}} (320x320)</p>
+						  </div>
+						  <div class="clear"></div>
+						  <div class="list-image">
+						    <ul class="unstyled inline">
+						      <li class="upload-icon"><a href="" ng-click="openMediaLibrary('PricingTier', 'LargeImages', 'GeneralAdmissionTicketItemInfo')"><i class="fa fa-plus fa-4x"></i></a><br />{{'Common.Text_Add' | t}} {{'Common.Text_LargeImages' | t}}</li>
+		              <li ng-repeat="image in paginationLI.pageItems()" class="image-list">
+		                <a href="" ng-click="previewMedia(image)"><img ng-src="{{image.BaseURL}}{{image.ThumbFile}}" /></a>
+		                <a class="delete-icon" href="" ng-click="unselectImageinList($index + paginationLI.currentPageIndex*paginationLI.pageSize, PricingTier.LargeImages)">
+		                <i class="fa fa-times red"></i></a>
+		              </li>
+		            </ul>
+		            <div class="clear"></div>
+						    <p class="label label-info">{{'Common.Text_LargeImages' | t}} (500x500)</p>
+						    <div ng-show="paginationLI.results.length > 5">
+						      <ng-pagination class="pull-right"
+						        pagination-data="paginationLI"
+						        page-size="5"
+						        data="PricingTier.LargeImages">
+						      </ng-pagination>
+						    </div>
+						  </div>
+						</dd>
+					  
+						<dd class="pull-left">
+							<a ng-show="wizardPricingTier.currentStep>1"
+								ng-click="wizardPricingTier.currentStep = wizardPricingTier.currentStep-1"
+								class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
+						</dd>
+						<dd class="pull-left">
+							<input type="submit" class="btn btn-primary clear"
+								value="{{
+		 							'Common.Text_Next' | t }}" />
+						</dd>
+					</dl>
+					
+		</form>
 		<form
-			ui-if="wizardPricingTier.currentStep == 4 && !wizardPricingTier.saved"
+			ui-if="wizardPricingTier.currentStep == 5 && !wizardPricingTier.saved"
 			name="atPricingTier3"
-			ng-submit="wizardPricingTier.next('atPricingTier4', true)">
+			ng-submit="wizardPricingTier.next('atPricingTier5', true)">
 			<dl>
 				<dd class="clear row-fluid">
 					<!-- ticket details -->

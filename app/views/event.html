@@ -139,6 +139,7 @@
 					ng-submit="wizardEvent.next('atEvent4')">
 					
 					<dl class="clearfix">
+					  <!-- Media selector -->
 						<dd class="model-image-property" ng-controller="mediaController">
 						  <div class="single-image pull-left">
 						    <span ng-show="!Event.Icon" class="upload-icon"><a href="" ng-click="openMediaLibrary('Event', 'Icon')"><i class="fa fa-plus fa-4x"></i></a><br />{{'Common.Text_Add' | t}} {{'Common.Text_Icon' | t}}</span>
