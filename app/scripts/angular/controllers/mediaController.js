@@ -88,9 +88,15 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
     }
   })
   
-  $scope.openMediaLibrary = function(modelName, modelProperty) {
+  $scope.openMediaLibrary = function(modelName, modelProperty, BWLModelNameforChecking) {
   	$scope.mediaLibModelName = modelName;
   	$scope.mediaLibModelProperty = modelProperty;
+  	
+  	if (angular.isDefined(BWLModelNameforChecking)) {
+  		$scope.BWLModelNameforChecking = BWLModelNameforChecking;
+  	} else {
+  		$scope.BWLModelNameforChecking = modelName;
+  	}
   	
     $scope.wizardMediaLibrary.open = true;
     $scope.wizardMediaLibrary.reset();
@@ -98,14 +104,14 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   
   $scope.selectImages = function($index) {
   	if (angular.isDefined($index)) {
-  		if (BWL.ModelMeta[$scope.mediaLibModelName] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty].indexOf('List') > -1) {
+  		if (BWL.ModelMeta[$scope.BWLModelNameforChecking] && BWL.ModelMeta[$scope.BWLModelNameforChecking][$scope.mediaLibModelProperty] && BWL.ModelMeta[$scope.BWLModelNameforChecking][$scope.mediaLibModelProperty].indexOf('List') > -1) {
   	    if ($scope[$scope.mediaLibModelName] && $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty]) {
   	    	$scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty].push($scope.images[$index]);
   	    } else {
   	    	$scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty] = [];
   	    	$scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty].push($scope.images[$index]);
   	    }
-  	  } else if (BWL.ModelMeta[$scope.mediaLibModelName] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty]) {
+  	  } else if (BWL.ModelMeta[$scope.BWLModelNameforChecking] && BWL.ModelMeta[$scope.BWLModelNameforChecking][$scope.mediaLibModelProperty]) {
   	  	$scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty] = $scope.images[$index];
   	  }
     }
@@ -116,7 +122,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   }
   
   $scope.checkSelected = function(image) {
-  	if (BWL.ModelMeta[$scope.mediaLibModelName] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty].indexOf('List') > -1) {
+  	if (BWL.ModelMeta[$scope.BWLModelNameforChecking] && BWL.ModelMeta[$scope.BWLModelNameforChecking][$scope.mediaLibModelProperty] && BWL.ModelMeta[$scope.BWLModelNameforChecking][$scope.mediaLibModelProperty].indexOf('List') > -1) {
   		if ($scope[$scope.mediaLibModelName] && $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty] && angular.isArray($scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty]) && $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty].length) {
   			for (var i = 0; i < $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty].length; i++) {
   				if (image.Key == $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty][i].Key) {
@@ -127,7 +133,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   		} else {
   			return false;
   		}
-  	} else if (BWL.ModelMeta[$scope.mediaLibModelName] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty]) {
+  	} else if (BWL.ModelMeta[$scope.BWLModelNameforChecking] && BWL.ModelMeta[$scope.BWLModelNameforChecking][$scope.mediaLibModelProperty]) {
   		if ($scope[$scope.mediaLibModelName] && $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty] && $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty].Key == image.Key) {
   			return true;
   		} else {
@@ -139,7 +145,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   }
   
   $scope.getSelectedImageName = function() {
-  	if (BWL.ModelMeta[$scope.mediaLibModelName] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty].indexOf('List') > -1) {
+  	if (BWL.ModelMeta[$scope.BWLModelNameforChecking] && BWL.ModelMeta[$scope.BWLModelNameforChecking][$scope.mediaLibModelProperty] && BWL.ModelMeta[$scope.BWLModelNameforChecking][$scope.mediaLibModelProperty].indexOf('List') > -1) {
   		if ($scope[$scope.mediaLibModelName] && $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty] && angular.isArray($scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty]) && $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty].length) {
   			var imageNames = '';
   			
@@ -154,7 +160,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   		} else {
   			return '';
   		}
-  	} else if (BWL.ModelMeta[$scope.mediaLibModelName] && BWL.ModelMeta[$scope.mediaLibModelName][$scope.mediaLibModelProperty]) {
+  	} else if (BWL.ModelMeta[$scope.BWLModelNameforChecking] && BWL.ModelMeta[$scope.BWLModelNameforChecking][$scope.mediaLibModelProperty]) {
   		if ($scope[$scope.mediaLibModelName] && $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty]) {
   			return $scope[$scope.mediaLibModelName][$scope.mediaLibModelProperty].Name;
   		} else {
