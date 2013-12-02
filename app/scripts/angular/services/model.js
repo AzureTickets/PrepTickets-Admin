@@ -238,6 +238,24 @@ azureTicketsApp.factory('modelService', [
           }
           
           return def.promise;
+        },
+        checkUniqueURI : function(storeKey, URI) {
+        	var def = $q.defer();
+        	
+        	BWL.Services.StoreService.FindCustomURIInfoFromURIAsync(
+        	  storeKey, URI,
+        	  function(returnedURI) {
+        	  	$rootScope.$apply(function() {
+        	  	  def.resolve(returnedURI);
+        	    })
+        	  }, function(err) {
+        	  	$rootScope.$apply(function() {
+        	  	  def.reject(err);
+        	  	})
+        	  }
+        	)
+        	
+        	return def.promise;
         }
       }
     } ]);
