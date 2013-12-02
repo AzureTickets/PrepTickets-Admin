@@ -38,12 +38,24 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
   }
 
   $scope.setURI = function() {
-    $scope.Category.URI = $scope.Category.Name !== null ? angular
+    $scope.Category.URI = $scope.Category.Name != null ? angular
         .lowercase($scope.Category.Name.replace(/[^a-z0-9\-]{1,}/gi, '-')) : '';
+    
+    /*if ($scope.Category.URI) {
+    	modelService.checkUniqueURI($scope.storeKey, $scope.Category.URI).then(
+    	  function(unique) {
+    	    $scope.uniqueURI = unique;
+    	  }, function() {
+    	    $scope.error.log(err);
+    	  }
+    	)
+    }*/
   }
 
   $scope.update = function(_category) {
     $scope.Category = angular.copy(_category);
+    $scope.Category.URI = _category.CustomURI.URI;
+    
     $scope.wizardCategory.open = true;
     $scope.wizardCategory.reset();
   }
@@ -155,7 +167,7 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
         });
       } else {
         // update category
-
+        
         // update child categories
         var _finishes = function() {
           $scope.category.deleteChildCategories($scope.storeKey,

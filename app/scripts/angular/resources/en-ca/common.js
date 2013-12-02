@@ -14,6 +14,8 @@ var CommonResources = {
   Text_HideAdvancedSearch : 'Hide Advanced Search',
   Text_ValidationErrors : 'Some errors were found while processing your request. Please review and resend.',
   Text_RequiredField : 'The field {0} is required',
+  Text_IsRequired : ' is required!',
+  Text_InUsed : ' already in use!',
   Text_AddRecipient : 'Add Recipient',
   Text_Sendemail : 'Send email',
   Text_Submit : 'Submit',

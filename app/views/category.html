@@ -29,11 +29,22 @@
 				<!-- form -->
 				<ng-form ui-if="Category" name="atCategory" ng-submit="save()">
 				<form ui-if="wizardCategory.currentStep == 1" name="atCategory1"
-					ng-submit="wizardCategory.next('atCategory1')">
+					ng-submit="atCategory1.$valid && wizardCategory.next('atCategory1')">
 					<dl class="clearfix">
 						<dd>
-							<atfield at-required class="input-xxlarge" ng-model="Category.Name"
-								label="'Common.Text_Name' | t" ng-change="setURI()" />
+							<label>{{'Common.Text_Name' | t}}</label>
+              <input name="Category_Name"
+                class="input-xlarge" type="text"
+                placeholder="{{'Common.Text_Name' | t}}" ng-model="Category.Name"
+                check-uniqueuri
+                ng-change="setURI()"
+                required />
+              <span class="help-block alert alert-error" ng-show="atCategory1.Category_Name.$dirty && atCategory1.Category_Name.$error.uniqueURI">
+							  {{'Common.LabelCategoryName' | t}}{{'Common.Text_InUsed' | t}}
+							</span>
+							<span class="help-block alert alert-error" ng-show="atCategory1.Category_Name.$dirty && atCategory1.Category_Name.$error.required">
+							  {{'Common.LabelCategoryName' | t}}{{'Common.Text_IsRequired' | t}}
+							</span>
 						</dd>
 						<dd>
 							<atfield autocomplete="off" at-required ng-readonly="true"
@@ -41,7 +52,7 @@
 								label="'Common.Text_CustomURI' | t"></atfield>
 						</dd>
 						<dd>
-							<input type="submit" class="btn btn-primary clear"
+							<input type="submit" class="btn btn-primary clear" ng-dis
 								value="{{
 							'Common.Text_Next' | t }}" />
 						</dd>
