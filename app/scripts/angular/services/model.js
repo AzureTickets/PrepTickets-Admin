@@ -256,6 +256,24 @@ azureTicketsApp.factory('modelService', [
         	)
         	
         	return def.promise;
+        },
+        updateCustomURI : function(storeKey, CustomURI) {
+        	var def = $q.defer();
+        	
+        	BWL.Services.ModelService.UpdateAsync(storeKey,
+        	  BWL.Model.CustomURI.Type, CustomURI.Key, CustomURI,
+        	  function(returnedCustomURI) {
+        	    $rootScope.$apply(function() {
+        	      def.resolve(returnedCustomURI);
+        	    })
+        	  }, function(err) {
+        	    $rootScope.$apply(function() {
+        	      def.reject(err);
+        	    })
+        	  }
+        	)
+        	
+        	return def.promise;
         }
       }
     } ]);

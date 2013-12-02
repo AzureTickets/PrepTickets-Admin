@@ -21,6 +21,10 @@
 						<strong>{{ 'Common.Text_Confirm' | t }}</strong>
 					</div>
 				</div>
+				<div class="alert alert-info"
+					ui-if="wizardCategory.finished && !wizardCategory.saved">
+					<i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;{{'Common.Text_WaitSaving' | t}}
+				</div>
 				<div class="alert alert-success"
 					ui-if="wizardCategory.saved && wizardCategory.finished">
 					<strong>{{ 'Common.Text_Congrats' | t }}</strong> {{

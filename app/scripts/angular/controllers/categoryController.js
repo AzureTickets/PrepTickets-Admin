@@ -40,21 +40,13 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
   $scope.setURI = function() {
     $scope.Category.URI = $scope.Category.Name != null ? angular
         .lowercase($scope.Category.Name.replace(/[^a-z0-9\-]{1,}/gi, '-')) : '';
-    
-    /*if ($scope.Category.URI) {
-    	modelService.checkUniqueURI($scope.storeKey, $scope.Category.URI).then(
-    	  function(unique) {
-    	    $scope.uniqueURI = unique;
-    	  }, function() {
-    	    $scope.error.log(err);
-    	  }
-    	)
-    }*/
   }
 
   $scope.update = function(_category) {
     $scope.Category = angular.copy(_category);
     $scope.Category.URI = _category.CustomURI.URI;
+    // Temporary Category to track URI changes
+    $scope._tempCat = angular.copy(_category);
     
     $scope.wizardCategory.open = true;
     $scope.wizardCategory.reset();
@@ -166,9 +158,8 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
           $scope.error.log(err)
         });
       } else {
-        // update category
-        
-        // update child categories
+        // Update category
+        // Update child categories
         var _finishes = function() {
           $scope.category.deleteChildCategories($scope.storeKey,
               $scope.Category).then(
@@ -184,11 +175,25 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
                 $scope.error.log(err)
               });
         }
-
+        
         $scope.category.updateCategory($scope.storeKey, $scope.Category).then(
-            _finishes, function(err) {
-              $scope.error.log(err)
-            });
+          function() {
+            if ($scope._tempCat.CustomURI.URI != $scope.Category.URI) {
+            	$scope._tempCat.CustomURI.URI = $scope.Category.URI;
+            	
+            	$scope.model.updateCustomURI($scope.storeKey, $scope._tempCat.CustomURI).then(
+            	  _finishes,
+            	  function(err) {
+            	  	$scope.error.log(err);
+            	  }
+            	)
+            } else {
+              _finishes();
+            }
+          }, function(err) {
+            $scope.error.log(err);
+          }
+        )
       }
     }
   }
