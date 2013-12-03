@@ -40,11 +40,14 @@
               <input name="Category_Name"
                 class="input-xlarge" type="text"
                 placeholder="{{'Common.Text_Name' | t}}" ng-model="Category.Name"
-                check-uniqueuri
+                check-uniqueuri="Category"
                 ng-change="setURI()"
                 required />
+              <span class="help-block alert alert-info" ng-show="atCategory1.Category_Name.$dirty && atCategory1.Category_Name.$error.startGettingURI">
+							  <i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;{{'Common.Text_Checking' | t}} {{'Common.LabelCategoryName' | t}}
+							</span>
               <span class="help-block alert alert-error" ng-show="atCategory1.Category_Name.$dirty && atCategory1.Category_Name.$error.uniqueURI">
-							  {{'Common.LabelCategoryName' | t}}{{'Common.Text_InUsed' | t}}
+							  {{'Common.Text_ThisNameInUsed' | t}}
 							</span>
 							<span class="help-block alert alert-error" ng-show="atCategory1.Category_Name.$dirty && atCategory1.Category_Name.$error.required">
 							  {{'Common.LabelCategoryName' | t}}{{'Common.Text_IsRequired' | t}}
@@ -56,7 +59,7 @@
 								label="'Common.Text_CustomURI' | t"></atfield>
 						</dd>
 						<dd>
-							<input type="submit" class="btn btn-primary clear" ng-dis
+							<input type="submit" class="btn btn-primary clear"
 								value="{{
 							'Common.Text_Next' | t }}" />
 						</dd>
