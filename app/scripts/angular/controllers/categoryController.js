@@ -41,12 +41,15 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
     $scope.Category.URI = $scope.Category.Name != null ? angular
         .lowercase($scope.Category.Name.replace(/[^a-z0-9\-]{1,}/gi, '-')) : '';
   }
-
+  
   $scope.update = function(_category) {
     $scope.Category = angular.copy(_category);
-    $scope.Category.URI = _category.CustomURI.URI;
-    // Temporary Category to track URI changes
+    $scope.Category.URI = _category.CustomURI ? _category.CustomURI.URI : '';
+    // Temporary Category to track URI and image changes
     $scope._tempCat = angular.copy(_category);
+    
+    $scope.getParentCategories(_category);
+    $scope.Category.ParentCategoryKey = $scope.parentCategories[$scope.workingCategoryParentIndex];
     
     $scope.wizardCategory.open = true;
     $scope.wizardCategory.reset();
@@ -54,11 +57,39 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
 
   $scope.create = function() {
     $scope.Category = $scope.model.getInstanceOf('Category');
+    
+    // This is for "Parent Category" field
+    $scope.getParentCategories();
+    $scope.Category.ParentCategoryKey = $scope.parentCategories[$scope.workingCategoryParentIndex];
+    
     $scope.Category.tmpChildCategories = [];
     $scope.Category._tmpChildCategories = angular
         .copy($scope.Category.tmpChildCategories);
     $scope.wizardCategory.open = true;
     $scope.wizardCategory.reset();
+  }
+  
+  // Retrieve categories for "Parent Category" select field
+  $scope.getParentCategories = function(workingCategory) {
+  	var categoryList = [{Name: 'Main (no parent)', Key: ''}]
+  	    workingCategoryParentIndex = 0;
+  	// If updating a new category
+  	if (workingCategory && workingCategory.Key) {
+  		angular.forEach($scope.categories, function(category, cateIndex) {
+  		  if (workingCategory.Key != category.Key) {
+  		  	categoryList.push(category);
+  		  }
+  		  if (workingCategory.ParentCategoryKey == category.Key) {
+  		  	workingCategoryParentIndex = cateIndex + 1;
+  		  }
+  	  })
+  	// Or creating a new one
+  	} else {
+  		categoryList = categoryList.concat($scope.categories);
+  	}
+  	
+  	$scope.parentCategories = categoryList;
+  	$scope.workingCategoryParentIndex = workingCategoryParentIndex;
   }
 
   $scope.deleteCategory = function(category) {
@@ -201,7 +232,7 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
   // Generate based stage URL for categories
   $scope.generateFrontEndLink = function() {
     if ($scope.Store.URI) {
-      return $scope.config.appStage + '/#/' + $scope.Store.URI + '/';
+      return $scope.config.appStage + '#/' + $scope.Store.URI + '/';
     }
   }
 }

@@ -15,7 +15,7 @@
 						<strong>{{ 'Common.Text_CategoryInformation' | t }}</strong>
 					</div>
 					<div class="alert alert-info" ng-switch-when="2">
-						<strong>{{ 'Common.Text_ChildCategories' | t }}</strong>
+						<strong>{{ 'Common.Text_ParentCategory' | t }}</strong>
 					</div>
 					<div class="alert alert-info" ng-switch-when="3">
 						<strong>{{ 'Common.Text_Confirm' | t }}</strong>
@@ -69,12 +69,17 @@
 					ng-submit="wizardCategory.next('atCategory2')">
 					<dl class="clearfix">
 						<dd>
-							<label>{{ 'Common.Text_ChildCategories' | t}}</label>
-							<!-- @todo make this part of the atfield directive -->
+							<!-- @todo make this part of the atfield directive
 							<input type="text" ui-if="Category._tmpChildCategories"
 								data-placeholder="{{ 'Common.Text_ChooseOption' | t}}"
 								ui-select2="optsSelChildCategories" ng-model="Category.tmpChildCategories"
-								name="Category_tmpChildCategories" ng-init="evChildCategories()" />
+								name="Category_tmpChildCategories" ng-init="evChildCategories()" /> -->
+							
+				  		<label>{{ 'Common.Text_ParentCategory' | t}}</label>
+					    <select ng-model="Category.ParentCategoryKey"
+					    	ng-options="cate.Name for cate in parentCategories">
+				    	</select>
+							
 						</dd>
 						<dd class="clear"></dd>
 						<dd class="pull-left">
@@ -93,7 +98,7 @@
 					name="atCategory3" ng-submit="wizardCategory.next('atCategory3', true)">
 					<dl>
 						<dd class="clear row-fluid">
-							<!-- event details -->
+							<!-- Category details -->
 							<atmodel ui-if="Category && Category._tmpChildCategories" ng-model="Category"
 								at-hide-props="DateCreated,DateModified,StoreKey"></atmodel>
 						</dd>
