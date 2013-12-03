@@ -37,11 +37,27 @@
 				<!-- form -->
 				<ng-form ui-if="Event" name="atEvent" ng-submit="save()">
 				<form ui-if="wizardEvent.currentStep == 1" name="atEvent1"
-					ng-submit="wizardEvent.next('atEvent1')">
+					ng-submit="atEvent1.$valid && wizardEvent.next('atEvent1')">
 					<dl class="clearfix">
 						<dd>
-							<atfield at-required class="input-xxlarge" ng-model="Event.Name"
-								label="'Common.Text_EventName' | t" ng-change="setURI()" />
+							<!-- <atfield at-required class="input-xxlarge" ng-model="Event.Name"
+								label="'Common.Text_EventName' | t" ng-change="setURI()" /> -->
+							<label>{{'Common.Text_EventName' | t}}</label>
+              <input name="Event_Name"
+                class="input-xxlarge" type="text"
+                placeholder="{{'Common.Text_Name' | t}}" ng-model="Event.Name"
+                check-uniqueuri="Event"
+                ng-change="setURI()"
+                required />
+              <span class="help-block alert alert-info" ng-show="atEvent1.Event_Name.$dirty && atEvent1.Event_Name.$error.startGettingURI">
+							  <i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;{{'Common.Text_Checking' | t}} {{'Common.Text_EventName' | t}}
+							</span>
+              <span class="help-block alert alert-error" ng-show="atEvent1.Event_Name.$dirty && atEvent1.Event_Name.$error.uniqueURI">
+							  {{'Common.Text_ThisNameInUsed' | t}}
+							</span>
+							<span class="help-block alert alert-error" ng-show="atEvent1.Event_Name.$dirty && atEvent1.Event_Name.$error.required">
+							  {{'Common.Text_EventName' | t}}{{'Common.Text_IsRequired' | t}}
+							</span>
 						</dd>
 						<dd>
 							<atfield class="input-xxlarge" ng-model="Event.Brief"

@@ -56,13 +56,14 @@ function eventController($scope, $cookieStore, $filter, $modal) {
   }
 
   $scope.setURI = function() {
-    $scope.Event.URI = $scope.Event.Name !== null ? angular
+    $scope.Event.URI = $scope.Event.Name != null ? angular
         .lowercase($scope.Event.Name.replace(/[^a-z0-9\-]{1,}/gi, '-')) : '';
   }
   
   $scope.update = function(_event) {
     $scope.Event = angular.copy(_event);
-    // Temporary event to track image changes
+    $scope.Event.URI = _event.CustomURI.URI;
+    // Temporary event to track image and URI changes
     // This will be used as "old data" to compare
     $scope._tempEvent = angular.copy(_event);
     
@@ -325,28 +326,44 @@ function eventController($scope, $cookieStore, $filter, $modal) {
         // update venues & categories
         var _finishes = function() {
           $scope.event.deleteVenues($scope.storeKey, $scope.Event).then(
-              function() {
-                $scope.event.addVenues($scope.storeKey, $scope.Event).then(
+            function() {
+              $scope.event.addVenues($scope.storeKey, $scope.Event).then(
+                function() {
+                  $scope.event.deleteCategories($scope.storeKey, $scope.Event).then(
                     function() {
-                      $scope.event.deleteCategories($scope.storeKey,
-                          $scope.Event).then(
-                          function() {
-                            $scope.event.addCategories($scope.storeKey,
-                                $scope.Event).then(function() {
-                              $scope.wizardEvent.saved = true;
-                              $scope.init();
-                            }, function(err) {
-                              $scope.error.log(err)
-                            });
-                          }, function(err) {
-                            $scope.error.log(err)
-                          });
+                      $scope.event.addCategories($scope.storeKey, $scope.Event).then(
+                        function() {
+                          if ($scope._tempEvent.CustomURI.URI != $scope.Event.URI) {
+                            $scope._tempEvent.CustomURI.URI = $scope.Event.URI;
+                            
+                            $scope.model.updateCustomURI($scope.storeKey, $scope._tempEvent.CustomURI).then(
+                              function() {
+                              	$scope.wizardEvent.saved = true;
+                              	$scope.init();
+                              }, function(err) {
+                                $scope.error.log(err);
+                              }
+                            )
+                          } else {
+                            $scope.wizardEvent.saved = true;
+                            $scope.init();
+                          }
+                        }, function(err) {
+                          $scope.error.log(err);
+                        }
+                      )
                     }, function(err) {
                       $scope.error.log(err)
-                    });
-              }, function(err) {
-                $scope.error.log(err)
-              });
+                    }
+                  )
+                }, function(err) {
+                  $scope.error.log(err);
+                }
+              )
+            }, function(err) {
+              $scope.error.log(err);
+            }
+          )
         }
         
         if (angular.isArray($scope.Event.Items)) {
