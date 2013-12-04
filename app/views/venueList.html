@@ -9,10 +9,10 @@
 		<div class="widget-content" ng-show="venues.length > 0">
 			<table class="table table-bordered table-hover">
 				<thead>
-					<tr>
+					<tr ng-click="pagination.sort('Name')" mousestyle>
 						<th>#</th>
-						<th>Venue Name</th>
-						<th>Location</th>
+						<th>{{ 'Common.Text_VenueName' | t }}</th>
+						<th>{{ 'Common.Text_Location' | t }}</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -21,7 +21,7 @@
 						<td>{{$index + 1 +
 							pagination.currentPageIndex*pagination.pageSize}}</td>
 						<td>{{venue.Name}}</td>
-						<td><span ng-show="venue.Address" class="label">{{
+						<td><span ng-show="venue.Address">{{
 								venue.Address | address }}</span></td>
 					</tr>
 				</tbody>

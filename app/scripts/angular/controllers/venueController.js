@@ -9,7 +9,7 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
   $scope.pagination = {
     pageSize : 20,
     startRange : 0,
-    predicates : [],
+    predicates : ['Name'],
     pageItems : function() {
     },
     textFilter : '',
