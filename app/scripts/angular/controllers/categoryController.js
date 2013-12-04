@@ -1,7 +1,7 @@
 function categoryController($scope, $cookieStore, $filter, $modal) {
   $scope.name = 'category';
 
-  // initialize wizard for Category
+  // Initialize wizard for Category
   $scope.wizardCategory = $scope.form.getWizard($scope);
 
   // Pagination setup
@@ -38,16 +38,19 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
   }
 
   $scope.setURI = function() {
-    $scope.Category.URI = $scope.Category.Name != null ? angular
-        .lowercase($scope.Category.Name.replace(/[^a-z0-9\-]{1,}/gi, '-')) : '';
+    $scope.Category.URI = $scope.Category.Name != null
+      ? angular.lowercase($scope.Category.Name.replace(/[^a-z0-9\-]{1,}/gi, '-'))
+      : '';
   }
   
   $scope.update = function(_category) {
     $scope.Category = angular.copy(_category);
+    // This is because the CustomURI may be long-time loaded
     $scope.Category.URI = _category.CustomURI ? _category.CustomURI.URI : '';
     // Temporary Category to track URI and image changes
     $scope._tempCat = angular.copy(_category);
     
+    // Parent category choosing
     $scope.getParentCategories(_category);
     $scope.Category.ParentCategoryKey = $scope.parentCategories[$scope.workingCategoryParentIndex];
     
@@ -62,16 +65,15 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
     $scope.getParentCategories();
     $scope.Category.ParentCategoryKey = $scope.parentCategories[$scope.workingCategoryParentIndex];
     
-    $scope.Category.tmpChildCategories = [];
-    $scope.Category._tmpChildCategories = angular
-        .copy($scope.Category.tmpChildCategories);
+    //$scope.Category.tmpChildCategories = [];
+    //$scope.Category._tmpChildCategories = angular.copy($scope.Category.tmpChildCategories);
     $scope.wizardCategory.open = true;
     $scope.wizardCategory.reset();
   }
   
   // Retrieve categories for "Parent Category" select field
   $scope.getParentCategories = function(workingCategory) {
-  	var categoryList = [{Name: 'Main (no parent)', Key: ''}]
+  	var categoryList = [{Name: $filter('t')('Common.Text_MainNoParent'), Key: '', Type: 'Category'}]
   	    workingCategoryParentIndex = 0;
   	// If updating a new category
   	if (workingCategory && workingCategory.Key) {
@@ -94,13 +96,14 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
 
   $scope.deleteCategory = function(category) {
     if (confirm($filter('t')('Common.Text_RemoveProduct'))) {
-      $scope.category.deleteCategory($scope.storeKey, category.Key).then(
-          function() {
-            $scope.wizardCategory.open = false;
-            $scope.init(true);
-          }, function(err) {
-            $scope.error.log(err)
-          });
+      $scope.category.deleteCategory($scope.storeKey, category).then(
+        function() {
+          $scope.wizardCategory.open = false;
+          $scope.init(true);
+        }, function(err) {
+          $scope.error.log(err);
+        }
+      )
     }
   }
 
@@ -112,7 +115,7 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
   // @todo make this part of the atfield directive
   $scope.evChildCategories = function() {
     var el = jQuery('[name=Category_tmpChildCategories]').first();
-    // watch for changes
+    // Watch for changes
     jQuery(el).on(
         'change',
         function(c) {
@@ -120,12 +123,12 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
             var a = c.added || null;
             var r = c.removed || null;
 
-            // adding child cat
+            // Adding child cat
             if (a !== null) {
               $scope.Category._tmpChildCategories.push($scope.object
                   .undoFormatSelect2(a, BWL.Model.Category.Type));
             }
-            // removing child cat
+            // Removing child cat
             if (r !== null) {
               $scope.object.remove($scope.Category._tmpChildCategories, 'Key',
                   r.id);
@@ -161,52 +164,56 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
     if ($scope.wizardCategory.finished) {
       $scope.wizardCategory.saved = false;
 
-      if ($scope.Category.Key === null) {
-        // go on and create
-        $scope.category.createCategory(
-            $scope.storeKey,
-            {
-              Public : true,
-              Name : $scope.Category.Name,
-              Description : $scope.Category.Description,
-              Brief : $scope.Category.Brief,
-              ChildCategories : $scope.Category._tmpChildCategories
-                  .map(function(v) {
-                    return {
-                      Key : v.Key
-                    }
-                  }),
-              CustomURI : {
-                URI : $scope.Category.URI
-              },
-            }).then(function(categoryKey) {
-          $scope.Category.Key = categoryKey;
-          $scope.wizardCategory.saved = true;
-
-          // reload list
-          $scope.init();
-        }, function(err) {
-          $scope.error.log(err)
-        });
+      if ($scope.Category.Key == null) {
+        // Go on and create
+        $scope.category.createCategory($scope.storeKey,
+          {
+            Public : true,
+            Name : $scope.Category.Name,
+            Description : $scope.Category.Description,
+            Brief : $scope.Category.Brief,
+            ParentCategoryKey : $scope.Category.ParentCategoryKey.Key,
+            CustomURI : {
+              URI : $scope.Category.URI
+            }
+          }
+        ).then(
+          function(categoryKey) {
+            $scope.Category.Key = categoryKey;
+            $scope.wizardCategory.saved = true;
+            
+            // Reload list
+            $scope.init();
+          }, function(err) {
+            $scope.error.log(err);
+          }
+        )
       } else {
-        // Update category
+        // Update existing category
         // Update child categories
         var _finishes = function() {
-          $scope.category.deleteChildCategories($scope.storeKey,
-              $scope.Category).then(
-              function() {
-                $scope.category.addChildCategories($scope.storeKey,
-                    $scope.Category).then(function() {
+          $scope.category.deleteChildCategories($scope.storeKey, $scope.Category).then(
+            function() {
+              $scope.category.addChildCategories($scope.storeKey, $scope.Category).then(
+                function() {
                   $scope.wizardCategory.saved = true;
                   $scope.init();
                 }, function(err) {
-                  $scope.error.log(err)
-                });
-              }, function(err) {
-                $scope.error.log(err)
-              });
+                  $scope.error.log(err);
+                }
+              )
+            }, function(err) {
+              $scope.error.log(err);
+            }
+          )
         }
         
+        // Check if ParentCategoryKey was changed
+        if ($scope._tempCat.ParentCategoryKey != $scope.Category.ParentCategoryKey.Key) {
+        	$scope.Category.ParentCategoryKey = $scope.Category.ParentCategoryKey.Key;
+        }
+        
+        // Start updating
         $scope.category.updateCategory($scope.storeKey, $scope.Category).then(
           function() {
             if ($scope._tempCat.CustomURI.URI != $scope.Category.URI) {

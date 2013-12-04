@@ -78,10 +78,10 @@ azureTicketsApp
                   return def.promise;
                 },
                 createCategory : function(storeKey, category) {
-                  var def = $q.defer(), tmpCategory = angular.copy(category);
-
+                  var def = $q.defer();
+                  
                   BWL.Services.ModelService.CreateAsync(storeKey,
-                      BWL.Model.Category.Type, tmpCategory, function(
+                      BWL.Model.Category.Type, category, function(
                           categoryKey) {
                         $rootScope.$apply(function() {
                           def.resolve(categoryKey)
@@ -94,20 +94,45 @@ azureTicketsApp
 
                   return def.promise;
                 },
-                deleteCategory : function(storeKey, categoryKey) {
+                deleteCategory : function(storeKey, category) {
                   var def = $q.defer();
-
-                  BWL.Services.ModelService.DeleteAsync(storeKey,
-                      BWL.Model.Category.Type, categoryKey, function() {
-                        $rootScope.$apply(function() {
-                          def.resolve()
-                        });
+                  
+                  if (category.CustomURI) {
+                    // Delete CustomURI
+                    BWL.Services.ModelService.DeleteAsync(storeKey,
+                      BWL.Model.CustomURI.Type, category.CustomURI.Key, function() {
+                        //Delete Category
+                        BWL.Services.ModelService.DeleteAsync(storeKey,
+                          BWL.Model.Category.Type, category.Key, function() {
+                            $rootScope.$apply(function() {
+                              def.resolve();
+                            })
+                          }, function(err) {
+                            $rootScope.$apply(function() {
+                              def.reject(err);
+                            })
+                          }
+                        )
                       }, function(err) {
                         $rootScope.$apply(function() {
-                          def.reject(err)
+                          def.reject(err);
                         })
-                      });
-
+                      }
+                    )
+                  } else {
+                  	BWL.Services.ModelService.DeleteAsync(storeKey,
+                  	  BWL.Model.Category.Type, category.Key, function() {
+                  	    $rootScope.$apply(function() {
+                  	      def.resolve();
+                  	    })
+                  	  }, function(err) {
+                  	    $rootScope.$apply(function() {
+                  	      def.reject(err);
+                  	    })
+                  	  }
+                  	)
+                  }
+                  
                   return def.promise;
                 },
                 updateCategory : function(storeKey, category) {

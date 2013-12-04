@@ -138,7 +138,7 @@ azureTicketsApp
                                   break;
                                 case BWL.Model.Category.Type:
                                   out[$filter('t')(
-                                      'Common.Text_ChildCategories')
+                                      'Common.Text_ParentCategory')
                                       + countSuffix] = prop.Name;
                                   break;
                                 case BWL.Model.Price.Type:

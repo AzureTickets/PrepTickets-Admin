@@ -18,7 +18,8 @@
 						<strong>{{ 'Common.Text_ParentCategory' | t }}</strong>
 					</div>
 					<div class="alert alert-info" ng-switch-when="3">
-						<strong>{{ 'Common.Text_Confirm' | t }}</strong>
+						<span ng-show="!Category.Key"><strong>{{ 'Common.Text_ConfirmCreate' | t }} {{ 'Common.Text_Category' | t }}.</strong></span>
+						<span ng-show="Category.Key"><strong>{{ 'Common.Text_Confirm' | t }}</strong></span>
 					</div>
 				</div>
 				<div class="alert alert-info"
@@ -99,7 +100,7 @@
 					<dl>
 						<dd class="clear row-fluid">
 							<!-- Category details -->
-							<atmodel ui-if="Category && Category._tmpChildCategories" ng-model="Category"
+							<atmodel ui-if="Category" ng-model="Category"
 								at-hide-props="DateCreated,DateModified,StoreKey"></atmodel>
 						</dd>
 						<dd class="pull-left">
@@ -108,9 +109,8 @@
 								class="btn btn-primary clear">{{ 'Common.Text_Back' | t }}</a>
 						</dd>
 						<dd class="pull-left">
-							<input type="submit" class="btn btn-success clear"
-								value="{{
-		 							'Common.Text_Save' | t }}" />
+						  <input ng-show="!Category.Key" type="submit" class="btn btn-success clear" value="{{'Common.Text_Create' | t }}" />
+							<input ng-show="Category.Key" type="submit" class="btn btn-success clear" value="{{'Common.Text_Save' | t }}" />
 						</dd>
 					</dl>
 				</form>

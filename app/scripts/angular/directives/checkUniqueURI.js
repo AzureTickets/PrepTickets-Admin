@@ -26,7 +26,7 @@ azureTicketsApp
         	
         	var objToCheckURI = $parse($attr.checkUniqueuri)($scope);
         	// If we are updating an object, get a URI copy for later comparison
-        	if (objToCheckURI && objToCheckURI.Key) {
+        	if (objToCheckURI && objToCheckURI.Key && objToCheckURI.CustomURI) {
         		var oldURI = objToCheckURI.CustomURI.URI;
         	}
         	
