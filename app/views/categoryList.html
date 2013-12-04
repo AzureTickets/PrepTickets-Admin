@@ -8,7 +8,7 @@
 		</div>
 		<div class="widget-content">
 
-			<div ng-show="!pagination.results.length" class="alert alert-info">{{
+			<div ng-show="!categories.length || !pagination.results.length" class="alert alert-info">{{
 				'Common.Text_NoCategory_Msg' | t }}</div>
 			<table class="table table-bordered table-hover"
 				ng-show="categories.length > 0">
