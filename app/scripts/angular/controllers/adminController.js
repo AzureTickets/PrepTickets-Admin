@@ -139,7 +139,8 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
       $scope.emailOk = model.Email === model.ConfirmEmail;
     }
   }
-
+  
+  // Validate password function used in login page
   $scope.validatePasswords = function(model) {
     $scope.passwdOk = model.Password === model.ConfirmPassword;
   }
@@ -365,42 +366,67 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
 
     return ret;
   }
-
+  
+  // Copied account info for accountUpdate.html page
+  $scope.generateAccountInfoForUpdating = function() {
+  	if ($scope.DomainProfile) {
+  		$scope.model.readWithStoreKey($scope.storeKey, BWL.Model.AccountProfile.Type, $scope.DomainProfile.AccessToken.ProviderId, 10).then(
+  		  function(accProfile) {
+  		  	$scope.updatedAccountProfile = accProfile;
+  		  	
+  		  	// Hide the password
+  		  	delete $scope.updatedAccountProfile.PasswordHash;
+  		  	delete accProfile;
+  		  }, function() {
+  		  	$scope.error.log(err);
+  		  }
+  		)
+  	}
+  }
+  
+  // Validate password function used in updateAccount page
+  $scope.validatePasswordUpdateAccount = function(model) {
+    $scope.updatedPasswdOk = model.Password === model.confirmPassword;
+  }
+  
   $scope.updateAccount = function() {
     $scope.error.log(null);
-
-    $scope.DomainProfile.Contact.DateOfBirth = $scope.object.dateToISO8601(
-        $scope.DomainProfile.Contact.DateOfBirth, true)
-    $scope.DomainProfile.Contact.FullName = $scope.DomainProfile.Contact.FirstName
-        + $scope.DomainProfile.Contact.LastName;
-    $scope.DomainProfile.Contact.Gender = parseInt($scope.DomainProfile.Contact.Gender);
-
+    
+    $scope.updatedAccountProfile.DateOfBirth = $scope.object.dateToISO8601(
+      $scope.DomainProfile.Contact.DateOfBirth, true)
+    $scope.updatedAccountProfile.FullName = $scope.updatedAccountProfile.FirstName
+      + $scope.updatedAccountProfile.LastName;
+    $scope.updatedAccountProfile.Gender = parseInt($scope.updatedAccountProfile.Gender);
+    
     var _updateAccount = function() {
-      $scope.model.update(BWL.Model.Contact.Type,
-          $scope.DomainProfile.Contact.Key, $scope.DomainProfile.Contact).then(
-          function() {
-            $scope.updateAccountdOk = true;
-
-            $scope.auth.authenticate($scope, true);
-          }, function(err) {
-            $scope.error.log(err);
-          });
+    	// Remove password properties
+    	delete $scope.updatedAccountProfile.Password;
+    	delete $scope.updatedAccountProfile.confirmPassword;
+    	
+      $scope.model.update(BWL.Model.AccountProfile.Type, $scope.DomainProfile.AccessToken.ProviderId, $scope.updatedAccountProfile).then(
+        function() {
+          $scope.updateAccountdOk = true;
+          $scope.auth.authenticate($scope, true);
+        }, function(err) {
+          $scope.error.log(err);
+        }
+      )
     }
-
-    // password update && acct update
-    if ($scope.DomainProfile.Password && $scope.DomainProfile.ConfirmPassword) {
-      if ($scope.passwdOk) {
+    
+    // Password update && account update
+    if ($scope.updatedAccountProfile.Password && $scope.updatedAccountProfile.confirmPassword) {
+      if ($scope.updatedPasswdOk) {
         $scope.auth.updatePassword({
-          Email : $scope.DomainProfile.Contact.EmailAddress,
-          PasswordHash : BWL.Auth.HashPassword($scope.DomainProfile.Password)
+          Email : $scope.updatedAccountProfile.Email,
+          PasswordHash : BWL.Auth.HashPassword($scope.updatedAccountProfile.Password)
         }).then(_updateAccount, function(err) {
           $scope.error.log(err);
-        });
+        })
       } else {
-        $scope.error.log($filter('t')('Login.labelConfirmPasswordFail'))
+        $scope.validatePasswordUpdateAccount($scope.updatedAccountProfile);
       }
     } else {
-      // account update only
+      // Account update only
       _updateAccount();
     }
   }

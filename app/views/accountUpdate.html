@@ -1,6 +1,6 @@
 <div ng-cloak ui-if="auth.isDomainProfileReady()" class="atPanel">
 	<div ng-include src="'views/elements/error.html'"></div>
-	<div class="container-fluid">
+	<div class="container-fluid" ng-init="generateAccountInfoForUpdating()">
 		<div class="row-fluid">
 			<div class="span12">
 				<!-- Widget starts -->
@@ -8,23 +8,20 @@
 					<div class="widget-head">
 						<i class="fa fa-unlock-alt"></i> {{'Login.labelMyAccount' | t}}
 					</div>
-					<div class="alert alert-success" ng-show="updateAccountdOk"
-						ng-click="updateAccountdOk=false">
-						<button type="button" class="close" data-dismiss="alert"><i class="fa fa-times-circle"></i></button>
-						{{'Login.Text_AccountUpdatedSuccessfully' | t}}
-					</div>
 					<div class="widget-content">
 						<div class="padd">
-							<form name="updateAccountForm" ng-submit="updateAccount()"
+							<form name="updateAccountForm" ng-submit="updateAccountForm.$valid && updateAccount()"
 								ui-if="DomainProfile.Contact || false">
 								<div class="control-group">
 									<atfield at-required class="input-large"
-										ng-model="DomainProfile.Contact.FirstName"
+										ng-model="updatedAccountProfile.FirstName"
+										at-copy="AccountProfile"
 										label="'Login.labelFirstName' | t" />
 								</div>
 								<div class="control-group">
 									<atfield at-required class="input-large"
-										ng-model="DomainProfile.Contact.LastName"
+										ng-model="updatedAccountProfile.LastName"
+										at-copy="AccountProfile"
 										label="'Login.labelLastName' | t" />
 								</div>
 								<div class="control-group">
@@ -33,19 +30,11 @@
 										label="'Common.LabelContactGender' | t" />
 								</div>
 								<div class="control-group">
+									<!-- Do not update email, this is for displaying only -->
 									<atfield readonly at-required class="input-large"
-										ng-model="DomainProfile.Contact.EmailAddress"
+										ng-model="updatedAccountProfile.Email"
+										at-copy="AccountProfile"
 										label="'Common.Text_EmailAddress' | t" />
-								</div>
-								<div class="control-group">
-									<atfield class="input-large"
-										ng-model="DomainProfile.Contact.Phone"
-										label="'Common.LabelContactPhone' | t" />
-								</div>
-								<div class="control-group">
-									<atfield class="input-large"
-										ng-model="DomainProfile.Contact.AlternativePhone"
-										label="'Common.LabelContactAlternativePhone' | t" />
 								</div>
 								<div class="control-group">
 									<atfield class="input-small"
@@ -57,18 +46,32 @@
 									<label class="control-label">{{ 'Login.labelPassword' |
 										t }}</label>
 									<div class="controls">
-										<input type="password" class="input-large"
-											ng-model="DomainProfile.Password" />
+										<input type="password" class="input-large" name="passwordField"
+											ng-model="updatedAccountProfile.Password" />
 									</div>
 								</div>
 								<div class="control-group">
 									<label class="control-label">{{
 										'Login.labelConfirmPassword' | t }}</label>
 									<div class="controls">
-										<input type="password" class="input-large"
-											ng-model="DomainProfile.ConfirmPassword"
-											ng-change="validatePasswords(DomainProfile)"
-											ng-required="DomainProfile.Password || false" />
+										<input type="password" class="input-large" name="confirmPasswordField"
+											ng-model="updatedAccountProfile.confirmPassword"
+											ng-change="validatePasswordUpdateAccount(updatedAccountProfile)"
+											ng-required="updatedAccountProfile.Password || false" />
+										
+										<!-- Password error message -->
+										<span class="help-block alert alert-error"
+											 ng-show="updateAccountForm.passwordField.$dirty && updateAccountForm.confirmPasswordField.$dirty && !updatedPasswdOk"
+											 ng-style="{width: '173px'}">
+											 {{ 'Login.labelConfirmPasswordFail' | t }}
+										</span>
+										<span class="help-block alert alert-success"
+											ng-show="updateAccountdOk"
+				  						ng-click="updateAccountdOk=false"
+				  						ng-style="{width: '173px'}">
+				  						<button type="button" class="close" data-dismiss="alert"><i class="fa fa-times-circle"></i></button>
+				  						{{'Login.Text_AccountUpdatedSuccessfully' | t}}
+										</span>
 									</div>
 								</div>
 								<div class="control-group">
