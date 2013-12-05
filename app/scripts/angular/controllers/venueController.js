@@ -92,8 +92,7 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
       $scope.wizardVenue.saved = false;
 
       if ($scope.Place.Key === null) {
-        // create place
-
+        // Create new place
         // API claims not null properties
         $scope.model.nonNull($scope.Place.Address);
 
@@ -170,18 +169,22 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
               $scope.error.log(err)
             })
       } else {
-        var _updateAddress = function(place) {
-          $scope.geo.updateAddress(place.Address).then(function(ret) {
-            $scope.wizardVenue.saved = true;
-
-            // reload list
-            $scope.init();
-          }, function(err) {
-            $scope.error.log(err);
-          });
+      	// Update existing Place (Venue)
+      	// Function to update Address (remove then add new)
+        var _updateAddress = function(place, oldAddress, newAddress) {
+          $scope.geo.updateAddress($scope.storeKey, place, oldAddress, newAddress).then(
+            function() {
+              $scope.wizardVenue.saved = true;
+              
+              // Reload list
+              $scope.init();
+            }, function(err) {
+              $scope.error.log(err);
+            }
+          )
         }
-
-        // update place
+        
+        // Update place
         $scope.place.updatePlace($scope.storeKey, $scope.Place).then(
           function(place) {
             if ($scope.Place.Icon || $scope.Place.SmallImage || $scope.Place.Image) {
@@ -206,8 +209,9 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
                 $scope.model.associateSingleDatatypePropList($scope.storeKey, $scope.Place, imagePropNameList).then(
                   function() {
                     $scope.model.updateListDataTypeProp($scope.storeKey, $scope._tempPlace, $scope.Place, 'LargeImages').then(
-                      _updateAddress(place),
-                      function(err) {
+                      function() {
+                        _updateAddress(place, $scope._tempPlace.Address, $scope.Place.Address);
+                      }, function(err) {
                         $scope.error.log(err);
                       }
                     )
@@ -217,16 +221,18 @@ function venueController($rootScope, $scope, $timeout, $cookieStore, $filter,
                 )
               } else {
                 $scope.model.updateListDataTypeProp($scope.storeKey, $scope._tempPlace, $scope.Place, 'LargeImages').then(
-                  _updateAddress(place),
-                  function(err) {
+                  function() {
+                    _updateAddress(place, $scope._tempPlace.Address, $scope.Place.Address);
+                  }, function(err) {
                     $scope.error.log(err);
                   }
                 )
               }
             } else {
               $scope.model.updateListDataTypeProp($scope.storeKey, $scope._tempPlace, $scope.Place, 'LargeImages').then(
-                _updateAddress(place),
-                function(err) {
+                function() {
+                  _updateAddress(place, $scope._tempPlace.Address, $scope.Place.Address);
+                }, function(err) {
                   $scope.error.log(err);
                 }
               )

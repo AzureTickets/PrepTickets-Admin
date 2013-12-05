@@ -264,25 +264,64 @@ azureTicketsApp
 
                   return def.promise;
                 },
-                updateAddress : function(address) {
+                // Address is removedOld-addedNew
+                // cannot be updated since it is read-only
+                updateAddress : function(storeKey, place, oldAddress, newAddress) {
                   var def = $q.defer();
-
-                  delete address.tmpHasChanged;
-                  delete address.tmpContinentIso;
-                  modelService.nonNull(address);
-
-                  BWL.Services.ModelService.UpdateAsync(
-                      configService.container.store, BWL.Model.Address.Type,
-                      address.Key, address, function(ret) {
-                        $rootScope.$apply(function() {
-                          def.resolve()
-                        })
-                      }, function(err) {
-                        $rootScope.$apply(function() {
-                          def.reject(err)
-                        })
-                      });
-
+                  
+                  // Clean new Address
+                  // because newAddress may be a copy of oldAddress
+                  delete newAddress.AddressType;
+                  delete newAddress.DateCreated;
+                  delete newAddress.DateModified;
+                  delete newAddress.IsConfirmed;
+                  delete newAddress.Key;
+                  delete newAddress.StoreKey;
+                  delete newAddress.Type;
+                  delete newAddress.tmpHasChanged;
+                  delete newAddress.tmpContinentIso;
+                  modelService.nonNull(newAddress);
+                  
+                  // Remove oldAddress from Place
+                  BWL.Services.ModelService.RemoveAsync(storeKey, BWL.Model.Place.Type, place.Key, 'Address', BWL.Model.Address.Type, oldAddress.Key,
+                    function() {
+                    	// Delete the Address object
+                    	BWL.Services.ModelService.DeleteAsync(storeKey, BWL.Model.Address.Type, oldAddress.Key,
+                    	  function() {
+                    	  	// Create newAddress object
+                    	  	BWL.Services.ModelService.CreateAsync(storeKey, BWL.Model.Address.Type, newAddress,
+                    	  	  function(newAddressKey) {
+                    	  	  	// Add the newAddress to Place
+                    	  	  	BWL.Services.ModelService.AddAsync(storeKey, BWL.Model.Place.Type, place.Key, 'Address', BWL.Model.Address.Type, newAddressKey,
+                    	  	  	  function() {
+                    	  	  	  	$rootScope.$apply(function() {
+                    	  	  	  		def.resolve();
+                    	  	  	  	})
+                    	  	  	  }, function() {
+                    	  	  	  	$rootScope.$apply(function() {
+                    	  	  	  		def.reject(err);
+                    	  	  	  	})
+                    	  	  	  }
+                    	  	  	)
+                    	  	  }, function(err) {
+                    	  	  	$rootScope.$apply(function() {
+                    	  	  		def.reject(err);
+                    	  	  	})
+                    	  	  }
+                    	  	)
+                    	  }, function(err) {
+                    	  	$rootScope.$apply(function() {
+                    	  		def.reject(err);
+                    	  	})
+                    	  }
+                      )
+                    }, function(err) {
+                      $rootScope.$apply(function() {
+                        def.reject(err);
+                      })
+                    }
+                  )
+                  
                   return def.promise;
                 }
               }
