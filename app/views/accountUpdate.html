@@ -14,31 +14,33 @@
 								ui-if="DomainProfile.Contact || false">
 								<div class="control-group">
 									<atfield at-required class="input-large"
-										ng-model="updatedAccountProfile.FirstName"
-										at-copy="AccountProfile"
+										ng-model="copiedContact.FirstName"
+										at-copy="Contact"
 										label="'Login.labelFirstName' | t" />
 								</div>
 								<div class="control-group">
 									<atfield at-required class="input-large"
-										ng-model="updatedAccountProfile.LastName"
-										at-copy="AccountProfile"
+										ng-model="copiedContact.LastName"
+										at-copy="Contact"
 										label="'Login.labelLastName' | t" />
 								</div>
 								<div class="control-group">
 									<atfield at-required class="input-large"
-										ng-model="DomainProfile.Contact.Gender"
+										ng-model="copiedContact.Gender"
+										at-copy="Contact"
 										label="'Common.LabelContactGender' | t" />
 								</div>
 								<div class="control-group">
 									<!-- Do not update email, this is for displaying only -->
 									<atfield readonly at-required class="input-large"
-										ng-model="updatedAccountProfile.Email"
-										at-copy="AccountProfile"
+										ng-model="copiedContact.EmailAddress"
+										at-copy="Contact"
 										label="'Common.Text_EmailAddress' | t" />
 								</div>
 								<div class="control-group">
 									<atfield class="input-small"
-										ng-model="DomainProfile.Contact.DateOfBirth"
+										ng-model="copiedContact.DateOfBirth"
+										at-copy="Contact"
 										label="'Common.Text_DateOfBirth' | t"
 										prepend-btn-ico="fa fa-calendar" no-time-picker />
 								</div>
@@ -47,7 +49,7 @@
 										t }}</label>
 									<div class="controls">
 										<input type="password" class="input-large" name="passwordField"
-											ng-model="updatedAccountProfile.Password" />
+											ng-model="copiedContact.Password" />
 									</div>
 								</div>
 								<div class="control-group">
@@ -55,13 +57,13 @@
 										'Login.labelConfirmPassword' | t }}</label>
 									<div class="controls">
 										<input type="password" class="input-large" name="confirmPasswordField"
-											ng-model="updatedAccountProfile.confirmPassword"
-											ng-change="validatePasswordUpdateAccount(updatedAccountProfile)"
-											ng-required="updatedAccountProfile.Password || false" />
+											ng-model="copiedContact.ConfirmPassword"
+											ng-change="validatePasswords(copiedContact)"
+											ng-required="copiedContact.Password || false" />
 										
 										<!-- Password error message -->
 										<span class="help-block alert alert-error"
-											 ng-show="updateAccountForm.passwordField.$dirty && updateAccountForm.confirmPasswordField.$dirty && !updatedPasswdOk"
+											 ng-show="updateAccountForm.passwordField.$dirty && updateAccountForm.confirmPasswordField.$dirty && !passwdOk"
 											 ng-style="{width: '173px'}">
 											 {{ 'Login.labelConfirmPasswordFail' | t }}
 										</span>
