@@ -1,5 +1,9 @@
 <!-- Page heading -->
-<div ui-if="auth.isDomainProfileReady() && !auth.isPublic()"
+<div ui-if="!finishInitStore" class="alert alert-info" ng-style="{'text-align': 'center'}">
+  <i class="fa fa-spinner fa-spin fa-2x"></i>
+  &nbsp;&nbsp;&nbsp;<span ng-style="{'font-size': '17px'}">{{ 'Common.Text_WaitLoadingShoolData' | t }}</span>
+</div>
+<div ui-if="auth.isDomainProfileReady() && !auth.isPublic() && finishInitStore"
 	class="page-head">
 	<!-- Page heading -->
 	<h2 class="pull-left">

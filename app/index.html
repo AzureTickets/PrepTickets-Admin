@@ -135,7 +135,7 @@
 		<div class="mainbar">
 			<div ng-include src="'views/elements/page_header.html'"></div>
 			<!-- Matter -->
-			<div class="matter">
+			<div class="matter" ui-if="finishInitStore">
 				<div class="container-fluid">
 					<div class="content" ng-cloak ng-view></div>
 				</div>
