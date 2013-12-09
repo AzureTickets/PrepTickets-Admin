@@ -12,22 +12,41 @@ azureTicketsApp
               var _stores = [], _lastAvailableURI = null, _lastCheckedURI = null;
 
               return {
-                listStoresAsync : function(levels) {
+                listStoresAsync : function(superAdmin) {
                   var def = $q.defer();
-
-                  BWL.Services.StoreService.ListStoresAsync(levels, function(
-                      stores) {
-                    _stores = angular.isArray(stores) ? stores : [];
-
-                    $rootScope.$apply(function() {
-                      def.resolve();
-                    });
-                  }, function(err) {
-                    $rootScope.$apply(function() {
-                      def.reject(err)
-                    })
-                  });
-
+                  
+                  // If user is a normal Admin
+                  if (!angular.isDefined(superAdmin) || !superAdmin) {
+                  	BWL.Services.StoreService.ListStoresAsync(1,
+                  	  function(stores) {
+                  	    _stores = angular.isArray(stores) ? stores : [];
+                  	    
+                  	    $rootScope.$apply(function() {
+                  	      def.resolve();
+                  	    })
+                  	  }, function(err) {
+                  	    $rootScope.$apply(function() {
+                  	      def.reject(err);
+                  	    })
+                  	  }
+                  	)
+                  // Or a Super Admin
+                  } else if (superAdmin === true) {
+                  	BWL.Services.ModelService.ListAsync('Store', BWL.Model.Store.Type, 0,
+                  	  function(stores) {
+                  	    _stores = angular.isArray(stores) ? stores : [];
+                  	    
+                  	    $rootScope.$apply(function() {
+                  	      def.resolve();
+                  	    })
+                  	  }, function(err) {
+                  	    $rootScope.$apply(function() {
+                  	      def.reject(err);
+                  	    })
+                  	  }
+                  	)
+                  }
+                  
                   return def.promise;
                 },
                 hasStore : function() {

@@ -62,7 +62,6 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
         });
       }
 
-      $location.path($cookieStore.get($scope.config.cookies.lastPath));
       $cookieStore.put($scope.config.cookies.loggedStatus, true);
 
       // reset store cookie
@@ -373,6 +372,11 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
   		// This is to prevent account name
   		// from changing on every user's click
   		$scope.copiedContact = angular.copy($scope.DomainProfile.Contact);
+  		
+  		// If DateOfBirth is null
+  		if (!$scope.copiedContact.DateOfBirth) {
+  			$scope.copiedContact.DateOfBirth = new Date().getTime();
+  		}
   	}
   }
   

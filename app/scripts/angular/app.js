@@ -11,8 +11,9 @@ var azureTicketsApp = angular.module('azureTicketsApp', [ 'ui',
 var routeFilters = {
   rememberUrl : [ '$location', '$cookieStore', 'configService',
       function($location, $cookieStore, configService) {
-        if (!/\/(login|register|forgot)/.test($location.$$path)) {
-          $cookieStore.put(configService.cookies.lastPath, $location.$$path);
+      	var lastPath = function() { return $location.$$path; };
+        if (!/\/(login|register|forgot)/.test(lastPath()) && $cookieStore.get(configService.cookies.loggedStatus)) {
+          $cookieStore.put(configService.cookies.lastPath, lastPath());
         }
       } ],
   redirectLogin : [
@@ -32,11 +33,11 @@ var routeFilters = {
           $cookieStore.remove(configService.cookies.initPages)
 
           if ((lc === null || !lc) && !isStoreVisitor) {
-            $location.path('/login');
+          	$location.path('/login');
           }
         } else {
-          $cookieStore.remove(configService.cookies.loggedStatus)
-          $cookieStore.put(configService.cookies.initPages, true)
+          $cookieStore.remove(configService.cookies.loggedStatus);
+          $cookieStore.put(configService.cookies.initPages, true);
         }
       } ]
 }
@@ -45,7 +46,7 @@ var routeFilters = {
 azureTicketsApp.config([
     '$routeProvider',
     function($routeProvider) {
-      $routeProvider.when('/', {
+      $routeProvider.when('/dashboard', {
         templateUrl : 'views/dashboard.html',
         controller : adminController,
         resolve : routeFilters
@@ -92,7 +93,7 @@ azureTicketsApp.config([
 
                           $timeout(function() {
                             $rootScope.$apply(function() {
-                              $location.path('/');
+                              $location.path('/login');
                             })
                           }, 250)
                         });
@@ -103,7 +104,7 @@ azureTicketsApp.config([
         controller : frontController,
         resolve : routeFilters
       }).otherwise({
-        redirectTo : '/'
+        redirectTo : '/dashboard'
       }).when('/accountUpdate', {
         templateUrl : 'views/accountUpdate.html',
         controller : adminController,
@@ -174,7 +175,5 @@ azureTicketsApp.config([
         templateUrl : 'views/media.html',
         controller : mediaController,
         resolve : routeFilters
-      }).when('/dashboard', {
-        redirectTo : '/'
       });
     } ]);

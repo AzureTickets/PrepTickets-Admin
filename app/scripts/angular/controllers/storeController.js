@@ -119,58 +119,108 @@ function storeController($scope, $cookieStore, $location, $timeout,
       $scope.wizardPreRegister.reset();
     }
   }
-
+  
   $scope.init = function() {
     $scope.auth.authenticate($scope).then(
-        function() {
-          $scope.DomainProfile = $scope.auth.getDomainProfile();
-
-          // redirect to login if no profile, but allow store visitors
-          if (!angular.isDefined($routeParams.storeURI)
-              && !$scope.auth.isDomainProfileReady()
-              && !$cookieStore.get(configService.cookies.initPages)) {
-            $location.path('/login');
-            return;
+      function() {
+        $scope.DomainProfile = $scope.auth.getDomainProfile();
+        
+        // Redirect to login if no profile, but allow store visitors
+        if (!angular.isDefined($routeParams.storeURI)
+          && !$scope.auth.isDomainProfileReady()
+          && !$cookieStore.get(configService.cookies.initPages)) {
+          	$location.path('/login');
+          	return;
+        }
+        
+        // If we are accessing a store from URI
+        if (angular.isDefined($routeParams.storeURI)) {
+          $scope.store.getStoreKeyByURI($routeParams.storeURI).then(
+            function(storeKey) {
+              $scope.storeURI = $routeParams.storeURI;
+              $scope.$emit('initStore', storeKey);
+            }, function(err) {
+              $scope.error.log(err);
+            }
+          )
+        // Check if user has access to a store and populate list if so
+        } else if ($scope.auth.hasStoreAccess()) {
+          // If user is a normal Administrator
+          var superAdmin = false;
+          
+          // Or is a Super Admin
+          if ($scope.auth.isDomainProfileReady()
+            && $scope.DomainProfile.ProfileRole > 20) {
+            	superAdmin = true;
           }
-
-          // if we are accessing a store from URI
-          if (angular.isDefined($routeParams.storeURI)) {
-            $scope.store.getStoreKeyByURI($routeParams.storeURI).then(
-                function(storeKey) {
-                  $scope.storeURI = $routeParams.storeURI;
-                  $scope.$emit('initStore', storeKey);
-                }, function(err) {
-                  $scope.error.log(err)
-                });
-          } else if ($scope.auth.hasStoreAccess()) {
-            // check if user has access to a store and populate list if so
-            $scope.store.listStoresAsync(1).then(
-                function() {
-                  $scope.stores = $scope.store.getStores();
-
-                  if (!angular.isArray($scope.stores)
-                      || $scope.stores.length === 0) {
-                    // if user has been upgraded but have not yet created a
-                    // store
+          
+          $scope.store.listStoresAsync(superAdmin).then(
+            function() {
+              $scope.stores = $scope.store.getStores();
+              var storeKey = null,
+                  lastPath = function() { return $cookieStore.get($scope.config.cookies.lastPath); };
+              
+              // If users refresh the page or meet a crash then re-login
+              if (lastPath() && lastPath() != '/') {
+              	storeKey = $cookieStore.get($scope.config.cookies.storeKey) || $scope.stores[0].Key;
+                $scope.$emit('initStore', storeKey);
+              	$location.path(lastPath());
+              // Or log in
+              } else {
+              	// If there's no school yet
+                if (!angular.isArray($scope.stores) || $scope.stores.length == 0) {
+                	
+                  // If 20 <= ProfileRole < 100, direct to /storeRequest page
+                  if (!$scope.auth.isAdministrator()) {
                     $location.path('/storeRequest');
                     $scope.requestAccess();
+                    
+                  // If Admin is a Super Admin (ProfileRole == 100)
                   } else {
-                    var storeKey = $cookieStore
-                        .get($scope.config.cookies.storeKey)
-                        || $scope.stores[0].Key;
-                    $scope.$emit('initStore', storeKey);
+                  	$scope.getPendingAccessRequests().then(
+                  	  function() {
+                  	  	// Show "Pending Approvals"
+                  	  	if ($scope.approvals.length) {
+                  	  		$location.path('/approvals');
+                  	  		
+                  	  	// Or if  there's no any Pending Approvals
+                  	  	// this is a "no school, no pending approval" situation
+                  	  	// go to "Create Store"
+                  	  	} else {
+                  	  		$location.path('/store');
+                  	  	}
+                  	  }, function() {
+                  	  	$scope.error.log(err);
+                  	  }
+                  	)
                   }
-                }, function(err) {
-                  $scope.error.log(err)
-                });
-          } else if ($scope.auth.isLogged()) {
-            // let's upgrade user by redirecting to storeRequest page
-            $location.path('/storeRequest');
-            $scope.requestAccess();
-          }
-        }, function(err) {
-          $scope.error.log(err)
-        });
+                  
+                // If there's only one school,
+                // let's choose that school
+                // and bring Admin to school Dashboard
+                } else if ($scope.stores.length == 1) {
+                  storeKey = $scope.stores[0].Key;
+                  $scope.$emit('initStore', storeKey);
+                  $location.path('/dashboard');
+                  
+                // If Admin has more than 1 school
+                } else {
+                  $location.path('/storeList');
+                }
+              }
+            }, function(err) {
+              $scope.error.log(err);
+            }
+          )
+        } else if ($scope.auth.isLogged()) {
+          // Let's upgrade user by redirecting to storeRequest page
+          $location.path('/storeRequest');
+          $scope.requestAccess();
+        }
+      }, function(err) {
+        $scope.error.log(err);
+      }
+    )
   }
 
   $scope.createStore = function() {
@@ -308,67 +358,73 @@ function storeController($scope, $cookieStore, $location, $timeout,
 
   $scope.initStore = function(storeKey, resetWizard) {
     if (storeKey !== null) {
-      $scope.store
-          .initStore(storeKey)
-          .then(
-              function(store, currency) {
-                // reset images library
-                $scope.images = [];
-
-                $scope.Store = store;
-                $scope.Store.tmpPaymentProvider = angular
-                    .isArray($scope.Store.PaymentProviders) ? $scope.Store.PaymentProviders[0]
-                    : null;
-
-                if (resetWizard) {
-                  $scope.wizard.reset();
-                }
-
-                // this API call requires DomainProfile
-                if ($scope.Store.Currency && $scope.Store.Currency !== null
-                    && $scope.auth.isDomainProfileReady()) {
-                  $scope.loadPaymentProvidersByCurrency($scope.Store.Currency);
-                }
-
-                // monitor URI
-                $scope.initStoreURI();
-                $scope.tmpURI = angular.copy($scope.Store.URI); // make copy to
-                // let
-                // us know there
-                // was an URI set
-                // initially (or not)
-
-                // init venues, events, approvals
-                if ($scope.auth.isDomainProfileReady()) {
-                  $scope.media.loadImages($scope)
-                  $scope.getPendingAccessRequests();
-
-                  // always load whole set of events for owners
-                  if ($scope.Store.IsOwner) {
-                    $scope.place.loadPlaces($scope);
-                    $scope.event.loadEvents($scope);
-                  } else if (angular.isDefined($scope.Store.Events)) {
-                    $scope.events = angular.copy($scope.Store.Events);
-                  }
-                } else if (angular.isDefined($scope.Store.Events)) {
-                  $scope.events = angular.copy($scope.Store.Events);
-                }
-
-                // if visitor, then remember visited store
-                if (!$scope.Store.IsOwner) {
-                  if (!angular.isObject($scope.object.grep($scope.stores,
-                      'Key', $scope.Store.Key))) {
-                    $scope.stores.push($scope.Store);
-                  }
-                }
-
-                $scope.storeHasChanged = false;
-              }, function(err) {
-                $scope.error.log(err)
-              });
+    	$scope.finishInitStore = false;
+    	
+    	// Wrap all async calls into a sync function
+    	// so that its following functions can only
+    	// be processed after this function is done
+    	var eload = function(store, currency) {
+        // Reset images library
+        $scope.images = [];
+        
+        $scope.Store = store;
+        $scope.Store.tmpPaymentProvider = angular.isArray($scope.Store.PaymentProviders)
+          ? $scope.Store.PaymentProviders[0]
+          : null;
+        
+        if (resetWizard) {
+          $scope.wizard.reset();
+        }
+        
+        // This API call requires DomainProfile
+        if ($scope.Store.Currency && $scope.Store.Currency !== null
+          && $scope.auth.isDomainProfileReady()) {
+          $scope.loadPaymentProvidersByCurrency($scope.Store.Currency);
+        }
+        
+        // Monitor URI
+        $scope.initStoreURI();
+        // Make copy to let us know
+        // there was an URI set initially (or not)
+        $scope.tmpURI = angular.copy($scope.Store.URI); 
+        
+        // Init venues, events, approvals
+        if ($scope.auth.isDomainProfileReady()) {
+          $scope.media.loadImages($scope);
+          $scope.getPendingAccessRequests();
+          
+          // Always load whole set of events for owners
+          if ($scope.Store.IsOwner) {
+            $scope.place.loadPlaces($scope);
+            $scope.event.loadEvents($scope);
+          } else if (angular.isDefined($scope.Store.Events)) {
+            $scope.events = angular.copy($scope.Store.Events);
+          }
+        } else if (angular.isDefined($scope.Store.Events)) {
+          $scope.events = angular.copy($scope.Store.Events);
+        }
+        
+        // If visitor, then remember visited store
+        if (!$scope.Store.IsOwner) {
+          if (!angular.isObject($scope.object.grep($scope.stores, 'Key', $scope.Store.Key))) {
+            $scope.stores.push($scope.Store);
+          }
+        }
+        
+        $scope.storeHasChanged = false;
+      }
+    	
+      $scope.store.initStore(storeKey).then(
+        function(store, currency) {
+          eload(store, currency);
+          $scope.finishInitStore = true;
+        }, function(err) {
+          $scope.error.log(err);
+        }
+      )
     }
   }
-
+  
   $scope.loadCurrencies = function() {
     $scope.store.getCurrencies().then(function(currencies) {
       var c = [ 'CAD', 'USD', 'EUR', 'GBP' ];
@@ -690,12 +746,12 @@ function storeController($scope, $cookieStore, $location, $timeout,
       $scope.approvals = angular.isArray(pending) ? pending : [];
 
       def.resolve();
-      $scope.error.info(null)
+      $scope.error.info(null);
     }, function(err) {
-      $scope.error.log(err)
-      $scope.error.info(null)
+      $scope.error.log(err);
+      $scope.error.info(null);
 
-      def.reject()
+      def.reject();
     });
 
     return def.promise;
