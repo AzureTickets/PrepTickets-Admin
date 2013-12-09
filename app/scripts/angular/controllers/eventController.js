@@ -82,7 +82,6 @@ function eventController($scope, $cookieStore, $filter, $modal) {
     $scope.Event.MaximumCapacity = 1;
 
     // Default values for event datetime fields
-    // Not complete due to time zone problem with timepicker
     var date = new Date();
     $scope.Event.StartTime = new String(new Date(date.getTime() + 7 * 24 * 60
         * 60 * 1000)).slice(0, 15)

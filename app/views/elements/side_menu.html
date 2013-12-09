@@ -24,7 +24,7 @@
 					ui-route="#/storeList" ng-class="{active: $uiRoute}"><a
 					href="#/storeList">{{ 'Common.Text_SchoolListMenu' | t }}</a></li>
 				<li class="submenu"
-					ui-if="auth.isDomainProfileReady() && approvals && approvals.length > 0"
+					ui-if="auth.isDomainProfileReady() && approvals && approvals.length > 0 && auth.isAdministrator()"
 					ui-route="#/approvals" ng-class="{active: $uiRoute}"><a
 					href="#/approvals">{{ 'Common.Text_Pending_Approvals' | t }}</a></li>
 				<li class="submenu"
@@ -33,7 +33,9 @@
 					href="#/storeRequest" ng-click="requestAccess()">{{
 						'Common.Text_RequestAccess' | t }}</a></li>
 			</ul>
-			<li class="nred" ui-route="#/" ng-class="{active: $uiRoute}"><a
+			<li class="nred"
+				ui-if="auth.isDomainProfileReady() && Store && Store.Key"
+				ui-route="#/" ng-class="{active: $uiRoute}"><a
 				href="#/"><i class="fa fa-fw fa-desktop"></i> {{
 					'Common.Text_DashboardMenu_Dashboard' | t }}</a></li>
 			<li class="nviolet"
