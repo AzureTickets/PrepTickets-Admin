@@ -1,7 +1,7 @@
 function orderController($scope, $cookieStore, $filter, $window, $routeParams) {
   $scope.name = 'order';
   
-  // pagination setup
+  // Pagination setup
   $scope.pagination = {
     pageSize: 20,
     startRange : 0,

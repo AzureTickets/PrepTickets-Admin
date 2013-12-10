@@ -45,7 +45,8 @@
 					'Common.Text_SchoolInfo' | t }}</a></li>
 			<li class="nyellow"
 				ui-if="Store && Store.Key != null && Store.IsOwner || false"
-				ui-route="#/category" ng-class="{active: $uiRoute}"><a
+				ui-route="#/category" ng-class="{active: $uiRoute}"
+				ng-click="changeView('category', true)"><a
 				href="#/category"><i class="fa fa-fw fa-code-fork"></i>{{
 					'Common.Text_Categories' | t }}</a></li>
 			<li class="norange"

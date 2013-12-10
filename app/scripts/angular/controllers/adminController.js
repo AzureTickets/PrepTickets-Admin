@@ -64,18 +64,15 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
 
       $cookieStore.put($scope.config.cookies.loggedStatus, true);
 
-      // reset store cookie
-      $cookieStore.remove($scope.config.cookies.storeKey)
-
       $scope.init();
     }
-
+    
     if (angular.isDefined(provider) && angular.isString(provider)) {
       // login by provider
       $scope.auth.logonByProviderAsync(provider).then(function() {
         _init();
       }, function(err) {
-        $scope.error.log(err)
+        $scope.error.log(err);
       });
     } else {
       // login by account
@@ -85,7 +82,7 @@ function adminController($rootScope, $scope, $location, $window, $cookieStore,
       }).then(function() {
         _init();
       }, function(err) {
-        $scope.error.log(err)
+        $scope.error.log(err);
       });
     }
   }

@@ -65,7 +65,21 @@ function storeController($scope, $cookieStore, $location, $timeout,
     results : [],
     numberOfPages : 0
   };
-
+  
+  // Detail view for objects
+  $scope.detailView = {
+  	category: false
+  }
+  
+  // Change view between list and detail pages
+  $scope.changeView = function(objectName, listView) {
+  	if (!angular.isDefined(listView) || !listView) {
+  		$scope.detailView[objectName] = true;
+  	} else {
+  		$scope.detailView[objectName] = false;
+  	}
+  }
+  
   // initialize wizard for Store
   $scope.wizard = $scope.form.getWizard($scope);
   $scope.wizardPreRegister = $scope.form.getWizard($scope);
