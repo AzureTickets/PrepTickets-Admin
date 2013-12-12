@@ -90,11 +90,13 @@ function categoryController($scope, $cookieStore, $filter, $modal, $timeout) {
   		categoryList = categoryList.concat($scope.categories);
   	}
   	
-  	angular.forEach(categoryList, function(category01, cateIndex01) {
-  		if (workingCategory.ParentCategoryKey == category01.Key) {
-  		  workingCategoryParentIndex = cateIndex01;
-  		}
-  	})
+  	if (workingCategory && workingCategory.Key) {
+  	  angular.forEach(categoryList, function(category01, cateIndex01) {
+  		  if (workingCategory.ParentCategoryKey == category01.Key) {
+  		    workingCategoryParentIndex = cateIndex01;
+  	  	}
+  	  })
+    }
   	
   	$scope.parentCategories = categoryList;
   	$scope.workingCategoryParentIndex = workingCategoryParentIndex;
