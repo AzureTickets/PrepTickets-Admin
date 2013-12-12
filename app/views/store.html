@@ -2,7 +2,7 @@
 	<!-- top menu -->
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- store info update -->
-	<div ui-if="DomainProfile && DomainProfile.Key" class="row-fluid"
+	<div ui-if="DomainProfile && DomainProfile.Key" class="row-fluid detail-view"
 		ng-init="loadCurrencies(); wizard.saved = false; wizard.finished = false">
 		<span ui-if="Store && Store.isNew || Store && Store.IsOwner">
 			<p ng-show="wizard.currentStep>

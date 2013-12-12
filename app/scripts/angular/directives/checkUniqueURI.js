@@ -36,6 +36,7 @@ azureTicketsApp
         	  $scope.$eval(function() {
         	  	// Notify that the system needs to check URI uniqueness
         	  	modelCtrl.$setValidity('finishGettingURI', false);
+        	  	modelCtrl.$setValidity('uniqueURI', true);
         	  	
         	  	// If input is empty
         	  	// Not use 'blur' event for this

@@ -70,9 +70,16 @@ function storeController($scope, $cookieStore, $location, $timeout,
   $scope.detailView = {
   	category: false
   }
+  $scope.detailFormStatus = {
+  	category: { startSaving: false, saved: false }
+  }
   
   // Change view between list and detail pages
   $scope.changeView = function(objectName, listView) {
+  	// Clear form status
+  	$scope.detailFormStatus[objectName].startSaving = false;
+  	$scope.detailFormStatus[objectName].saved = false;
+  	
   	if (!angular.isDefined(listView) || !listView) {
   		$scope.detailView[objectName] = true;
   	} else {

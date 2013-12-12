@@ -1,9 +1,9 @@
-function categoryController($scope, $cookieStore, $filter, $modal) {
+function categoryController($scope, $cookieStore, $filter, $modal, $timeout) {
   $scope.name = 'category';
 
   // Initialize wizard for Category
   $scope.wizardCategory = $scope.form.getWizard($scope);
-
+  
   // Pagination setup
   $scope.pagination = {
     pageSize : 20,
@@ -20,7 +20,7 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
     results : [],
     numberOfPages : 0
   };
-
+  
   $scope.$watch('wizardCategory.open', function(v) {
     if (v) {
       $scope.wizardCategory.modal = $modal.open({
@@ -43,6 +43,9 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
       : '';
   }
   
+  // Button state, used for displaying "Save" or "Create"
+  $scope.buttonSave = true;
+  
   $scope.update = function(_category) {
     $scope.Category = angular.copy(_category);
     // This is because the CustomURI may be long-time loaded
@@ -54,10 +57,10 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
     $scope.getParentCategories(_category);
     $scope.Category.ParentCategoryKey = $scope.parentCategories[$scope.workingCategoryParentIndex];
     
-    $scope.wizardCategory.open = true;
-    $scope.wizardCategory.reset();
+    $scope.changeView('category');
+    $scope.buttonSave = true;
   }
-
+  
   $scope.create = function() {
     $scope.Category = $scope.model.getInstanceOf('Category');
     
@@ -67,8 +70,8 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
     
     //$scope.Category.tmpChildCategories = [];
     //$scope.Category._tmpChildCategories = angular.copy($scope.Category.tmpChildCategories);
-    $scope.wizardCategory.open = true;
-    $scope.wizardCategory.reset();
+    $scope.changeView('category');
+    $scope.buttonSave = false;
   }
   
   // Retrieve categories for "Parent Category" select field
@@ -81,24 +84,27 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
   		  if (workingCategory.Key != category.Key) {
   		  	categoryList.push(category);
   		  }
-  		  if (workingCategory.ParentCategoryKey == category.Key) {
-  		  	workingCategoryParentIndex = cateIndex + 1;
-  		  }
   	  })
   	// Or creating a new one
   	} else {
   		categoryList = categoryList.concat($scope.categories);
   	}
   	
+  	angular.forEach(categoryList, function(category01, cateIndex01) {
+  		if (workingCategory.ParentCategoryKey == category01.Key) {
+  		  workingCategoryParentIndex = cateIndex01;
+  		}
+  	})
+  	
   	$scope.parentCategories = categoryList;
   	$scope.workingCategoryParentIndex = workingCategoryParentIndex;
   }
-
+  
   $scope.deleteCategory = function(category) {
     if (confirm($filter('t')('Common.Text_RemoveProduct'))) {
       $scope.category.deleteCategory($scope.storeKey, category).then(
         function() {
-          $scope.wizardCategory.open = false;
+          $scope.changeView('category', true);
           $scope.init(true);
         }, function(err) {
           $scope.error.log(err);
@@ -106,7 +112,7 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
       )
     }
   }
-
+  
   /**
    * Options for the child categories selector widget. select2 doesn't work
    * properly on "multiple" mode, so we need to update model manually and do
@@ -159,10 +165,12 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
       });
     },
   }
-
-  $scope.save = function() {
-    if ($scope.wizardCategory.finished) {
-      $scope.wizardCategory.saved = false;
+  
+  $scope.save = function(postAction) {
+  	$scope.detailFormStatus.category.startSaving = true;
+  	
+    //if ($scope.detailFormStatus.category.finished) {
+      $scope.detailFormStatus.category.saved = false;
 
       if ($scope.Category.Key == null) {
         // Go on and create
@@ -179,25 +187,102 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
           }
         ).then(
           function(categoryKey) {
-            $scope.Category.Key = categoryKey;
-            $scope.wizardCategory.saved = true;
-            
-            // Reload list
-            $scope.init();
+          	$scope.Category.Key = categoryKey;
+          	
+          	var _finish = function(categoryKey) {
+          		$scope.category.initCategory($scope.storeKey, categoryKey).then(
+          		  function(category) {
+          		  	$scope.Category = category;
+          		  	$scope._tempCat = angular.copy($scope.Category);
+          		  	
+          		  	// Set category URI
+          		  	$scope.Category.URI = category.CustomURI ? category.CustomURI.URI : '';
+          		  	
+          		  	// Reload parent category list
+          		  	$scope.getParentCategories($scope.Category);
+          		  	$scope.Category.ParentCategoryKey = $scope.parentCategories[$scope.workingCategoryParentIndex];
+          		  	
+          		  	$scope.detailFormStatus.category.saved = true;
+          		  	$scope.buttonSave = true;
+          		  	
+          		  	if (postAction && postAction == 'new') {
+          		  		$timeout(
+          		  		  function() {
+          		  		  	$scope.create();
+          		  		  }, 1000
+          		  		)
+          		  	} else if (postAction && postAction == 'close') {
+          		  		$timeout(
+          		  		  function() {
+          		  		  	$scope.changeView('category', true);
+          		  		  }, 1000
+          		  		)
+          		  	}
+          		  }, function(err) {
+          		  	$scope.error.log(err);
+          		  }
+          		)
+          	}
+          	
+          	if ($scope.Category.Icon || $scope.Category.SmallImage || $scope.Category.Image) {
+          	  var imagePropNameList = [];
+          	  if ($scope.Category.Icon && $scope.Category.Icon.Key) {
+          	    imagePropNameList.push('Icon');
+          	  }
+          	  if ($scope.Category.SmallImage && $scope.Category.SmallImage.Key) {
+          	    imagePropNameList.push('SmallImage');
+          	  }
+          	  if ($scope.Category.Image && $scope.Category.Image.Key) {
+          	    imagePropNameList.push('Image');
+          	  }
+          	  
+          	  if (imagePropNameList.length) {
+          	    $scope.model.associateSingleDatatypePropList($scope.storeKey, $scope.Category, imagePropNameList).then(
+          	      function() {
+          	        _finish(categoryKey);
+          	      },
+          	      function(err) {
+          	        $scope.error.log(err);
+          	      }
+          	    )
+          	  }
+          	} else {
+          	  _finish(categoryKey);
+          	}
           }, function(err) {
             $scope.error.log(err);
           }
         )
       } else {
         // Update existing category
+        // Check if ParentCategoryKey was changed
+        if ($scope._tempCat.ParentCategoryKey != $scope.Category.ParentCategoryKey.Key) {
+        	var parentCategoryObjecttoBeChangedLater = $scope.Category.ParentCategoryKey;
+        	$scope.Category.ParentCategoryKey = $scope.Category.ParentCategoryKey.Key;
+        }
+        
         // Update child categories
-        var _finishes = function() {
+        var _finish = function() {
           $scope.category.deleteChildCategories($scope.storeKey, $scope.Category).then(
             function() {
               $scope.category.addChildCategories($scope.storeKey, $scope.Category).then(
                 function() {
-                  $scope.wizardCategory.saved = true;
-                  $scope.init();
+                	$scope.detailFormStatus.category.saved = true;
+                	
+                	if (angular.isDefined(parentCategoryObjecttoBeChangedLater)) {
+                	  $scope.Category.ParentCategoryKey = parentCategoryObjecttoBeChangedLater;
+                	}
+                	
+                	if (postAction && postAction == 'close') {
+          		  		$timeout(
+          		  		  function() {
+          		  		  	$scope.changeView('category', true);
+          		  		  	
+          		  		  	// Reload list
+          		  		  	$scope.init();
+          		  		  }, 1000
+          		  		)
+          		  	}
                 }, function(err) {
                   $scope.error.log(err);
                 }
@@ -208,34 +293,82 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
           )
         }
         
-        // Check if ParentCategoryKey was changed
-        if ($scope._tempCat.ParentCategoryKey != $scope.Category.ParentCategoryKey.Key) {
-        	$scope.Category.ParentCategoryKey = $scope.Category.ParentCategoryKey.Key;
-        }
-        
         // Start updating
         $scope.category.updateCategory($scope.storeKey, $scope.Category).then(
           function() {
-            if ($scope._tempCat.CustomURI.URI != $scope.Category.URI) {
-            	$scope._tempCat.CustomURI.URI = $scope.Category.URI;
-            	
-            	$scope.model.updateCustomURI($scope.storeKey, $scope._tempCat.CustomURI).then(
-            	  _finishes,
-            	  function(err) {
-            	  	$scope.error.log(err);
-            	  }
-            	)
-            } else {
-              _finishes();
-            }
+          	if ($scope.Category.Icon || $scope.Category.SmallImage || $scope.Category.Image) {
+          	  var imagePropNameList = [];
+          	  if ($scope.Category.Icon && $scope.Category.Icon.Key) {
+          	    if (!angular.isDefined($scope._tempCat.Icon) || $scope.Category.Icon.Key != $scope._tempCat.Icon.Key) {
+          	      imagePropNameList.push('Icon');
+          	    }
+          	  }
+          	  if ($scope.Category.SmallImage && $scope.Category.SmallImage.Key) {
+          	    if (!angular.isDefined($scope._tempCat.SmallImage) || $scope.Category.SmallImage.Key != $scope._tempCat.SmallImage.Key) {
+          	      imagePropNameList.push('SmallImage');
+          	    }
+          	  }
+          	  if ($scope.Category.Image && $scope.Category.Image.Key) {
+          	    if (!angular.isDefined($scope._tempCat.Image) || $scope.Category.Image.Key != $scope._tempCat.Image.Key) {
+          	      imagePropNameList.push('Image');
+          	    }
+          	  }
+          	  
+          	  if (imagePropNameList.length) {
+          	    $scope.model.associateSingleDatatypePropList($scope.storeKey, $scope.Category, imagePropNameList).then(
+          	      function() {
+          	        if ($scope._tempCat.CustomURI.URI != $scope.Category.URI) {
+          	          $scope._tempCat.CustomURI.URI = $scope.Category.URI;
+          	          
+          	          $scope.model.updateCustomURI($scope.storeKey, $scope._tempCat.CustomURI).then(
+          	            _finish,
+          	            function(err) {
+          	              $scope.error.log(err);
+          	            }
+          	          )
+          	        } else {
+          	          _finish();
+          	        }
+          	      }, function(err) {
+          	        $scope.error.log(err);
+          	      }
+          	    )
+          	  } else {
+          	  	if ($scope._tempCat.CustomURI.URI != $scope.Category.URI) {
+          	      $scope._tempCat.CustomURI.URI = $scope.Category.URI;
+          	      
+          	      $scope.model.updateCustomURI($scope.storeKey, $scope._tempCat.CustomURI).then(
+          	        _finish,
+          	        function(err) {
+          	          $scope.error.log(err);
+          	        }
+          	      )
+          	  	} else {
+          	      _finish();
+          	  	}
+          	  }
+          	} else {
+          	  if ($scope._tempCat.CustomURI.URI != $scope.Category.URI) {
+          	    $scope._tempCat.CustomURI.URI = $scope.Category.URI;
+          	    
+          	    $scope.model.updateCustomURI($scope.storeKey, $scope._tempCat.CustomURI).then(
+          	      _finish,
+          	      function(err) {
+          	        $scope.error.log(err);
+          	      }
+          	    )
+          	  } else {
+          	    _finish();
+          	  }
+          	}
           }, function(err) {
             $scope.error.log(err);
           }
         )
       }
-    }
+    //}
   }
-
+  
   // Generate based stage URL for categories
   $scope.generateFrontEndLink = function() {
     if ($scope.Store.URI) {
@@ -244,4 +377,4 @@ function categoryController($scope, $cookieStore, $filter, $modal) {
   }
 }
 
-categoryController.$inject = [ '$scope', '$cookieStore', '$filter', '$modal' ];
+categoryController.$inject = [ '$scope', '$cookieStore', '$filter', '$modal', '$timeout' ];

@@ -134,18 +134,121 @@
 				</a>
 			</div>
 	</script>
-	<!-- top menu -->
+	<!-- Top menu -->
 	<div ng-include src="'views/elements/error.html'"></div>
-	<!-- category info -->
-	<div ui-if="Store && Store.Key || false" class="row-fluid">
+	<!-- Category info -->
+	<div ui-if="!detailView.category && Store && Store.Key || false" class="row-fluid">
 		<h3 class="pull-left">{{ 'Common.Text_CategoryMenu_Categories' |
 			t}}</h3>
 		<div class="btn-group pull-right">
-			<a class="btn btn-info" ng-click="create()"> <i class="fa fa-plus"></i>&nbsp;{{
+			<a class="btn btn-info" ng-click="create()"> <i class="fa fa-pencil-square-o"></i>&nbsp;{{
 				'Common.Text_CategoryMenu_CreateCategory' | t }}
 			</a>
 		</div>
 		<div class="clear"></div>
 		<div onload="init()" ng-include src="'views/categoryList.html'"></div>
 	</div>
+	
+	<!-- Category detail -->
+	<div class="clear row-fluid list" ui-if="detailView.category && Category && Store && Store.Key || false">
+		<h3 ui-if="!buttonSave">{{ 'Common.Text_Create' | t }} {{ 'Common.Text_Category' | t }}</h3>
+		<h3 ui-if="buttonSave">{{ 'Common.Text_Update' | t }} {{ 'Common.Text_Category' | t }}</h3>
+		<p><a href="" ng-click="changeView('category', true)">Back to category list</a></p>
+    <p class="clear"></p>
+	  <div class="row-fluid detail-view">
+	  	<form ui-if="Store && Store.isNew || Store && Store.IsOwner" name="categoryDetailForm">
+			  <!-- Category info -->
+			  <div class="alert alert-info collapser"
+				  ng-click="collapseStep1 = !collapseStep1" mousestyle>
+				  <i class="accordion-title-icon fa fa-info"></i> {{ 'Common.Text_CategoryInformation' | t }}</div>
+			  <div ng-init="collapseStep1 = false" collapse="collapseStep1">
+				  <dl class="clearfix">
+					  <dd>
+						  <label for="categoryName">{{'Common.Text_Name' | t}}</label>
+              <input name="Category_Name" id="categoryName"
+                type="text"
+                class="input-xlarge fixed-text-type"
+                placeholder="{{'Common.Text_Name' | t}}" ng-model="Category.Name"
+                check-uniqueuri="Category"
+                ng-change="setURI()"
+                required />
+              <span class="help-block alert alert-info" ng-show="categoryDetailForm.Category_Name.$dirty && categoryDetailForm.Category_Name.$error.startGettingURI">
+							  <i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;{{'Common.Text_Checking' | t}} {{'Common.LabelCategoryName' | t}}
+							</span>
+              <span class="help-block alert alert-error" ng-show="categoryDetailForm.Category_Name.$dirty && categoryDetailForm.Category_Name.$error.uniqueURI">
+							  {{'Common.Text_ThisNameInUsed' | t}}
+							</span>
+							<span class="help-block alert alert-error" ng-show="categoryDetailForm.Category_Name.$dirty && categoryDetailForm.Category_Name.$error.required">
+							  {{'Common.LabelCategoryName' | t}}{{'Common.Text_IsRequired' | t}}
+							</span>
+					  </dd>
+					  <dd>
+						  <atfield autocomplete="off" at-required ng-readonly="true"
+								class="input-xlarge" ng-model="Category.URI" at-copy="CustomURI"
+								label="'Common.Text_CustomURI' | t"></atfield>
+					  </dd>
+					  <dd>
+						  <label>{{ 'Common.Text_ParentCategory' | t}}</label>
+					    <select ng-model="Category.ParentCategoryKey"
+					    	ng-options="cate.Name for cate in parentCategories">
+				    	</select>
+					  </dd>
+				  </dl>
+			  </div>
+			  
+			  <!-- Category images -->
+			  <div class="alert alert-info collapser"
+				  ng-click="collapseStep2 = !collapseStep2" mousestyle>
+				  <i class="accordion-title-icon fa fa-puzzle-piece"></i> {{ 'Common.Text_Category' | t }} {{ 'Common.Text_Images' | t }}</div>
+			  <div ng-init="collapseStep2 = true" collapse="collapseStep2">
+				  <dl class="clearfix">
+					  <dd class="model-image-property" ng-controller="mediaController">
+						  <div class="single-image pull-left">
+						    <span ng-show="!Category.Icon" class="upload-icon"><a href="" ng-click="openMediaLibrary('Category', 'Icon')"><i class="fa fa-plus fa-4x"></i></a><br />{{'Common.Text_Add' | t}} {{'Common.Text_Icon' | t}}</span>
+  				      <a href="" ng-click="previewMedia(Category.Icon)"><img ng-show="Category.Icon" ng-src="{{Category.Icon.BaseURL}}{{Category.Icon.ThumbFile}}" /></a>
+						    <a href="" ng-click="openMediaLibrary('Category', 'Icon')"><span ng-show="Category.Icon" class="label label-warning">{{'Common.Text_Change' | t}}</span></a>
+						    <p class="label label-info">{{'Common.Text_Icon' | t}} (128x128)</p>
+						  </div>
+						  <div class="single-image pull-left">
+						    <span ng-show="!Category.SmallImage" class="upload-icon"><a href="" ng-click="openMediaLibrary('Category', 'SmallImage')"><i class="fa fa-plus fa-4x"></i></a><br />{{'Common.Text_Add' | t}} {{'Common.Text_SmallImage' | t}}</span>
+						    <a href="" ng-click="previewMedia(Category.SmallImage)"><img ng-show="Category.SmallImage" ng-src="{{Category.SmallImage.BaseURL}}{{Category.SmallImage.ThumbFile}}" /></a>
+						    <a href="" ng-click="openMediaLibrary('Category', 'SmallImage')"><span ng-show="Category.SmallImage" class="label label-warning">{{'Common.Text_Change' | t}}</span></a>
+						    <p class="label label-info">{{'Common.Text_SmallImage' | t}} (150x150)</p>
+						  </div>
+						  <div class="single-image pull-left">
+						    <span ng-show="!Category.Image" class="upload-icon"><a href="" ng-click="openMediaLibrary('Category', 'Image')"><i class="fa fa-plus fa-4x"></i></a><br />{{'Common.Text_Add' | t}} {{'Common.Text_Image' | t}}</span>
+						    <a href="" ng-click="previewMedia(Category.Image)"><img ng-show="Category.Image" ng-src="{{Category.Image.BaseURL}}{{Category.Image.ThumbFile}}" /></a>
+						    <a href="" ng-click="openMediaLibrary('Category', 'Image')"><span ng-show="Category.Image" class="label label-warning">{{'Common.Text_Change' | t}}</span></a>
+						    <p class="label label-info">{{'Common.Text_Image' | t}} (320x320)</p>
+						  </div>
+					  </dd>
+				  </dl>
+			  </div>
+			  
+			  <div class="alert alert-info"
+					ui-if="detailFormStatus.category.startSaving && !detailFormStatus.category.saved">
+					<i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;{{ 'Common.Text_WaitSaving' | t }}
+				</div>
+				<div class="alert alert-success" mousestyle
+					ui-if="detailFormStatus.category.startSaving && detailFormStatus.category.saved"
+					ng-click="detailFormStatus.category.startSaving = fasle; detailFormStatus.category.saved = false">
+					<strong>{{ 'Common.Text_Congrats' | t }}</strong> {{ 'Common.Text_DetailFormComplete' | t }}
+				</div>
+			  
+			  <div>
+				  <div ui-if="!buttonSave">
+				    <button type="submit" ng-click="categoryDetailForm.$valid && save()" class="btn btn-success pull-left"><i class="fa fa-floppy-o"></i> {{ 'Common.Text_Create' | t }}</button>
+				    <button type="submit" ng-click="categoryDetailForm.$valid && save('close')" class="btn btn-primary pull-left" ng-style="{'margin-left': '10px'}"><i class="fa fa-pencil-square-o"></i> {{ 'Common.Text_CreateandClose' | t }}</button>
+				    <button type="submit" ng-click="changeView('category', true)" class="btn pull-left" ng-style="{'margin-left': '10px'}"><i class="fa fa-undo"></i> {{ 'Common.Text_Cancel' | t }}</button>
+				  </div>
+				  <div ui-if="buttonSave">
+				    <button type="submit" ng-click="categoryDetailForm.$valid && save()" class="btn btn-success pull-left"><i class="fa fa-floppy-o"></i> {{ 'Common.Text_Save' | t }}</button>
+				    <button type="submit" ng-click="categoryDetailForm.$valid && save('close')" class="btn btn-primary pull-left" ng-style="{'margin-left': '10px'}"><i class="fa fa-pencil-square-o"></i> {{ 'Common.Text_SaveandClose' | t }}</button>
+				    <button type="submit" ng-click="changeView('category', true)" class="btn pull-left" ng-style="{'margin-left': '10px'}"><i class="fa fa-undo"></i> {{ 'Common.Text_Cancel' | t }}</button>
+				    <button type="submit" ng-click="deleteCategory(Category)" class="btn btn-danger pull-right" ng-style="{'margin-left': '10px'}"><i class="fa fa-trash-o"></i> {{ 'Common.Text_Remove' | t }}</button>
+				  </div>
+			  </div>
+		  </form>
+	  </div>
+  </div>
 </div>
