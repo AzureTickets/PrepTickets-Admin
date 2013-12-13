@@ -68,10 +68,12 @@ function storeController($scope, $cookieStore, $location, $timeout,
   
   // Detail view for objects
   $scope.detailView = {
-  	category: false
+  	category: false,
+  	venue: false
   }
   $scope.detailFormStatus = {
-  	category: { startSaving: false, saved: false }
+  	category: { startSaving: false, saved: false },
+  	venue: { startSaving: false, saved: false }
   }
   
   // Change view between list and detail pages

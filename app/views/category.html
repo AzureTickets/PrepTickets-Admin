@@ -22,7 +22,7 @@
 		<p><a href="" ng-click="changeView('category', true)">Back to category list</a></p>
     <p class="clear"></p>
 	  <div class="row-fluid detail-view">
-	  	<form ui-if="Store && Store.isNew || Store && Store.IsOwner" name="categoryDetailForm" accordion close-others="true">
+	  	<form ui-if="Store && Store.isNew || Store && Store.IsOwner" name="categoryDetailForm">
 			  <!-- Category info -->
 			  <div class="alert alert-info collapser"
 				  ng-click="collapseStep1 = !collapseStep1" mousestyle>
