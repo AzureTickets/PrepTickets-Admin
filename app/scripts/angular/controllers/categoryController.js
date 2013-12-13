@@ -194,31 +194,76 @@ function categoryController($scope, $cookieStore, $filter, $modal, $timeout) {
           	var _finish = function(categoryKey) {
           		$scope.category.initCategory($scope.storeKey, categoryKey).then(
           		  function(category) {
-          		  	$scope.Category = category;
-          		  	$scope._tempCat = angular.copy($scope.Category);
           		  	
-          		  	// Set category URI
-          		  	$scope.Category.URI = category.CustomURI ? category.CustomURI.URI : '';
+          		  	var _completeLastSteps = function() {
+          		  		$scope.category.initCategory($scope.storeKey, categoryKey).then(
+          		        function(lastCategory) {
+          		        	$scope.Category = angular.copy(lastCategory);
+          		        	$scope._tempCat = angular.copy($scope.Category);
+          		        	
+          		          // Set category URI
+          		          $scope.Category.URI = lastCategory.CustomURI ? lastCategory.CustomURI.URI : '';
+          		          
+          		          // Reload parent category list
+          		          $scope.getParentCategories($scope.Category);
+          		          $scope.Category.ParentCategoryKey = $scope.parentCategories[$scope.workingCategoryParentIndex];
+          		          
+          		          $scope.detailFormStatus.category.saved = true;
+          		          $scope.buttonSave = true;
+          		          
+          		          if (postAction && postAction == 'new') {
+          		            $timeout(
+          		              function() {
+          		                $scope.create();
+          		              }, 1000
+          		            )
+          		          } else if (postAction && postAction == 'close') {
+          		            $timeout(
+          		              function() {
+          		                $scope.changeView('category', true);
+          		              }, 1000
+          		            )
+          		          }
+          	  	      }, function(err) {
+          	  	      	$scope.error.log(err);
+          	  	      }
+          	  	    )
+          		    }
           		  	
-          		  	// Reload parent category list
-          		  	$scope.getParentCategories($scope.Category);
-          		  	$scope.Category.ParentCategoryKey = $scope.parentCategories[$scope.workingCategoryParentIndex];
-          		  	
-          		  	$scope.detailFormStatus.category.saved = true;
-          		  	$scope.buttonSave = true;
-          		  	
-          		  	if (postAction && postAction == 'new') {
-          		  		$timeout(
-          		  		  function() {
-          		  		  	$scope.create();
-          		  		  }, 1000
-          		  		)
-          		  	} else if (postAction && postAction == 'close') {
-          		  		$timeout(
-          		  		  function() {
-          		  		  	$scope.changeView('category', true);
-          		  		  }, 1000
-          		  		)
+          		  	// Add data to this category's parent category
+          		  	if (category.ParentCategoryKey && category.ParentCategoryKey.length) {
+          		  	  $scope.category.initCategory($scope.storeKey, category.ParentCategoryKey).then(
+          		  	    function(parentCategory) {
+          		  	      var wasAdded = false;
+          		  	      
+          		  	      // If parentCategory has a list of child
+          		  	      if (parentCategory.ChildCategories && parentCategory.ChildCategories.length) {
+          		  	        // Check if the category was already child of this parent
+          		  	        for (var i = 0; i < parentCategory.ChildCategories.length; i++) {
+          		  	          if (parentCategory.ChildCategories[i].Key == $scope.Category.Key) {
+          		  	            wasAdded = true;
+          		  	          }
+          		  	        }
+          		  	      }
+          		  	      
+          		  	      // Add to parent category
+          		  	      if (!wasAdded) {
+          		  	        $scope.model.updateObjectProp($scope.storeKey, parentCategory, 'ChildCategories', category).then(
+          		  	          function() {
+          		  	            _completeLastSteps();
+          		  	          }, function(err) {
+          		  	            $scope.error.log(err);
+          		  	          }
+          		  	        )
+          		  	      } else {
+          		  	        _completeLastSteps();
+          		  	      }
+          		  	    }, function(err) {
+          		  	      $scope.error.log(err);
+          		  	    }
+          		  	  )
+          		  	} else {
+          			    _completeLastSteps();
           		  	}
           		  }, function(err) {
           		  	$scope.error.log(err);
@@ -258,41 +303,148 @@ function categoryController($scope, $cookieStore, $filter, $modal, $timeout) {
       } else {
         // Update existing category
         // Check if ParentCategoryKey was changed
-        if ($scope._tempCat.ParentCategoryKey != $scope.Category.ParentCategoryKey.Key) {
-        	var parentCategoryObjecttoBeChangedLater = $scope.Category.ParentCategoryKey;
-        	$scope.Category.ParentCategoryKey = $scope.Category.ParentCategoryKey.Key;
+        var parentCategoryHasChanged = false,
+            oldParentCategoryKey = '',
+            newParentCategoryKey = '';
+        if (!$scope._tempCat.ParentCategoryKey) {
+        	if ($scope.Category.ParentCategoryKey.Key) {
+        		parentCategoryHasChanged = true;
+        		newParentCategoryKey = $scope.Category.ParentCategoryKey.Key;
+        	}
+        } else {
+        	if ($scope.Category.ParentCategoryKey.Key) {
+        		if ($scope._tempCat.ParentCategoryKey != $scope.Category.ParentCategoryKey.Key) {
+        			parentCategoryHasChanged = true;
+        			oldParentCategoryKey = $scope._tempCat.ParentCategoryKey;
+        			newParentCategoryKey = $scope.Category.ParentCategoryKey.Key;
+        		}
+        	} else {
+        		parentCategoryHasChanged = true;
+        		oldParentCategoryKey = $scope._tempCat.ParentCategoryKey;
+        	}
         }
+        var parentCategoryObjecttoBeChangedLater = $scope.Category.ParentCategoryKey;
+        $scope.Category.ParentCategoryKey = $scope.Category.ParentCategoryKey.Key;
         
         // Update child categories
-        var _finish = function() {
-          $scope.category.deleteChildCategories($scope.storeKey, $scope.Category).then(
-            function() {
-              $scope.category.addChildCategories($scope.storeKey, $scope.Category).then(
-                function() {
-                	$scope.detailFormStatus.category.saved = true;
-                	
-                	if (angular.isDefined(parentCategoryObjecttoBeChangedLater)) {
-                	  $scope.Category.ParentCategoryKey = parentCategoryObjecttoBeChangedLater;
-                	}
-                	
-                	if (postAction && postAction == 'close') {
-          		  		$timeout(
-          		  		  function() {
-          		  		  	$scope.changeView('category', true);
-          		  		  	
-          		  		  	// Reload list
-          		  		  	$scope.init();
-          		  		  }, 1000
-          		  		)
-          		  	}
-                }, function(err) {
-                  $scope.error.log(err);
-                }
-              )
-            }, function(err) {
-              $scope.error.log(err);
-            }
-          )
+        var _finish = function(parentCategoryHasChanged, oldParentCategoryKey, newParentCategoryKey) {
+        	
+        	var _completeLastUpdateSteps = function() {
+        		$scope.category.initCategory($scope.storeKey, $scope.Category.Key).then(
+        		  function(lastCategory) {
+        		    $scope.Category = angular.copy(lastCategory);
+        		    $scope._tempCat = angular.copy($scope.Category);
+        		    
+        		    // Set category URI
+        		    $scope.Category.URI = lastCategory.CustomURI ? lastCategory.CustomURI.URI : '';
+        		    
+        		    // Reload parent category list
+        		    $scope.getParentCategories($scope.Category);
+        		    $scope.Category.ParentCategoryKey = $scope.parentCategories[$scope.workingCategoryParentIndex];
+        		    
+        		    $scope.detailFormStatus.category.saved = true;
+        		    
+        		    if (postAction && postAction == 'close') {
+        		      $timeout(
+        		        function() {
+        		          $scope.changeView('category', true);
+        		          
+        		          // Reload list
+        		          $scope.init();
+        		        }, 1000
+        		      )
+        		    }
+        		  }, function(err) {
+        	  	  $scope.error.log(err);
+        		  }
+        		)
+        	}
+        	
+        	// Function to add this category to the new parent
+        	// and do the last steps on Category update
+        	var _addToNewParent = function(newParentCategoryKey) {
+        		if (newParentCategoryKey) {
+          	  $scope.category.initCategory($scope.storeKey, newParentCategoryKey).then(
+          	    function(newParentCategory) {
+        	        // This new parent is sure to exist
+        	        // since users were able to select it in the parent list
+        	        // Check if this category is already listed in the new parent
+        	        var isChildAlready = false;
+        	        if (newParentCategory.ChildCategories && newParentCategory.ChildCategories.length) {
+        	          angular.forEach(newParentCategory.ChildCategories, function(childCate, childIndex) {
+        	            if (childCate && childCate.Key) {
+        	              if (childCate.Key == $scope.Category.Key) {
+        	                isChildAlready = true;
+        	              }
+        	            }
+        	          })
+        	        }
+        	        
+        	        if (!isChildAlready) {
+        	          $scope.model.updateObjectProp($scope.storeKey, newParentCategory, 'ChildCategories', $scope.Category).then(
+        	            function() {
+        	              _completeLastUpdateSteps();
+        	            }, function(err) {
+        	              $scope.error.log(err);
+        	            }
+        	          )
+        	        } else {
+        	          _completeLastUpdateSteps();
+        	        }
+          	    }, function() {
+        	      $scope.error.log(err);
+          	    }
+          	  )
+        	  } else {
+        	  	_completeLastUpdateSteps();
+        	  }
+        	}
+        	
+        	// Update ChildCategories of the parent category
+        	if (parentCategoryHasChanged) {
+        		if (oldParentCategoryKey) {
+        			// Delete this category in old parent category's ChildCategories list
+        			$scope.category.initCategory($scope.storeKey, oldParentCategoryKey).then(
+        			  function(oldParentCategory) {
+        			    if (oldParentCategory) {
+        			      // Check if this category is really listed in parent's ChildCategories
+        			      var isChild = false;
+        			      if (oldParentCategory.ChildCategories && oldParentCategory.ChildCategories.length) {
+        		  	    	angular.forEach(oldParentCategory.ChildCategories, function(childCate, childIndex) {
+        		  	    		if (childCate && childCate.Key) {
+        		  	    			if (childCate.Key == $scope.Category.Key) {
+        		  	    			  isChild = true;
+        		  	    			}
+        		  	    		}
+        		  	    	})
+        			      }
+        			      
+        			      if (isChild) {
+        			        $scope.model.updateObjectProp($scope.storeKey, oldParentCategory, 'ChildCategories', $scope.Category, true).then(
+        			          function() {
+        			            _addToNewParent(newParentCategoryKey);
+        			          }, function(err) {
+        			            $scope.error.log(err);
+        			          }
+        			        )
+        			      } else {
+        			        _addToNewParent(newParentCategoryKey);
+        			      }
+        			      
+        			    // Maybe the old parent category was deleted, then just move on
+        			    } else {
+        			      _addToNewParent(newParentCategoryKey);
+        			    }
+        			  }, function(err) {
+        		  	  $scope.error.log(err);
+        			  }
+        			)
+        		} else {
+        			_addToNewParent(newParentCategoryKey);
+        		}
+        	} else {
+        		_completeLastUpdateSteps();
+        	}
         }
         
         // Start updating
@@ -323,13 +475,15 @@ function categoryController($scope, $cookieStore, $filter, $modal, $timeout) {
           	          $scope._tempCat.CustomURI.URI = $scope.Category.URI;
           	          
           	          $scope.model.updateCustomURI($scope.storeKey, $scope._tempCat.CustomURI).then(
-          	            _finish,
+          	            function() {
+          	              _finish(parentCategoryHasChanged, oldParentCategoryKey, newParentCategoryKey);
+          	            },
           	            function(err) {
           	              $scope.error.log(err);
           	            }
           	          )
           	        } else {
-          	          _finish();
+          	          _finish(parentCategoryHasChanged, oldParentCategoryKey, newParentCategoryKey);
           	        }
           	      }, function(err) {
           	        $scope.error.log(err);
@@ -340,13 +494,14 @@ function categoryController($scope, $cookieStore, $filter, $modal, $timeout) {
           	      $scope._tempCat.CustomURI.URI = $scope.Category.URI;
           	      
           	      $scope.model.updateCustomURI($scope.storeKey, $scope._tempCat.CustomURI).then(
-          	        _finish,
-          	        function(err) {
+          	        function() {
+          	          _finish(parentCategoryHasChanged, oldParentCategoryKey, newParentCategoryKey);
+          	        }, function(err) {
           	          $scope.error.log(err);
           	        }
           	      )
           	  	} else {
-          	      _finish();
+          	      _finish(parentCategoryHasChanged, oldParentCategoryKey, newParentCategoryKey);
           	  	}
           	  }
           	} else {
@@ -354,13 +509,14 @@ function categoryController($scope, $cookieStore, $filter, $modal, $timeout) {
           	    $scope._tempCat.CustomURI.URI = $scope.Category.URI;
           	    
           	    $scope.model.updateCustomURI($scope.storeKey, $scope._tempCat.CustomURI).then(
-          	      _finish,
-          	      function(err) {
+          	      function() {
+          	        _finish(parentCategoryHasChanged, oldParentCategoryKey, newParentCategoryKey);
+          	      }, function(err) {
           	        $scope.error.log(err);
           	      }
           	    )
           	  } else {
-          	    _finish();
+          	    _finish(parentCategoryHasChanged, oldParentCategoryKey, newParentCategoryKey);
           	  }
           	}
           }, function(err) {
