@@ -19,7 +19,7 @@
 	<div class="clear row-fluid list" ui-if="detailView.category && Category && Store && Store.Key || false">
 		<h3 ui-if="!buttonSave">{{ 'Common.Text_Create' | t }} {{ 'Common.Text_Category' | t }}</h3>
 		<h3 ui-if="buttonSave">{{ 'Common.Text_Update' | t }} {{ 'Common.Text_Category' | t }}</h3>
-		<p><a href="" ng-click="changeView('category', true)">Back to category list</a></p>
+		<p><a href="" ng-click="changeView('category', true)">{{ 'Common.Text_BackToCategoryList' | t }}</a></p>
     <p class="clear"></p>
 	  <div class="row-fluid detail-view">
 	  	<form ui-if="Store && Store.isNew || Store && Store.IsOwner" name="categoryDetailForm">
@@ -33,7 +33,7 @@
 						  <label for="categoryName">{{'Common.Text_Name' | t}}</label>
               <input name="Category_Name" id="categoryName"
                 type="text"
-                class="input-xlarge fixed-text-type"
+                class="input-xlarge fix-type-text-input"
                 placeholder="{{'Common.Text_Name' | t}}" ng-model="Category.Name"
                 check-uniqueuri="Category"
                 ng-change="setURI()"

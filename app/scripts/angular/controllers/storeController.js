@@ -69,11 +69,13 @@ function storeController($scope, $cookieStore, $location, $timeout,
   // Detail view for objects
   $scope.detailView = {
   	category: false,
-  	venue: false
+  	place: false,
+  	scanDevice: false
   }
   $scope.detailFormStatus = {
   	category: { startSaving: false, saved: false },
-  	venue: { startSaving: false, saved: false }
+  	place: { startSaving: false, saved: false },
+  	scanDevice: { startSaving: false, saved: false }
   }
   
   // Change view between list and detail pages
@@ -87,6 +89,8 @@ function storeController($scope, $cookieStore, $location, $timeout,
   	} else {
   		$scope.detailView[objectName] = false;
   	}
+  	
+  	$scope.removeTinymceIns();
   }
   
   // initialize wizard for Store
@@ -778,6 +782,11 @@ function storeController($scope, $cookieStore, $location, $timeout,
     });
 
     return def.promise;
+  }
+  
+  // Function to retrieve storeController's scope
+  $scope.storeControllerScope = function() {
+  	return angular.element(jQuery('body')).scope();
   }
   
   // Remove TinyMCE instance on closing the popup window

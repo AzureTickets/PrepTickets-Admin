@@ -51,7 +51,8 @@
 					'Common.Text_Categories' | t }}</a></li>
 			<li class="norange"
 				ui-if="Store && Store.Key != null && Store.IsOwner || false"
-				ui-route="#/venue" ng-class="{active: $uiRoute}"><a
+				ui-route="#/venue" ng-class="{active: $uiRoute}"
+				ng-click="changeView('place', true)"><a
 				href="#/venue"><i class="fa fa-fw fa-building-o"></i>{{
 					'Common.Text_VenueMenu_Venue' | t }}</a></li>
 			<li class="ngreen"
@@ -65,7 +66,8 @@
 				href="#/order"><i class="fa fa-fw fa-ticket"></i>{{
 					'Common.Text_OrdersMenu_Orders' | t }}</a></li>
 			<li ui-if="Store && Store.Key != null && Store.IsOwner || false"
-				ui-route="#/scanner" ng-class="{active: $uiRoute}"><a
+				ui-route="#/scanner" ng-class="{active: $uiRoute}"
+				ng-click="changeView('scanDevice', true)"><a
 				href="#/scanner"><i class="fa fa-fw fa-mobile-phone"></i>{{
 					'Common.Text_ScannerMenu_Scanner' | t }}</a></li>
 			<li class="nblue"
