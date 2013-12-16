@@ -141,7 +141,7 @@
 	<!-- top menu -->
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- scanDevice info -->
-	<div ui-if="Store && Store.Key || false" class="row-fluid">
+	<div ui-if="!detailView.scanDevice && Store && Store.Key || false" class="row-fluid">
 		<!--<p class="lead pull-left">{{ 'Common.Text_ScanDeviceMenu_ScanDevices' | t}}</p>-->
 		<h3 class="pull-left">{{ 'Scanner.Text_Scanners' | t}}</h3>
 		<div class="btn-group pull-right">
@@ -151,5 +151,109 @@
 		</div>
 		<div class="clear"></div>
 		<div onload="init()" ng-include src="'views/scannerList.html'"></div>
+	</div>
+	
+	<!-- scanDevice detail -->
+	<div ui-if="detailView.scanDevice && Store && Store.Key || false" class="row-fluid">
+		<h3 ui-if="!buttonSave">{{ 'Common.Text_Create' | t }} {{ 'Common.Text_Scanner' | t }}</h3>
+		<h3 ui-if="buttonSave">{{ 'Common.Text_Update' | t }} {{ 'Common.Text_Scanner' | t }}</h3>
+		<p><a href="" ng-click="changeView('scanDevice', true)">{{ 'Common.Text_BackToScannerList' | t }}</a></p>
+    <p class="clear"></p>
+	  <div class="row-fluid detail-view">
+	  	<form ui-if="Store && Store.isNew || Store && Store.IsOwner" name="scanDeviceDetailForm">
+	  		<!-- Scan device description -->
+			  <div class="alert alert-info collapser"
+				  ng-click="collapseStep1 = !collapseStep1" mousestyle>
+				  <i class="accordion-title-icon fa fa-info-circle"></i> {{ 'Common.Text_Scanner' | t }} {{ 'Common.Text_Description' | t }}</div>
+			  <div ng-init="collapseStep1 = false" collapse="collapseStep1">
+			  	<dl class="clearfix">
+			  		<dd>
+							<label for="scannerName">{{'Common.Text_Name' | t}}</label>
+              <input name="ScanDevice_Name" id="scannerName"
+                type="text"
+                class="input-xxlarge fix-type-text-input"
+                placeholder="{{'Common.Text_Name' | t}}" ng-model="ScanDevice.Name"
+                required />
+              <span class="help-block alert alert-error" ng-show="scanDeviceDetailForm.ScanDevice_Name.$dirty && scanDeviceDetailForm.ScanDevice_Name.$error.required">
+							  {{'Common.LabelScanDeviceName' | t}}{{'Common.Text_IsRequired' | t}}
+							</span>
+						</dd>
+						<dd>
+							<atfield class="input-xxlarge" ng-model="ScanDevice.Brief"
+								label="'Common.Text_BriefDescription' | t" rows="5" />
+						</dd>
+						<dd ui-if="ScanDevice.Key && isInfoEmpty(ScanDevice.DeviceInfo)">
+						  <p ng-style="{width: '545px'}">{{ 'Scanner.Text_ShouldRegister' | t }}</p>
+							<img ng-src="{{getQR(ScanDevice)}}" />
+							<button class="btn btn-info"
+							  ng-click="refreshQR(ScanDevice)">
+							  {{ 'Common.Text_Refresh' | t }}</button>
+						</dd>
+						<dd class="alert alert-success" ng-show="successMessage">
+						  <p>{{successMessage}}</p>
+						</dd>
+						<dd class="clear"></dd>
+						<dd ui-if="ScanDevice.Key && !isInfoEmpty(ScanDevice.DeviceInfo)" class="pull-left">
+						  <p>
+						    <button ng-show="!ScanDevice.Active" class="btn btn-success"
+						      ng-click="updateDevice(ScanDevice, {'Active': true})">
+						        <i class="fa fa-unlock"></i> {{ 'Scanner.Text_Activate' | t }}</button>
+						    <button ng-show="ScanDevice.Active" class="btn"
+						      ng-click="updateDevice(ScanDevice, {'Active': false})">
+						        <i class="fa fa-lock"></i> {{ 'Scanner.Text_Deactivate' | t }}</button>
+						    <button class="btn btn-warning"
+						      ng-click="unregisterDevice(ScanDevice)">
+						        <i class="fa fa-ban"></i> {{ 'Scanner.Text_Destroy' | t }}</button>
+						  </p>
+						</dd>
+			  	</dl>
+			  </div>
+			  
+			  <!-- Scan device info -->
+			  <div class="alert alert-info collapser"
+				  ng-click="collapseStep2 = !collapseStep2" mousestyle>
+				  <i class="accordion-title-icon fa fa-puzzle-piece"></i> {{ 'Common.Text_Scanner' | t }} {{ 'Common.Text_Information' | t }}</div>
+			  <div ng-init="collapseStep2 = true" collapse="collapseStep2">
+			  	<dl class="clearfix">
+			  		<dd>
+							<atfield at-copy-of="DeviceInfo" class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.Name"
+								label="'Scanner.Text_DeviceName' | t" ng-readonly=true />
+						</dd>
+						<dd>
+							<atfield at-copy-of="DeviceInfo" class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.Hardware"
+								label="'Scanner.Text_Hardware' | t" ng-readonly=true />
+						</dd>
+						<dd>
+							<atfield at-copy-of="DeviceInfo" class="input-xxlarge" ng-model="ScanDevice.DeviceInfo.OS"
+								label="'Scanner.Text_OSVersion' | t" ng-readonly=true />
+						</dd>
+			  	</dl>
+			  </div>
+			  
+			  <div class="alert alert-info"
+					ui-if="detailFormStatus.scanDevice.startSaving && !detailFormStatus.scanDevice.saved">
+					<i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;{{ 'Common.Text_WaitSaving' | t }}
+				</div>
+				<div class="alert alert-success" mousestyle
+					ui-if="detailFormStatus.scanDevice.startSaving && detailFormStatus.scanDevice.saved"
+					ng-click="detailFormStatus.scanDevice.startSaving = fasle; detailFormStatus.scanDevice.saved = false">
+					<strong>{{ 'Common.Text_Congrats' | t }}</strong> {{ 'Common.Text_DetailFormComplete' | t }}
+				</div>
+			  
+			  <div>
+				  <div ui-if="!buttonSave">
+				    <button type="submit" ng-click="scanDeviceDetailForm.$valid && save()" class="btn btn-success pull-left"><i class="fa fa-floppy-o"></i> {{ 'Common.Text_Create' | t }}</button>
+				    <button type="submit" ng-click="scanDeviceDetailForm.$valid && save('close')" class="btn btn-primary pull-left" ng-style="{'margin-left': '10px'}"><i class="fa fa-pencil-square-o"></i> {{ 'Common.Text_CreateandClose' | t }}</button>
+				    <button type="submit" ng-click="changeView('scanDevice', true)" class="btn pull-left" ng-style="{'margin-left': '10px'}"><i class="fa fa-undo"></i> {{ 'Common.Text_Cancel' | t }}</button>
+				  </div>
+				  <div ui-if="buttonSave">
+				    <button type="submit" ng-click="scanDeviceDetailForm.$valid && save()" class="btn btn-success pull-left"><i class="fa fa-floppy-o"></i> {{ 'Common.Text_Save' | t }}</button>
+				    <button type="submit" ng-click="scanDeviceDetailForm.$valid && save('close')" class="btn btn-primary pull-left" ng-style="{'margin-left': '10px'}"><i class="fa fa-pencil-square-o"></i> {{ 'Common.Text_SaveandClose' | t }}</button>
+				    <button type="submit" ng-click="changeView('scanDevice', true)" class="btn pull-left" ng-style="{'margin-left': '10px'}"><i class="fa fa-undo"></i> {{ 'Common.Text_Cancel' | t }}</button>
+				    <button type="submit" ng-click="deleteScanDevice(ScanDevice)" class="btn btn-danger pull-right" ng-style="{'margin-left': '10px'}"><i class="fa fa-trash-o"></i> {{ 'Common.Text_Remove' | t }}</button>
+				  </div>
+			  </div>
+			</form>
+	  </div>
 	</div>
 </div>

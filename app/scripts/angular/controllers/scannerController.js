@@ -60,28 +60,30 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams, 
 
   $scope.update = function(scanDevice) {
     $scope.ScanDevice = angular.copy(scanDevice);
-    $scope.wizardScanDevice.open = true;
-    $scope.wizardScanDevice.reset();
+    
+    $scope.changeView('scanDevice');
+    $scope.buttonSave = true;
   }
 
   $scope.create = function() {
     $scope.ScanDevice = $scope.model.getInstanceOf('ScanDevice');
-    $scope.wizardScanDevice.open = true;
-    $scope.wizardScanDevice.reset();
+    
+    $scope.changeView('scanDevice');
+    $scope.buttonSave = false;
   }
-
+  
   $scope.deleteScanDevice = function(scanner) {
-    if (confirm($filter('t')('Common.Text_RemoveProduct'))) {
+    if (confirm($filter('t')('Scanner.Text_RemoveDevice'))) {
       $scope.scanner.deleteScanDevice($scope.storeKey, scanner.Key).then(
-          function() {
-            $scope.wizardScanDevice.open = false;
-            $scope.init(true);
-          }, function(err) {
-            $scope.error.log(err)
-          });
+        function() {
+          $scope.changeView('scanDevice', true);
+        }, function(err) {
+          $scope.error.log(err);
+        }
+      )
     }
   }
-
+  
   /**
    * Options for the events selector widget. select2 doesn't work properly on
    * "multiple" mode, so we need to update model manually and do other hacks.
@@ -127,40 +129,67 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams, 
       });
     },
   }
-
-  $scope.save = function() {
-    if ($scope.wizardScanDevice.finished) {
-      $scope.wizardScanDevice.saved = false;
-
-      if ($scope.ScanDevice.Key === null) {
-        // go on and create
-        $scope.scanner.createScanDevice($scope.storeKey, {
-          Public : true,
-          Name : $scope.ScanDevice.Name,
-          Brief : $scope.ScanDevice.Brief,
-          // Active = true to allow the QR to work
-          Active : true
-        }).then(
-          function(scanDeviceKey) {
-            $scope.ScanDevice.Key = scanDeviceKey;
-            $scope.wizardScanDevice.saved = true;
-
-            // reload list
-            $scope.init();
-          }, function(err) {
-            $scope.error.log(err)
-          });
-      } else {
-        // update scanDevice
-        $scope.scanner.updateScanDevice($scope.storeKey, $scope.ScanDevice)
-            .then(
-                function() {
-                  $scope.wizardScanDevice.saved = true;
-                  $scope.init();
-                }, function(err) {
-                  $scope.error.log(err)
-                });
-      }
+  
+  $scope.save = function(postAction) {
+    $scope.detailFormStatus.scanDevice.startSaving = true;
+    $scope.detailFormStatus.scanDevice.saved = false;
+    
+    if ($scope.ScanDevice.Key === null) {
+      // Go on and create
+      $scope.scanner.createScanDevice($scope.storeKey, {
+        Public: true,
+        Name: $scope.ScanDevice.Name,
+        Brief: $scope.ScanDevice.Brief,
+        // Active = true to allow the QR to work
+        Active: true
+      }).then(
+        function(scanDeviceKey) {
+          $scope.scanner.initScanDevice($scope.storeKey, scanDeviceKey).then(
+            function(createdScanDevice) {
+              $scope.ScanDevice = angular.copy(createdScanDevice);
+              
+              $scope.detailFormStatus.scanDevice.saved = true;
+              $scope.buttonSave = true;
+              
+              if (postAction && postAction == 'close') {
+                $timeout(
+                  function() {
+                    $scope.changeView('scanDevice', true);
+                  }, 1000
+                )
+              }
+            }, function(err) {
+              $scope.error.log(err);
+            }
+          )
+        }, function(err) {
+          $scope.error.log(err)
+        })
+    } else {
+      // Update scanDevice
+      $scope.scanner.updateScanDevice($scope.storeKey, $scope.ScanDevice).then(
+        function() {
+          $scope.scanner.initScanDevice($scope.storeKey, $scope.ScanDevice.Key).then(
+            function(updatedScanDevice) {
+              $scope.ScanDevice = angular.copy(updatedScanDevice);
+              
+              $scope.detailFormStatus.scanDevice.saved = true;
+              
+              if (postAction && postAction == 'close') {
+                $timeout(
+                  function() {
+                    $scope.changeView('scanDevice', true);
+                  }, 1000
+                )
+              }
+            }, function(err) {
+              $scope.error.log(err);
+            }
+          )
+        }, function(err) {
+          $scope.error.log(err)
+        }
+      )
     }
   }
   
@@ -190,14 +219,11 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams, 
   // Post update action
   $scope.postUpdate = function(successMessage) {
     $scope.successMessage = successMessage;
-    	
-    // Reload device list
-    $scope.init();
-	  
-    // Hide the message in 1 seconds
+    
+    // Hide the message in 2 seconds
     $timeout(function() {
       $scope.successMessage = '';
-    }, 1000, false);
+    }, 2000);
   }
   
   // Refresh the QR code after users scan it
@@ -209,7 +235,7 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams, 
   		$scope.scanner.initScanDevice(ScanDevice.StoreKey, ScanDevice.Key)
   		  .then(function(newLoadedScanDevice) {
   		  	// Create a fresh copy
-  		  	$scope.ScanDevice = newLoadedScanDevice;
+  		  	$scope.ScanDevice = angular.copy(newLoadedScanDevice);
   		  	
   		  	if (!$scope.isInfoEmpty(newLoadedScanDevice.DeviceInfo)) {
   		  	  $scope.postUpdate($filter('t')('Scanner.Text_RegisterSuccess'));
@@ -255,14 +281,14 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams, 
     		  	$scope.postUpdate($filter('t')('Scanner.Text_UpdateDeviceSuccess'));
     		  }, function(err) {
     		  	$scope.error.log(err);
-    		});
+    		})
       }
   	}
   }
   
   // Unregister device
   $scope.unregisterDevice = function(ScanDevice) {
-  	if (ScanDevice) {
+  	if (ScanDevice && ScanDevice.Key) {
   		var tempScanDevice = angular.copy(ScanDevice);
       $scope.successMessage = '';
       
@@ -284,7 +310,7 @@ function scannerController($scope, $cookieStore, $filter, $modal, $routeParams, 
     		    $scope.scanner.initScanDevice(ScanDevice.StoreKey, ScanDevice.Key)
     		      .then(function(newLoadedScanDevice) {
     		        // Create a fresh copy
-    		        $scope.ScanDevice = newLoadedScanDevice;
+    		        $scope.ScanDevice = angular.copy(newLoadedScanDevice);
   		  	      
     		        $scope.postUpdate($filter('t')('Scanner.Text_UnRegisterSuccess'));
     		      }, function(err) {

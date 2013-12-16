@@ -171,14 +171,14 @@
 	<!-- Top menu -->
 	<div ng-include src="'views/elements/error.html'"></div>
 	<!-- Venue list -->
-	<div ui-if="!detailView.place && Store && Store.Key || false" class="row-fluid" ng-init="init()">
+	<div ui-if="!detailView.place && Store && Store.Key || false" class="row-fluid">
 		<h3 class="pull-left">{{ 'Common.Text_VenueMenu_Venue' | t}}</h3>
 		<div class="btn-group pull-right">
 			<a class="btn btn-info" ng-click="create()"><i class="fa fa-plus"></i>&nbsp;{{
 				'Common.Text_CreateVenue' | t }}</a>
 		</div>
 		<div class="clear"></div>
-		<div ng-include src="'views/venueList.html'"></div>
+		<div ng-init="init()" ng-include src="'views/venueList.html'"></div>
 	</div>
 	
 	<!-- Venue detail -->
@@ -192,14 +192,14 @@
 	  		<!-- Venue info -->
 			  <div class="alert alert-info collapser"
 				  ng-click="collapseStep1 = !collapseStep1" mousestyle>
-				  <i class="accordion-title-icon fa fa-info"></i> {{ 'Common.Text_VenueInformation' | t }}</div>
+				  <i class="accordion-title-icon fa fa-info-circle"></i> {{ 'Common.Text_VenueInformation' | t }}</div>
 			  <div ng-init="collapseStep1 = false" collapse="collapseStep1">
 			  	<dl class="clearfix">
 			  		<dd>
-							<label for="categoryName">{{'Common.Text_VenueName' | t}}</label>
-              <input name="Place_Name" id="categoryName"
+							<label for="venueName">{{'Common.Text_VenueName' | t}}</label>
+              <input name="Place_Name" id="venueName"
                 type="text"
-                class="input-xlarge fix-type-text-input"
+                class="input-xxlarge fix-type-text-input"
                 placeholder="{{'Common.Text_Name' | t}}" ng-model="Place.Name"
                 check-uniqueuri="Place"
                 required />
@@ -210,7 +210,7 @@
 							  {{'Common.Text_ThisNameInUsed' | t}}
 							</span>
 							<span class="help-block alert alert-error" ng-show="venueDetailForm.Place_Name.$dirty && venueDetailForm.Place_Name.$error.required">
-							  {{'Common.LabelCategoryName' | t}}{{'Common.Text_IsRequired' | t}}
+							  {{'Common.LabelPlaceName' | t}}{{'Common.Text_IsRequired' | t}}
 							</span>
 						</dd>
 						<dd>
@@ -235,7 +235,7 @@
 			  <!-- Venue images -->
 			  <div class="alert alert-info collapser"
 				  ng-click="collapseStep3 = !collapseStep3" mousestyle>
-				  <i class="accordion-title-icon fa fa-puzzle-piece"></i> {{ 'Common.Text_Images' | t }}</div>
+				  <i class="accordion-title-icon fa fa-picture-o"></i> {{ 'Common.Text_Images' | t }}</div>
 			  <div ng-init="collapseStep3 = true" collapse="collapseStep3">
 			  	<dl class="clearfix">
 			  		<!-- Media selector -->

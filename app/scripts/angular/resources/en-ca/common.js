@@ -160,7 +160,7 @@ var CommonResources = {
   LabelSchoolPaymentProvider : 'Payment Provider',
   LabelSchoolName : 'School Name',
   LabelSchoolDescription : 'Description of this School',
-  LabelPlaceName : 'Venue\'s Name',
+  LabelPlaceName : 'Venue Name',
   LabelScanDeviceName : 'Device Name',
   LabelPlaceDescription : 'Description of this Venue',
   LabelEventOnSaleDateTimeStart : 'Tickets Sales Starts On',
