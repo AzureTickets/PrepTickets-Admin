@@ -1,53 +1,102 @@
 <div class="clear row-fluid list">
-	<!-- images list -->
 	<div class="widget wviolet">
 		<div class="widget-head">
 			<div class="pull-left">{{ 'Common.Text_Images' | t }}</div>
 			<div class="clear"></div>
 		</div>
-		<div class="widget-content">
-
+		
+		<div class="widget-content media-container">
+			<!-- Search form -->
 			<form class="form-horizontal">
 				<div class="control-group">
 					<label class="control-label" for="filterText">{{'Common.Text_Search'
 						| t}}:&nbsp;</label>
 					<div class="controls">
-						<input type="text" id="filterText" class="input-large"
+						<input type="text" id="filterText" class="input-large fix-type-text-input" ng-disabled="!listMode"
 							ng-model="pagination.filteringObj.Name" placeholder="">
+						<button class="btn btn-info" ng-click="listMode = false" ng-show="listMode" ng-style="{'margin-bottom': '10px'}">
+							<i class="fa fa-pencil-square-o"></i>&nbsp;{{ 'Common.Text_EventMenu_AddImage' | t }}
+						</button>
+						<button class="btn btn-info" ng-click="listMode = true" ng-show="!listMode" ng-style="{'margin-bottom': '10px'}">
+							<i class="fa fa-undo"></i>&nbsp;{{ 'Common.Text_Close' | t }}
+						</button>
 					</div>
 				</div>
 			</form>
-			<div ng-show="!pagination.results.length" class="alert alert-info">{{
-				'Common.Text_NoImages_Msg' | t }}</div>
-			<table class="table table-bordered table-hover"
-				ng-show="pagination.results.length">
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>{{ 'Common.Text_Name' | t}}</th>
-						<th>{{ 'Common.Text_Preview' | t}}</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="image in pagination.pageItems()"
-						ng-click="update(image)" mousestyle>
-						<td>{{$index + 1 +
-							pagination.currentPageIndex*pagination.pageSize}}</td>
-						<td>{{image.Name}}</td>
-						<td><img ng-src="{{image.BaseURL}}{{image.ThumbFile}}" /></td>
-					</tr>
-				</tbody>
-			</table>
-
-			<div class="paginationDiv" ng-show="pagination.results.length > 20">
-				<ng-pagination pagination-data="pagination" data="images"> </ng-pagination>
-				<p class="text-center" ng-cloak>{{'Common.Text_CurrentPage' |
-					t}}: {{pagination.currentPageIndex + 1}} -
-					{{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} -
-					{{'Common.Text_TotalPages' | t}}: {{pagination.numberOfPages}} -
-					{{'Common.Text_TotalItems' | t}}: {{pagination.results.length}}</p>
+			<div ng-show="!pagination.results.length" class="alert alert-info">{{ 'Common.Text_NoImages_Msg' | t }}</div>
+			
+			<!-- Upload form -->
+			<div ui-if="!listMode" id="media-uploader">
+				<div class="clearfix" id="uploader" ng-init="media.createUploader(Store.Key, onImageUpload, onError)"></div>
 			</div>
-
+			
+			<!-- Image list -->
+			<div ng-show="listMode">
+        <div class="media-list">
+    			<ul class="unstyled" ng-show="pagination.results.length">
+    				<li ng-repeat="image in pagination.pageItems()"
+    					class="media-image pull-left"
+    					ng-click="update(image)" mousestyle>
+    					<img ng-src="{{image.BaseURL}}{{image.ThumbFile}}" />
+    					<span class="selected-icon" ng-show="Image && Image.Key == image.Key"><i class="fa fa-check-circle fa-2x green"></i></span>
+    				</li>
+    				<li class="clear" ng-style="{'height': '1px'}"></li>
+    			</ul>
+          
+    			<div class="paginationDiv" ng-show="pagination.results.length > 20">
+    				<ng-pagination pagination-data="pagination" data="images"> </ng-pagination>
+    				<p class="text-center" ng-cloak>{{'Common.Text_CurrentPage' |
+    					t}}: {{pagination.currentPageIndex + 1}} -
+    					{{'Common.Text_ItemsPerPage' | t}}: {{pagination.pageSize}} -
+    					{{'Common.Text_TotalPages' | t}}: {{pagination.numberOfPages}} -
+    					{{'Common.Text_TotalItems' | t}}: {{pagination.results.length}}</p>
+    			</div>
+  			</div>
+        
+        <!-- Image detail -->
+        <div class="media-detail" ng-show="pagination.results.length">
+    	  	<form ui-if="Store && Store.isNew || Store && Store.IsOwner" name="imageDetailForm">
+    	  		<dl>
+    	  			<dd>
+    	  				<div class="image-thumbnail">
+      			      <a href="" ng-click="previewMedia(Image)"><img ui-if="Image && Image.Key" ng-src="{{Image.BaseURL}}{{Image.ThumbFile}}" /></a>
+    	  		    </div>
+    	  				
+      				  <div class="image-info">
+        	  	    <label for="imageName">{{'Common.Text_Name' | t}}</label>
+                  <input name="Image_Name" id="imageName"
+                    type="text"
+                    class="input-large fix-type-text-input"
+                    placeholder="{{'Common.Text_Name' | t}}" ng-model="Image.Name"
+                    ng-disabled="!Image.Key"
+                    required />
+                  <span class="help-block alert alert-error" ng-show="imageDetailForm.Image_Name.$dirty && imageDetailForm.Image_Name.$error.required">
+							      {{'Common.Text_ImageName' | t}}{{'Common.Text_IsRequired' | t}}
+							    </span>
+        	  			<a href="{{Image.BaseURL}}{{Image.ImageFile}}" target="_blank">{{ 'Common.Text_ImageDownload' | t }}</a>
+        	  	  </div>
+        	  	  
+        	  	  <div class="clear"></div>
+        	  	  <div class="alert alert-info"
+        					ui-if="detailFormStatus.image.startSaving && !detailFormStatus.image.saved">
+        					<i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;{{ 'Common.Text_WaitSaving' | t }}
+        				</div>
+        				<div class="alert alert-success" mousestyle
+        					ui-if="detailFormStatus.image.startSaving && detailFormStatus.image.saved"
+        					ng-click="detailFormStatus.image.startSaving = fasle; detailFormStatus.image.saved = false">
+        					<strong>{{ 'Common.Text_Congrats' | t }}</strong> {{ 'Common.Text_DetailFormComplete' | t }}
+        				</div>
+        	  	  
+        	  		<div>
+      				    <button type="submit" ng-disabled="!Image.Key" ng-click="imageDetailForm.$valid && saveUpdate(Image)" class="btn btn-success pull-left" ng-style="{'margin': '6px 0 10px 0'}"><i class="fa fa-floppy-o"></i> {{ 'Common.Text_Save' | t }}</button>
+      				    <button type="submit" ng-disabled="!Image.Key" ng-click="deleteImage(Image)" class="btn btn-danger pull-left" ng-style="{'margin': '6px 10px 10px'}"><i class="fa fa-trash-o"></i> {{ 'Common.Text_Remove' | t }}</button>
+        			  </div>
+        		  </dd>
+    	  		</dl>
+    	  	</form>
+        </div>
+        <div class="clear" ng-style="{'height': '1px'}"></div>
+      </div>
 		</div>
 	</div>
 </div>

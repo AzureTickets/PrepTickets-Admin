@@ -80,11 +80,10 @@ azureTicketsApp.config([
                     authService.logoffAsync().then(
                         function() {
                           // clear cookies
-                          $cookieStore
-                              .remove(configService.cookies.loggedStatus);
+                          $cookieStore.remove(configService.cookies.loggedStatus);
                           $cookieStore.remove(configService.cookies.lastPath);
-                          $cookieStore
-                              .remove(configService.cookies.paymentSessionKey);
+                          $cookieStore.remove(configService.cookies.paymentSessionKey);
+                          $cookieStore.remove(configService.cookies.initPages);
 
                           // reset store & profile
                           authService.setDomainProfile(null);

@@ -417,6 +417,7 @@ var CommonResources = {
   Text_SmallImage : 'Small Image',
   Text_Images : 'Images',
   Text_Image : 'Image',
+  Text_ImageName : 'Image Name',
   Text_LargeImages : 'Large Images',
   Text_EditImage : 'Edit Image',
   Text_ImageDownload : 'Download Image',

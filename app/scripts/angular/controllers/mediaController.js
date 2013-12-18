@@ -9,7 +9,7 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   
   // Pagination setup
   $scope.pagination = {
-    pageSize: 20,
+    pageSize: 18,
     startRange : 0,
     predicates: [],
     pageItems: function() {},
@@ -171,52 +171,64 @@ function mediaController($scope, $cookieStore, $filter, $routeParams, $timeout,
   	}
   }
   
+  // List or Create mode of media library
+  $scope.listMode = true;
+  
   $scope.create = function() {
     $scope.wizardMedia.open = true;
     $scope.wizardMedia.reset();
   }
   
-  // Open update image form
+  // Select image to update
   $scope.update = function(image) {
   	$scope.Image = angular.copy(image);
-    $scope.updateImageWizard.open = true;
-    $scope.updateImageWizard.reset();
+  	$scope.detailFormStatus.image.startSaving = false;
   }
   
   // Save edited image function
   $scope.saveUpdate = function(image) {
-  	$scope.media.updateImage($scope.storeKey, image).then(function() {
-  	  $scope.init();
-  	  $scope.updateImageWizard.saved = true;
-  	}, function(err) {
-  	  $scope.error.log(err)
-  	});
+  	if (image && image.Key) {
+    	$scope.detailFormStatus.image.startSaving = true;
+      $scope.detailFormStatus.image.saved = false;
+      
+    	$scope.media.updateImage($scope.storeKey, image).then(
+    	  function() {
+    	    $scope.detailFormStatus.image.saved = true;
+    	    $scope.init();
+    	  }, function(err) {
+    	    $scope.error.log(err);
+    	  }
+    	)
+    }
   }
-
+  
   $scope.onImageUpload = function(files) {
     $scope.$apply(function() {
       $scope.init();
-      $scope.wizardMedia.open = false;
     })
   }
   $scope.onError = function(err) {
     $scope.$apply(function() {
-      $scope.error.log(err)
+      $scope.error.log(err);
     })
   }
-
+  
   $scope.init = function() {
     $scope.media.loadImages($scope);
   }
-
+  
   $scope.deleteImage = function(image) {
-    if (confirm($filter('t')('Common.Text_RemoveProduct'))) {
-      $scope.media.deleteImage($scope.storeKey, image.Key).then(function() {
-        $scope.init();
-        $scope.updateImageWizard.open = false;
-      }, function(err) {
-        $scope.error.log(err)
-      });
+  	if (image && image.Key) {
+      if (confirm($filter('t')('Common.Text_RemoveProduct'))) {
+        $scope.media.deleteImage($scope.storeKey, image.Key).then(function() {
+        	if ($scope.Image && $scope.Image.Key) {
+        		$scope.Image = { BaseURL: '' };
+        	}
+          $scope.init();
+        }, function(err) {
+          $scope.error.log(err);
+        });
+      }
     }
   }
 }
